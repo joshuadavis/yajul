@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enum-types>
+    <enum-type id="TestEnumType2" valueClass="org.yajul.enum.test.EnumTest$Value1">
+        <enum-value id="-1" xmlValue="minusOne" textValue="value minus one"/>
+        <enum-value id="7" xmlValue="seven" textValue="value seven"/>
+        <enum-value id="12" xmlValue="twelve" textValue="value twelve"/>
+    </enum-type>
+</enum-types>

@@ -70,7 +70,14 @@ public class EnumTest extends TestCase
         {
             exception = e;
         }
-        assertNotNull(exception);   // Make sure e got an exception.
+        assertNotNull(exception);   // Make sure we got an exception.
+
+        // Make sure the array accessors return the appropriate values.
+        String[] textValues = enumType.getTextArray();
+        assertEquals(3,textValues.length);
+        assertEquals("value one",textValues[0]);
+        assertEquals("value two",textValues[1]);
+        assertEquals("value three",textValues[2]);
     }
 
     public void testEnumTypeMap2() throws Exception
@@ -91,13 +98,13 @@ public class EnumTest extends TestCase
         assertNotNull(value);
         assertEquals( -1, value.getId());
         assertEquals("minusOne",value.getXmlValue());
-        assertEquals("minus one",value.getTextValue());
+        assertEquals("value minus one",value.getTextValue());
 
         value = (EnumValue)iter.next();
         assertNotNull(value);
         assertEquals( 7, value.getId());
         assertEquals("seven",value.getXmlValue());
-        assertEquals("Value seven",value.getTextValue());
+        assertEquals("value seven",value.getTextValue());
 
         value = (EnumValue)iter.next();
         assertNotNull(value);
