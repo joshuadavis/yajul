@@ -183,7 +183,7 @@ public class EnumTypeMap
                 if (types.get(enumType.getId()) != null)
                     log.warn("loadXML() : Multiple definitions encountered " +
                             "for enum-type '" + enumType.getId() + "'");
-                types.put(enumType.getId(), enumType);
+                addType(enumType);
             }
             catch (Exception e)
             {
@@ -199,6 +199,26 @@ public class EnumTypeMap
     }
 
     /**
+     * Creates a subset enum type using the given superset and filter.  The
+     * subset will have the supplied subset id.
+     * @param supersetId The enum type id of the superset.
+     * @param subsetId The enum type id of the new subset.
+     * @param filter The filter that will be used on the values.
+     * @return EnumType - The new subset type.
+     */
+    public EnumType createSubset(String supersetId,String subsetId,
+                                 EnumValueFilter filter)
+    {
+        EnumType superset = findEnumTypeById(supersetId);
+        if (superset == null)
+            throw new IllegalArgumentException(
+                    "Unable to find superset id " + supersetId);
+        EnumType subset = superset.createSubset(subsetId,filter);
+        addType(subset);
+        return subset;
+    }
+
+    /**
      * Returns the EnumType given an enum type id string, or null if there is
      * no type with the specified id.
      * @param enumTypeId The id to look for.
@@ -208,5 +228,13 @@ public class EnumTypeMap
     {
         return (EnumType) types.get(enumTypeId);
     }
+
+    // --- Implementation methods ---
+
+    private void addType(EnumType enumType)
+    {
+        types.put(enumType.getId(), enumType);
+    }
+
 
 }

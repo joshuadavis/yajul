@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.yajul.enum.EnumTypeMap;
 import org.yajul.enum.EnumType;
 import org.yajul.enum.EnumValue;
+import org.yajul.enum.EnumValueFilter;
 
 /**
  * Test case for the EnumType, EnumTypeMap, and EnumValue objects.
@@ -122,6 +123,27 @@ public class EnumTest extends TestCase
             exception = e;
         }
         assertNotNull(exception);   // Make sure e got an exception.
+    }
+
+    public void testSubset() throws Exception
+    {
+        EnumTypeMap map = new EnumTypeMap();
+        map.loadXML(new FileInputStream("test_data/EnumTest1.xml"));
+        EnumType type = map.findEnumTypeById("TestEnumType2");
+        EnumType subset = type.createSubset("TestSubset",
+                new EnumValueFilter()
+                {
+                    public boolean test(EnumValue value)
+                    {
+                        return (value.getTextValue().startsWith("value"));
+                    }
+                });
+        assertTrue(type.isContiguous());
+        assertTrue(!subset.isContiguous());
+        assertTrue(subset.isValid(0));
+        assertTrue(subset.isValid(1));
+        assertTrue(!subset.isValid(2));
+        assertTrue(!subset.isValid(3));
     }
 
     private void checkValue1(EnumValue value)

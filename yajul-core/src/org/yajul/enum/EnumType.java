@@ -97,6 +97,16 @@ public class EnumType
     /** The array of all text values, in ID order. **/
     private String[] textArray;
 
+    /** The enum type has been constructed, but no values have been added. **/
+    private static final int STATE_INITIAL = 0;
+    /** Ready to add values. **/
+    private static final int STATE_ADD_VALUES = 1;
+    /** All values have been added, fully initialized. **/
+    private static final int STATE_INITIALIZED = 2;
+
+    /** The state of the enum type (STATE_xxx). **/
+    private int state = STATE_INITIAL;
+
     /**
      * Creates a new EnumType object.
      */
@@ -239,6 +249,15 @@ public class EnumType
         }
     }
 
+    /**
+     * Returns the number of values in the enumerated type.
+     * @return int - The number of values in the type.
+     */
+    public int size()
+    {
+        return valueById.size();
+    }
+
     // --- Public Methods ---
 
     /**
@@ -264,9 +283,6 @@ public class EnumType
             // Subtract the minimum id, so the index of the first
             // element is zero.
             int index = id - minId;
-//            if (log.isDebugEnabled())
-//                log.debug("findValueById() : id = "
-//                        + id + " index = " + index );
             if (index < 0 || index >= valueArrayById.length)
                 return null;
             else
@@ -429,6 +445,52 @@ public class EnumType
             return valueById.values().iterator();
     }
 
+
+    /**
+     * Creates a subset of this enum type by passing the values
+     * through a filter.  EnumValue elements will not be cloned.
+     * @param subsetId The enum type id of the subset.
+     * @param filter The value filter.
+     * @return EnumType - The subset enum-type.
+     */
+    public EnumType createSubset(String subsetId,EnumValueFilter filter)
+    {
+        EnumType subset = new EnumType();
+        Iterator iter = iterator();
+        while (iter.hasNext())
+        {
+            EnumValue value = (EnumValue) iter.next();
+            if (filter.test(value))
+                subset.addValue(value);
+        }
+        subset.afterAddingValues();
+        return subset;
+    }
+
+    // --- java.lang.Object methods --
+    /**
+     * Returns a string representation of the object. In general, the
+     * <code>toString</code> method returns a string that
+     * "textually represents" this object. The result should
+     * be a concise but informative representation that is easy for a
+     * person to read.
+     * @return  a string representation of the object.
+     */
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append("[ EnumType id=").append(id);
+        buf.append(" isContiguous=").append(isContiguous());
+        Iterator iter = iterator();
+        while (iter.hasNext())
+        {
+            EnumValue value = (EnumValue) iter.next();
+            buf.append("\n  ").append(value.toString());
+        }
+        buf.append("\n]");
+        return buf.toString();
+    }
+
     // --- Implementation Methods (package and private) ---
 
     /**
@@ -466,44 +528,9 @@ public class EnumType
 
             // Look for the 'enum-value' elements inside this 'enum-type' element.
             Element[] valueElements = DOMUtil.getChildElements(elem, "enum-value");
+            beforeAddingValues();
             loadValuesFromElements(valueElements, map);
-
-            // Determine whether the ids are a contiguous sequence of integers.
-            contiguous = ((maxId - minId) == (valueById.size() - 1));
-
-            // If ids will fit in an array, use an array
-            // for the main element index.
-            if (contiguous)
-            {
-                if (log.isDebugEnabled())
-                    log.debug("loadFromElement() : Using an array for the id map");
-                Set entries = valueById.entrySet();
-                ArrayList list = new ArrayList(valueById.size());
-                for (Iterator iterator = entries.iterator(); iterator.hasNext();)
-                {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-                    Integer key = (Integer) entry.getKey();
-                    EnumValue value = (EnumValue) entry.getValue();
-                    int index = key.intValue() - minId;
-//                  if (log.isDebugEnabled())
-//                    log.debug(
-//                            "loadFromElement() : " +
-//                            "valueArray[" + index + "], id = " + key);
-                    list.add(index, value);
-                } // for
-                // Put the values into the array.  Now, the find methods will
-                // use this array for lookup.
-                valueArrayById = (EnumValue[])
-                        list.toArray(new EnumValue[list.size()]);
-                // If the ids are contiguous *AND* theminimum id is zero, then
-                // the array representation can be used for getValueArray() as well.
-                if (minId == 0)
-                    valueArray = valueArrayById;
-                // Otherwise, the value array will need to be copied from
-                // the iterator.
-            } // if contiguous
-            else if (log.isDebugEnabled())
-                log.debug("loadFromElement() : Using a TreeMap for the id map");
+            afterAddingValues();
         } // synchronized
     }
 
@@ -511,13 +538,6 @@ public class EnumType
                                         EnumTypeMap map)
             throws EnumInitializationException
     {
-        // Set the minimum and maximum index values to their limits, so the
-        // loop can set them as the elements are parsed.
-        maxId = Integer.MIN_VALUE;
-        minId = Integer.MAX_VALUE;
-        int id = 0;
-
-        // Scan the elements to find the minimum and maximum ids.
 
         // Parse each element, adding the parsed elements to the index maps and
         // updating the minimum and maximum id fields.
@@ -527,17 +547,75 @@ public class EnumType
 
             EnumValue value = loadValueFromElement(map, valueElement);
 
-            id = value.getId();
+            addValue(value);
 
-            if (id > maxId)
-                maxId = id;
-            if (id < minId)
-                minId = id;
-            // Set up the index maps.
-            valueById.put(value.getIdInteger(), value);
-            valueByXML.put(value.getXmlValue(), value);
-            valueByText.put(value.getTextValue(), value);
         } // for (i)
+    }
+
+    private void beforeAddingValues()
+    {
+        if (state != STATE_INITIAL)
+            throw new IllegalStateException(
+                    "Unable to prepare for adding values, state = "
+                    + state);
+        // Set the minimum and maximum index values to their limits, so the
+        // loop can set them as the elements are parsed.
+        maxId = Integer.MIN_VALUE;
+        minId = Integer.MAX_VALUE;
+        state = STATE_ADD_VALUES;
+    }
+
+    private void addValue(EnumValue value)
+    {
+        int id;
+        id = value.getId();
+
+        if (id > maxId)
+            maxId = id;
+        if (id < minId)
+            minId = id;
+        // Set up the index maps.
+        valueById.put(value.getIdInteger(), value);
+        valueByXML.put(value.getXmlValue(), value);
+        valueByText.put(value.getTextValue(), value);
+    }
+
+    private void afterAddingValues()
+    {
+        // Determine whether the ids are a contiguous sequence of integers.
+        contiguous = ((maxId - minId) == (valueById.size() - 1));
+
+        // If ids will fit in an array, use an array
+        // for the main element index.
+        if (contiguous)
+        {
+            if (log.isDebugEnabled())
+                log.debug("afterAddingValues() : Using an array for the id map");
+            Set entries = valueById.entrySet();
+            ArrayList list = new ArrayList(valueById.size());
+            for (Iterator iterator = entries.iterator(); iterator.hasNext();)
+            {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Integer key = (Integer) entry.getKey();
+                EnumValue value = (EnumValue) entry.getValue();
+                int index = key.intValue() - minId;
+                list.add(index, value);
+            } // for
+            // Put the values into the array.  Now, the find methods will
+            // use this array for lookup.
+            valueArrayById = (EnumValue[])
+                    list.toArray(new EnumValue[list.size()]);
+            // If the ids are contiguous *AND* theminimum id is zero, then
+            // the array representation can be used for getValueArray() as well.
+            if (minId == 0)
+                valueArray = valueArrayById;
+            // Otherwise, the value array will need to be copied from
+            // the iterator.
+        } // if contiguous
+        else if (log.isDebugEnabled())
+            log.debug("afterAddingValues() : Using a TreeMap for the id map");
+
+        state = STATE_INITIALIZED;
     }
 
     private EnumValue loadValueFromElement(EnumTypeMap map,
