@@ -2,7 +2,6 @@ package org.yajul.time;
 
 import java.util.Calendar;
 
-import org.yajul.time.TimeUnit;
 import org.yajul.enum.EnumType;
 import org.yajul.enum.EnumTypeMap;
 
@@ -19,7 +18,8 @@ public class TimeUnitEnum implements TimeUnit
 
     static
     {
-        EnumTypeMap map = EnumTypeMap.loadTypeMapFromResource("org/yajul/time/time-enums.xml");
+        EnumTypeMap map = null;
+        map = EnumTypeMap.loadTypeMapFromResource("org/yajul/time/time-enums.xml");
         ENUM_TYPE = map.findEnumTypeById("TimeUnit");
     }
 

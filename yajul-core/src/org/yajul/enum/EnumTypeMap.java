@@ -27,15 +27,16 @@
 
 package org.yajul.enum;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.io.InputStream;
-
-import org.yajul.xml.DOMUtil;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.apache.log4j.Logger;
+import org.yajul.xml.DOMUtil;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Iterator;
 
 /**
  * Provides a map of enumerated types (EnumType and associated EnumValues),
@@ -64,14 +65,21 @@ public class EnumTypeMap
      * thread's class loader.
      * @param resourceName The name of the resource to load.
      * @return EnumTypeMap - The type map.
-     * @throws EnumInitializationException If there was a problem loading
+     * @throws EnumInitializationError If there was a problem loading
      * the resource.
      */
     public static EnumTypeMap createTypeMapFromResource(String resourceName)
-            throws EnumInitializationException
+            throws EnumInitializationError
     {
         EnumTypeMap typeMap = new EnumTypeMap();
-        typeMap.loadResource(resourceName);
+        try
+        {
+            typeMap.loadResource(resourceName);
+        }
+        catch (EnumInitializationException e)
+        {
+            throw new EnumInitializationError(e);
+        }
         return typeMap;
     }
 
@@ -80,11 +88,11 @@ public class EnumTypeMap
      * thread's class loader.
      * @param resourceName The name of the resource to load.
      * @return EnumTypeMap - The type map.
-     * @throws EnumInitializationException If there was a problem loading
+     * @throws EnumInitializationError If there was a problem loading
      * the resource.
      */
     public static EnumTypeMap loadTypeMapFromResource(String resourceName)
-            throws EnumInitializationException
+            throws EnumInitializationError
     {
         return createTypeMapFromResource(resourceName);
     }
@@ -112,7 +120,7 @@ public class EnumTypeMap
      */
     public EnumTypeMap()
     {
-        this.types = new HashMap();
+        init();
     }
 
     /**
@@ -120,9 +128,14 @@ public class EnumTypeMap
      * @param resourceNames A list of resource names (Strings) that will be used
      * to load up the type map.
      */
-    public EnumTypeMap(List resourceNames)
+    public EnumTypeMap(List resourceNames) throws EnumInitializationException
     {
-
+        init();
+        for (Iterator iterator = resourceNames.iterator(); iterator.hasNext();)
+        {
+            String resourceName  = iterator.next().toString();
+            loadResource(resourceName);
+        }
     }
 
     public void loadResource(String resourceName) throws EnumInitializationException
@@ -268,4 +281,8 @@ public class EnumTypeMap
         return is;
     }
 
+    private void init()
+    {
+        this.types = new HashMap();
+    }
 }

@@ -7,11 +7,22 @@
 
 <beans>
 
-	<bean id="testBean" class="org.yajul.framework.test.SimpleBean">
-        <property name="exampleProperty"><value>exampleProperty - value</value></property>
-        <property name="userName"><value>${user.name}</value></property>
+    <bean id="testBean" class="org.yajul.framework.test.SimpleBean">
+        <property name="exampleProperty">
+            <value>exampleProperty - value</value>
+        </property>
+        <property name="userName">
+            <value>${user.name}</value>
+        </property>
     </bean>
 
     <bean id="testEnumTypeMap" class="org.yajul.enum.EnumTypeMap">
+        <constructor-arg>
+            <list>
+                <value>enum/EnumTest1.xml</value>
+                <value>enum/EnumTest2.xml</value>
+            </list>
+        </constructor-arg>
     </bean>
+
 </beans>

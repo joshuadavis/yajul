@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Joshua Davis (private) -->
 <enum-types>
-  <enum-type id="TestEnumType2" valueClass="org.yajul.enum.test.EnumTest$Value1">
+  <enum-type id="TestEnumType2a" valueClass="org.yajul.enum.test.EnumTest$Value1">
     <enum-value id="-1" xmlValue="minusOne" textValue="value minus one"/>
     <enum-value id="7" xmlValue="seven" textValue="value seven"/>
     <enum-value id="12" xmlValue="twelve" textValue="value twelve"/>

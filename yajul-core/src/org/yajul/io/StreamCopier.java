@@ -40,6 +40,9 @@ import java.io.FileInputStream;
 import java.io.Reader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.io.ObjectOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
@@ -275,6 +278,34 @@ public class StreamCopier implements Runnable
             throws IOException
     {
         return readByteArray(new File(fileName));
+    }
+
+    /**
+     * Serializes the object into an array of bytes.
+     * @param o The object to serialize.
+     * @return An array of bytes that contiains the serialized object.
+     */
+    public static final byte[] serializeObject(Object o) throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(o);
+        oos.flush();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Reads a serialized object from the array of bytes.
+     * @param bytes The array of bytes.
+     * @return The unserialized object.
+     * @throws IOException if there was a problem reading the input.
+     * @throws ClassNotFoundException if the class of the object in the input was not found.
+     */
+    public static final Object unserializeObject(byte[] bytes) throws IOException, ClassNotFoundException
+    {
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        return ois.readObject();
     }
 
     /**

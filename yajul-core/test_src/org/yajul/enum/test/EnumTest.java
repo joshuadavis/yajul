@@ -11,6 +11,7 @@ import org.yajul.enum.EnumType;
 import org.yajul.enum.EnumValue;
 import org.yajul.enum.EnumValueFilter;
 import org.yajul.enum.EnumInitializationException;
+import org.yajul.framework.ServiceLocator;
 
 /**
  * Test case for the EnumType, EnumTypeMap, and EnumValue objects.
@@ -23,7 +24,9 @@ public class EnumTest extends TestCase
 {
     private static final String ID_ENUMTYPE1 = "TestEnumType1";
     private static final String ID_ENUMTYPE2 = "TestEnumType2";
+    private static final String ID_ENUMTYPE2A = "TestEnumType2a";
     public static final String XML_FILE1 = "test_data/EnumTest1.xml";
+    private static final String XML_FILE2 = "test_data/EnumTest2.xml";
 
     public EnumTest(String s)
     {
@@ -34,7 +37,11 @@ public class EnumTest extends TestCase
     {
         EnumTypeMap map = new EnumTypeMap();
         map.loadXML(new FileInputStream(XML_FILE1));
+        checkEnumType1(map);
+    }
 
+    private void checkEnumType1(EnumTypeMap map)
+    {
         EnumType enumType = map.findEnumTypeById(ID_ENUMTYPE1);
         assertNotNull(enumType);
         assertEquals(enumType.getId(),ID_ENUMTYPE1);
@@ -87,11 +94,15 @@ public class EnumTest extends TestCase
     public void testEnumTypeMap2() throws Exception
     {
         EnumTypeMap map = new EnumTypeMap();
-        map.loadXML(new FileInputStream("test_data/EnumTest2.xml"));
+        map.loadXML(new FileInputStream(XML_FILE2));
+        checkEnumType2a(map);
+    }
 
-        EnumType enumType = map.findEnumTypeById(ID_ENUMTYPE2);
+    private void checkEnumType2a(EnumTypeMap map)
+    {
+        EnumType enumType = map.findEnumTypeById(ID_ENUMTYPE2A);
         assertNotNull(enumType);
-        assertEquals(ID_ENUMTYPE2,enumType.getId());
+        assertEquals(ID_ENUMTYPE2A,enumType.getId());
         EnumValue value = enumType.findValueById(0);
         assertNull(value);
 
@@ -171,6 +182,16 @@ public class EnumTest extends TestCase
         assertEquals("ONE",type.findValueById(0).getConstantName());
     }
 
+    public void testBeanInitialization() throws Exception
+    {
+        ServiceLocator locator = ServiceLocator.getInstance();
+        locator.initialize("unit-test-context.xml");
+        EnumTypeMap map = (EnumTypeMap) locator.getBean("testEnumTypeMap");
+        assertNotNull(map);
+        // Make sure both enum types are in the map.
+        checkEnumType1(map);
+        checkEnumType2a(map);
+    }
     private void checkValue1(EnumValue value)
     {
         assertEquals(0,value.getId());

@@ -42,8 +42,8 @@ public class DetailedError extends Error
     /**
      * The nested exception... An object of type Throwable.
      */
-    private Throwable cause;
-
+    private transient Throwable cause;
+    
     /**
      * Default constructor.
      */
