@@ -79,6 +79,22 @@ public class StringUtilTest  extends TestCase
         assertEquals("123xyzxyz",StringUtil.padLeft(a, 9, false,"xyz"));
     }
 
+    public void testPadRight()
+    {
+        String a = "123";
+        assertEquals(" 123",StringUtil.padRight(a,4,false));
+        assertEquals("123",StringUtil.padRight(a,3,false));
+        assertEquals("123",StringUtil.padRight(a,2,false));
+        assertEquals("12",StringUtil.padRight(a,2,true));
+
+        assertEquals("x123",StringUtil.padRight(a, 4, false,"xyznnnn"));
+        assertEquals("xy123",StringUtil.padRight(a, 5, false,"xyznnnn"));
+        assertEquals("xyz123",StringUtil.padRight(a, 6, false,"xyznnnn"));
+        assertEquals("xyzn123",StringUtil.padRight(a, 7, false,"xyznnnn"));
+        assertEquals("xyzx123",StringUtil.padRight(a, 7, false,"xyz"));
+        assertEquals("xyzxyz123",StringUtil.padRight(a, 9, false,"xyz"));
+    }
+
     public void testReplace()
     {
         String a = "xxxabcyyy";
