@@ -2,57 +2,70 @@
 <project version="3" relativePaths="true">
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayIterator.java" line="37" column="13" vertical-scroll-proportion="0.45201668" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayUtil.java" line="40" column="13" vertical-scroll-proportion="-0.46408045" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/StringUtil.java" line="37" column="13" vertical-scroll-proportion="0.17097701" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/StringArrayBuilder.java" line="36" column="13" vertical-scroll-proportion="0.87931037" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/FieldPrinter.java" line="18" column="13" vertical-scroll-proportion="-5.4238095" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/ByteArrayInputStream.class" line="5" column="13" vertical-scroll-proportion="-0.60714287" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/ClassResolverObjectInputStream.java" line="17" column="54" vertical-scroll-proportion="0.52619046" horizontal-scroll-proportion="0.590625" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/WriterOutputStream.java" line="121" column="0" vertical-scroll-proportion="0.60952383" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/OutputStream.class" line="29" column="16" vertical-scroll-proportion="1.1738095" horizontal-scroll-proportion="0.175" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StringInputStream.java" line="15" column="13" vertical-scroll-proportion="0.41666666" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/FilterInputStream.class" line="5" column="13" vertical-scroll-proportion="0.20238096" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/AbstractByteFilterInputStream.java" line="25" column="64" vertical-scroll-proportion="0.56666666" horizontal-scroll-proportion="0.7" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StreamCopier.java" line="31" column="38" vertical-scroll-proportion="0.04047619" horizontal-scroll-proportion="0.415625">
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/io/test/StreamCopierTest.java" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/spi/ServiceProviderFactory.java" line="219" column="86" vertical-scroll-proportion="0.5367913" horizontal-scroll-proportion="0.940625" />
+      <source-position-entry url="jar://$PROJECT_DIR$/../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/FilterInputStream.class" line="5" column="13" vertical-scroll-proportion="0.084439084" horizontal-scroll-proportion="0.0765625" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/ClassResolverObjectInputStream.java" line="17" column="54" vertical-scroll-proportion="0.21954161" horizontal-scroll-proportion="0.3171875" />
+      <source-position-entry url="jar://$PROJECT_DIR$/../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/ByteArrayInputStream.class" line="5" column="13" vertical-scroll-proportion="-0.04704463" horizontal-scroll-proportion="0.0765625" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/WriterOutputStream.java" line="121" column="0" vertical-scroll-proportion="0.610374" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="jar://$PROJECT_DIR$/../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/OutputStream.class" line="29" column="16" vertical-scroll-proportion="0.4897467" horizontal-scroll-proportion="0.0953125" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ResourceUtil.java" line="33" column="28" vertical-scroll-proportion="0.15865384" horizontal-scroll-proportion="0.30625" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StreamCopier.java" line="204" column="42" vertical-scroll-proportion="1.3345795" horizontal-scroll-proportion="0.459375">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/io/test/StreamCopierTest.java" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/spi/ServiceProviderFactory.java" line="219" column="86" vertical-scroll-proportion="0.53571427" horizontal-scroll-proportion="0.9234375" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="22" column="2" vertical-scroll-proportion="-0.9757009" horizontal-scroll-proportion="0.021875">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="379" column="26" vertical-scroll-proportion="0.5962617" horizontal-scroll-proportion="0.284375">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="15" column="0" vertical-scroll-proportion="0.39252338" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/Type2Constants.java" line="3" column="40" vertical-scroll-proportion="0.078504674" horizontal-scroll-proportion="0.4375" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="226" column="32" vertical-scroll-proportion="0.9214953" horizontal-scroll-proportion="0.35" />
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StringInputStream.java" line="15" column="13" vertical-scroll-proportion="0.41666666" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/AbstractByteFilterInputStream.java" line="25" column="64" vertical-scroll-proportion="0.56666666" horizontal-scroll-proportion="0.7" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StreamCopier.java" line="31" column="38" vertical-scroll-proportion="0.04047619" horizontal-scroll-proportion="0.415625">
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StreamCopier.java" line="204" column="42" vertical-scroll-proportion="1.3345795" horizontal-scroll-proportion="0.459375">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/io/test/StreamCopierTest.java" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/spi/ServiceProviderFactory.java" line="219" column="86" vertical-scroll-proportion="0.53571427" horizontal-scroll-proportion="0.9234375" selected="true" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/FilterInputStream.class" line="5" column="13" vertical-scroll-proportion="0.20238096" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/ClassResolverObjectInputStream.java" line="17" column="54" vertical-scroll-proportion="0.52619046" horizontal-scroll-proportion="0.590625" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/ByteArrayInputStream.class" line="5" column="13" vertical-scroll-proportion="-0.60714287" horizontal-scroll-proportion="0.1421875" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/WriterOutputStream.java" line="121" column="0" vertical-scroll-proportion="0.60952383" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/OutputStream.class" line="29" column="16" vertical-scroll-proportion="1.1738095" horizontal-scroll-proportion="0.175" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="15" column="0" vertical-scroll-proportion="0.39252338" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="379" column="26" vertical-scroll-proportion="0.5962617" horizontal-scroll-proportion="0.284375">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="22" column="2" vertical-scroll-proportion="-0.9757009" horizontal-scroll-proportion="0.021875">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/Type2Constants.java" line="3" column="40" vertical-scroll-proportion="0.078504674" horizontal-scroll-proportion="0.4375" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="226" column="32" vertical-scroll-proportion="0.9214953" horizontal-scroll-proportion="0.35" selected="true" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="940" extended-state="0" />
+    <frame x="-4" y="-4" width="1288" height="1004" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.123893805" order="1" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24943566" order="5" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.3296837" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.3295711" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.29927593" order="0" />
       <window_info id="Hibernate Tools" active="false" anchor="right" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="3" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.10200803" order="1" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.29766694" order="1" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3295711" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3295711" order="8" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="6" />
@@ -257,30 +270,19 @@
   </component>
   <component name="CvsVcs">
     <expanded_paths>
-      <path value="$PROJECT_DIR$/src/org/yajul/enum" />
+      <path value="$PROJECT_DIR$" />
     </expanded_paths>
   </component>
   <component name="ProjectViewSettings">
     <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/io" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_data" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/sql" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/io" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/io/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/util" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/xsd" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
     </view>
     <view id="SourcepathPane" />
     <view id="ClasspathPane" />
@@ -326,7 +328,7 @@
       <Port>5050</Port>
       <LaunchServer>false</LaunchServer>
     </configuration>
-    <configuration name="EnumTest" type="JUnit" default="false" selected="false">
+    <configuration name="EnumTest" type="JUnit" default="false" selected="true">
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" value="org.yajul.enum.test.EnumTest" />
       <option name="METHOD_NAME" />
@@ -371,7 +373,7 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="&lt;default&gt;" type="JUnit" default="false" selected="true">
+    <configuration name="&lt;default&gt;" type="JUnit" default="false" selected="false">
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" />
       <option name="METHOD_NAME" />
@@ -634,6 +636,11 @@
     <option name="PROJECT" value="" />
     <option name="VIEW" value="" />
     <option name="ALTERNATIVE_WORKING_PATH" value="" />
+  </component>
+  <component name="TransparentConfiguration">
+    <option name="implementation" value="net.sourceforge.transparent.CommandLineClearCase" />
+    <option name="clearcaseRoot" value="" />
+    <option name="isCheckoutReserved" value="false" />
   </component>
 </project>
 

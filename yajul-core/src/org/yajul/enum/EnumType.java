@@ -37,7 +37,6 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
-import org.yajul.log.LogUtil;
 import org.yajul.util.ArrayIterator;
 import org.yajul.util.StringUtil;
 import org.yajul.util.ReflectionUtil;
@@ -51,6 +50,12 @@ import org.yajul.xml.DOMUtil;
  */
 public class EnumType
 {
+    public static final String TAG_ENUM_VALUE = "enum-value";
+    public static final String ATTR_ID = "id";
+    public static final String ATTR_VALUE_CLASS = "valueClass";
+    public static final String ATTR_CONSTANT_CLASS = "constantClass";
+    public static final String ATTR_DEFAULT_VALUE_ID = "defaultValueId";
+
     /**
      * The logger for this class.
      */
@@ -71,33 +76,21 @@ public class EnumType
     private int maxId;
     /** True if the ids are a contiguous sequence of integers. **/
     private boolean contiguous;
-
     /**
      * An array of all values, where the index is the id.
      * This will be null, if the value ids are not sequential (ish).
      */
     private EnumValue[] valueArrayById;
-
-    /**
-     * A map of values, by their id.
-     */
+    /** A map of values, by their id. **/
     private SortedMap valueById;
-
     /** Map of values by XML string. **/
     private Map valueByXML;
-
     /** Map of values by text string. **/
     private Map valueByText;
-
     /** Map of values by text string (case insensitive). **/
     private Map valuesByLowerCaseText;
-
-    /** Map of values by constant name. **/
-    private Map valuesByConstantName;
-
     /** The values of the enumerated type, in array form. */
     private EnumValue[] valueArray;
-
     /** Array of all ids, in order. **/
     private int[] idArray;
     /** The array of all text values, in ID order. **/
@@ -112,6 +105,9 @@ public class EnumType
 
     /** The state of the enum type (STATE_xxx). **/
     private int state = STATE_INITIAL;
+
+    /** The default value id for the enum type.  UNDEFINED if it wasn't specified. **/
+    private int defaultValueId = UNDEFINED;
 
     /**
      * Creates a new EnumType object.
@@ -377,8 +373,11 @@ public class EnumType
      */
     public EnumValue findValueByTextIgnoreCase(String text)
     {
-        if (valuesByLowerCaseText == null)
-            createLowerCaseTextMap();
+        synchronized (this)
+        {
+            if (valuesByLowerCaseText == null)
+                createLowerCaseTextMap();
+        }
         return (EnumValue) valuesByLowerCaseText.get(text.toLowerCase());
     }
 
@@ -472,6 +471,28 @@ public class EnumType
         return subset;
     }
 
+    /**
+     * Returns the default value, or null if no default value was specified
+     * for the type.
+     * @return EnumValue - The default value for the enum type.
+     */
+    public EnumValue getDefaultValue()
+    {
+        if (defaultValueId == UNDEFINED)
+            return null;
+        else
+            return findValueById(defaultValueId);
+    }
+
+    /**
+     * Returns the id of the default value, or UNDEFINED if it was not set.
+     * @return int - The id of the default value, or UNDEFINED if it was not set.
+     */
+    public int getDefaultValueId()
+    {
+        return defaultValueId;
+    }
+
     // --- java.lang.Object methods --
 
     /**
@@ -533,10 +554,20 @@ public class EnumType
             setFromAttributes(elem);
 
             // Look for the 'enum-value' elements inside this 'enum-type' element.
-            Element[] valueElements = DOMUtil.getChildElements(elem, "enum-value");
+            Element[] valueElements = DOMUtil.getChildElements(elem,
+                    TAG_ENUM_VALUE);
             beforeAddingValues();
             loadValuesFromElements(valueElements, map);
             afterAddingValues();
+            // If the default value id was specified, look it up.
+            if (defaultValueId != UNDEFINED)
+            {
+                EnumValue v = findValueById(defaultValueId);
+                if (v == null)
+                    throw new EnumInitializationException(
+                        "Unable to find default value with id "
+                            + defaultValueId);
+            }
         } // synchronized
     }
 
@@ -693,14 +724,14 @@ public class EnumType
     private void setFromAttributes(Element elem)
             throws EnumInitializationException
     {
-        id = elem.getAttribute("id");
+        id = elem.getAttribute(ATTR_ID);
         if (StringUtil.isEmpty(id))
             throw new EnumInitializationException(
                     "Expected 'id' attribute in enum-type!");
 
         try
         {
-            String valueClassName = elem.getAttribute("valueClass");
+            String valueClassName = elem.getAttribute(ATTR_VALUE_CLASS);
             if (!StringUtil.isEmpty(valueClassName))
                 enumValueClass = Class.forName(valueClassName);
             else
@@ -714,7 +745,7 @@ public class EnumType
 
         try
         {
-            String constantClassName = elem.getAttribute("constantClass");
+            String constantClassName = elem.getAttribute(ATTR_CONSTANT_CLASS);
             if (!StringUtil.isEmpty(constantClassName))
                 constantClass = Class.forName(constantClassName);
             else
@@ -724,6 +755,19 @@ public class EnumType
         {
             throw new EnumInitializationException(
                     "Unable to find value class! " + e.getMessage(), e);
+        }
+
+        String defaultValueIdString = elem.getAttribute(ATTR_DEFAULT_VALUE_ID);
+        try
+        {
+            if (!StringUtil.isEmpty(defaultValueIdString))
+                defaultValueId = Integer.parseInt(defaultValueIdString);
+        }
+        catch (NumberFormatException e)
+        {
+            throw new EnumInitializationException(
+                    "Illegal value for attribute 'defaultValueId': '"
+                    + defaultValueIdString,e);
         }
     }
 

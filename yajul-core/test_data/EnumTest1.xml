@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<enum-types>
-    <enum-type id="TestEnumType1" valueClass="org.yajul.enum.test.EnumTest$Value1">
-        <enum-value id="0" xmlValue="one" textValue="value one"/>
-        <enum-value id="1" xmlValue="two" textValue="value two"/>
-        <enum-value id="2" xmlValue="three" textValue="value three"/>
-    </enum-type>
-    <enum-type id="TestEnumType2">
-        <enum-value id="0" xmlValue="one" textValue="value one"/>
-        <enum-value id="1" xmlValue="two" textValue="value two"/>
-        <enum-value id="2" xmlValue="three" textValue="three"/>
-        <enum-value id="3" xmlValue="four" textValue="four"/>
-        <enum-value id="4" xmlValue="five" textValue="value five"/>
-        <enum-value id="5" xmlValue="six" textValue="value six"/>
-    </enum-type>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Joshua Davis (private) -->
+<enum-types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://yajul.sourceforge.net/xsd/enum-types.xsd">
+  <enum-type id="TestEnumType1" valueClass="org.yajul.enum.test.EnumTest$Value1">
+    <enum-value id="0" xmlValue="one" textValue="value one"/>
+    <enum-value id="1" xmlValue="two" textValue="value two"/>
+    <enum-value id="2" xmlValue="three" textValue="value three"/>
+  </enum-type>
+  <enum-type id="TestEnumType2" defaultValueId="1" constantClass="org.yajul.enum.test.Type2Constants">
+    <enum-value id="0" xmlValue="one" textValue="value one"/>
+    <enum-value id="1" xmlValue="two" textValue="value two"/>
+    <enum-value id="2" xmlValue="three" textValue="three"/>
+    <enum-value id="3" xmlValue="four" textValue="four"/>
+    <enum-value id="4" xmlValue="five" textValue="value five"/>
+    <enum-value id="5" xmlValue="six" textValue="value six"/>
+  </enum-type>
 </enum-types>

@@ -223,7 +223,8 @@ public class EnumTypeMap
                 throw x;
             }
         } // for i
-        log.info("loadXML() : " + types.size() + " EnumTypes loaded.");
+        if (log.isDebugEnabled())
+            log.debug("loadXML() : " + types.size() + " EnumTypes loaded.");
     }
 
     /**

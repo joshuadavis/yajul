@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project ValidFile=".\xsd\enum-types.xsd">
+	<Folder FolderName="XML Files" ExtStr="xml;cml;math;mtx;rdf;smil;svg;wml"/>
+	<Folder FolderName="XSL Files" ExtStr="xsl;xslt"/>
+	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
+	<Folder FolderName="DTD/Schemas" ExtStr="dtd;dcd;xdr;biz;xsd">
+		<File FilePath=".\xsd\enum-types.xsd" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="Entities" ExtStr="ent"/>
+	<Folder FolderName="Enum type maps" ValidFileSet="Yes" ValidFile=".\xsd\enum-types.xsd">
+		<File FilePath=".\test_data\EnumTest1.xml" HomeFolder="Yes"/>
+		<File FilePath=".\test_data\EnumTest2.xml" HomeFolder="Yes"/>
+	</Folder>
+</Project>

@@ -1,6 +1,7 @@
 package org.yajul.enum.test;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -9,6 +10,7 @@ import org.yajul.enum.EnumTypeMap;
 import org.yajul.enum.EnumType;
 import org.yajul.enum.EnumValue;
 import org.yajul.enum.EnumValueFilter;
+import org.yajul.enum.EnumInitializationException;
 
 /**
  * Test case for the EnumType, EnumTypeMap, and EnumValue objects.
@@ -21,6 +23,7 @@ public class EnumTest extends TestCase
 {
     private static final String ID_ENUMTYPE1 = "TestEnumType1";
     private static final String ID_ENUMTYPE2 = "TestEnumType2";
+    public static final String XML_FILE1 = "test_data/EnumTest1.xml";
 
     public EnumTest(String s)
     {
@@ -30,7 +33,7 @@ public class EnumTest extends TestCase
     public void testEnumTypeMap1() throws Exception
     {
         EnumTypeMap map = new EnumTypeMap();
-        map.loadXML(new FileInputStream("test_data/EnumTest1.xml"));
+        map.loadXML(new FileInputStream(XML_FILE1));
 
         EnumType enumType = map.findEnumTypeById(ID_ENUMTYPE1);
         assertNotNull(enumType);
@@ -128,7 +131,7 @@ public class EnumTest extends TestCase
     public void testSubset() throws Exception
     {
         EnumTypeMap map = new EnumTypeMap();
-        map.loadXML(new FileInputStream("test_data/EnumTest1.xml"));
+        map.loadXML(new FileInputStream(XML_FILE1));
         EnumType type = map.findEnumTypeById("TestEnumType2");
         EnumType subset = type.createSubset("TestSubset",
                 new EnumValueFilter()
@@ -144,6 +147,28 @@ public class EnumTest extends TestCase
         assertTrue(subset.isValid(1));
         assertTrue(!subset.isValid(2));
         assertTrue(!subset.isValid(3));
+    }
+
+    public void testDefalutValue() throws Exception
+    {
+        EnumType type = getMap1Type2();
+        assertEquals(1,type.getDefaultValueId());
+        assertNotNull(type.getDefaultValue());
+        assertEquals(1,type.getDefaultValue().getId());
+    }
+
+    private EnumType getMap1Type2() throws EnumInitializationException, FileNotFoundException
+    {
+        EnumTypeMap map = new EnumTypeMap();
+        map.loadXML(new FileInputStream(XML_FILE1));
+        EnumType type = map.findEnumTypeById("TestEnumType2");
+        return type;
+    }
+
+    public void testConstantClass() throws Exception
+    {
+        EnumType type = getMap1Type2();
+        assertEquals("ONE",type.findValueById(0).getConstantName());
     }
 
     private void checkValue1(EnumValue value)
