@@ -13,15 +13,16 @@
     <property name="javac.deprecation" value="true"/>
     <property name="javac.verbose" value="false"/>
 
-    <property name="test.src.dir" value="test_src"/>
+    <property name="test.src.dir" value="${basedir}/test_src"/>
     <property name="test.class.dir" value="${build.dir}/test_classes"/>
     <property name="test.log.dir" value="${build.dir}/test/log"/>
     <property name="junit.dir" value="${test.log.dir}"/>
 
     <path id="compile.classpath">
-        <pathelement path="lib/xml-apis.jar:lib/xercesImpl.jar:lib/xalan.jar"/>
-        <pathelement path="lib/log4j-1.2.7.jar"/>
-        <pathelement path="lib/junit.jar"/>
+        <pathelement path="${basedir}/lib/xml-apis.jar:${basedir}/lib/xercesImpl.jar:${basedir}/lib/xalan.jar"/>
+        <pathelement path="${basedir}/lib/log4j-1.2.7.jar"/>
+        <pathelement path="${basedir}/lib/junit.jar"/>
+        <pathelement path="${basedir}/lib/jdbc2_0-stdext.jar"/>
     </path>
 
     <path id="test.classpath">
@@ -33,7 +34,8 @@
         <path refid="test.classpath"/>
         <pathelement location="${test.class.dir}"/>
         <!-- Required for testing -->
-        <pathelement path="lib/hsqldb.jar"/>
+        <pathelement path="${basedir}/lib/hsqldb.jar"/>
+        <pathelement path="${basedir}/test_data/resources"/>
     </path>
 
     <patternset id="test.files">
@@ -139,7 +141,7 @@
         <fileset dir=".">
             <include name="src/**"/>
             <include name="test_src/**"/>
-            <include name="test_data/**"/>            
+            <include name="test_data/**"/>
             <include name="build.xml"/>
         </fileset>
     </zip>

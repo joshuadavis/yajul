@@ -47,6 +47,58 @@ public class ObjectFactory
     private static Logger log = Logger.getLogger(ObjectFactory.class);
 
     /**
+     * Creates a new instance of the class using the specified loader.
+     * @param className The class to instatiate - if null a default will be used
+     * @param loader The class loader to use when obtaining the instance
+     * @return An Object which is an instance of the class
+     */
+    public static Object createInstance(String className, ClassLoader loader)
+    {
+        if (log.isDebugEnabled())
+            log.debug("createInstance() : Creating instance from '" + className + "'");
+
+        try
+        {
+            Class c;
+
+            if (loader == null)
+            {
+                c = Class.forName(className);
+            }
+            else
+            {
+                c = loader.loadClass(className);
+            }
+
+            return c.newInstance();
+        }
+        catch (ClassNotFoundException x)
+        {
+            throw new InitializationError("Class " + className
+                    + " not found - " + "please check your classpath", x);
+        }
+        catch (ExceptionInInitializerError eiie)
+        {
+            throw new InitializationError("Class " + className
+                    + " failed to initialize due to: " + eiie.getMessage(), eiie);
+        }
+        catch (InstantiationException ie)
+        {
+            throw new InitializationError("Class " + className
+                    + " could not be instantiated - "
+                    + "is it abstract, an interface, an array, or does it not have an "
+                    + "empty constructor?", ie);
+        }
+        catch (IllegalAccessException iae)
+        {
+            throw new InitializationError("Class " + className
+                    + " could not be accessed - "
+                    + "is it private or is the empty constructor private?",
+                    iae);
+        }
+    }
+
+    /**
      * Creates a new instance of the class, throwing an initialization error, if there
      * was a problem.
      * @param className The class name
@@ -54,32 +106,8 @@ public class ObjectFactory
      */
     public static Object createInstance(String className)
     {
-        try
-        {
-            Class c = Class.forName(className);
-            Object o = c.newInstance();
-            return o;
-        }
-        catch (ClassNotFoundException e)
-        {
-            String message = "Unable to find class " + className + ", cannot create instance due to: " + e.getMessage();
-            log.fatal(message,e);
-            throw new InitializationError(message,e);
-        }
-        catch (InstantiationException e)
-        {
-            String message = "Unable to instantiate " + className + " due to: " + e.getMessage();
-            log.fatal(message,e);
-            throw new InitializationError(message,e);
-        }
-        catch (IllegalAccessException e)
-        {
-            String message = "Unable to instantiate " + className + " due to: " + e.getMessage();
-            log.fatal(message,e);
-            throw new InitializationError(message,e);
-        }
+        return createInstance(className,getCurrentClassLoader());
     }
-
 
     /**
      * Creates an instance from the specified property in the specified properties-file
@@ -135,5 +163,33 @@ public class ObjectFactory
             initializeableObject.initialize(properties);
         }
         return inst;
+    }
+
+    /**
+     * Returnsthe current class loader.
+     * @return
+     */
+    public static ClassLoader getCurrentClassLoader()
+    {
+        if (log.isDebugEnabled())
+            log.debug("getCurrentClassLoader() : Looking for currentclass loader.");
+        // lets get a class loader. By using the Thread's class loader, we allow
+        // for more flexability.
+        ClassLoader classLoader = null;
+
+        try
+        {
+            classLoader = Thread.currentThread().getContextClassLoader();
+            if (log.isDebugEnabled())
+                log.debug("Using context ClassLoader " + classLoader);
+        }
+        catch (SecurityException se)
+        {
+            classLoader = ObjectFactory.class.getClassLoader();
+            if (log.isDebugEnabled())
+                log.debug("Using system ClassLoader " + classLoader);
+        }
+
+        return classLoader;
     }
 }
