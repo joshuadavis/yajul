@@ -242,7 +242,7 @@
         
     <target name="recompile" depends="clean.classes,compile,compile.tests"/>
         
-    <target name="clover" depends="with.clover,recompile,test,report.html"/>
+    <target name="clover" depends="with.clover,recompile,test,report.html" description="Generate a unit test coverage report"/>
 
     <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,clover">
     </target>
