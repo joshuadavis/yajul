@@ -32,9 +32,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Attr;
 import org.xml.sax.XMLReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.yajul.util.NameValuePair;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -48,6 +51,8 @@ import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Provides commonly used DOM operations in convenient methods.
@@ -235,6 +240,39 @@ public class DOMUtil
         return buf.toString();
     }
 
+    /**
+     * Returns the names of all the attributes in the element as an array of strings.
+     * @param elem The element.
+     * @return the names of all the attributes in the element as an array of strings.
+     */
+    public static final String[] getAttributeNames(Element elem)
+    {
+        NamedNodeMap map = elem.getAttributes();
+        String[] names = new String[map.getLength()];
+        for (int i = 0; i < names.length; i++)
+            names[i] = ((Attr)map.item(i)).getName();
+        return names;
+    }
+
+    /**
+     * Returns a map of all the attributes in the element.  The keys will be the attribute names and
+     * the values will be the attribute values.
+     * @param elem The element.
+     * @return a map of all the attributes in the element.  The keys will be the attribute names and
+     * the values will be the attribute values.
+     */
+    public static final Map getAttributeMap(Element elem)
+    {
+        NamedNodeMap nodeMap = elem.getAttributes();
+        Map map = new HashMap(nodeMap.getLength());
+        for (int i = 0; i < nodeMap.getLength(); i++)
+        {
+            Attr attr = ((Attr)nodeMap.item(i));
+            map.put(attr.getName(),attr.getValue());
+        }
+        return map;
+    }
+
     // --- Parsing methods ---
 
     /**
@@ -344,4 +382,5 @@ public class DOMUtil
         // Return the resulting document.
         return (Document)domResult.getNode();
     }
+
 }
