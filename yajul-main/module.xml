@@ -12,34 +12,17 @@
 
   <url href="http://yajul.sourceforge.net/"/>
   
+    <site hostname="yajul.sourceforge.net"
+        remotedir="/home/groups/y/ya/yajul/htdocs/yajul-main"/>
+
   <cvs repository="sourceforge" 
        host-prefix="cvs.sourceforge" 
        dir="krysalis" 
        module="krysalis-centipede"
        href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul/yajul-centipede/"/>
 
-  <bugtrack href="http://sourceforge.net/tracker/?group_id=36516&amp;atid=423515"/>
-  
-  <mailing-lists> 
-    <mailing-list user="user" 
-                  mail="yajul-users@lists.sf.net" 
-                  subscribe="http://lists.sourceforge.net/lists/listinfo/Krysalis-general-user" 
-                  unsubscribe="http://lists.sourceforge.net/lists/listinfo/Krysalis-general-user">
-       <archives>
-         <archive name="sourceforge" href="http://sourceforge.net/mailarchive/forum.php?forum_id=7972"/>
-         <archive name="geocrawler" href="http://www.geocrawler.com/lists/3/SourceForge/18832/0/"/>
-       </archives>
-    </mailing-list>       
-    <mailing-list user="developer" 
-                  mail="krysalis-developers@lists.sf.net" 
-                  subscribe="http://lists.sourceforge.net/lists/listinfo/krysalis-devel" 
-                  unsubscribe="http://lists.sourceforge.net/lists/listinfo/krysalis-devel">
-       <archives>
-         <archive name="sourceforge" href="http://sourceforge.net/mailarchive/forum.php?forum_id=7604"/>
-         <archive name="geocrawler" href="http://www.geocrawler.com/lists/3/SourceForge/18831/0/"/>
-       </archives>                  
-    </mailing-list>                         
-  </mailing-lists>    
+    <jars repository="maven" 
+          href="http://www.ibiblio.org/maven/"/>
    
   <description>
      YAJUL is a set of Java utility libraries for Java enterprise application development.
@@ -90,29 +73,21 @@
               tag="devel1"/> 
              
     <package>org.yajul</package>
-
-    <ant target="gump" vm="1.2"/>
     
-    <!-- script name="build"/> -->
-<!--    
-    <depend project="jakarta-ant"/>
-    <depend project="ant-contrib"/>
-    <depend project="xml-xerces"/>
-    <depend project="xml-xalan2"/>
-    <depend project="jjar"/>
-    <depend project="jtidy"/>
-    <depend project="IzPress"/>
---> 
-    <!-- Work dirs to be included in classpath  -->          
-    <work nested="tools/tmp"/>
-    <work nested="build/classes"/>
-    <work nested="build/testcases"/>
+        <ant target="gump" vm="1.2"/>
 
-    <home nested="build"/>
-         
-    <nag to="yajul-dev@yajul.sourceforge.net"
-         from="Josh Davis &lt;pgmjsd@yahoo.com&gt;"/>
-  </project>
+        <depend project="log4j"  version="supplied"/>
+
+        <!-- Work dirs to be included in classpath  -->
+        <work nested="build/classes"/>
+
+        <home nested="build"/>
+
+        <code type="java/plain" dir="src/java"/>
+        <test type="test/junit" dir="src/testcases"/>
+        <documentation type="xml/forrest" dir="src/documentation"/>
+          
+    </project>
 
 </module>
 

@@ -22,27 +22,17 @@
 
    <centipede>
       <tools>
-         <cents repository="http://krysalis.org/jjar/">
+         <cents>
+            <antidote />  
+            <junit />
+            <checkstyle >
+              <properties>conf/checkstyle.properties</properties>
+            </checkstyle>
+            <javasrc />
             <!-- not currently used but working
                  <antidote/>   
                  <xmldoclet/>
             -->      
-            <centipede>
-             <!-- example: -->
-             <!-- <javadocs group="POIFS org.apache.poi.poifs*,HSSF org.apache.poi.hssf*,HPSF org.apache.poi.hpsf*,"> -->
-              <javadocs group="">
-                <altenative views="uml">
-                  <uml prefix="uml-" suffix="" extension="html"/>
-                </altenative>
-              </javadocs>
-            </centipede>
-            <junit/>
-            <automagic/>
-            <jdepend/>
-            <checkstyle/>
-            <javasrc/>
-            <umldoclet/>
-            <maven/> 
             <forrest loglevel="WARN">
               <!-- Custom site skin -->
                <skin name="simple-site">
