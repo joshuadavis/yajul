@@ -110,7 +110,7 @@ public class SimpleQueueTest  extends TestCase
             q.add(object[i]);
     }
 
-    public void basicTest()
+    public void testBasic()
     {
         // Create a queue
         SimpleQueue q = new SimpleQueue();
@@ -135,9 +135,8 @@ public class SimpleQueueTest  extends TestCase
         }
     }
 
-    public void oneConsumer()
+    public void testOneConsumer()
     {
-        log.debug("oneConsumer()");
         // Create a queue
         SimpleQueue q = new SimpleQueue();
         // Add some objects
@@ -155,7 +154,7 @@ public class SimpleQueueTest  extends TestCase
     }
 
 
-    public void twoConsumers()
+    public void testTwoConsumers()
     {
         // log.debug("twoConsumers()");
         // Create a queue
@@ -178,14 +177,5 @@ public class SimpleQueueTest  extends TestCase
         // log.debug("Threads joined.");
         // Make sure all messages were recieved by one of the consumers.
         assertEquals(object.length * 2, c1.getCount() + c2.getCount());
-    }
-
-    public static TestSuite suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new SimpleQueueTest("basicTest"));
-        suite.addTest(new SimpleQueueTest("oneConsumer"));
-        suite.addTest(new SimpleQueueTest("twoConsumers"));
-        return suite;
     }
 }

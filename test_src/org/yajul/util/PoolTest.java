@@ -123,7 +123,7 @@ public class PoolTest extends TestCase
         factory.clearStatistics();
     }
 
-    public void allocate()
+    public void testAllocate()
     {
         try
         {
@@ -147,13 +147,6 @@ public class PoolTest extends TestCase
         {
             fail("Unexpected exception: " + e.getMessage());
         }
-    }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new PoolTest("allocate"));
-        return new LogSupressingSetup(suite);
     }
 
 }

@@ -126,7 +126,7 @@ public class SimpleTopicTest extends TestCase
         // log.debug("Published.");
     }
 
-    public void basicTest()
+    public void testBasic()
     {
         SimpleTopic topic = new SimpleTopic();
         // Create a consumer and a thread.  The consumer will consume 2 * the number of test objects.
@@ -149,7 +149,7 @@ public class SimpleTopicTest extends TestCase
 
     }
 
-    public void twoConsumers()
+    public void testTwoConsumers()
     {
         SimpleTopic topic = new SimpleTopic();
         // Create a consumer and a thread.  The consumer will consume 2 * the number of test objects.
@@ -184,13 +184,4 @@ public class SimpleTopicTest extends TestCase
         assertTrue("Consumer2 should have stopped!", !c2.isProcessing());
 
     }
-
-    public static TestSuite suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new SimpleTopicTest("basicTest"));
-        suite.addTest(new SimpleTopicTest("twoConsumers"));
-        return suite;
-    }
-
 }
