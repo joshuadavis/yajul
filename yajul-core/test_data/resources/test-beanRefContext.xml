@@ -13,7 +13,6 @@
         </constructor-arg>
     </bean>
 
-    <!-- This bean will be initialized by ServiceLocator.initialize() -->
     <bean id="serviceLocator" class="org.yajul.framework.ServiceLocator">
         <property name="resourceName"><value>unit-test-context.xml</value></property>
         <!-- Inherit some bean definitions from the parent. -->
@@ -21,6 +20,8 @@
             <ref bean="testParent"/>
         </property>
     </bean>
+
+    <bean id="serviceLocator2" class="org.yajul.framework.ServiceLocator"/>
 
     <bean id="testChild" class="org.springframework.beans.factory.xml.XmlBeanFactory">
         <constructor-arg index="0">

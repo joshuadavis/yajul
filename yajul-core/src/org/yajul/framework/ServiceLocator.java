@@ -2,14 +2,13 @@
 package org.yajul.framework;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -306,15 +305,14 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
                 // If the new resource name is the same as the old one, don't reconfigure.
                 if (resource.equals(this.resource))
                 {
-                    if (log.isDebugEnabled())
-                        log.debug("initialize() : Resource name identical, not reconfiguring.");
+                    log.debug("initialize() : Resource name identical, not reconfiguring.");
                     return;
                 }
                 log.info("Destroying existing bean factory...");
                 destroy();
             }
-            this.resource = resource;
-            this.propertiesResource = propertiesResource;
+            setResourceName(resource);
+            setPropertiesResource(propertiesResource);
         }
     }
 
@@ -383,13 +381,21 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
         }
         catch (IOException e)
         {
-            log.error(e,e);
+            log.error("Unable to load bean definitions due to: " + e);
             throw new DetailedRuntimeException("Unable to create bean factory from resource '" + resource + "' due to: " + e, e);
         }
         // If the class loader was not able to return a list of resources, try a single resource.
         if (count == 0)
         {
-            reader.loadBeanDefinitions(new ClassPathResource(resource));
+            try
+            {
+                reader.loadBeanDefinitions(new ClassPathResource(resource));
+            }
+            catch (BeansException e)
+            {
+                log.error("Unable to load bean definitions due to: " + e);
+                throw e;
+            }
             log.info("Loaded bean definitions from unique resource " + resource);
         }
         return beanFactory;
@@ -413,19 +419,15 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
     /**
      * Returns a bean that implements some service.  The framework will have automatically initialized the service, and
      * any dependent services.
-     *
      * @param beanId The bean id (or beanId).
      * @return The bean instance, or null if it was not found.
      * @throws BeanNotFoundException if the bean could not be found.
      */
     public Object requireBean(String beanId) throws BeanNotFoundException
     {
-        Object bean = getBean(beanId);
-        if (bean == null)
-        {
+        if (!containsBean(beanId))
             throw new BeanNotFoundException("Bean '" + beanId + "' was not found.");
-        }
-        return bean;
+        return getBean(beanId);
     }
 
     /**

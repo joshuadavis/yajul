@@ -4,20 +4,17 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.log4j.Logger;
-import org.yajul.framework.ServiceLocator;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.beans.factory.ListableBeanFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Enumeration;
+import org.yajul.framework.BeanNotFoundException;
+import org.yajul.framework.ServiceLocator;
 
 /**
  * Tests the ServiceLocator class.
  * <br>
  * User: jdavis Date: Feb 25, 2004 Time: 10:37:08 AM
+ *
  * @author jdavis
  */
 public class ServiceLocatorTest extends TestCase
@@ -54,13 +51,26 @@ public class ServiceLocatorTest extends TestCase
         SimpleBean testBean = (SimpleBean) instance.getBean("testBean");
         assertNotNull(testBean);
         assertEquals("exampleProperty - value", testBean.getExampleProperty());
+        assertTrue(instance.containsBean("testBean"));
+        assertNotNull(instance.getBean("testBean",SimpleBean.class));
         // Make sure that the same bean is returned a second time.
-        SimpleBean testBean2 = (SimpleBean) instance.getBean("testBean");
+        SimpleBean testBean2 = (SimpleBean) instance.requireBean("testBean");
         assertSame(testBean, testBean2);
+        Exception ex = null;
+        try
+        {
+            instance.requireBean("bogusBeanId");
+        }
+        catch (BeanNotFoundException bnfe)
+        {
+            ex = bnfe;
+        }
+        assertNotNull(ex);
         // Make sure that the same bean is returned after initializing with the same resource.
         instance.initialize(RESOURCE);
         SimpleBean testBean3 = (SimpleBean) instance.getBean("testBean");
         assertSame(testBean, testBean3);
+        assertEquals("beanRefContext.xml",instance.getBootContext());
     }
 
     public void testSystemPropertyConfigurer() throws Exception
@@ -71,15 +81,70 @@ public class ServiceLocatorTest extends TestCase
         assertEquals(System.getProperty("user.name"), testBean.getUserName());
     }
 
+    public void testInitialize() throws Exception
+    {
+        String bootContext = "test-beanRefContext.xml";
+        ServiceLocator locator = ServiceLocator.getInstance(bootContext);
+        assertNotSame(locator, instance);
+        IllegalArgumentException e = null;
+        try
+        {
+            locator.initialize(null,null);
+        }
+        catch (IllegalArgumentException iae)
+        {
+            e = iae;
+        }
+        assertNotNull(e);
+        locator.initialize("unit-test-context2.xml","test-properties.properties");
+        assertNotNull(locator.getBean("testBean"));
+        locator.initialize("unit-test-context.xml","test-properties.properties");
+        assertNotNull(locator.getBean("testBean"));
+        Exception ex = null;
+        try
+        {
+            locator.initialize("unit-test-context2.xml","bogus-properties.properties");
+            assertNotNull(locator.getBean("testBean"));
+        }
+        catch (org.springframework.beans.factory.BeanInitializationException bie)
+        {
+            ex = bie;
+        }
+        ex = null;
+        try
+        {
+            locator.initialize("bogus-context.xml","test-properties.properties");
+            assertNotNull(locator.getBean("testBean"));
+        }
+        catch (Exception ee)
+        {
+            ex = ee;
+        }
+        assertNotNull(ex);
+        ServiceLocator locator2 = ServiceLocator.getInstance(bootContext, "serviceLocator2");
+        assertTrue(locator2.getMetaBeanFactory().containsBean("serviceLocator2"));
+        assertNotSame(locator2, instance);
+        assertNotSame(locator2, locator);
+        locator2.release();
+        locator.release();
+    }
+
     public void testRelease() throws Exception
     {
-//        instance.release();
-//        log.info("Getting test bean...");
-//        instance.getBean("testBean");
         log.info("Finding test locator instance...");
-        showUrls("beanRefContext.xml");
-        showUrls("test-beanRefContext.xml");
         // Get a *different* service locator.
+        String bootContext = "test-beanRefContext.xml";
+        ServiceLocator locator = ServiceLocator.getInstance(bootContext);
+        assertNotSame(locator, instance);
+        locator.release();
+
+        // Test strange case where locator is not initialized properly.
+        locator = new ServiceLocator();
+        locator.release();
+    }
+
+    public void testChildContext()
+    {
         String bootContext = "test-beanRefContext.xml";
         ServiceLocator locator = ServiceLocator.getInstance(bootContext);
         BeanFactoryLocator bfl = ServiceLocator.getBeanFactoryLocator(bootContext);
@@ -97,10 +162,10 @@ public class ServiceLocatorTest extends TestCase
         Object o2 = bf.getBean("testBean2");
         log.info("testBean2 = " + o2.toString());
         bfr.release();
-        assertNotSame(locator, instance);
         locator.release();
     }
 
+/*
     private void showUrls(String resource)
             throws IOException
     {
@@ -119,9 +184,11 @@ public class ServiceLocatorTest extends TestCase
         InputStream in = cl.getResourceAsStream(resource);
         log.info("asStream: " + ((in == null) ? "unavailable" : "available"));
     }
+*/
 
     /**
      * Constructs a test suite for this test case, providing any required Setup wrappers, or decorators as well.
+     *
      * @return Test - The test suite.
      */
     public static Test suite()
