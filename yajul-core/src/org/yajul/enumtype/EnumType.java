@@ -25,7 +25,7 @@
  *
  ******************************************************************************/
 
-package org.yajul.enum;
+package org.yajul.enumtype;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +47,7 @@ import org.yajul.util.StringUtil;
 import org.yajul.util.ReflectionUtil;
 import org.yajul.xml.DOMUtil;
 import org.yajul.bean.BeanProperties;
+import org.yajul.enumtype.EnumInitializationException;
 
 /**
  * Provides a collection of enumerated values, otherwise known as an enumerated

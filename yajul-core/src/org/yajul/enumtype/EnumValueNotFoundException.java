@@ -24,49 +24,27 @@
  * THE SOFTWARE.
  *
  ******************************************************************************/
-package org.yajul.enum;
 
-import org.yajul.util.InitializationError;
+package org.yajul.enumtype;
 
 /**
- * Error thrown when an enumerated type cannot be initialized.
- * @author josh Mar 12, 2004 8:13:12 PM
+ * Thrown when a required enumeration value is not found.
+ * User: jdavis
+ * Date: Jul 10, 2003
+ * Time: 11:55:41 AM
+ * @author jdavis
+ * @see org.yajul.enumtype.EnumType#requireValueByXml
  */
-public class EnumInitializationError extends InitializationError
+public class EnumValueNotFoundException extends Exception
 {
     /**
-     * Creates a new enum initialization error.
+     * Constructs an <code>EnumValueNotFoundException</code> with the specified
+     * detail message.
+     * @param enumTypeId The enum type id.
+     * @param value The value text or XML that was searched.
      */
-    public EnumInitializationError()
+    public EnumValueNotFoundException(String enumTypeId,String value)
     {
-        super();
-    }
-
-    /**
-     * Creates a new initialization error.
-     * @param s The error message.
-     */
-    public EnumInitializationError(String s)
-    {
-        super(s);
-    }
-
-    /**
-     * Creates a new initialization error.
-     * @param t Nested exception detail.
-     */
-    public EnumInitializationError(Throwable t)
-    {
-        super(t);
-    }
-
-    /**
-     * Creates a new initialization error.
-     * @param s The error message.
-     * @param t The nested exception detail.
-     */
-    public EnumInitializationError(String s, Throwable t)
-    {
-        super(s, t);
+        super("Unable to find a value for '" + value + "' in " + enumTypeId);
     }
 }

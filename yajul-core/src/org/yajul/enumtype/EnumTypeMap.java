@@ -25,12 +25,15 @@
  *
  ******************************************************************************/
 
-package org.yajul.enum;
+package org.yajul.enumtype;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.yajul.xml.DOMUtil;
+import org.yajul.enumtype.EnumInitializationError;
+import org.yajul.enumtype.EnumInitializationException;
+import org.yajul.enumtype.EnumType;
 
 import java.io.InputStream;
 import java.util.HashMap;

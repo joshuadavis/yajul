@@ -218,6 +218,7 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
 
     /**
      * Returns the name of the resource used to configure this service locator.
+     * Sub-classes can override this to do something more clever.
      * @return the name of the resource used to configure this service locator.
      */
     public String getResourceName()
@@ -294,7 +295,7 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
             if (delegateExists())
             {
                 // If the new resource name is the same as the old one, don't reconfigure.
-                if (resource.equals(this.resource))
+                if (resource.equals(getResourceName()))
                 {
                     log.debug("initialize() : Resource name identical, not reconfiguring.");
                     return;
@@ -355,7 +356,7 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
     private ConfigurableApplicationContext loadBeanDefinitions()
     {
         ServiceLocatorApplicationContext applicationContext = new ServiceLocatorApplicationContext();
-        applicationContext.setResource(resource);
+        applicationContext.setResource(getResourceName());
         return applicationContext;
     }
 

@@ -253,8 +253,12 @@
         description="Full build and test">
     </target>
 
-    <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"
+    <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests"
         description="Clean and build everything but the Javadoc.">
     </target>
-    
+
+    <target name="build" depends="compile,jar,jar.src,compile.tests"
+        description="Incremental build.">
+    </target>
+
 </project>

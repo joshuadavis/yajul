@@ -3,7 +3,7 @@
  * $Author$
  * $Date$
  *
- * Copyright 2002-2003 YAJUL Developers, Joshua Davis, Kent Vogel.
+ * Copyright 2002-2003  YAJUL Developers, Joshua Davis, Kent Vogel.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,36 +24,48 @@
  * THE SOFTWARE.
  *
  ******************************************************************************/
+package org.yajul.enumtype;
 
-package org.yajul.enum;
-
-import org.yajul.util.DetailedException;
+import org.yajul.util.InitializationError;
 
 /**
- * A handled exception that is thrown when an enumerated type cannot be initialized.
- * User: jdavis
- * Date: Jul 7, 2003
- * Time: 2:09:00 PM
- * @author jdavis
+ * Error thrown when an enumerated type cannot be initialized.
+ * @author josh Mar 12, 2004 8:13:12 PM
  */
-public class EnumInitializationException extends DetailedException
+public class EnumInitializationError extends InitializationError
 {
     /**
-     * Creates a new exception with no nested exception and the specified detail message.
-     * @param s the detail message.
+     * Creates a new enum initialization error.
      */
-    public EnumInitializationException(String s)
+    public EnumInitializationError()
+    {
+        super();
+    }
+
+    /**
+     * Creates a new initialization error.
+     * @param s The error message.
+     */
+    public EnumInitializationError(String s)
     {
         super(s);
     }
 
     /**
-     * Constructs a DetailedException with the specified detail message and
-     * the specified throwable as the nested exception.
-     * @param s the detail message.
-     * @param t an object of type Throwable
+     * Creates a new initialization error.
+     * @param t Nested exception detail.
      */
-    public EnumInitializationException(String s, Throwable t)
+    public EnumInitializationError(Throwable t)
+    {
+        super(t);
+    }
+
+    /**
+     * Creates a new initialization error.
+     * @param s The error message.
+     * @param t The nested exception detail.
+     */
+    public EnumInitializationError(String s, Throwable t)
     {
         super(s, t);
     }

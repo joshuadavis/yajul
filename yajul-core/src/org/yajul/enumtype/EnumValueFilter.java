@@ -1,4 +1,6 @@
-package org.yajul.enum;
+package org.yajul.enumtype;
+
+import org.yajul.enumtype.EnumValue;
 
 /**
  * Filters are simple predicates that determine whether a given

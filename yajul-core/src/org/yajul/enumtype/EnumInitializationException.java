@@ -3,7 +3,7 @@
  * $Author$
  * $Date$
  *
- * Copyright 2002-2003  YAJUL Developers, Joshua Davis, Kent Vogel.
+ * Copyright 2002-2003 YAJUL Developers, Joshua Davis, Kent Vogel.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,26 +25,36 @@
  *
  ******************************************************************************/
 
-package org.yajul.enum;
+package org.yajul.enumtype;
+
+import org.yajul.util.DetailedException;
 
 /**
- * Thrown when a required enumeration value is not found.
+ * A handled exception that is thrown when an enumerated type cannot be initialized.
  * User: jdavis
- * Date: Jul 10, 2003
- * Time: 11:55:41 AM
+ * Date: Jul 7, 2003
+ * Time: 2:09:00 PM
  * @author jdavis
- * @see EnumType#requireValueByXml
  */
-public class EnumValueNotFoundException extends Exception
+public class EnumInitializationException extends DetailedException
 {
     /**
-     * Constructs an <code>EnumValueNotFoundException</code> with the specified
-     * detail message.
-     * @param enumTypeId The enum type id.
-     * @param value The value text or XML that was searched.
+     * Creates a new exception with no nested exception and the specified detail message.
+     * @param s the detail message.
      */
-    public EnumValueNotFoundException(String enumTypeId,String value)
+    public EnumInitializationException(String s)
     {
-        super("Unable to find a value for '" + value + "' in " + enumTypeId);
+        super(s);
+    }
+
+    /**
+     * Constructs a DetailedException with the specified detail message and
+     * the specified throwable as the nested exception.
+     * @param s the detail message.
+     * @param t an object of type Throwable
+     */
+    public EnumInitializationException(String s, Throwable t)
+    {
+        super(s, t);
     }
 }

@@ -25,11 +25,13 @@
  *
  ******************************************************************************/
 
-package org.yajul.enum;
+package org.yajul.enumtype;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.yajul.bean.XmlBeanReader;
+import org.yajul.enumtype.EnumType;
+import org.yajul.enumtype.EnumTypeMap;
 
 import java.io.Serializable;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package org.yajul.enum.test;
+package org.yajul.enumtype.test;
 
 /**
  * Constant definitions for 'EnumType2'.

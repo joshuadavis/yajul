@@ -1,11 +1,11 @@
-package org.yajul.enum.test;
+package org.yajul.enumtype.test;
 
 import junit.framework.TestCase;
-import org.yajul.enum.EnumInitializationException;
-import org.yajul.enum.EnumType;
-import org.yajul.enum.EnumTypeMap;
-import org.yajul.enum.EnumValue;
-import org.yajul.enum.EnumValueFilter;
+import org.yajul.enumtype.EnumType;
+import org.yajul.enumtype.EnumTypeMap;
+import org.yajul.enumtype.*;
+import org.yajul.enumtype.EnumValue;
+import org.yajul.enumtype.EnumValueFilter;
 import org.yajul.framework.ServiceLocator;
 
 import java.io.FileInputStream;

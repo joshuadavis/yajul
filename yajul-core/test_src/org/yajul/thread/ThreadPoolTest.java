@@ -255,6 +255,7 @@ public class ThreadPoolTest extends TestCase
     public static Test suite()
     {
         // Suppress log messages for this test.
-        return new LogSuppressingSetup(new TestSuite(ThreadPoolTest.class));
+//        return new LogSuppressingSetup(new TestSuite(ThreadPoolTest.class));
+        return new TestSuite(ThreadPoolTest.class);
     }
 }

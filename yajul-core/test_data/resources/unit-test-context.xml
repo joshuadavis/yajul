@@ -19,7 +19,7 @@
         </property>
     </bean>
 
-    <bean id="testEnumTypeMap" class="org.yajul.enum.EnumTypeMap">
+    <bean id="testEnumTypeMap" class="org.yajul.enumtype.EnumTypeMap">
         <constructor-arg>
             <list>
                 <value>enum/EnumTest1.xml</value>

@@ -70,7 +70,7 @@ public class ServiceLocatorTest extends TestCase
         instance.initialize(RESOURCE);
         SimpleBean testBean3 = (SimpleBean) instance.getBean("testBean");
         assertSame(testBean, testBean3);
-        assertEquals("beanRefContext.xml",instance.getBootContext());
+        assertTrue(instance.getBootContext().indexOf("beanRefContext.xml") != -1);
     }
 
     public void testSystemPropertyConfigurer() throws Exception
