@@ -32,12 +32,21 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.xml.sax.XMLReader;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
 import java.io.InputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -308,5 +317,31 @@ public class DOMUtil
         if (is == null)
             throw new java.io.IOException("Resource not found: '" + resourceName + "'");
         return parse(is);
+    }
+
+    /**
+     * Parse the input with the specified reader, producing a DOM Document.
+     * @param reader The reader, which will produce SAX2 events.
+     * @param input The input source
+     * @return The DOM document.
+     * @throws TransformerConfigurationException if the transformer doesn't support this operation.
+     * @throws IOException if the input cannot be read
+     * @throws SAXException if the input cannot be parsed
+     */
+    public static final Document parse(XMLReader reader,InputSource input) throws TransformerConfigurationException, IOException, SAXException
+    {
+        // Use the transformer factory to create a content handler that will build a DOM.
+        TransformerFactory factory = TransformerFactory.newInstance();
+        if (!factory.getFeature(SAXTransformerFactory.FEATURE))
+            throw new TransformerConfigurationException("The transformer factory does not support SAX transformation!");
+        TransformerHandler handler = ((SAXTransformerFactory) factory).newTransformerHandler();
+        // Create a DOM result for the transformation.
+        DOMResult domResult = new DOMResult();
+        handler.setResult(domResult);
+        // Register the content handler with the reader, and parse the input.
+        reader.setContentHandler(handler);
+        reader.parse(input);
+        // Return the resulting document.
+        return (Document)domResult.getNode();
     }
 }
