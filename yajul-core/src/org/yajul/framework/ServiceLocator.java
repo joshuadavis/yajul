@@ -1,3 +1,4 @@
+// $Id$
 package org.yajul.framework;
 
 import org.springframework.beans.factory.xml.XmlBeanFactory;
@@ -72,15 +73,19 @@ public class ServiceLocator
     }
 
     /**
-     * Sets the current instance of the singleton.<br>
+     * Sets the current instance of the singleton.  If there is an existing singleton, it will
+     * be destroyed.
      */
     protected synchronized static void registerInstance(ServiceLocator locator)
     {
         if (ourInstance != null)
         {
+            log.info("Destroying existing ServiceLocator " + ourInstance);
             ourInstance.destroy();
+            ourInstance = null;
         }
         ourInstance = locator;
+        log.info("Registered " + ourInstance+ " as the current ServiceLocator implementation.");
     }
 
     /**
@@ -141,15 +146,32 @@ public class ServiceLocator
     /**
      * Returns a bean that implements some service.  The framework will have
      * automatically initialized the service, and any dependent services.
-     * @param name
+     * @param beanId The bean id.
      * @return The bean instance, or null if it was not found.
      */
-    public Object getBean(String name)
+    public Object getBean(String beanId)
     {
-        Object bean = getBeanFactory().getBean(name);
+        Object bean = getBeanFactory().getBean(beanId);
         if (bean == null)
         {
-            log.warn("Bean '" + name + "' was not found.");
+            log.warn("Bean '" + beanId + "' was not found.");
+        }
+        return bean;
+    }
+
+    /**
+     * Returns a bean that implements some service.  The framework will have
+     * automatically initialized the service, and any dependent services.
+     * @param beanId The bean id (or beanId).
+     * @return The bean instance, or null if it was not found.
+     * @throws BeanNotFoundException if the bean could not be found.
+     */
+    public Object requireBean(String beanId) throws BeanNotFoundException
+    {
+        Object bean = getBeanFactory().getBean(beanId);
+        if (bean == null)
+        {
+            throw new BeanNotFoundException("Bean '" + beanId + "' was not found.");
         }
         return bean;
     }

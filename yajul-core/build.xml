@@ -70,7 +70,6 @@
 
     <target name="compile" depends="init">
         <mkdir dir="${main.class.dir}"/>
-        <echo message="${ant.project.name} Compiling main classes to ${main.class.dir}"/>
         <javac srcdir="${main.src.dir}" destdir="${main.class.dir}"
             classpathref="compile.classpath" debug="${javac.debug}"
             optimize="${javac.optimize}" deprecation="${javac.deprecation}"
