@@ -48,6 +48,18 @@ public class StringUtil
     public static final String defaultToString(Object o)
     {
         StringBuffer buf = new StringBuffer();
+        appendDefaultToString(buf, o);
+        return buf.toString();
+    }
+
+    /**
+     * Appends the class name of the object, followed by '@', followed by the
+     * hash code of the object, just like java.lang.Object.toString().
+     * @param o The object to print.
+     * @param buf The string buffer to append to.
+     */
+    public static final void appendDefaultToString(StringBuffer buf, Object o)
+    {
         if (o == null)
             buf.append("null");
         else
@@ -56,7 +68,6 @@ public class StringUtil
             buf.append("@");
             buf.append(Integer.toHexString(System.identityHashCode(o)));
         }
-        return buf.toString();
     }
 
     /**
@@ -154,22 +165,6 @@ public class StringUtil
         return sb.toString();
     }
 
-    private static final void appendPad(final String padding, int spaceCount,
-                                        StringBuffer sb)
-    {
-        // Append whole chunks.
-        int paddingChunkLength = padding.length();
-        while (spaceCount >= paddingChunkLength)
-        {
-            sb.append(padding);
-            spaceCount -= paddingChunkLength;
-        }
-
-        // Append the last partial chunk.
-        if (spaceCount >= 0)
-            sb.append(padding.substring(0, spaceCount));
-    }
-
     /**
      * Returns true if the string is null or zero length.
      * @param str The string to test.
@@ -181,13 +176,14 @@ public class StringUtil
     }
 
     /**
-     * Splits a string into an array of strings using the delimiters given.
+     * Splits a string into an array of strings using the given set of delimiter
+     * characters.
      * @param str The string to split.
      * @param delims A string containing the delimiter characters.
      * @return String[] - An array of strings.
      * @see java.util.StringTokenizer
      */
-    public static final String[] split(String str, String delims)
+    public static final String[] tokenize(String str, String delims)
     {
         StringTokenizer st = new StringTokenizer(str, delims);
         ArrayList list = new ArrayList();
@@ -198,6 +194,42 @@ public class StringUtil
         return (String[]) list.toArray(new String[list.size()]);
     }
 
+    /**
+     * Splits a string into an array of strings using the given delimiter string.  The returned array will
+     * contiain zero length strings if the delimiter is found at the very beginning or end of the searched
+     * string 'str'.
+     * @param str The string to split.
+     * @param delim A string delimiter.
+     * @return String[] - An array of strings.
+     */
+    public static final String[] split(String str, String delim)
+    {
+        ArrayList list = new ArrayList();
+        int start = 0;
+        int index = str.indexOf(delim);
+
+        // If the delimiter string was not found, return the string as a single
+        // array element.
+        if (index < 0)
+            return new String[] { str };
+        while (index >= 0)
+        {
+            list.add(str.substring(start,index));       // Add the substring to the list.
+            start = index + delim.length();             // Start after the delimiter.
+            index = str.indexOf(delim,start);           // Look for the next occurrence.
+        } // while
+
+        // If the delimiter was found at the very end of the string, add a zero-length
+        // element to the list.
+        if (start == str.length())
+            list.add("");
+        // If there is a trailing part of the string that did not contain the delimeter,
+        // add it.
+        else if (start < str.length())
+            list.add(str.substring(start));
+
+        return (String[]) list.toArray(new String[list.size()]);
+    }
     /**
      * Joins an array of strings using the given delimiter.
      * @param array An array of strings.
@@ -228,6 +260,18 @@ public class StringUtil
     public static final String replace(String buffer, String x, String y)
     {
         return join(split(buffer, x), y);
+    }
+
+    /**
+     * Replaces the last occurence of x in the buffer with y
+     * @param str The string that is the subject of the  operation
+     * @param x The string that is to be replaced by y in the buffe
+     * @param y The string that will replace x in the buffer
+     * @return String the buffer with x replaced by y
+     */
+    public static final String replaceLast(String str, String x, String y)
+    {
+        return replaceSingle(true,str, x, y);
     }
 
     /**
@@ -333,4 +377,41 @@ public class StringUtil
         else
             return Long.parseLong(str);
     }
+
+    // --- Implementation private methods ---
+
+    private static final void appendPad(final String padding, int spaceCount,
+                                        StringBuffer sb)
+    {
+        // Append whole chunks.
+        int paddingChunkLength = padding.length();
+        while (spaceCount >= paddingChunkLength)
+        {
+            sb.append(padding);
+            spaceCount -= paddingChunkLength;
+        }
+
+        // Append the last partial chunk.
+        if (spaceCount >= 0)
+            sb.append(padding.substring(0, spaceCount));
+    }
+
+    private static String replaceSingle(boolean last,String str, String x, String y)
+    {
+        // Get the last index of x in the string.
+        int index = (last) ? str.lastIndexOf(str) : str.indexOf(str);
+        // If x was not found, return the original string.
+        if (index == -1)
+            return str;
+
+        StringBuffer buf = new StringBuffer();
+        // Append the substring before the token to be replaced.
+        buf.append(str.substring(0,index));
+        // Append the replacement.
+        buf.append(y);
+        // Append the substring after the token to be replaced.
+        buf.append(str.substring(index + x.length()));
+        return buf.toString();
+    }
+
 } // class StringUtil
