@@ -38,8 +38,8 @@ import java.util.ArrayList;
 public class StringUtil
 {
     /**
-     * Prints the class name of the object, followed by '@', followed by the hash code
-     * of the object, just like java.lang.Object.toString().
+     * Prints the class name of the object, followed by '@', followed by the 
+     * hash code of the object, just like java.lang.Object.toString().
      * @param o - The object to print.
      * @return String - The object's default string representation.
      */
@@ -58,28 +58,32 @@ public class StringUtil
     }
 
     /**
-     * Left-pads a string with spaces out to the specified length and returns it.
+     * Left-pads a string with spaces out to the specified length and returns 
+     * it.
      * @param s - The message to write to the log
      * @param length - The desired length of the padded string.
-     * @param truncate - Set to true to truncate 's' to 'length' when s.length() > length
+     * @param truncate - Set to true to truncate 's' to 'length' when 
+     * s.length() > length
      * @return String - The padded (truncated) string.
      */
-    public static final String padLeft(String s,int length,boolean truncate)
+    public static final String padLeft(String s, int length, boolean truncate)
     {
         final String paddingChunk = "                    ";
         return padLeft(s, length, truncate, paddingChunk);
     }
 
     /**
-     * Left-pads a string out to the specified length using the specified padding
-     * string and returns it.
+     * Left-pads a string out to the specified length using the specified
+     * padding string and returns it.
      * @param s         The message to write to the log
      * @param length    The desired length of the padded string.
-     * @param truncate  Set to true to truncate 's' to 'length' when s.length() > length
+     * @param truncate  Set to true to truncate 's' to 'length' when s.length()
+     * > length
      * @param padding   The string to use as padding.
      * @return String   The padded (truncated) string.
      */
-    public static String padLeft(String s, int length, boolean truncate, final String padding)
+    public static String padLeft(String s, int length, boolean truncate, 
+        final String padding)
     {
         int paddingChunkLength = padding.length();
 
@@ -89,7 +93,7 @@ public class StringUtil
         if (spaceCount <= 0)
         {
             if (truncate)
-                return s.substring(0,length);
+                return s.substring(0, length);
             else
                 return s;
         }
@@ -106,7 +110,7 @@ public class StringUtil
 
         // Append the last partial chunk.
         if (spaceCount >= 0)
-            sb.append(padding.substring(0,spaceCount));
+            sb.append(padding.substring(0, spaceCount));
 
         return sb.toString();
     }
@@ -128,27 +132,29 @@ public class StringUtil
      * @return String[] - An array of strings.
      * @see java.util.StringTokenizer
      */
-    public static final String[] split(String str,String delims)
+    public static final String[] split(String str, String delims)
     {
-        StringTokenizer st = new StringTokenizer(str,delims);
+        StringTokenizer st = new StringTokenizer(str, delims);
         ArrayList list = new ArrayList();
         while (st.hasMoreTokens())
         {
             list.add(st.nextToken());
         } // while
-        return (String[])list.toArray(new String[list.size()]);        
+        return (String[]) list.toArray(new String[list.size()]);        
     }
 
     /**
      * Joins an array of strings using the given delimiter.
      * @param array - An array of strings.
-     * @param delim - The delimiter (typicaly a single character, but anything can be used).
-     * @return String - The joined strings, with the given delimeter in between each string in the array.
+     * @param delim - The delimiter (typicaly a single character, 
+     * but anything can be used).
+     * @return String - The joined strings, with the given delimeter in
+     * between each string in the array.
      */
     public static final String join(String[] array, String delim)
     {
         StringBuffer b = new StringBuffer();
-        for(int i = 0; i < array.length ; i++)
+        for (int i = 0; i < array.length ; i++)
         {
             if (i > 0)           // If this is not the first element,
                 b.append(delim); // add a delimiter before adding the element.
@@ -170,14 +176,15 @@ public class StringUtil
     }
 
     /**
-     * Compares two strings; if contents of both are the same OR if both are null, returns true
+     * Compares two strings; if contents of both are the same OR if both are \
+     * null, returns true
      * @param a string #1
      * @param b string #2
      * @return <code>true</code> if the two match
      */
-    public static final boolean equals( String a, String b )
+    public static final boolean equals(String a, String b)
     {
-        return ( a == null ? b == null : a.equals(b) );
+        return (a == null ? b == null : a.equals(b));
     }
 
     /**
@@ -187,7 +194,7 @@ public class StringUtil
      * @param   b   string array #2
      * @return <code>true</code> if the two match
      */
-    public static final boolean arrayEquals( String[] a, String[] b)
+    public static final boolean arrayEquals(String[] a, String[] b)
     {
         if (a == null)
         {
@@ -206,7 +213,7 @@ public class StringUtil
             return false;
         for (int i = a.length - 1; i > 0 ; i--)
         {
-            if (!equals(a[i],b[i]))
+            if (!equals(a[i], b[i]))
                 return false;
         }
         return true;

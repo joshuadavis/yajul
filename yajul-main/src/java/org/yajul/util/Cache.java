@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
-import java.io.PrintStream;
 import java.util.Iterator;
 
 import org.yajul.log.Logger;
@@ -52,6 +51,8 @@ import org.yajul.log.Logger;
  * <li>Statistics - The cache can keep a list of all keys that have been asked
  * for.</li>
  * </ul>
+ * @author Joshua Davis
+ * @author Kent Vogel
  */
 public class Cache
 {
@@ -64,35 +65,37 @@ public class Cache
     {
         /** The object is being passivated because it is the least recently
          * used. */
-        public final static int PASSIVATE_LRU       = 0;
+        public static final int PASSIVATE_LRU       = 0;
         /** The object is being passivated because of a timeout. */
-        public final static int PASSIVATE_TIMEOUT   = 1;
+        public static final int PASSIVATE_TIMEOUT   = 1;
         /** The object is being passivated because the cache entry has been
          * finalized. */
-        public final static int PASSIVATE_FINALIZED = 2;
+        public static final int PASSIVATE_FINALIZED = 2;
         /** The object is being passivated because the cache has been
          * cleared. */
-        public final static int PASSIVATE_CLEAR     = 3;
+        public static final int PASSIVATE_CLEAR     = 3;
         
-    	/**
-    	 * Activates the object associated with the specified information (for
+        /**
+         * Activates the object associated with the specified information (for
          * example, read the object from persistent storage).
-    	 * @param key - The key object that has enough information for the
+         * @param key   The key object that has enough information for the
          * activator to create a new object.
-    	 * @return The newly activated object.
-    	 */
-    	public Object activate(Object key) throws Exception;
-    	
-    	/**
-    	 * Passivates the object, indicating that it is no longer in the cache.
+         * @return The newly activated object.
+         * @throws Exception Something went wrong during the activation.
+         */
+        Object activate(Object key) throws Exception;
+        
+        /**
+         * Passivates the object, indicating that it is no longer in the cache.
          * The object may want to release resources at this point.
-    	 * @param key - The key object that has enough information for the
+         * @param key   The key object that has enough information for the
          * activator to create a new object.
-    	 * @param obj - The object that is being removed from the cache.
-    	 * @param reason - The reason the object is being passivated
+         * @param obj   The object that is being removed from the cache.
+         * @param reason    The reason the object is being passivated
          * (PASSIVATE_xxx values).
-    	 */
-    	public void passivate(Object key,Object obj,int reason) throws Exception;
+         * @throws Exception Something went wrong during the passivation.
+         */
+        void passivate(Object key, Object obj, int reason) throws Exception;
     }
     
     /** A logger for this class. */
@@ -117,7 +120,7 @@ public class Cache
         /** The cache that owns this entry. */
         Cache   cache;
         
-        Entry(Cache c,Object key)
+        Entry(Cache c, Object key)
         {
             this.cache = c;
             this.key = key;
@@ -183,42 +186,70 @@ public class Cache
     
     //statistics methods
     
-    /** Gets the maximum size the cache can grow to */
-    public int getMaxSize()             { return maxSize; }
-    
-    /** Gets the current size of the cache */
-    public int getCurrentSize()         { return entryMap.size(); }
-    
-    /** Gets the number of times an activation had to be perfomed (a cache
-     * miss) */
-    public int getActivations()         { return activations; }
-    
-    /** Gets the number request made of the cache */
-    public int getRequests()            { return requests; }
-    
-    /** Gets the number unique keys asked for, this will allways be zero if
-     * 'keepStats' is false. */
-    public int getUniqueRequests()      { return allRequests.size(); }
-    
-    /** Gets the number of 'timeout' passivations (zero, unless a timeout was
-     * specified). **/
-    public int getTimeouts()            { return timeouts; }
-    
-    /** Gets the rate at which requested object were available in the cache
-     * [0..1] **/
-    public double getHitRate()
+    /** Gets the maximum size the cache can grow to 
+     * @return int The maximum cache size. */
+    public int getMaxSize()             
     {
-        double dreq = (double)requests;
-        double dact = (double)activations;
-        return ((dreq - dact) * 1.0) / dreq;
+        return maxSize; 
     }
     
-    /** Gets the rate at which requested objects timed out [0..1] **/
+    /** Gets the current size of the cache. 
+     * @return int The current cache size. */
+    public int getCurrentSize()         
+    { 
+        return entryMap.size(); 
+    }
+    
+    /** Gets the number of times an activation had to be perfomed (a cache
+     * miss).
+     * @return int The number of activations. */
+    public int getActivations()         
+    {
+        return activations; 
+    }
+    
+    /** Gets the number request made of the cache. 
+     * @return int The number of requests made. */
+    public int getRequests()            
+    {
+        return requests; 
+    }
+    
+    /** Gets the number unique keys asked for, this will allways be zero if
+     * 'keepStats' is false. 
+     * @return int The number of unique requests. */
+    public int getUniqueRequests()      
+    {
+        return allRequests.size();
+    }
+    
+    /** Gets the number of 'timeout' passivations (zero, unless a timeout was
+     * specified). 
+     * @return int The number of passivations due to a timeout condition. **/
+    public int getTimeouts()            
+    {
+        return timeouts;
+    }
+    
+    /** Gets the rate at which requested object were available in the cache
+     * [0..1]
+     * @return double The hit rate of the cache (requests - activations) / 
+     * requests **/
+    public double getHitRate()
+    {
+        double dreq = (double) requests;
+        double dact = (double) activations;
+        return ((dreq - dact)) / dreq;
+    }
+    
+    /** Gets the rate at which requested objects timed out [0..1]
+     * @return double The ration of requests to timeouts (requests - timeouts)
+     * / requests **/
     public double getTimeoutRate()
     {
-        double dreq = (double)requests;
-        double dto = (double)timeouts;
-        return ((dreq - dto) * 1.0) / dreq;
+        double dreq = (double) requests;
+        double dto = (double) timeouts;
+        return ((dreq - dto)) / dreq;
     }
     
     /**
@@ -232,11 +263,11 @@ public class Cache
      */
     public Cache(Activator activator, int maxSize)
     {
-        this(activator,maxSize,
+        this(activator, maxSize,
             0,          // No timeout.
             true,       // Allow parallel activation.
             false,      // Don't keep statistics.
-            new HashMap()); // Default map.
+            new HashMap(maxSize)); // Default map.
     }
 
     /**
@@ -247,6 +278,8 @@ public class Cache
      * cache misses.
      * @param maxSize The maximum number of objects this cache will have in it
      * before it removes objects. maxSize=0 is allowed.
+     * @param timeout The maximum age of an object in the cache.  Objects
+     * older than this will be passivated (when requested).
      * @param parallelActivation Iff false, threads will wait for an object
      * to be activated if it is already being activated when get() is called.
      * For any non-trival activation, it will always be faster to set this to
@@ -255,7 +288,7 @@ public class Cache
      * @param map The map that will be used to keep all of the entries.
      */
     public Cache(Activator activator, int maxSize, long timeout,
-                 boolean parallelActivation,boolean keepStats,Map map)
+                 boolean parallelActivation, boolean keepStats, Map map)
     {
         this.activator = activator;
         this.maxSize = maxSize;
@@ -267,7 +300,6 @@ public class Cache
 
         log.debug("maxSize = " + maxSize + " timeout = " + timeout);
 
-        // TODO: Allow a different kind of map to be used.
         entryMap = map;
         usedKeys = new LinkedList();
         allRequests = new HashSet();
@@ -284,7 +316,7 @@ public class Cache
     /**
      * Logs the activation of the key for statistics
      */
-    private void logActivation(Object key,Entry entry)
+    private void logActivation(Object key, Entry entry)
     {
         synchronized (this)
         {
@@ -304,8 +336,9 @@ public class Cache
     /**
      * Gets the object associated to the given key.  Activates a new one if
      * necessary.
-     * @param key - The key
-     * @return Object - The cached object.
+     * @param key   The key
+     * @return Object   The cached object.
+     * @throws Exception If there was an activation / passivation error.
      */
     public Object get(Object key) throws Exception
     {
@@ -327,11 +360,11 @@ public class Cache
 
             // If there's no entry, make one.
             if (entry == null)
-                entry = new Entry(this,key);
+                entry = new Entry(this, key);
             
             // If an activation is required, do it!
             if (entry.object == null)
-                activate(key,entry);
+                activate(key, entry);
             else
                 usedKey(key);
         }
@@ -341,7 +374,7 @@ public class Cache
             // one thread will be allowed to create a 'blank' entry and add
             // it to the map.  Other threads will wait for the map, and find
             // the blank entry.
-            synchronized(entryMap)
+            synchronized (entryMap)
             {
                 // Find the entry in the map.  Already syncrhonized, so 
                 // we can use the unsynchronized find method.
@@ -351,10 +384,10 @@ public class Cache
                 // the map.
                 if (entry == null)
                 {
-                    entry = new Entry(this,key);
+                    entry = new Entry(this, key);
                     
                     if (maxSize > 0)
-						addToCollection(key,entry);
+                        addToCollection(key, entry);
                 }
             }
             
@@ -362,13 +395,13 @@ public class Cache
             // in the previous step.  Since this is synchronized on the entry,
             // the first thread in will activate the object, and all other
             // threads will wait to enter the block.
-            synchronized(entry)
+            synchronized (entry)
             {
                 if (entry.object == null)
                 {
                     // Perform the activation, but don't call activate() because
                     // the entry is already in the map.
-                    logActivation(key,entry);
+                    logActivation(key, entry);
                     entry.object = activator.activate(key);    // Activate!
                 }
                 // Now, the object field is set.  Waiter threads will
@@ -385,7 +418,7 @@ public class Cache
      */
     private Entry find(Object key)
     {
-        Entry e = (Entry)entryMap.get(key);
+        Entry e = (Entry) entryMap.get(key);
         if (e != null)
         {
             e.hits++;
@@ -406,7 +439,7 @@ public class Cache
                         //      "ms old, (stale) passivating...");
                         try
                         {
-                            passivate(key,Activator.PASSIVATE_TIMEOUT);
+                            passivate(key, Activator.PASSIVATE_TIMEOUT);
                         }
                         catch (Exception ex)
                         {
@@ -425,12 +458,12 @@ public class Cache
     
     /**
      * Activates the object with the specified key and adds it to the collection
-     * @param key - The key.
-     * @param entry - The cache entry.
+     * @param key   The key.
+     * @param entry The cache entry.
      */
-    private void activate(Object key,Entry entry) throws Exception
+    private void activate(Object key, Entry entry) throws Exception
     {
-        logActivation(key,entry);
+        logActivation(key, entry);
         
         // perform the work of activation
         
@@ -438,13 +471,13 @@ public class Cache
                 
         //cache the value
         if (maxSize > 0)
-            addToCollection(key,entry);
+            addToCollection(key, entry);
     }
     
     /**
      * Adds the specified key/value pair to the cache
-     * @param key - The key.
-     * @param entry - The cache entry.
+     * @param key       The key.
+     * @param entry     The cache entry.
      */
     private synchronized void addToCollection(Object key, Entry entry)
             throws Exception
@@ -456,7 +489,7 @@ public class Cache
         // Shrink the cache if necessary.
         if (entryMap.size() >= maxSize)
         {
-            passivate(usedKeys.removeLast(),Activator.PASSIVATE_LRU);
+            passivate(usedKeys.removeLast(), Activator.PASSIVATE_LRU);
         }
 
         // Add the key/value to the cache and LRU list
@@ -467,56 +500,65 @@ public class Cache
     /**
      * Called when a key is used. Moves it to the front of the usedKeys list
      */
-    private synchronized void usedKey(Object key)
+    private void usedKey(Object key)
     {
-        if (maxSize > 0)
+        synchronized (this)
         {
-            usedKeys.remove(key);
-            usedKeys.addFirst(key);
+            if (maxSize > 0)
+            {
+                usedKeys.remove(key);
+                usedKeys.addFirst(key);
+            }
         }
     }
     
-	/**
-	* Clears the cache contents and resets the stats.
-	*/    
-    public synchronized void clear() throws Exception
+    /**
+     * Clears the cache contents and resets the stats.
+     * @throws Exception If there was an error during passivation.
+     */    
+    public void clear() throws Exception
     {
-        Iterator iter = entryMap.keySet().iterator();
-        while(iter.hasNext())
+        synchronized (this)
         {
-            Object key = iter.next();
-            Entry e = (Entry)entryMap.get(key);
-            // Clear the back pointer so that 'finalize' notification is
-            // disabled.
-            e.cache = null;
-            activator.passivate(key,e.object,Activator.PASSIVATE_CLEAR);
+            Iterator iter = entryMap.keySet().iterator();
+            while (iter.hasNext())
+            {
+                Object key = iter.next();
+                Entry e = (Entry) entryMap.get(key);
+                // Clear the back pointer so that 'finalize' notification is
+                // disabled.
+                e.cache = null;
+                activator.passivate(key, e.object, Activator.PASSIVATE_CLEAR);
+            }
+            entryMap.clear();
+            usedKeys.clear();
+            clearStats();
         }
-        entryMap.clear();
-        usedKeys.clear();
-		clearStats();
-	}
+    }
 
-	/**
-	* If true, statistics info is kept.
-	*/
-	public synchronized void setKeepStats(boolean keepStats)
-	{
-		keepStats = keepStats;
-	}
+    /**
+    * If true, statistics info is kept.
+    * @param keepStats True if statistics should be kept, false if not.
+    */
+    public synchronized void setKeepStats(boolean keepStats)
+    {
+        keepStats = keepStats;
+    }
 
-	/**
-	* If true, statistics info is kept.
-	*/
-	public synchronized boolean getKeepStats()
-	{
-		return keepStats;
-	}
+    /**
+    * If true, statistics info is kept.
+    * @return boolean True if statistics are being kept, false if not.
+    */
+    public synchronized boolean getKeepStats()
+    {
+        return keepStats;
+    }
 
-	/**
-	* Clears the statistics
-	*/	
-	public synchronized void clearStats()
-	{
+    /**
+    * Clears the statistics
+    */  
+    public synchronized void clearStats()
+    {
         allRequests.clear();
 
         do_clearStats();
@@ -530,20 +572,20 @@ public class Cache
     }
 
     /**
-	 * Entry has been finalized.
-	 */
-	private void entryFinalized(Entry e)
-	{
-	    try
+     * Entry has been finalized.
+     */
+    private void entryFinalized(Entry e)
+    {
+        try
         {
-	        if (activator == null)
-	        {
-	            if (log.isDebugEnabled())
-	                log.debug("Entry finalized, but activator is null: " +
+            if (activator == null)
+            {
+                if (log.isDebugEnabled())
+                    log.debug("Entry finalized, but activator is null: " +
                         "not passivating.");
-	            return;
-	        }
-            passivate(e.key,Activator.PASSIVATE_FINALIZED);
+                return;
+            }
+            passivate(e.key, Activator.PASSIVATE_FINALIZED);
         }
         catch (Exception ex)
         {
@@ -551,32 +593,33 @@ public class Cache
         }
     }
 
-    private void internal_passivate(Entry e,int reason) throws Exception
+    private void internal_passivate(Entry e, int reason) throws Exception
     {
         if (e.key == null)
             return;
-        synchronized(this)
+        synchronized (this)
         {
             usedKeys.remove(e.key);
         }
         if (e.object != null)
-            activator.passivate(e.key,e.object,reason);
+            activator.passivate(e.key, e.object, reason);
     }
 
     /**
      * Removes an object from the cache.
-     * @param key - The key for the object in the cache.
-     * @param reason - The reason for the passivation (Activator.PASSIVATE_xxx
+     * @param key       The key for the object in the cache.
+     * @param reason    The reason for the passivation (Activator.PASSIVATE_xxx
      * values).
+     * @throws Exception When there was an error during passivation.
      */
-    public void passivate(Object key,int reason) throws Exception
+    public void passivate(Object key, int reason) throws Exception
     {
         Entry e = null;
         synchronized (entryMap)
         {
-            e = (Entry)entryMap.remove(key);
+            e = (Entry) entryMap.remove(key);
         }
         if (e != null)
-            internal_passivate(e,reason);
+            internal_passivate(e, reason);
     }
 }
