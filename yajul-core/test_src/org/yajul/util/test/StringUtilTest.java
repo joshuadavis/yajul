@@ -102,4 +102,15 @@ public class StringUtilTest extends TestCase
         bytes = StringUtil.getBytes("hello","fubar");
         assertEquals("hello",new String(bytes));
     }
+
+    public void testSubstringBeforeAfter()
+    {
+        String s = StringUtil.substringBefore("aa/bb","/");
+        assertEquals("aa",s);
+        s = StringUtil.substringAfter("aa/bb","/");
+        assertEquals("bb",s);
+        assertEquals("aa/bb",StringUtil.substringBefore("aa/bb","c"));
+        assertNull(StringUtil.substringBefore("/aabb","/"));
+        assertNull(StringUtil.substringAfter("aa/bb","c"));
+    }
 }

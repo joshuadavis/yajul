@@ -238,4 +238,38 @@ public class StringUtil
         if (!isEmpty(string))
             buf.append(string);
     }
+
+    /**
+     * Returns the substring before the delimiter string, not including the delimiter string.
+     * @param string The string to look in.
+     * @param delim The delimiter string.
+     * @return the substring before the delimiter string, not including the delimiter string.
+     */
+    public static String substringBefore(String string, String delim)
+    {
+        int pos = string.indexOf(delim);
+        if (pos == 0)
+            return null;
+        else if (pos > 0)
+            return string.substring(0,pos);
+        else
+            return string;
+    }
+
+    /**
+     * Returns the substring after the delimiter string, not including the delimiter string.
+     * @param string The string to look in.
+     * @param delim The delimiter string.
+     * @return the substring after the delimiter string, not including the delimiter string.
+     */
+    public static String substringAfter(String string, String delim)
+    {
+        int pos = string.indexOf(delim);
+        if (pos == 0)
+            return string;
+        else if (pos > 0)
+            return string.substring(pos + delim.length());
+        else
+            return null;
+    }
 }
