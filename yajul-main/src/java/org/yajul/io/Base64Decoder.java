@@ -25,12 +25,16 @@
  *
  ******************************************************************************/
 
+// --- The orgiginal code is from: ---
 // Base64Decoder.java
 // $Id$
 // (c) COPYRIGHT MIT and INRIA, 1996.
 // Please first read the full copyright statement in file COPYRIGHT.html
 
-package org.yajul.util;
+package org.yajul.io;
+
+import org.yajul.io.Base64InputStream;
+import org.yajul.io.StreamCopier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,9 +47,8 @@ import java.io.UnsupportedEncodingException;
  * Decode a BASE64 encoded input stream to some output stream.
  * This class implements BASE64 decoding, as specified in the
  * <a href="http://ds.internic.net/rfc/rfc1521.txt">MIME specification</a>.
- * @see org.w3c.tools.codec.Base64Encoder
- * @see Base64Encoder
- * @author Unknown
+ * @see org.yajul.io.Base64Encoder
+ * @author josh (Refactored to use stream filter)
  */
 public class Base64Decoder
 {
@@ -55,7 +58,7 @@ public class Base64Decoder
      * Convenience method that will decode the given string.
      * @param input The input string
      * @return String - the decoded string.
-     * @throws Base64FormatException if the input is not valid.
+     * @throws org.yajul.io.Base64FormatException if the input is not valid.
      */
     public static final String decode(String input) throws Base64FormatException
     {
@@ -67,7 +70,7 @@ public class Base64Decoder
      * Convenience method that will decode the given byte array.
      * @param input The input byte array
      * @return String - the decoded byte array.
-     * @throws Base64FormatException if the input is not valid.
+     * @throws org.yajul.io.Base64FormatException if the input is not valid.
      */
     public static final byte[] decode(byte[] input)
             throws Base64FormatException
@@ -121,8 +124,8 @@ public class Base64Decoder
         catch (UnsupportedEncodingException ex)
         {
             throw new RuntimeException(this.getClass().getName()
-                     + "[Constructor] Unable to convert"
-                     + "properly char to bytes");
+                    + "[Constructor] Unable to convert"
+                    + "properly char to bytes");
         }
 
     }
@@ -151,62 +154,16 @@ public class Base64Decoder
      * Do the actual decoding.
      * Process the input stream by decoding it and emiting the resulting bytes
      * into the output stream.
-     * @exception IOException If the input or output stream accesses failed.
-     * @exception Base64FormatException If the input stream is not compliant
+     * @exception java.io.IOException If the input or output stream accesses failed.
+     * @exception org.yajul.io.Base64FormatException If the input stream is not compliant
      *    with the BASE64 specification.
      */
     public void process()
             throws IOException, Base64FormatException
     {
-        byte buffer[] = new byte[BUFFER_SIZE];
-        byte chunk[] = new byte[4];
-        byte outbuf[] = new byte[3];
-
-        int bufferLen = -1;
-        int ready = 0;
-        int length;
-
-        fill:
-        while ((bufferLen = in.read(buffer)) > 0)
-        {
-            int bufferPos = 0;
-            while (bufferPos < bufferLen)
-            {
-                // Check for un-understood characters:
-                while (ready < 4)
-                {
-                    if (bufferPos >= bufferLen)
-                        continue fill;
-                    int ch = check(buffer[bufferPos++]);
-                    if (ch >= 0)
-                        chunk[ready++] = (byte) ch;
-                }
-
-                length = decodeChunk(chunk, 0, outbuf);
-                out.write(outbuf, 0, length);
-                ready = 0;
-            }
-        }
-        if (ready != 0)
-            throw new Base64FormatException("Invalid length.");
+        Base64InputStream decodedInput = new Base64InputStream(in);
+        StreamCopier.unsyncCopy(decodedInput, out, 16);
         out.flush();
-    }
-
-
-    private static int decodeChunk(byte[] chunk, int offset, byte[] out)
-    {
-        out[0] = (byte) get1(chunk, offset);
-
-        if (chunk[offset + 2] == 65)
-            return 1;
-
-        out[1] = (byte) get2(chunk, offset);
-
-        if (chunk[offset + 3] == 65)
-            return 2;
-
-        out[2] = (byte) get3(chunk, offset);
-        return 3;
     }
 
     /**
@@ -218,7 +175,7 @@ public class Base64Decoder
      * Throws: RuntimeException If the object wasn't constructed to
      *    decode a String.
      * @return String - The decoded string.
-     * @exception Base64FormatException If the input string is not compliant
+     * @exception org.yajul.io.Base64FormatException If the input string is not compliant
      *     with the BASE64 specification.
      */
     public String processString()
@@ -265,56 +222,4 @@ public class Base64Decoder
                     + "Not initialized properly for this operation.");
         return ((ByteArrayOutputStream) out).toByteArray();
     }
-
-    private static final int get1(byte buf[], int off)
-    {
-        return ((buf[off] & 0x3f) << 2) | ((buf[off + 1] & 0x30) >>> 4);
-    }
-
-    private static final int get2(byte buf[], int off)
-    {
-        return ((buf[off + 1] & 0x0f) << 4) | ((buf[off + 2] & 0x3c) >>> 2);
-    }
-
-    private static final int get3(byte buf[], int off)
-    {
-        return ((buf[off + 2] & 0x03) << 6) | (buf[off + 3] & 0x3f);
-    }
-
-    /**
-     * Checks a character for correct BASE64 encoding.  Returns -1 if the
-     * character is not valid.
-     * @return int The binary value of the input character, or -1 if it is
-     * not a valid BASE64 character.
-     */
-    private static final int check(int ch)
-    {
-        if ((ch >= 'A') && (ch <= 'Z'))
-        {
-            return ch - 'A';
-        }
-        else if ((ch >= 'a') && (ch <= 'z'))
-        {
-            return ch - 'a' + 26;
-        }
-        else if ((ch >= '0') && (ch <= '9'))
-        {
-            return ch - '0' + 52;
-        }
-        else
-        {
-            switch (ch)
-            {
-                case '=':
-                    return 65;
-                case '+':
-                    return 62;
-                case '/':
-                    return 63;
-                default:
-                    return -1;
-            }
-        }
-    }
-
 }

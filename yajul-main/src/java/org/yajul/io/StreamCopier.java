@@ -43,20 +43,25 @@ import java.io.OutputStream;
  */
 public class StreamCopier implements Runnable
 {
+    /** A logger for this class. **/
     private static Logger log = Logger.getLogger(StreamCopier.class);
 
     /** The default buffer size. **/
     public static final int DEFAULT_BUFFER_SIZE = 256;
+    /** The input stream. **/
     private InputStream in;
+    /** The output stream. **/
     private OutputStream out;
     /** The buffer size to use while copying. **/
     private int bufsz = DEFAULT_BUFFER_SIZE;
     /** If an exception was thrown in the run() method, this will be set. **/
     private IOException exception;
+    /** True, if the copying is complete. **/
     private boolean complete = false;
 
     /**
-     * Copies the input stream into the output stream in a thread safe and efficient manner.
+     * Copies the input stream into the output stream in a thread safe and
+     * efficient manner.
      * @param in The input stream.
      * @param out The output stream.
      * @param bufsz The size of the buffer to use.
@@ -73,25 +78,41 @@ public class StreamCopier implements Runnable
         {
             synchronized (out)
             {
-                byte[] buf = new byte[bufsz];
-                int bytesRead = 0;
-                int total = 0;
-                while (true)
-                {
-                    bytesRead = in.read(buf);
-                    if (bytesRead == -1)
-                        break;
-                    total += bytesRead;
-                    out.write(buf, 0, bytesRead);
-                } // while
-                return total;
+                return unsyncCopy(in, out, bufsz);
             } // synchronized (out)
         } // synchronized (in)
     }
 
+    /**
+     * Copies the input stream into the output stream in an efficient manner.
+     * This version does not synchronize on the streams, so it is not safe
+     * to use when the streams are being accessed by multiple threads.
+     * @param in The input stream.
+     * @param out The output stream.
+     * @param bufsz The size of the buffer to use.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     **/
+    public final static int unsyncCopy(InputStream in, OutputStream out,
+                                       int bufsz) throws IOException
+    {
+        byte[] buf = new byte[bufsz];
+        int bytesRead = 0;
+        int total = 0;
+        while (true)
+        {
+            bytesRead = in.read(buf);
+            if (bytesRead == -1)
+                break;
+            total += bytesRead;
+            out.write(buf, 0, bytesRead);
+        } // while
+        return total;
+    }
 
     /**
-     * Copies the input stream into the output stream in a thread safe and efficient manner.
+     * Copies the input stream into the output stream in a thread safe and
+     * efficient manner.
      * @param in The input stream.
      * @param out The output stream.
      * @return int The number of bytes copied.
@@ -133,18 +154,13 @@ public class StreamCopier implements Runnable
      */
     public void run()
     {
-        byte[] buf = new byte[bufsz];
-        int bytesRead = 0;
         try
         {
-            while (true)
-            {
-                bytesRead = in.read(buf);
-                if (bytesRead == -1)
-                    break;
-                out.write(buf, 0, bytesRead);
-            } // while
+            // Copy, using the a buffer.
+            unsyncCopy(in, out, bufsz);
+            // Flush the output.
             out.flush();
+            // Completed state.
             synchronized (this)
             {
                 complete = true;
@@ -153,9 +169,9 @@ public class StreamCopier implements Runnable
         catch (IOException e)
         {
             // Log the exception!
-            log.error("Unexpected: " + e.getMessage(),e);
+            log.error("Unexpected: " + e.getMessage(), e);
             // Remember the exception, just in case anyone cares.
-            synchronized(this)
+            synchronized (this)
             {
                 exception = e;
             }
@@ -169,7 +185,7 @@ public class StreamCopier implements Runnable
      */
     public IOException getException()
     {
-        synchronized(this)
+        synchronized (this)
         {
             return exception;
         }
@@ -182,7 +198,10 @@ public class StreamCopier implements Runnable
      */
     public boolean isComplete()
     {
-        return complete;
+        synchronized (this)
+        {
+            return complete;
+        }
     }
 
 

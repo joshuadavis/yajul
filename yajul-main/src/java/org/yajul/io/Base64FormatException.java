@@ -25,18 +25,21 @@
  *
  ******************************************************************************/
 
+// --- The orgiginal code is from: ---
 // Base64FormatException.java
 // $Id$
 // (c) COPYRIGHT MIT and INRIA, 1996.
 // Please first read the full copyright statement in file COPYRIGHT.html
 
-package org.yajul.util;
+package org.yajul.io;
+
+import java.io.IOException;
 
 /**
  * Exception for invalid BASE64 streams.
+ * @author josh (Refactored to extend IOException
  */
-
-public class Base64FormatException extends Exception
+public class Base64FormatException extends IOException
 {
     /**
      * Create that kind of exception
