@@ -1,0 +1,74 @@
+<project default="compile" basedir=".">
+
+   <path id="compile.class.path">
+        <pathelement location="classes"/>
+        <pathelement location="../build/classes"/>
+        <fileset dir="lib">
+           <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="../lib">
+           <include name="**/*.jar"/>
+        </fileset>
+   </path>
+
+   <path id="run.class.path">
+        <path refid="compile.class.path"/>
+        <pathelement location="../build/classes"/>
+   </path>
+   
+   <target name="init">
+      <mkdir dir="classes"/>
+      <mkdir dir="report"/>
+   </target>
+
+   <target name="compile" depends="init,compileMain">
+
+      <javac debug="true" classpathref="compile.class.path" destdir="classes" deprecation="on">
+           <src path="src"/>
+       </javac>
+
+   </target>
+
+   <!-- Comples the code in the parent project.  (The code being tested) -->
+   <target name="compileMain">
+        <ant dir=".." target="compile"/>
+   </target>
+   
+   <target name="clean">
+      <delete dir="classes"/>
+   </target>
+
+   <target name="cleanReport">
+        <delete dir="report/html"/>
+        <delete>
+            <fileset dir=".">
+                <include name="TEST-*.xml"/>
+            </fileset>
+        </delete>
+    </target>
+
+   <target name="run" depends="compile">
+        <junit printsummary="on" fork="true">
+            <formatter type="xml"/>
+            <batchtest>
+                <fileset dir="classes">
+                    <include name="**/*Test.class"/>
+                </fileset>
+            </batchtest>
+            <classpath refid="run.class.path"/>
+         </junit>
+     </target>
+
+     <target name="report">
+    
+        <junitreport todir="report">
+          <fileset dir=".">
+            <include name="TEST-*.xml"/>
+          </fileset>
+          <report format="frames" todir="report/html"/>
+        </junitreport>
+
+   </target>
+
+</project>
+
