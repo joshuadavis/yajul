@@ -38,6 +38,52 @@ public class ConnectionHelper
     private int rowsAffected;
 
     /**
+     * Helper function: Closes the result set, statement, and connection if
+     * they are not null.  Exceptions will be logged, but ignored.
+     * @param con The connection.
+     * @param stmt The statement.
+     * @param rs The result set.
+     */
+    public static void close(Connection con,Statement stmt,ResultSet rs)
+    {
+        if (rs != null)
+        {
+            try
+            {
+                rs.close();
+            }
+            catch (SQLException e)
+            {
+                log.error(e,e);
+            }
+        }
+
+        if (stmt != null)
+        {
+            try
+            {
+                stmt.close();
+            }
+            catch (SQLException e)
+            {
+                log.error(e,e);
+            }
+        }
+
+        if (con != null)
+        {
+            try
+            {
+                con.close();
+            }
+            catch (SQLException e)
+            {
+                log.error(e,e);
+            }
+        }
+    }
+
+    /**
      * Creates a connection helper for the given connection.
      * @param con The connection.
      */

@@ -223,7 +223,13 @@ public abstract class AbstractServerSocketListener implements Runnable
             }
             catch (SocketException e)
             {
+/* 2004-02-25 [jsd] In JDK1.3, Socket doesn't have the isClosed() method.
                 if (socket.isClosed() && shutdownRequested)
+                    log.info("Listener on port " + port + ", server socket closed.");
+                else
+                    unexpected(e);
+*/
+                if (shutdownRequested)
                     log.info("Listener on port " + port + ", server socket closed.");
                 else
                     unexpected(e);

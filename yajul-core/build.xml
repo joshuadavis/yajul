@@ -21,12 +21,13 @@
     <path id="compile.classpath">
         <pathelement path="${basedir}/lib/xml-apis.jar:${basedir}/lib/xercesImpl.jar:${basedir}/lib/xalan.jar"/>
         <pathelement path="${basedir}/lib/log4j-1.2.7.jar"/>
-        <pathelement path="${basedir}/lib/junit.jar"/>
         <pathelement path="${basedir}/lib/jdbc2_0-stdext.jar"/>
+        <pathelement path="${basedir}/lib/spring.jar"/>
     </path>
 
     <path id="test.classpath">
         <path refid="compile.classpath"/>
+        <pathelement path="${basedir}/lib/junit.jar"/>
         <pathelement location="${main.class.dir}"/>
         <pathelement path="${basedir}/lib/jdepend.jar"/>
     </path>

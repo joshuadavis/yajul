@@ -26,9 +26,10 @@
  ******************************************************************************/
 package org.yajul.net;
 
-import javax.net.ssl.SSLContext;
+//import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLSessionContext;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 
@@ -86,8 +87,9 @@ public class SocketFactory
         {
             if (secureSocketFactory == null)
             {
-                SSLContext ctx = SSLContext.getInstance(SSLUtil.DEFAULT_SSL_CONTEXT);
-                secureSocketFactory = ctx.getSocketFactory();
+//                SSLSessionContext ctx = SSLUtil.getSSLSessionContext();
+//                secureSocketFactory = ctx.getSocketFactory();
+                secureSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             }
         }
         return secureSocketFactory;
