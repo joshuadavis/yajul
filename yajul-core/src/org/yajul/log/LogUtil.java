@@ -27,16 +27,17 @@
 
 package org.yajul.log;
 
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Appender;
-import org.apache.log4j.RollingFileAppender;
-import org.apache.log4j.AsyncAppender;
-
 import java.io.IOException;
+
+import org.apache.log4j.Appender;
+import org.apache.log4j.AsyncAppender;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.RollingFileAppender;
 
 /**
  * Provides static utility methods for the Log4J library, including:
@@ -50,14 +51,15 @@ import java.io.IOException;
  */
 public class LogUtil
 {
-    // NOTE: Don't put a YAJUL Logger in here!! (infinite recursion)
-
-    /** The Log4J layout for the default logging configuration. */
+    /** The Log4J layout for the default logging configuration.
+     * @see #configure()
+     */
     public static final String DEFAULT_LAYOUT =
             "%-6r [%8t] %-5p %15.15c{1} - %m\n";
 
     /** The name of the system property used to establish the logging level
      * for the default configuration. "org.yajul.log.LogUtil.LEVEL"
+     * @see #configure()
      */
     public static final String SYSPROPERTY_LEVEL =
             "org.yajul.log.LogUtil.LEVEL";
@@ -74,20 +76,91 @@ public class LogUtil
     private static final Logger LOG = Logger.getLogger(LogUtil.class);
 
     /**
-     * Configure the log4J system to log to the console.  The system property
-     *
+     * Returns true if Log4J has been configured using this class.
+     * @return boolean - True if one of the configuration methods was used.
+     */
+    public static boolean isConfigured()
+    {
+        synchronized (LogUtil.class)
+        {
+            return configured;
+        }
+    }
+
+    /**
+     * Decodes a level name into a Logger.LEVEL_xxx value.  The level name is
+     * <i>case insensitive</i>
+     * @param levelName One of: "FATAL", "ERROR", "WARNING", "INFO", "DEBUG"
+     * @return Level - The logging level.
+     */
+    public static Level parseLevel(String levelName)
+    {
+        return parseLevel(levelName,null);
+    }
+
+    /**
+     * Decodes a level name into a Logger.LEVEL_xxx value.  The level name is
+     * <i>case insensitive</i>
+     * @param levelName One of: "FATAL", "ERROR", "WARNING", "INFO", "DEBUG"
+     * @param defaultLevel The default level.  If null, the method will
+     * throw an Illegal argument exception if 'levelName' is not valid.
+     * @return Level - The logging level.
+     */
+    public static Level parseLevel(String levelName,Level defaultLevel)
+    {
+
+        if ("FATAL".equalsIgnoreCase(levelName))
+            return Level.FATAL;
+        else if ("ERROR".equalsIgnoreCase(levelName))
+            return Level.ERROR;
+        else if ("WARNING".equalsIgnoreCase(levelName))
+            return Level.WARN;
+        else if ("WARN".equalsIgnoreCase(levelName))
+            return Level.WARN;
+        else if ("INFO".equalsIgnoreCase(levelName))
+            return Level.INFO;
+        else if ("DEBUG".equalsIgnoreCase(levelName))
+            return Level.DEBUG;
+        else if (defaultLevel != null)
+            return defaultLevel;
+        else
+            throw new IllegalArgumentException(
+                    "Unexpected logging level name: '" + levelName + "'");
+    }
+
+    /**
+     * Configure the log4J system to log to the console using the default
+     * layout, and the default system property to set the root logger level.
+     * @see #DEFAULT_LAYOUT
+     * @see #SYSPROPERTY_LEVEL
      */
     public static final void configure()
+    {
+        configure(DEFAULT_LAYOUT, SYSPROPERTY_LEVEL);
+    }
+
+    /**
+     * Configure Log4J using the specified layout and system property for the
+     * root level.
+     * @param defaultLayout The layout string
+     * @param syspropertyLevel The system property name to use when setting
+     * the level of the root logger.
+     */
+    public static void configure(String defaultLayout, String syspropertyLevel)
     {
         synchronized (LogUtil.class)
         {
             if (!configured)
             {
-                PatternLayout layout = new PatternLayout(DEFAULT_LAYOUT);
+                // Clear the current configuration.
+                LogManager.resetConfiguration();
+                PatternLayout layout = new PatternLayout(defaultLayout);
                 Appender appender = new ConsoleAppender(layout);
                 BasicConfigurator.configure(appender);
-                String levelString = System.getProperty(SYSPROPERTY_LEVEL);
+                String levelString = System.getProperty(syspropertyLevel);
                 setRootLevel(levelString);
+// 2003-07-10 [jsd] Eliminated some minor log noise here.
+//                LOG.info("Using default Log4J configuration.");
                 configured = true;
             }
         }
@@ -113,6 +186,7 @@ public class LogUtil
             async.addAppender(appender);
 
             // Use the async appender.
+            LogManager.resetConfiguration(); // Clear the current configuration.
             BasicConfigurator.configure(async);
             String levelString = System.getProperty(SYSPROPERTY_LEVEL);
             setRootLevel(levelString);
@@ -134,23 +208,7 @@ public class LogUtil
      */
     public static final void setRootLevel(String levelString)
     {
-        Level level = DEFAULT_LEVEL;
-
-        if (levelString == null)
-            level = DEFAULT_LEVEL;
-        else if ("ERROR".equalsIgnoreCase(levelString))
-            level = Level.ERROR;
-        else if ("WARNING".equalsIgnoreCase(levelString))
-            level = Level.WARN;
-        else if ("WARN".equalsIgnoreCase(levelString))
-            level = Level.WARN;
-        else if ("INFO".equalsIgnoreCase(levelString))
-            level = Level.INFO;
-        else if ("DEBUG".equalsIgnoreCase(levelString))
-            level = Level.DEBUG;
-        else
-            LOG.warn("setRootLevel() - Unknown level string: '" + levelString + "'");
-
+        Level level = parseLevel(levelString,DEFAULT_LEVEL);
         Logger.getRootLogger().setLevel(level);
     }
 

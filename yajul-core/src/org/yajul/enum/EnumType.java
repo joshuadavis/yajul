@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.yajul.log.LogUtil;
 import org.yajul.util.ArrayIterator;
+import org.yajul.util.StringUtil;
 import org.yajul.xml.DOMUtil;
 
 /**
@@ -104,13 +105,26 @@ public class EnumType
     }
 
     /**
+     * Returns true if the id is valid, false if not.
+     * @param id The enum value id.
+     * @return boolean - True if 'id' is valid.
+     */
+    public boolean isValid(int id)
+    {
+        return (findValueById(id) != null);
+    }
+
+    /**
      * Returns the value, given it's id.
      * @param id The value id to look for.
-     * @return EnumValue - The enumerated value.
+     * @return EnumValue - The enumerated value, or null if the id is not valid.
      */
     public EnumValue findValueById(int id)
     {
-        return valueArray[id];
+        if (id < 0 || id >= valueArray.length)
+            return null;
+        else
+            return valueArray[id];
     }
 
     /**
@@ -121,6 +135,21 @@ public class EnumType
     public EnumValue findValueByXml(String xml)
     {
         return (EnumValue) valueByXML.get(xml);
+    }
+
+    /**
+     * Returns the value, given it's XML text.
+     * @param xml The XML text to look for.
+     * @return EnumValue - The enumerated value.
+     * @throws EnumValueNotFoundException if the required value was not found.
+     */
+    public EnumValue requireValueByXml(String xml)
+            throws EnumValueNotFoundException
+    {
+        EnumValue value = (EnumValue) valueByXML.get(xml);
+        if (value == null)
+            throw new EnumValueNotFoundException(id,xml);
+        return value;
     }
 
     /**
@@ -144,6 +173,34 @@ public class EnumType
     {
         EnumValue value = findValueByXml(xml);
         return (value == null) ? UNDEFINED : value.getId();
+    }
+
+    /**
+     * Converts a text value into an id for this map.  Returns
+     * UNDEFINED (-1) if the text was not valid.
+     * @param text The text to look for.
+     * @return int - The enum value id, or UNDEFINED if the text was not
+     * valid.
+     */
+    public int textToValueId(String text)
+    {
+        EnumValue value = findValueByText(text);
+        return (value == null) ? UNDEFINED : value.getId();
+    }
+
+    /**
+     * Converts an id into a XML text value for this map.  Returns
+     * null if the id was not valid.
+     * @param id - The enum value id.
+     * @return String - The XML text, or null if the id was invalid.
+     */
+    public String valueIdToXml(int id)
+    {
+        EnumValue value = findValueById(id);
+        if (value == null)
+            return null;
+        else
+            return value.getXmlValue();
     }
 
     /**
@@ -185,7 +242,11 @@ public class EnumType
         id = elem.getAttribute("id");
         try
         {
-            enumValueClass = Class.forName(elem.getAttribute("valueClass"));
+            String valueClassName = elem.getAttribute("valueClass");
+            if (!StringUtil.isEmpty(valueClassName))
+                enumValueClass = Class.forName(valueClassName);
+            else
+                enumValueClass = EnumValue.class;
         }
         catch (ClassNotFoundException e)
         {
@@ -195,7 +256,7 @@ public class EnumType
 
         // Look for the 'enum-value' elements inside this 'enum-type' element.
         Element[] valueElements = DOMUtil.getChildElements(elem, "enum-value");
-        // Create an array-list if values to ultimately create the
+        // Create an array-list of values to ultimately create the
         // 'values by id' array.
         ArrayList valuesById = new ArrayList(valueElements.length);
 
@@ -204,6 +265,9 @@ public class EnumType
         maxId = Integer.MIN_VALUE;
         minId = Integer.MAX_VALUE;
         int id = 0;
+
+        // Scan the elements to find the minimum and maximum ids.
+
         // Parse each element, adding the parsed elements to the index maps and
         // updating the minimum and maximum id fields.
         for (int i = 0; i < valueElements.length; i++)
@@ -226,7 +290,18 @@ public class EnumType
                         "Unable to instantiate value class due to: "
                         + e.getMessage(),e);
             }
-            value.loadFromElement(this, valueElement);
+
+            try
+            {
+                value.loadFromElement(this, valueElement);
+            }
+            catch (Exception e)
+            {
+                throw new EnumInitializationException(
+                        "Unable to load value instance due to: "
+                        + e.getMessage(),e);
+            }
+
             id = value.getId();
             if (id < 0)
                 throw new EnumInitializationException("Illegal enum id: " + id);
@@ -235,7 +310,21 @@ public class EnumType
                 log.warn("Value '" + id
                         + " already defined in EnumType " + getId());
 
-            valuesById.add(id, value);
+
+            // Ensure that the array list has the proper capacity, and is
+            // has nulls inserted at the beginning of the array so that
+            // the value can be added.
+            valuesById.ensureCapacity(id+1);
+            for(int j = valuesById.size(); j < id ; j++)
+            {
+                if (log.isDebugEnabled())
+                    log.debug("loadFromElement() : adding null value at index "
+                            + j);
+                valuesById.add(null);
+            } // for (j)
+
+            valuesById.add(id,value);
+
             if (id > maxId)
                 maxId = id;
             if (id < minId)
@@ -243,11 +332,12 @@ public class EnumType
             // Set up the index maps (by xml value and by text value).
             valueByXML.put(value.getXmlValue(), value);
             valueByText.put(value.getTextValue(), value);
-        }
+        } // for (i)
 
         valueArray = (EnumValue[]) valuesById.toArray(
                 new EnumValue[valuesById.size()]);
-        log.info("loadFromElement() : valueArray.length = "
+        if (log.isDebugEnabled())
+            log.debug("loadFromElement() : valueArray.length = "
                 + valueArray.length);
     }
 

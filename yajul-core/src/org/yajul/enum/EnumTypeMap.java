@@ -83,7 +83,7 @@ public class EnumTypeMap
         catch (Exception e)
         {
             EnumInitializationException x =  new EnumInitializationException(
-                    "Unable parse 'enum-types.xml' due to: "
+                    "Unable parse XML input due to: "
                     + e.getMessage(),e);
             log.error(x);
             throw x;
@@ -91,7 +91,7 @@ public class EnumTypeMap
 
         if (document == null)
             throw new EnumInitializationException(
-                    "No document: 'enum-types.xml'");
+                    "No document");
 
         // Iterate through the 'enum-type' elements, and create an instance of
         // EnumType for each one.
@@ -114,8 +114,9 @@ public class EnumTypeMap
             }
             catch (Exception e)
             {
+                String id = (type == null) ? "<null>" : type.getAttribute("id");
                 EnumInitializationException x = new EnumInitializationException(
-                        "Unable to initialize " + type.getAttribute("id")
+                        "Unable to initialize " + id
                         + " due to: " + e.getMessage(), e);
                 log.error(x);
                 throw x;
