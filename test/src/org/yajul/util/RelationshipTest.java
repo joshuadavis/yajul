@@ -21,14 +21,35 @@ public class RelationshipTest extends TestCase {
         return suite;
     }
     
+	
 	/**
 	 * Runs org.yajul.util.Relationship through a number of tests where student names are
 	 * associated with classes
 	 */
-    public void testStudentClasses() {
-		
-		Relationship r = new Relationship();
+    public void testSetRelationship() {
+        Relationship r = new SetRelationship();
+		studentClassTest(r);
 
+        //Check toString()
+		//(order is guaranteed, as this is a sorted set)
+		assertEquals("[alice->CS204, alice->CS355, kent->CS101, kent->CS102, kent->EN504]", r.toString());
+	}
+	
+	/**
+	 * Runs org.yajul.util.Relationship through a number of tests where student names are
+	 * associated with classes
+	 */
+    public void testMapRelationship() {
+        Relationship r = new MapRelationship();
+		studentClassTest(r);
+	}
+
+	/**
+	 * Runs org.yajul.util.Relationship through a number of tests where student names are
+	 * associated with classes
+	 */
+    public void studentClassTest(Relationship r) {
+		
 		//add some students->classes
 		r.add("kent", "CS101");
 		r.add("kent", "CS102");
@@ -56,7 +77,7 @@ public class RelationshipTest extends TestCase {
 
 		//test adding a duplicate
 		r.add("kent", "CS102");
-		assertTrue(r.size() == 7);
+		assertEquals(4, kentsClasses.size());
 		
 		//test removing from the subset
 		alicesClasses.remove("CS101");
@@ -74,8 +95,5 @@ public class RelationshipTest extends TestCase {
 		Set joesClasses = r.getDependents("joe");
 		assertEquals(0, joesClasses.size());
 		
-		//Check toString()
-		//(order is guaranteed, as this is a sorted set)
-		assertEquals("[alice->CS204, alice->CS355, kent->CS101, kent->CS102, kent->EN504]", r.toString());
     }
 }
