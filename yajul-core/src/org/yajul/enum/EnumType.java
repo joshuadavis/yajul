@@ -71,6 +71,11 @@ public class EnumType
      * An array of all values, where the index is the id.
      * This will be null, if the value ids are not sequential (ish).
      */
+    private EnumValue[] valueArrayById;
+
+    /**
+     * The values of the enumerated type, in array form.
+     */
     private EnumValue[] valueArray;
 
     /**
@@ -135,7 +140,7 @@ public class EnumType
     public EnumValue findValueById(int id)
     {
         // If the values are in the 'index' array, use it.
-        if (valueArray != null)
+        if (valueArrayById != null)
         {
             // Subtract the minimum id, so the index of the first
             // element is zero.
@@ -143,10 +148,10 @@ public class EnumType
 //            if (log.isDebugEnabled())
 //                log.debug("findValueById() : id = "
 //                        + id + " index = " + index );
-            if (index < 0 || index >= valueArray.length)
+            if (index < 0 || index >= valueArrayById.length)
                 return null;
             else
-                return valueArray[index];
+                return valueArrayById[index];
         }
         // Otherwise, use the valueById map.
         else
@@ -264,7 +269,7 @@ public class EnumType
      */
     public Iterator iterator()
     {
-        if (valueArray != null)
+        if (valueArrayById != null)
             return new ValueIterator();
         else
             return valueById.values().iterator();
@@ -388,10 +393,31 @@ public class EnumType
 //                            "valueArray[" + index + "], id = " + key);
                 list.add(index, value);
             }
-            valueArray = (EnumValue[]) list.toArray(new EnumValue[list.size()]);
+            valueArrayById = (EnumValue[]) list.toArray(new EnumValue[list.size()]);
         }
         else if (log.isDebugEnabled())
             log.debug("loadFromElement() : Using a TreeMap for the id map");
+    }
+
+    /**
+     * Returns an array of all values in ID order.
+     * @return EnumValue[] - An array of all values, in ID order.
+     * @see EnumValue
+     */
+    public EnumValue[] getValueArray()
+    {
+        // TODO: Use the valueArrayById, IFF the IDs are contiguous and start with zero.
+        if (valueArray == null)
+        {
+            ArrayList enumValues = new ArrayList();
+            Iterator iterator = iterator();
+            while (iterator.hasNext())
+            {
+                enumValues.add(iterator.next());
+            }
+            valueArray = (EnumValue[]) enumValues.toArray(new EnumValue[enumValues.size()]);
+        }
+        return valueArray;
     }
 
     private void createLowerCaseTextMap()
@@ -418,7 +444,7 @@ public class EnumType
          */
         public ValueIterator()
         {
-            super(valueArray, true);
+            super(valueArrayById, true);
         }
     }
 }
