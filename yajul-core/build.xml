@@ -1,6 +1,8 @@
 <project name="yajul-core" default="default">
 
+    <!-- Load in property overrides first (such as build.dir) -->
 
+    <!-- Default property values -->
     <property name="main.src.dir" value="src"/>
     <property name="build.dir" value="build"/>
     <property name="dist.dir" value="${build.dir}/dist"/>
@@ -64,6 +66,7 @@
 </target>
 
 <target name="compile" depends="init">
+    <echo message="${ant.project.name} Compiling main classes to ${main.class.dir}"/>
     <javac srcdir="${main.src.dir}" destdir="${main.class.dir}"
        classpathref="compile.classpath" debug="${javac.debug}"
        optimize="${javac.optimize}" deprecation="${javac.deprecation}"
@@ -71,6 +74,7 @@
 </target>
 
 <target name="compile.tests" depends="init">
+    <echo message="${ant.project.name} Compiling test classes to ${test.class.dir}"/>
     <javac srcdir="${test.src.dir}" destdir="${test.class.dir}"
        classpathref="test.classpath" debug="${javac.debug}"
        optimize="${javac.optimize}" deprecation="${javac.deprecation}"
@@ -78,7 +82,7 @@
 </target>
 
 <target name="test" depends="init">
-    <junit fork="yes" printsummary="yes" haltonfailure="yes">
+    <junit fork="yes" printsummary="yes" haltonfailure="yes"  dir="${basedir}">
       <classpath>
         <path refid="test.runtime.classpath"/>
       </classpath>
@@ -89,6 +93,38 @@
         </fileset>
       </batchtest>
     </junit>
+</target>
+
+<target name="test.xmlreport" depends="init" description="Performs unit tests, generating an XML report.">
+        <junit fork="yes"
+            printsummary="yes" haltonfailure="yes" showoutput="no"  dir="${basedir}">
+            <classpath>
+              <path refid="test.runtime.classpath"/>
+            </classpath>
+
+          <formatter type="xml"/>
+          <batchtest todir="${junit.dir}">
+            <fileset dir="${test.src.dir}">
+              <patternset refid="test.files"/>
+            </fileset>
+          </batchtest>
+        </junit>
+</target>
+
+<target name="test.textreport" depends="init" description="Performs unit tests, generating a text report.">
+        <junit fork="yes"
+            printsummary="yes" haltonfailure="yes" showoutput="no"  dir="${basedir}">
+            <classpath>
+              <path refid="test.runtime.classpath"/>
+            </classpath>
+
+          <formatter type="plain"/>
+          <batchtest todir="${junit.dir}">
+            <fileset dir="${test.src.dir}">
+              <patternset refid="test.files"/>
+            </fileset>
+          </batchtest>
+        </junit>
 </target>
 
 <target name="jar">
@@ -114,3 +150,13 @@
 </target>
 
 </project>
+
+
+
+
+
+
+
+
+
+
