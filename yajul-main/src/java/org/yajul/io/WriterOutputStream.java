@@ -109,6 +109,7 @@ public class WriterOutputStream extends OutputStream
      */
     public void close() throws IOException
     {
+        super.close();
         writer.close();
     }
 
@@ -126,6 +127,7 @@ public class WriterOutputStream extends OutputStream
      */
     public void flush() throws IOException
     {
+        super.flush();
         writer.flush();
     }
 }
