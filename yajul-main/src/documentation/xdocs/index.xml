@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.1//EN" "./dtd/document-v11.dtd">
+
+<document>
+  <header>
+    <title>YAJUL</title>
+    <authors>
+      <person id="pgmjsd" name="Joshua Davis" email="pgmjsd@sourceforge.net"/>      
+    </authors>
+  </header>
+  
+  <body>
+    <section title="Introduction">
+      <p><strong>YAJUL</strong> is a set of Java utility libraries for Java enterprise application development.
+     The libraries are organize by the type of useage, allowing a lightweight implementation.
+     The core library is required by all other libraries, and includes Log4J logging, IO utilities,
+     XML DOM / SAX / XSLT utilities, and some multi-threading code.
+     Other libraries include: Servlet, EDI, and development tools. 
+      </p>
+	<section title="Why?">
+	<p>Every Java application, particularly web based business applications have some
+	 common code that is developed over and over again. YAJUL provides a
+	 shareable repository for reliable (tested) and well documented reuseable code.
+	 </p> 
+	</section>    
+	<section title="Goals">
+	<ul>
+    <li>Provide well documented libraries.  The libraries can be used without resorting to looking at the source code.</li>
+    <li>Unit test all the production code.  Programmers can trust the libraries.</li>
+    <li>Minimal dependencies.  The user should be able to include a minimal set of libraries.</li>
+	</ul>
+	</section>        
+    </section>
+    <section title="Libraries">
+      <section title="Core Library">
+        <p>     
+           The core library includes logging, IO utilities, XML DOM  XML DOM / SAX / XSLT utilities, 
+           and multi-threading utilities.
+        </p>  
+      </section>
+      </section>
+  </body>
+</document>

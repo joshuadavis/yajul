@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.1//EN" "../dtd/document-v11.dtd">
+
+<document>
+  <header>
+    <title>YAJUL</title>
+    <authors>
+      <person id="acoliver" name="Andrew C. Oliver" email="acoliver@apache.org"/>      
+    </authors>
+  </header>
+  
+  <body>
+    <section title="The project/status.xml File">
+        <p>  
+                This file is where you document what it is you plan to do, the 
+                state of your subpackage, module, etc.  This is basically a 
+                FYI file.  An important piece of documentation.
+        </p>  
+    </section>
+     
+  </body>
+</document>

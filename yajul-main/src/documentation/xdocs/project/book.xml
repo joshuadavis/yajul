@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//APACHE//DTD Cocoon Documentation Book V1.0//EN" "dtd/book-cocoon-v10.dtd">
+
+<book software="YAJUL" 
+      title="YAJUL - Yet Another Java Utility Library" 
+      copyright="@year@ The YAJUL Project"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <menu label="Overview">
+    <menu-item label=".." href="../index.html"/>
+  </menu>
+
+  <menu label="project/">
+    <menu-item label="."              href="index.html"/>
+    <menu-item label="build/"         href="build/index.html"/>
+    <menu-item label="legal/"         href="legal/index.html"/>
+    <menu-item label="lib/"           href="lib/index.html"/>
+    <menu-item label="src/"           href="src/index.html"/>
+    <menu-item label="tools/"         href="tools/index.html"/>
+    <menu-item label="appendxcp.bat"  href="appendcp.bat.html"/>
+    <menu-item label="build.bat"      href="build.bat.html"/>
+    <menu-item label="build.number"   href="build.number.html"/>
+    <menu-item label="build.sh"       href="build.sh.html"/>
+    <menu-item label="build.xml"      href="build.xml.html"/>  
+    <menu-item label="layout.xml"     href="layout.xml.html"/>  
+    <menu-item label="module.xml"     href="module.xml.html"/>
+    <menu-item label="properties.xml" href="properties.xml.html"/>
+    <menu-item label="status.xml"     href="status.xml.html"/>
+  </menu>
+
+</book>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.1//EN" "../../dtd/document-v11.dtd">
+
+<document>
+  <header>
+    <title>YAJUL</title>
+    <authors>
+      <person id="acoliver" name="Andrew C. Oliver" email="acoliver@apache.org"/>      
+      <person id="nicolaken" name="Nicola Ken Barozzi" email="nicolaken@apache.org"/>           
+    </authors>
+  </header>
+  
+  <body>
+    <section title="project/src">
+        <p>
+             Here is where you usually find the source files for your code,
+             tests, documentation, resources, etc.
+        </p>
+        <p>
+             The actual directories are defined in file layout.xml.
+        </p>        
+    </section>
+  </body>
+</document>

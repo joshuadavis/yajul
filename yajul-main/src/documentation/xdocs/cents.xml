@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.1//EN" "./dtd/document-v11.dtd">
+
+<document>
+  <header>
+    <title>Krysalis Centipede</title>
+    <authors>
+      <person id="acoliver" name="Andrew C. Oliver" email="acoliver@apache.org"/>      
+    </authors>
+  </header>
+  
+  <body>
+    <section title="Introduction">
+      <p>Centipede divides build functionality up into units call "cents".  See the indian penny
+         up at the top of the page?  You get it?  Yeah I know.</p>
+      <p>A is essentially an identified library (or set of libraries) along with a xbuild.xml.  These
+         are located in tools/cents off of the main project directory.</p>
+      <p>Cents are distributed as jar files and unzipped in this directory as required.  There are a 
+         number of cents available for you already and most of these are documented here; however,
+         its very simple to create your own cent.  It requires only a little knowledge of 
+         <link href="http://jakarta.apache.org/ant">Ant</link> and well some basic rudimentary 
+         competence.</p>
+      <p>To create a Cent merely create a directory such as myproject.cent.  Create a xbuild.xml
+         file such as /tools/cents/centipede.cent/xbuild.xml.  Put in the tasks.properties
+         file with the task to fire up. Then run build jar-cent.</p>      
+    </section>
+  </body>
+</document>

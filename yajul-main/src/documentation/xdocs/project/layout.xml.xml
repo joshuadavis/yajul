@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.1//EN" "./dtd/document-v11.dtd">
+
+<document>
+  <header>
+    <title>YAJUL</title>
+    <authors>
+      <person id="acoliver" name="Andrew C. Oliver" email="acoliver@apache.org"/>   
+      <person id="nicolaken" name="Nicola Ken Barozzi" email="nicolaken@apache.org"/>            
+    </authors>
+  </header>
+  
+  <body>
+    <section title="The project/layout.xml File">
+        <p>  
+                This very unfortunately uncommented file contains properties for 
+                the build.  It includes things like path names and the such.  Its
+                a new feature of the <link href="http://jakarta.apache.org/ant">
+                Jakarta Ant</link> project that replaces the old style properties
+                files.  
+        </p>
+        <p>
+                TODO: outline important properties, especially those that might be
+                modified by users.  Comment this file.
+        </p>
+    </section>
+       
+  </body>
+</document>

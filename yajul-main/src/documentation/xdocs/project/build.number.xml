@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.1//EN" "./dtd/document-v11.dtd">
+
+<document>
+  <header>
+    <title>YAJUL</title>
+    <authors>
+      <person id="ACO" name="Andrew C. Oliver" email="acoliver@apache.org"/>      
+    </authors>
+  </header>
+  
+  <body>
+    <section title="The project/build.number File">
+        <p>  
+                This file specifies a unique identifier for each build.  Its generated.
+                You don't really need to worry aobut this file.  It doesn't think about 
+                you... Why should you think about it?
+        </p>
+    </section>
+       
+  </body>
+</document>
