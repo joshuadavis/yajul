@@ -2,67 +2,39 @@
 <project version="3" relativePaths="true">
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/io/test/StreamCopierTest.java" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/spi/ServiceProviderFactory.java" line="219" column="86" vertical-scroll-proportion="0.5367913" horizontal-scroll-proportion="0.940625" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/FilterInputStream.class" line="5" column="13" vertical-scroll-proportion="0.084439084" horizontal-scroll-proportion="0.0765625" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/ClassResolverObjectInputStream.java" line="17" column="54" vertical-scroll-proportion="0.21954161" horizontal-scroll-proportion="0.3171875" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/ByteArrayInputStream.class" line="5" column="13" vertical-scroll-proportion="-0.04704463" horizontal-scroll-proportion="0.0765625" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/WriterOutputStream.java" line="121" column="0" vertical-scroll-proportion="0.610374" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../java/j2sdk1.4.2_01/jre/lib/rt.jar!/java/io/OutputStream.class" line="29" column="16" vertical-scroll-proportion="0.4897467" horizontal-scroll-proportion="0.0953125" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ResourceUtil.java" line="33" column="28" vertical-scroll-proportion="0.15865384" horizontal-scroll-proportion="0.30625" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StreamCopier.java" line="204" column="42" vertical-scroll-proportion="1.3345795" horizontal-scroll-proportion="0.459375">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
       <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="22" column="2" vertical-scroll-proportion="-0.9757009" horizontal-scroll-proportion="0.021875">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="379" column="26" vertical-scroll-proportion="0.5962617" horizontal-scroll-proportion="0.284375">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="15" column="0" vertical-scroll-proportion="0.39252338" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/Type2Constants.java" line="3" column="40" vertical-scroll-proportion="0.078504674" horizontal-scroll-proportion="0.4375" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="226" column="32" vertical-scroll-proportion="0.9214953" horizontal-scroll-proportion="0.35" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="22" column="2" vertical-scroll-proportion="-1.0239899" horizontal-scroll-proportion="0.0228385" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="379" column="26" vertical-scroll-proportion="0.62752527" horizontal-scroll-proportion="0.29690048" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="15" column="0" vertical-scroll-proportion="0.3219697" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/Type2Constants.java" line="3" column="40" vertical-scroll-proportion="0.06439394" horizontal-scroll-proportion="0.4516129" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="191" column="28" vertical-scroll-proportion="0.13131313" horizontal-scroll-proportion="0.31973898" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ObjectFactory.java" line="273" column="25" vertical-scroll-proportion="0.42045453" horizontal-scroll-proportion="0.28548124" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/PackageDependencyTest.java" line="58" column="47" vertical-scroll-proportion="0.6136364" horizontal-scroll-proportion="0.53064513" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/IPAddressFilter.java" line="41" column="13" vertical-scroll-proportion="2.327957" horizontal-scroll-proportion="0.14942528" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/IPAddressPattern.java" line="16" column="13" vertical-scroll-proportion="1.4623656" horizontal-scroll-proportion="0.14772727" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/AbstractServerSocketListener.java" line="353" column="52" vertical-scroll-proportion="-2.3172042" horizontal-scroll-proportion="0.59770113" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/AbstractClientConnection.java" line="65" column="16" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.18390805" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/SpyProxy.java" line="24" column="24" vertical-scroll-proportion="0.6666667" horizontal-scroll-proportion="0.27586207" />
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/io/StreamCopier.java" line="204" column="42" vertical-scroll-proportion="1.3345795" horizontal-scroll-proportion="0.459375">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="15" column="0" vertical-scroll-proportion="0.39252338" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="379" column="26" vertical-scroll-proportion="0.5962617" horizontal-scroll-proportion="0.284375">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="22" column="2" vertical-scroll-proportion="-0.9757009" horizontal-scroll-proportion="0.021875">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/Type2Constants.java" line="3" column="40" vertical-scroll-proportion="0.078504674" horizontal-scroll-proportion="0.4375" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="226" column="32" vertical-scroll-proportion="0.9214953" horizontal-scroll-proportion="0.35" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="0" column="0" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/AbstractServerSocketListener.java" line="353" column="52" vertical-scroll-proportion="-2.3172042" horizontal-scroll-proportion="0.59770113" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/SpyProxy.java" line="24" column="24" vertical-scroll-proportion="0.6666667" horizontal-scroll-proportion="0.27586207" selected="true" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/AbstractClientConnection.java" line="65" column="16" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.18390805" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/IPAddressFilter.java" line="41" column="13" vertical-scroll-proportion="2.327957" horizontal-scroll-proportion="0.14942528" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/net/IPAddressPattern.java" line="16" column="13" vertical-scroll-proportion="1.4623656" horizontal-scroll-proportion="0.14772727" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="1004" extended-state="0" />
+    <frame x="0" y="1" width="1280" height="995" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.123893805" order="1" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.12388664" order="1" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24943566" order="5" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.3295711" order="2" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.69783354" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.29927593" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.29878542" order="0" />
       <window_info id="Hibernate Tools" active="false" anchor="right" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.33" order="3" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="3" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.29766694" order="1" />
@@ -215,7 +187,7 @@
     </Diff>
     <Add>
       <option name="ADD_AS_BINARY" value="false" />
-      <option name="LOG_MESSAGE" value="" />
+      <option name="LOG_MESSAGE" value="Add IPAddressFilter" />
     </Add>
     <Status>
       <option name="NON_RECURSIVE" value="false" />
@@ -276,13 +248,15 @@
   <component name="ProjectViewSettings">
     <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/xsd" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/net" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/net" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul" />
     </view>
     <view id="SourcepathPane" />
     <view id="ClasspathPane" />
@@ -290,7 +264,7 @@
   <component name="RunManager">
     <option name="SHOW_SETTINGS_BEFORE_RUNNING" value="true" />
     <option name="COMPILE_BEFORE_RUNNING" value="true" />
-    <activeType name="JUnit" />
+    <activeType name="Application" />
     <configuration name="&lt;template&gt;" type="Application" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
@@ -328,7 +302,13 @@
       <Port>5050</Port>
       <LaunchServer>false</LaunchServer>
     </configuration>
-    <configuration name="EnumTest" type="JUnit" default="false" selected="true">
+    <configuration name="SpyProxy" type="Application" default="false" selected="true">
+      <option name="MAIN_CLASS_NAME" value="org.yajul.net.SpyProxy" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" value="-d -t localhost 8888 6346" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="EnumTest" type="JUnit" default="false" selected="false">
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" value="org.yajul.enum.test.EnumTest" />
       <option name="METHOD_NAME" />
@@ -414,6 +394,15 @@
       <option name="MAIN_CLASS_NAME" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="SpyProxyTest" type="JUnit" default="false" selected="true">
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" value="org.yajul.net.SpyProxyTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -636,11 +625,6 @@
     <option name="PROJECT" value="" />
     <option name="VIEW" value="" />
     <option name="ALTERNATIVE_WORKING_PATH" value="" />
-  </component>
-  <component name="TransparentConfiguration">
-    <option name="implementation" value="net.sourceforge.transparent.CommandLineClearCase" />
-    <option name="clearcaseRoot" value="" />
-    <option name="isCheckoutReserved" value="false" />
   </component>
 </project>
 
