@@ -30,6 +30,8 @@ package org.yajul.util;
 import org.apache.log4j.Logger;
 
 import java.util.Properties;
+import java.io.File;
+import java.net.URL;
 
 /**
  * Provides utility methods for instantiating objects with
@@ -195,5 +197,54 @@ public class ObjectFactory
         }
 
         return classLoader;
+    }
+
+
+    /**
+     * Returns the resource name for the specified class.
+     * @param c The class.
+     * @return String - The resource name for the class.
+     */
+    public static String getClassResourceName(Class c)
+    {
+        String s = c.getName();
+        return s.replace('.','/') + ".class";
+    }
+
+    /**
+     * Returns the URL where the specified class is located in the current classpath.
+     * @param c The class to look for.
+     * @return URL - The URL where the class was found, using the current class loader.
+     */
+    public static URL findClassURL(Class c)
+    {
+        String resourceName = getClassResourceName(c);
+        ClassLoader loader = getCurrentClassLoader();
+        return loader.getResource(resourceName);
+    }
+
+    /**
+     * Returns the base part of the classpath where the specified class can be found.
+     * @param c The class to look up.
+     */
+    public static String getClasspathRoot(Class c)
+    {
+        String resourceName = getClassResourceName(c);
+        ClassLoader loader = getCurrentClassLoader();
+        URL url = loader.getResource(resourceName);
+        String protocol = url.getProtocol();
+        if ("file".equals(protocol))
+        {
+            String fileString = url.getFile();
+            if (fileString.endsWith(resourceName))
+            {
+                String rv = fileString.substring(0,fileString.length() - resourceName.length());
+                return new File(rv).getAbsolutePath();
+            }
+            else
+                return null;
+        }
+        else
+            return null;
     }
 }
