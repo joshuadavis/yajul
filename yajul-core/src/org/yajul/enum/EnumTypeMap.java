@@ -3,7 +3,7 @@
  * $Author$
  * $Date$
  *
- * Copyright 2002 - YAJUL Developers, Joshua Davis, Kent Vogel.
+ * Copyright 2002-2003  YAJUL Developers, Joshua Davis, Kent Vogel.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,8 @@ import org.w3c.dom.Element;
 import org.apache.log4j.Logger;
 
 /**
- * Provides a map of enumerated types (EnumType and associated EnumValues), loaded from an XML file.
+ * Provides a map of enumerated types (EnumType and associated EnumValues),
+ * loaded from an XML file.
  * User: jdavis
  * Date: Jul 3, 2003
  * Time: 2:18:23 PM
@@ -66,7 +67,8 @@ public class EnumTypeMap
     /**
      * Loads the map of EnumTypes and their values from the XML input stream.
      * @param is The XML input stream.
-     * @throws EnumInitializationException If there was a problem loading the types and their values.
+     * @throws EnumInitializationException If there was a problem loading the
+     * types and their values.
      */
     public void loadXML(InputStream is) throws EnumInitializationException
     {
@@ -78,18 +80,23 @@ public class EnumTypeMap
         catch (Exception e)
         {
             EnumInitializationException x =  new EnumInitializationException(
-                    "Unable parse 'enum-types.xml' due to: " + e.getMessage(),e);
+                    "Unable parse 'enum-types.xml' due to: "
+                    + e.getMessage(),e);
             log.error(x);
             throw x;
         }
 
         if (document == null)
-            throw new EnumInitializationException("No document: 'enum-types.xml'");
+            throw new EnumInitializationException(
+                    "No document: 'enum-types.xml'");
 
-        // Iterate through the 'enum-type' elements, and create an instance of EnumType for each one.
-        Element[] enumTypeElems = DOMUtil.getChildElements(document,"enum-type");
+        // Iterate through the 'enum-type' elements, and create an instance of
+        // EnumType for each one.
+        Element[] enumTypeElems = DOMUtil.getChildElements(document,
+                "enum-type");
         if (log.isDebugEnabled())
-            log.debug("loadXML() : " + enumTypeElems.length + " enum-type elements found.");
+            log.debug("loadXML() : " + enumTypeElems.length
+                    + " enum-type elements found.");
         for (int i = 0; i < enumTypeElems.length; i++)
         {
             Element type = enumTypeElems[i];
@@ -98,13 +105,15 @@ public class EnumTypeMap
             {
                 enumType.loadFromElement(type);
                 if (types.get(enumType.getId()) != null)
-                    log.warn("loadXML() : Multiple definitions encountered for enum-type '" + enumType.getId() + "'");
+                    log.warn("loadXML() : Multiple definitions encountered " +
+                            "for enum-type '" + enumType.getId() + "'");
                 types.put(enumType.getId(),enumType);
             }
             catch (Exception e)
             {
                 EnumInitializationException x = new EnumInitializationException(
-                        "Unable to initialize " + type.getAttribute("id") + " due to: " + e.getMessage(), e);
+                        "Unable to initialize " + type.getAttribute("id")
+                        + " due to: " + e.getMessage(), e);
                 log.error(x);
                 throw x;
             }
@@ -113,7 +122,8 @@ public class EnumTypeMap
     }
 
     /**
-     * Returns the EnumType given an enum type id string, or null if there is no type with the specified id.
+     * Returns the EnumType given an enum type id string, or null if there is
+     * no type with the specified id.
      * @param enumTypeId The id to look for.
      * @return
      */

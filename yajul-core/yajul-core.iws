@@ -2,79 +2,76 @@
 <project version="3" relativePaths="true">
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="2" column="51" vertical-scroll-proportion="0.04101327" horizontal-scroll-proportion="0.41415313" />
       <source-position-entry url="jar://$PROJECT_DIR$/../../../java/jdk1.3.1_03/src.jar!/src/java/util/ArrayList.java" line="301" column="0" vertical-scroll-proportion="0.5244361" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="16" column="13" vertical-scroll-proportion="0.32810616" horizontal-scroll-proportion="0.105568446">
+      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="49" column="71" vertical-scroll-proportion="0.051409617" horizontal-scroll-proportion="0.7939297" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumInitializationException.java" line="38" column="13" vertical-scroll-proportion="0.6635338" horizontal-scroll-proportion="0.14536741" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/DetailedException.java" line="38" column="13" vertical-scroll-proportion="1.1823308" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/DetailedRuntimeException.java" line="38" column="13" vertical-scroll-proportion="1.1823308" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/xml/DOMUtil.java" line="47" column="13" vertical-scroll-proportion="-0.4473684" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/license/license.txt" line="7" column="31" vertical-scroll-proportion="0.2236842" horizontal-scroll-proportion="0.25144842" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayIterator.java" line="37" column="13" vertical-scroll-proportion="-2.6390977" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/util/test/ArrayIteratorTest.java" line="19" column="13" vertical-scroll-proportion="-1.5244361" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="5" column="21" vertical-scroll-proportion="0.15977444" horizontal-scroll-proportion="0.17033604" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="49" column="0" vertical-scroll-proportion="1.406015" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="0" column="39" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.31633836">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumInitializationException.java" line="26" column="0" vertical-scroll-proportion="0.5331725" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="40" column="13" vertical-scroll-proportion="0.7020507" horizontal-scroll-proportion="0.14536741">
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="49" column="13" vertical-scroll-proportion="-1.9398496" horizontal-scroll-proportion="0.105446115">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="48" column="13" vertical-scroll-proportion="0.82509047" horizontal-scroll-proportion="0.14536741">
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="42" column="13" vertical-scroll-proportion="-1.2969925" horizontal-scroll-proportion="0.105446115">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="41" column="13" vertical-scroll-proportion="0.76357055" horizontal-scroll-proportion="0.14536741">
-        <folding>
-          <element signature="imports" expanded="true" />
-        </folding>
-      </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/log/LogUtil.java" line="50" column="13" vertical-scroll-proportion="0.33293125" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayIterator.java" line="37" column="13" vertical-scroll-proportion="0.7020507" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/DetailedException.java" line="38" column="13" vertical-scroll-proportion="0.7587455" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/DetailedRuntimeException.java" line="38" column="13" vertical-scroll-proportion="0.7587455" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/xml/DOMUtil.java" line="115" column="47" vertical-scroll-proportion="2.1531966" horizontal-scroll-proportion="0.5255591" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/util/test/ArrayIteratorTest.java" line="33" column="28" vertical-scroll-proportion="0.5741858" horizontal-scroll-proportion="0.31309903" />
-      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="49" column="71" vertical-scroll-proportion="0.036188178" horizontal-scroll-proportion="0.7939297" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/log/LogUtil.java" line="53" column="39" vertical-scroll-proportion="1.387218" horizontal-scroll-proportion="0.31633836" />
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="40" column="13" vertical-scroll-proportion="0.7020507" horizontal-scroll-proportion="0.14536741">
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="42" column="13" vertical-scroll-proportion="-1.2969925" horizontal-scroll-proportion="0.105446115">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayIterator.java" line="37" column="13" vertical-scroll-proportion="0.7020507" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/DetailedException.java" line="38" column="13" vertical-scroll-proportion="0.7587455" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/DetailedRuntimeException.java" line="38" column="13" vertical-scroll-proportion="0.7587455" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/xml/DOMUtil.java" line="115" column="47" vertical-scroll-proportion="2.1531966" horizontal-scroll-proportion="0.5255591" />
-      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="49" column="71" vertical-scroll-proportion="0.036188178" horizontal-scroll-proportion="0.7939297" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/util/test/ArrayIteratorTest.java" line="33" column="28" vertical-scroll-proportion="0.5741858" horizontal-scroll-proportion="0.31309903" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/log/LogUtil.java" line="50" column="13" vertical-scroll-proportion="0.33293125" horizontal-scroll-proportion="0.14536741" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="48" column="13" vertical-scroll-proportion="0.82509047" horizontal-scroll-proportion="0.14536741">
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/log/LogUtil.java" line="53" column="39" vertical-scroll-proportion="1.387218" horizontal-scroll-proportion="0.31633836" selected="true" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="49" column="13" vertical-scroll-proportion="-1.9398496" horizontal-scroll-proportion="0.105446115">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="41" column="13" vertical-scroll-proportion="0.76357055" horizontal-scroll-proportion="0.14536741">
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="0" column="39" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.31633836">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayIterator.java" line="37" column="13" vertical-scroll-proportion="-2.6390977" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/util/test/ArrayIteratorTest.java" line="19" column="13" vertical-scroll-proportion="-1.5244361" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/xml/DOMUtil.java" line="47" column="13" vertical-scroll-proportion="-0.4473684" horizontal-scroll-proportion="0.105446115" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="49" column="0" vertical-scroll-proportion="1.406015" horizontal-scroll-proportion="0.0" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="5" column="21" vertical-scroll-proportion="0.15977444" horizontal-scroll-proportion="0.17033604" />
+      <source-position-entry url="file://$PROJECT_DIR$/license/license.txt" line="7" column="31" vertical-scroll-proportion="0.2236842" horizontal-scroll-proportion="0.25144842" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1288" height="1004" extended-state="1" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.24979919" order="1" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3295711" order="2" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24979919" order="1" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24943566" order="5" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.3295711" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.18554217" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.24899599" order="0" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="3" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3295711" order="1" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3295711" order="-1" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3295711" order="8" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="6" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="5" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="0" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="4" />
     </layout>
@@ -181,6 +178,12 @@
     <option name="GROUP_GETTERS_AND_SETTERS" value="true" />
   </component>
   <component name="CvsConfiguration">
+    <cvs_root>
+      <option name="METHOD" value="ext" />
+      <option name="USER_NAME" value="pgmjsd" />
+      <option name="HOST" value="cvs.sourceforge.net" />
+      <option name="REPOSITORY" value="/cvsroot/yajul" />
+    </cvs_root>
     <Checkout>
       <option name="DATE_TAG" value="" />
       <option name="REVISION_TAG" value="" />
@@ -214,7 +217,7 @@
     </Diff>
     <Add>
       <option name="ADD_AS_BINARY" value="false" />
-      <option name="LOG_MESSAGE" value="" />
+      <option name="LOG_MESSAGE" value="The YAJUL license." />
     </Add>
     <Status>
       <option name="NON_RECURSIVE" value="false" />
@@ -244,13 +247,13 @@
       <option name="NON_RECURSIVE" value="false" />
       <option name="FORCE_RECURSIVE" value="false" />
     </Editors>
-    <option name="CLIENT_PATH" value="" />
-    <option name="EXTERNAL_DIFF_PATH" />
+    <option name="CLIENT_PATH" value="$PROJECT_DIR$/../../../Program Files/GNU/WinCvs 1.2/cvs.exe" />
+    <option name="EXTERNAL_DIFF_PATH" value="" />
     <option name="USE_EXTERNAL_DIFF" value="false" />
     <option name="WORKING_FILES_READONLY" value="false" />
-    <option name="COMPRESSION_LEVEL" value="0" />
+    <option name="COMPRESSION_LEVEL" value="9" />
     <option name="ADDITIONAL_OPTIONS" value="" />
-    <option name="BINARY_FILES_EXTENSIONS" />
+    <option name="BINARY_FILES_EXTENSIONS" value="" />
     <option name="REUSE_LAST_LOG_MESSAGE" value="false" />
     <option name="PUT_FOCUS_INTO_LOG_MESSAGE" value="false" />
     <option name="SHOW_UPDATE_OPTIONS" value="true" />
@@ -258,33 +261,40 @@
     <option name="SHOW_DIFF_OPTIONS" value="true" />
     <option name="SHOW_ADD_OPTIONS" value="true" />
     <option name="SHOW_STATUS_OPTIONS" value="true" />
-    <option name="SHOW_EDIT_OPTIONS" value="true" />
+    <option name="SHOW_EDIT_OPTIONS" value="false" />
     <option name="SHOW_UNEDIT_OPTIONS" value="true" />
     <option name="SHOW_REMOVE_OPTIONS" value="true" />
     <option name="SHOW_LOG_OPTIONS" value="true" />
     <option name="SHOW_EDITORS_OPTIONS" value="true" />
-    <option name="HIDE_UNKNOWN_FILES" value="false" />
+    <option name="HIDE_UNKNOWN_FILES" value="true" />
     <option name="HIDE_MISSING_FILES" value="false" />
     <option name="HIDE_UP_TO_DATE_FILES" value="false" />
   </component>
   <component name="CvsVcs">
-    <expanded_paths />
+    <expanded_paths>
+      <path value="$PROJECT_DIR$/src/org/yajul/enum" />
+    </expanded_paths>
   </component>
   <component name="ProjectViewSettings">
     <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/util" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/xml" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/build/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/license" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/test_data" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/log" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/build/lib" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/build" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/lib" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/enum" />
     </view>
     <view id="SourcepathPane" />
     <view id="ClasspathPane" />
@@ -511,7 +521,7 @@
     </todo-panel>
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="ACTIVE_VCS_NAME" value="" />
+    <option name="ACTIVE_VCS_NAME" value="CVS" />
   </component>
   <component name="StarteamConfiguration">
     <option name="SERVER" value="" />

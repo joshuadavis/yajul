@@ -3,7 +3,7 @@
  * $Author$
  * $Date$
  *
- * Copyright 2002 - YAJUL Developers, Joshua Davis, Kent Vogel.
+ * Copyright 2002-2003  YAJUL Developers, Joshua Davis, Kent Vogel.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,12 @@ import org.yajul.log.LogUtil;
 import org.yajul.util.ArrayIterator;
 import org.yajul.xml.DOMUtil;
 
+/**
+ * Provides a collection of enumerated values, otherwise known as an enumerated
+ * type.  Each value can be found by it's id (integer >= 0), it's XML text
+ * value, or it's UI text value.
+ * @author Joshua Davis
+ */
 public class EnumType
 {
     /**
@@ -68,58 +74,112 @@ public class EnumType
     /** Map of values by text string. **/
     private Map valueByText;
 
+    /**
+     * Creates a new EnumType object.
+     */
     protected EnumType()
     {
         valueByXML = new HashMap();
         valueByText = new HashMap();
     }
 
+    /**
+     * Returns the id of this enumerated type in the EnumTypeMap that
+     * it is contained by.
+     * @return String - The unique id of this enumerated type.
+     */
     public String getId()
     {
         return id;
     }
 
+    /**
+     * Returns the class that will be used to represent the values of the
+     * enumerated type.  This class must extend EnumValue.
+     * @return Class - The class of the enum values.
+     */
     public Class getEnumValueClass()
     {
         return enumValueClass;
     }
 
+    /**
+     * Returns the value, given it's id.
+     * @param id The value id to look for.
+     * @return EnumValue - The enumerated value.
+     */
     public EnumValue findValueById(int id)
     {
         return valueArray[id];
     }
 
+    /**
+     * Returns the value, given it's XML text.
+     * @param xml The XML text to look for.
+     * @return EnumValue - The enumerated value.
+     */
     public EnumValue findValueByXml(String xml)
     {
         return (EnumValue) valueByXML.get(xml);
     }
 
+    /**
+     * Returns the value, given it's UI textual representation.
+     * @param text The text to look for.
+     * @return EnumValue - The enumerated value.
+     */
     public EnumValue findValueByText(String text)
     {
         return (EnumValue) valueByText.get(text);
     }
 
+    /**
+     * Converts an XML text value into an id for this map.  Returns
+     * UNDEFINED (-1) if the XML text was not valid.
+     * @param xml The XML text to look for.
+     * @return int - The enum value id, or UNDEFINED if the XML text was not
+     * valid.
+     */
     public int xmlToValueId(String xml)
     {
         EnumValue value = findValueByXml(xml);
         return (value == null) ? UNDEFINED : value.getId();
     }
 
+    /**
+     * Returns an iterator that will produce all of the values of this type
+     * in ID order.
+     * @return Iterator - An iterator of all the enumerated values.
+     */
     public Iterator iterator()
     {
         return new ValueIterator();
     }
 
+    /**
+     * Sets the class that will be used for the enumerated values.
+     * @param enumValueClass The enumerated value class.
+     */
     void setEnumValueClass(java.lang.Class enumValueClass)
     {
         this.enumValueClass = enumValueClass;
     }
 
+    /**
+     * Sets the id of this enumerated type.
+     * @param id The id of this enumerated type.
+     */
     void setId(String id)
     {
         this.id = id;
     }
 
+    /**
+     * Loads the enumerated type from a DOM element.
+     * @param elem The DOM element.
+     * @throws EnumInitializationException If the enumerated type could not
+     * be created from the DOM element.
+     */
     void loadFromElement(Element elem) throws EnumInitializationException
     {
         id = elem.getAttribute("id");
@@ -129,21 +189,23 @@ public class EnumType
         }
         catch (ClassNotFoundException e)
         {
-            throw new EnumInitializationException("Unable to find value class! " + e.getMessage(),e);
+            throw new EnumInitializationException(
+                    "Unable to find value class! " + e.getMessage(),e);
         }
 
         // Look for the 'enum-value' elements inside this 'enum-type' element.
         Element[] valueElements = DOMUtil.getChildElements(elem, "enum-value");
-        // Create an array-list if values to ultimately create the 'values by id' array.
+        // Create an array-list if values to ultimately create the
+        // 'values by id' array.
         ArrayList valuesById = new ArrayList(valueElements.length);
 
-        // Set the minimum and maximum index values to their limits, so the loop can set them as the
-        // elements are parsed.
+        // Set the minimum and maximum index values to their limits, so the
+        // loop can set them as the elements are parsed.
         maxId = Integer.MIN_VALUE;
         minId = Integer.MAX_VALUE;
         int id = 0;
-        // Parse each element, adding the parsed elements to the index maps and updating the minimum and maximum
-        // id fields.
+        // Parse each element, adding the parsed elements to the index maps and
+        // updating the minimum and maximum id fields.
         for (int i = 0; i < valueElements.length; i++)
         {
             Element valueElement = valueElements[i];
@@ -154,11 +216,15 @@ public class EnumType
             }
             catch (InstantiationException e)
             {
-                throw new EnumInitializationException("Unable to instantiate value class due to: " + e.getMessage(),e);
+                throw new EnumInitializationException(
+                        "Unable to instantiate value class due to: "
+                        + e.getMessage(),e);
             }
             catch (IllegalAccessException e)
             {
-                throw new EnumInitializationException("Unable to instantiate value class due to: " + e.getMessage(),e);
+                throw new EnumInitializationException(
+                        "Unable to instantiate value class due to: "
+                        + e.getMessage(),e);
             }
             value.loadFromElement(this, valueElement);
             id = value.getId();
@@ -166,7 +232,8 @@ public class EnumType
                 throw new EnumInitializationException("Illegal enum id: " + id);
 
             if (id < valuesById.size() && valuesById.get(id) != null)
-                log.warn("Value '" + id + " already defined in EnumType " + getId());
+                log.warn("Value '" + id
+                        + " already defined in EnumType " + getId());
 
             valuesById.add(id, value);
             if (id > maxId)
@@ -178,10 +245,13 @@ public class EnumType
             valueByText.put(value.getTextValue(), value);
         }
 
-        valueArray = (EnumValue[]) valuesById.toArray(new EnumValue[valuesById.size()]);
-        log.info("loadFromElement() : valueArray.length = " + valueArray.length);
+        valueArray = (EnumValue[]) valuesById.toArray(
+                new EnumValue[valuesById.size()]);
+        log.info("loadFromElement() : valueArray.length = "
+                + valueArray.length);
     }
 
+    /** Iterates the values of the enumerated type. **/
     private class ValueIterator extends ArrayIterator
     {
         /**

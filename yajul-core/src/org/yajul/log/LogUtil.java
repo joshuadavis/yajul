@@ -3,7 +3,7 @@
  * $Author$
  * $Date$
  *
- * Copyright 2002 - YAJUL Developers, Joshua Davis, Kent Vogel.
+ * Copyright 2002-2003  YAJUL Developers, Joshua Davis, Kent Vogel.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -89,7 +89,6 @@ public class LogUtil
                 String levelString = System.getProperty(SYSPROPERTY_LEVEL);
                 setRootLevel(levelString);
                 configured = true;
-//                log.info("Log4J default console configuration.");
             }
         }
     }

@@ -3,7 +3,7 @@
  * $Author$
  * $Date$
  *
- * Copyright 2002 - YAJUL Developers, Joshua Davis, Kent Vogel.
+ * Copyright 2002-2003  YAJUL Developers, Joshua Davis, Kent Vogel.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ import org.yajul.log.LogUtil;
  * Provides basic value behavior for an enumerated type, including an id
  * an 'XML value' (i.e. the value used for XML encoding/decoding), and a 'text value' (i.e.
  * a value that might be used in a user interface).
+ * @author Joshua Davis
  */
 public class EnumValue implements Serializable, Comparable
 {
@@ -52,26 +53,46 @@ public class EnumValue implements Serializable, Comparable
     private String textValue;
     private String typeId;
 
+    /**
+     * Returns the id of the enumerated value.
+     * @return int - The id of the enumerated value.
+     */
     public int getId()
     {
         return id;
     }
 
+    /**
+     * Returns the id of the type that this enumerated value belongs to.
+     * @return String - The id of the type that this enumerated type is in.
+     */
     public String getTypeId()
     {
         return typeId;
     }
 
+    /**
+     * Returns the id of this value as an Integer object.
+     * @return Integer - The id of the enumerated value.
+     */
     public Integer getIdInteger()
     {
         return idInteger;
     }
 
+    /**
+     * Returns the application specific XML text representation of this enumerated value.
+     * @return String - The XML representation of this value.
+     */
     public String getXmlValue()
     {
         return xmlValue;
     }
 
+    /**
+     * Returns the application specific plain text (UI text) for this value.
+     * @return String - The plain text representation of this value.
+     */
     public String getTextValue()
     {
         return textValue;
@@ -139,16 +160,28 @@ public class EnumValue implements Serializable, Comparable
         return idInteger.compareTo(other.idInteger);
     }
 
+    /**
+     * Sets the plain text value.
+     * @param textValue The new plain text value.
+     */
     protected void setTextValue(String textValue)
     {
         this.textValue = textValue;
     }
 
+    /**
+     * Sets the XML textual value.
+     * @param xmlValue The new XML value.
+     */
     protected void setXmlValue(String xmlValue)
     {
         this.xmlValue = xmlValue;
     }
 
+    /**
+     * Sets the id of this value.
+     * @param id The new id.
+     */
     protected void setId(int id)
     {
         this.id = id;
@@ -158,6 +191,8 @@ public class EnumValue implements Serializable, Comparable
     /**
      * Loads this instance from the XML element.  Sub-classes should override
      * this to load in specialized properties.
+     * @param type The type that this value will belong to.
+     * @param elem The element to load the attributes from.
      */
     protected void loadFromElement(EnumType type,Element elem)
     {
