@@ -38,7 +38,21 @@ import java.sql.SQLException;
  * The properties (bean properties) control the time between attempts and the maximum number of attempts to make.
  * This class is thread safe, as it is typically used inside an application server.
  * <br>
- * TODO: Put an example of a Spring bean declaration here.
+ * Example spring bean configuration:
+ * <pre>
+ * &lt;!-- Look up the main data source in the JNDI tree. --&gt;
+ * &lt;bean id="myDataSource" class="org.springframework.jndi.JndiObjectFactoryBean"&gt;
+ *     &lt;property name="jndiName"&gt;&lt;value&gt;myDataSource&lt;/value&gt;&lt;/property&gt;
+ * &lt;/bean&gt;
+ * &lt;!--
+ * Create a wrapper around the data source that will retry connections.
+ * --&gt;
+ * &lt;bean id="jdbcDataSource" class="org.yajul.sql.ReconnectingDataSource"&gt;
+ *      &lt;property name="dataSource"&gt;
+ *       &lt;ref bean="myDataSource"/&gt;
+ *     &lt;/property&gt;
+ * &lt;/bean&gt;
+ * </pre>
  * @author josh Mar 10, 2004 7:56:48 AM
  */
 public class ReconnectingDataSource implements DataSource
@@ -276,6 +290,12 @@ public class ReconnectingDataSource implements DataSource
             {
                 attempts++;
                 Connection con = callback.doGetConnection(dataSource);
+                if (con == null)
+                    throw new SQLException("Null connnection returned!");
+//                if (con.isClosed())
+//                    throw new SQLException("Connection already closed!");
+                if (attempts != 0)
+                    log.info("Connection obtained after " + attempts + " attempt" + ((attempts > 1) ? "s" : ""));
                 return con;
             }
             catch (SQLException sqle)       // The pool might be empty... retry if the timeout has not expired.
@@ -295,7 +315,6 @@ public class ReconnectingDataSource implements DataSource
                     catch (InterruptedException ignore)
                     {
                     }
-                    log.info("Attempt #" + attempts + " ...");
                     continue;               // Retry.
                 }
                 else
