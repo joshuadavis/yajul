@@ -44,7 +44,6 @@ public class DBStringSet extends DatabaseSet
     {
         super(targetTableName, keyColumnName, valueColumnName, con);
         // Ensure that the value column type is compatible with 'int'.
-/* TODO: Implement 'isStringType'
         ColumnMetaData md = getColumnMetadata(valueColumnName);
         if (!md.isStringType())
             throw new IllegalArgumentException(
@@ -52,7 +51,6 @@ public class DBStringSet extends DatabaseSet
                     + "' in table '"
                     + targetTableName
                     + "' is not compatible with the 'String' data type!");
-*/
     }
 
     /**

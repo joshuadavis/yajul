@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.yajul.log.LogUtil;
 
 /**
- * TODO: Add javadoc
+ * Encapsulates database column metadata access.
  * User: jdavis
  * Date: Aug 4, 2003
  * Time: 6:05:02 PM
@@ -143,6 +143,15 @@ public class ColumnMetaData implements Serializable
     }
 
     /**
+     * Returns true if the column is a type compatible with 'String'.
+     * @return boolean - True if the column is a String-compatible column.
+     */
+    public boolean isStringType()
+    {
+        return isStringType(dataType);
+    }
+
+    /**
      * Returns true if the column is a type compatible with 'int'.
      * @param dataType The data type (see java.sql.Types)
      * @return boolean - True if the column is an int-compatible column.
@@ -174,6 +183,29 @@ public class ColumnMetaData implements Serializable
             // size of the numeric value).
             // TODO: Add a flag to allow/disallow this.
             case Types.DECIMAL:     return true;
+
+            // --- All other types ---
+            // All other types are incompatible.
+            default: return false;
+        }
+    }
+
+    /**
+     * Returns true if the column is a type compatible with 'String'.
+     * @param dataType The data type (see java.sql.Types)
+     * @return boolean - True if the column is a String-compatible column.
+     * @see java.sql.Types
+     */
+    public static boolean isStringType(int dataType)
+    {
+        if (log.isDebugEnabled())
+            log.debug("isStringType() : dataType = " + dataType);
+        switch(dataType)
+        {
+            // --- Lossless conversion ---
+
+            case Types.CHAR:        return true;
+            case Types.VARCHAR:     return true;
 
             // --- All other types ---
             // All other types are incompatible.

@@ -62,8 +62,26 @@ public abstract class DatabaseSet
      * @param key The key object.
      * @throws SQLException if something goes wrong.
      */
-    protected abstract void setKey(PreparedStatement preparedStatement, int paramIndex, Object key)
-            throws SQLException;
+    protected void setKey(PreparedStatement preparedStatement, int paramIndex, Object key)
+            throws SQLException
+    {
+        if (key == null)
+        {
+            throw new SQLException("Key cannot be null!");
+        }
+        if (key instanceof Integer)
+        {
+            Integer intKey = (Integer) key;
+            preparedStatement.setInt(paramIndex, intKey.intValue());
+        }
+        else if (key instanceof Long)
+        {
+            Long longKey = (Long) key;
+            preparedStatement.setLong(paramIndex, longKey.longValue());
+        }
+        else
+            throw new SQLException("Unsupported key class: " + key.getClass().getName());
+    }
 
     /**
      * Sets the value into the prepared statement by invoking the appropriate setXxxx(int,...) method.
