@@ -22,7 +22,7 @@
   <menu label="Code">
     <menu-item label="Javadocs+UML"           href="javadocs/"/>   
     <menu-item label="Java Source Ref"        href="javadocs/javasrc"/>  
-    <menu-item label="Java Source Xref"       href="javadocs/xref"/>  
+    <menu-item label="Java Source Xref"       href="xref"/>  
     <menu-item label="Dependencies"           href="metrics/jdepend"/>   
     <menu-item label="Code Style Check"       href="metrics/checkstyle/"/>   
     <menu-item label="Unit tests"             href="tests/junit"/>    
