@@ -26,6 +26,7 @@
         <pathelement path="${lib.dir}/spring.jar"/>
         <pathelement path="${lib.dir}/servlet-2.3.jar"/>
         <pathelement path="${lib.dir}/jaas-1.0.01.jar"/>
+        <pathelement path="${lib.dir}/jta.jar"/>        
     </path>
 
     <path id="test.classpath">
