@@ -73,6 +73,21 @@ public class StringUtil
     }
 
     /**
+     * Right-pads a string with spaces out to the specified length and returns
+     * it.
+     * @param s - The message to write to the log
+     * @param length - The desired length of the padded string.
+     * @param truncate - Set to true to truncate 's' to 'length' when
+     * s.length() > length
+     * @return String - The padded (truncated) string.
+     */
+    public static final String padRight(String s, int length, boolean truncate)
+    {
+        final String paddingChunk = "                    ";
+        return padRight(s, length, truncate, paddingChunk);
+    }
+
+    /**
      * Left-pads a string out to the specified length using the specified
      * padding string and returns it.
      * @param s         The message to write to the log
@@ -85,8 +100,28 @@ public class StringUtil
     public static String padLeft(String s, int length, boolean truncate, 
         final String padding)
     {
-        int paddingChunkLength = padding.length();
+        return pad(length, s, truncate, padding, false);
+    }
 
+    /**
+     * Right-pads a string out to the specified length using the specified
+     * padding string and returns it.
+     * @param s         The message to write to the log
+     * @param length    The desired length of the padded string.
+     * @param truncate  Set to true to truncate 's' to 'length' when s.length()
+     * > length
+     * @param padding   The string to use as padding.
+     * @return String   The padded (truncated) string.
+     */
+    public static String padRight(String s, int length, boolean truncate,
+        final String padding)
+    {
+        return pad(length, s, truncate, padding, true);
+    }
+
+    private static String pad(int length, String s, boolean truncate,
+                              final String padding, boolean right)
+    {
         int spaceCount = length - s.length();
 
         // Is the string longer than the padded length?
@@ -98,10 +133,33 @@ public class StringUtil
                 return s;
         }
 
-        // Add the initial string.
-        StringBuffer sb = new StringBuffer(s);
+        StringBuffer sb = null;
 
+        if (right)
+        {
+            sb = new StringBuffer();
+            // Add the padding.
+            appendPad(padding, spaceCount, sb);
+            // Add the string.
+            sb.append(s);
+        }
+        else
+        {
+            // Add the string.
+            sb = new StringBuffer(s);
+            // Add the padding.
+            appendPad(padding, spaceCount, sb);
+        }
+
+        return sb.toString();
+    }
+
+
+    private static final void appendPad(final String padding, int spaceCount,
+                                        StringBuffer sb)
+    {
         // Append whole chunks.
+        int paddingChunkLength = padding.length();
         while (spaceCount >= paddingChunkLength)
         {
             sb.append(padding);
@@ -111,8 +169,6 @@ public class StringUtil
         // Append the last partial chunk.
         if (spaceCount >= 0)
             sb.append(padding.substring(0, spaceCount));
-
-        return sb.toString();
     }
 
     /**
