@@ -16,20 +16,17 @@
     <menu-item label="Introduction"          href="index.html"/>
     <menu-item label="Project descriptors"   href="centipede/index.html"/>  
     <menu-item label="Cents"                 href="cents.html"/>   
-    <menu-item label="CentDocs"              href="centipede/index.html"/>   
-    <menu-item label="Dir Layout"            href="project/index.html"/>      
+    <menu-item label="Dir Layout"            href="project/index.html"/> 
   </menu>
 
   <menu label="Code">
-    <menu-item label="Javadocs+UML"           href="javadocs/"/>   
-    <menu-item label="Java Source Ref"        href="javadocs/javasrc"/>  
-    <menu-item label="Java Source Xref"       href="xref"/>  
-    <menu-item label="Dependencies"           href="metrics/jdepend"/>   
-    <menu-item label="Code Style Check"       href="metrics/checkstyle/"/>   
-    <menu-item label="Unit tests"             href="tests/junit"/>    
-    <menu-item label="Build Targets"          href="centipede/build.html"/>  
-    <menu-item label="Dir Layout"             href="centipede/layout.html"/>  
-    <menu-item label="Project properties"     href="centipede/properties.html"/> 
+    <menu-item label="Javadocs"               href="javadocs/"/>   
+    <menu-item label="UML+Javadocs"           href="umldoclet/"/>   
+    <menu-item label="Java Source Ref"        href="javasrc/"/>
+    <menu-item label="Code Style Checks"      href="checkstyle/index.html"/> 
+    <menu-item label="Dependencies"           href="jdepend/index.html"/> 
+    <menu-item label="Unit tests"             href="junit/"/>
+    <menu-item label="Cents"                  href="centipede/index.html"/>    
     <menu-item label="Browse CVS"     	      href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul/yajul-main/"/> 
   </menu>
 
