@@ -46,14 +46,6 @@ public class DBIntegerSet extends DatabaseSet
             Connection con)
     {
         super(targetTableName, keyColumnName, valueColumnName, con);
-        // Ensure that the value column type is compatible with 'int'.
-        ColumnMetaData md = getColumnMetadata(valueColumnName);
-        if (!md.isIntType())
-            throw new IllegalArgumentException(
-                    "The type of column '" + valueColumnName
-                    + "' in table '"
-                    + targetTableName
-                    + "' is not compatible with the 'int' data type!");
     }
 
     /**
@@ -70,6 +62,22 @@ public class DBIntegerSet extends DatabaseSet
     protected void addElement(ArrayList list, ResultSet rs) throws SQLException
     {
         list.add(new Integer(rs.getInt(1)));
+    }
+
+    /**
+     * Check the metadata to make sure that it is compatible with
+     * the desired key/value types.
+     */
+    public void checkMetadata() throws MetaDataException
+    {
+        // Ensure that the value column type is compatible with 'int'.
+        ColumnMetaData md = getColumnMetadata(getValueColumnName());
+        if (!md.isIntType())
+            throw new MetaDataException(
+                    "The type of column '" + getValueColumnName()
+                    + "' in table '"
+                    + getTargetTableName()
+                    + "' is not compatible with the 'int' data type!");
     }
 
     /**

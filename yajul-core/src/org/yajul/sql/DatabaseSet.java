@@ -47,6 +47,12 @@ public abstract class DatabaseSet
     }
 
     /**
+     * Check the metadata to make sure that it is compatible with
+     * the desired key/value types.
+     */
+    public abstract void checkMetadata() throws MetaDataException;
+
+    /**
      * Adds the result from the result set to the list, performing any necessary data conversions.
      * @param list The list to add the result to.
      * @param rs The result set, positioned at the current result.
@@ -191,11 +197,12 @@ public abstract class DatabaseSet
     }
 
     protected final ColumnMetaData getColumnMetadata(String columnName)
+            throws MetaDataException
     {
         String targetTableName = getTargetTableName();
         ColumnMetaData md = helper.getColumnMetaData(targetTableName,columnName);
         if (md == null)
-            throw new IllegalArgumentException(
+            throw new MetaDataException(
                     "Column '" + columnName
                     + "' in table '"
                     + targetTableName

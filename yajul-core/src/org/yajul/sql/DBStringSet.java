@@ -43,13 +43,17 @@ public class DBStringSet extends DatabaseSet
             Connection con)
     {
         super(targetTableName, keyColumnName, valueColumnName, con);
-        // Ensure that the value column type is compatible with 'int'.
-        ColumnMetaData md = getColumnMetadata(valueColumnName);
+    }
+
+    public void checkMetadata() throws MetaDataException
+    {
+        // Ensure that the value column type is compatible.
+        ColumnMetaData md = getColumnMetadata(getValueColumnName());
         if (!md.isStringType())
-            throw new IllegalArgumentException(
-                    "The type of column '" + valueColumnName
+            throw new MetaDataException(
+                    "The type of column '" + getValueColumnName()
                     + "' in table '"
-                    + targetTableName
+                    + getTargetTableName()
                     + "' is not compatible with the 'String' data type!");
     }
 
