@@ -32,6 +32,10 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -59,6 +63,7 @@ public class StreamCopier implements Runnable
     private IOException exception;
     /** True, if the copying is complete. **/
     private boolean complete = false;
+    private static final int DEFAULT_BYTE_ARRAY_BUFSZ = 128;
 
     /**
      * Copies the input stream into the output stream in a thread safe and
@@ -153,19 +158,53 @@ public class StreamCopier implements Runnable
         byte[] chunk = null;
         byte[] buf = new byte[blocksz];
         int bytesRead = 0;
-        int total = 0;
         while (true)
         {
             bytesRead = in.read(buf);
             if (bytesRead == -1)
                 break;
-            total += bytesRead;
             // Add a new chunk to the list.
             chunk = new byte[bytesRead];
             System.arraycopy(buf,0,chunk,0,bytesRead);
             list.add(chunk);
         } // while
         return list;
+    }
+
+    /**
+     * Reads the entire input stream into a byte array.
+     * @param in The input stream.
+     * @throws IOException When something happens while reading the stream.
+     */
+    public static final byte[] readByteArray(InputStream in)
+            throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        unsyncCopy(in,baos,DEFAULT_BYTE_ARRAY_BUFSZ);
+        return baos.toByteArray();
+    }
+
+    /**
+     * Reads the specified file into a byte array.
+     * @param file The file to read.
+     * @throws IOException When something happens while reading the stream.
+     */
+    public static final byte[] readByteArray(File file)
+            throws IOException
+    {
+        return readByteArray(new BufferedInputStream(
+                new FileInputStream(file),DEFAULT_BUFFER_SIZE));
+    }
+
+    /**
+     * Reads the specified file into a byte array.
+     * @param fileName The file name to read.
+     * @throws IOException When something happens while reading the stream.
+     */
+    public static final byte[] readFileIntoByteArray(String fileName)
+            throws IOException
+    {
+        return readByteArray(new File(fileName));
     }
 
     /**

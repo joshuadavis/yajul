@@ -3,6 +3,9 @@ package org.yajul.util;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+
+import org.yajul.io.StreamCopier;
 
 /**
  * Provides utility methods for finding and loading resources.
@@ -20,14 +23,13 @@ public class ResourceUtil
      */
     public static Properties loadProperties(String resourceName) throws InitializationException
     {
-        // Load the properties file from the current class loader, if it isn't already
-        // loaded.
-        Properties properties = new Properties();
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        InputStream is = cl.getResourceAsStream(resourceName);
+        InputStream is = getResourceAsStream(resourceName);
         if (is == null)     // If the resource was not found,
             return null;    // notify the caller by returning null.
 
+        // Load the properties file from the current class loader, if it isn't already
+        // loaded.
+        Properties properties = new Properties();
         try
         {
             properties.load(is);
@@ -40,5 +42,36 @@ public class ResourceUtil
                     + resourceName + "' due to : " + e.getMessage(),e);
         }
         return properties;
+    }
+
+    /**
+     * Returns an input stream for the named resource, or null if it was not
+     * found.  Uses the current class loader.
+     * @param resourceName The name of the resource
+     * @return InputStream - The input stream, or null if the resource
+     * was not found.
+     */
+    public static InputStream getResourceAsStream(String resourceName)
+    {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        InputStream is = cl.getResourceAsStream(resourceName);
+        return is;
+    }
+
+    /**
+     * Returns the resource as a byte array.
+     * @param name The resource name.
+     * @return byte[] The contents of the resource.
+     * @throws IOException if anything goes wrong.
+     */
+    public static byte[] resourceAsBytes(String name) throws IOException
+    {
+        // Read the resource input stream into a byte array.
+        InputStream is = getResourceAsStream(name);
+        if (is == null)
+            return null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        StreamCopier.unsyncCopy(is,baos,StreamCopier.DEFAULT_BUFFER_SIZE);
+        return baos.toByteArray();
     }
 }
