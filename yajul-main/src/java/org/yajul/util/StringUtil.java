@@ -37,10 +37,12 @@ import java.util.ArrayList;
  */
 public class StringUtil
 {
+    private static final String PADDING = "                    ";
+
     /**
      * Prints the class name of the object, followed by '@', followed by the 
      * hash code of the object, just like java.lang.Object.toString().
-     * @param o - The object to print.
+     * @param o The object to print.
      * @return String - The object's default string representation.
      */
     public static final String defaultToString(Object o)
@@ -52,7 +54,7 @@ public class StringUtil
         {
             buf.append(o.getClass().getName());
             buf.append("@");
-            buf.append(Integer.toHexString(o.hashCode()));
+            buf.append(Integer.toHexString(System.identityHashCode(o)));
         }
         return buf.toString();
     }
@@ -60,42 +62,40 @@ public class StringUtil
     /**
      * Left-pads a string with spaces out to the specified length and returns 
      * it.
-     * @param s - The message to write to the log
-     * @param length - The desired length of the padded string.
-     * @param truncate - Set to true to truncate 's' to 'length' when 
+     * @param s The string to pad.
+     * @param length The desired length of the padded string.
+     * @param truncate Set to true to truncate 's' to 'length' if
      * s.length() > length
      * @return String - The padded (truncated) string.
      */
     public static final String padLeft(String s, int length, boolean truncate)
     {
-        final String paddingChunk = "                    ";
-        return padLeft(s, length, truncate, paddingChunk);
+        return padLeft(s, length, truncate, PADDING);
     }
 
     /**
      * Right-pads a string with spaces out to the specified length and returns
      * it.
-     * @param s - The message to write to the log
-     * @param length - The desired length of the padded string.
-     * @param truncate - Set to true to truncate 's' to 'length' when
+     * @param s The string to pad.
+     * @param length The desired length of the padded string.
+     * @param truncate Set to true to truncate 's' to 'length' if
      * s.length() > length
      * @return String - The padded (truncated) string.
      */
     public static final String padRight(String s, int length, boolean truncate)
     {
-        final String paddingChunk = "                    ";
-        return padRight(s, length, truncate, paddingChunk);
+        return padRight(s, length, truncate, PADDING);
     }
 
     /**
      * Left-pads a string out to the specified length using the specified
      * padding string and returns it.
-     * @param s         The message to write to the log
+     * @param s         The string to pad.
      * @param length    The desired length of the padded string.
      * @param truncate  Set to true to truncate 's' to 'length' when s.length()
      * > length
      * @param padding   The string to use as padding.
-     * @return String   The padded (truncated) string.
+     * @return String   - The padded (truncated) string.
      */
     public static String padLeft(String s, int length, boolean truncate, 
         final String padding)
@@ -106,12 +106,12 @@ public class StringUtil
     /**
      * Right-pads a string out to the specified length using the specified
      * padding string and returns it.
-     * @param s         The message to write to the log
+     * @param s         The string to pad.
      * @param length    The desired length of the padded string.
      * @param truncate  Set to true to truncate 's' to 'length' when s.length()
      * > length
      * @param padding   The string to use as padding.
-     * @return String   The padded (truncated) string.
+     * @return String   - The padded (truncated) string.
      */
     public static String padRight(String s, int length, boolean truncate,
         final String padding)
@@ -154,7 +154,6 @@ public class StringUtil
         return sb.toString();
     }
 
-
     private static final void appendPad(final String padding, int spaceCount,
                                         StringBuffer sb)
     {
@@ -173,7 +172,7 @@ public class StringUtil
 
     /**
      * Returns true if the string is null or zero length.
-     * @param str - The string to test.
+     * @param str The string to test.
      * @return boolean - True if the string is null or zero length.
      **/
     public static final boolean isEmpty(String str)
@@ -183,8 +182,8 @@ public class StringUtil
     
     /**
      * Splits a string into an array of strings using the delimiters given.
-     * @param str - The string to split.
-     * @param delims - A string containing the delimiter characters.
+     * @param str The string to split.
+     * @param delims A string containing the delimiter characters.
      * @return String[] - An array of strings.
      * @see java.util.StringTokenizer
      */
@@ -201,8 +200,8 @@ public class StringUtil
 
     /**
      * Joins an array of strings using the given delimiter.
-     * @param array - An array of strings.
-     * @param delim - The delimiter (typicaly a single character, 
+     * @param array An array of strings.
+     * @param delim The delimiter (typicaly a single character,
      * but anything can be used).
      * @return String - The joined strings, with the given delimeter in
      * between each string in the array.
