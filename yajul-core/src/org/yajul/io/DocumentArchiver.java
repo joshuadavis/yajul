@@ -54,7 +54,6 @@ import java.util.zip.GZIPOutputStream;
  * User: jdavis<br>
  * Date: Mar 5, 2004<br>
  * Time: 6:07:28 PM<br>
- *
  * @author josh May 6, 2004 11:41:01 PM
  */
 public class DocumentArchiver
@@ -295,7 +294,6 @@ public class DocumentArchiver
 
     /**
      * Returns the Sink (information for writing a document) for a given id, date and sub-directory.
-     *
      * @param subDirectory The sub-directory of the storeage directory where documents of this type are stored.
      * @param id           The id object that will be used to generate the file name.
      * @param date         The date, which will be used to generate the diretory name.
@@ -342,7 +340,6 @@ public class DocumentArchiver
 
     /**
      * Generates a file name from an object id and a date and file extension.
-     *
      * @param id   The object id, used to generate the unique file name.
      * @param date The date, used to create the directory path.
      * @return The filename.
@@ -372,7 +369,6 @@ public class DocumentArchiver
 
     /**
      * Returns a source (filename and input stream) given the sub-directory, the id, and the date.
-     *
      * @param subDirectory The sub-directory.
      * @param id           The object id.
      * @param date         The date.
@@ -386,7 +382,6 @@ public class DocumentArchiver
 
     /**
      * Retrieves an source given the sub-directory and the file name.
-     *
      * @param subDirectory The sub-directory.
      * @param fileName     The name of the file, as returned by the storeObject() method.
      * @return The source : an input stream and a file name.
@@ -427,7 +422,6 @@ public class DocumentArchiver
 
     /**
      * Returns a source for the given file.
-     *
      * @param f the file
      * @return a source for the file
      * @throws IOException if something goes wrong
@@ -440,10 +434,9 @@ public class DocumentArchiver
     /**
      * Returns a sub directory of the base directory, if a sub-directory
      * was specified.
-     *
      * @param subDirectory The sub-directory (optional.
      * @return a sub directory of the base directory, if a sub-directory
-     *         was specified.
+     * was specified.
      */
     private File getSubDirectory(File base, String subDirectory)
     {
@@ -452,7 +445,6 @@ public class DocumentArchiver
 
     /**
      * Returns an output stream for the file.
-     *
      * @param f the file
      * @return an output stream for the file.
      * @throws IOException if something goes wrong
@@ -471,7 +463,6 @@ public class DocumentArchiver
 
     /**
      * Returns an input stream for the file.
-     *
      * @param f the file
      * @return an input stream for the file
      * @throws IOException if something goes wrong.
@@ -497,7 +488,6 @@ public class DocumentArchiver
 
         /**
          * Creates a sink.
-         *
          * @param filename The filename that the output stream is pointing to.
          * @param out      The output stream.
          */
@@ -509,7 +499,6 @@ public class DocumentArchiver
 
         /**
          * Returns the name of the file that the output stream will write to.
-         *
          * @return the name of the file that the output stream will write to.
          */
         public String getFilename()
@@ -519,7 +508,6 @@ public class DocumentArchiver
 
         /**
          * Returns the output stream, which will write to a file.
-         *
          * @return the output stream, which will write to a file.
          */
         public OutputStream getStream()
@@ -539,7 +527,6 @@ public class DocumentArchiver
 
         /**
          * Creates a source.
-         *
          * @param filename The filename that the input stream is pointing to.
          * @param in       The input stream.
          */
@@ -551,7 +538,6 @@ public class DocumentArchiver
 
         /**
          * Returns the name of the file that the input stream will read from.
-         *
          * @return the name of the file that the input stream will read from.
          */
         public String getFilename()
@@ -561,7 +547,6 @@ public class DocumentArchiver
 
         /**
          * Returns the input stream, which will read from a file.
-         *
          * @return the input stream, which will read from a file.
          */
         public InputStream getStream()
