@@ -2,8 +2,11 @@ package org.yajul.framework;
 
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.apache.log4j.Logger;
+import org.yajul.util.StringUtil;
+import org.yajul.util.ObjectFactory;
 
 /**
  * Provides service implementations (DAO instances, etc.) for the application.
@@ -32,52 +35,66 @@ public class ServiceLocator
      */
     private static Logger log = Logger.getLogger(ServiceLocator.class.getName());
 
+    /** The system property name that will contain the name of the default application context resource. **/
+    public static final String CONTEXT_PROPERTY_NAME = "application.context";
+    /** The default application context resource name. **/
+    public static final String DEFAULT_CONTEXT_RESOURCE = "application-context.xml";
+
+    /** The system property name that will contain the name of the service locator class. **/
+    public static final String LOCATOR_PROPERTY_NAME = "service.locator.class";
+    /** The default locator class name. **/
+    public static final String DEFAULT_LOCATOR_CLASS_NAME = ServiceLocator.class.getName();
+
     private static ServiceLocator ourInstance = null;
 
     /** The Spring framework bean factory that is being encapsulated by this class. **/
-    private BeanFactory beanFactory = null;
+    private XmlBeanFactory beanFactory = null;
     /** The name of the resource used to initialize the Spring framework. **/
     private String resource = null;
 
+    /**
+     * Returns the current instance of the singleton.<br>
+     * NOTE: Since this object manages singletons, it should probably be the *only* singleton
+     * in the system.  It serves as a bootstrapper.
+     * @return ServiceLocator - The current service locator.
+     */
     public synchronized static ServiceLocator getInstance()
     {
         if (ourInstance == null)
         {
-            ourInstance = new ServiceLocator();
+            String className = System.getProperty(LOCATOR_PROPERTY_NAME,DEFAULT_LOCATOR_CLASS_NAME);
+            log.info("Instantiating service locator class: " + className);
+            ourInstance = (ServiceLocator) ObjectFactory.createInstance(className);
         }
         return ourInstance;
     }
 
-    private ServiceLocator()
+    /**
+     * Empty (a.k.a. default) constructor.
+     */
+    public ServiceLocator()
     {
-    }
-
-    private void initialize()
-    {
-        // Initialize the Spring framework with the configuration specified
-        // by the application.context system property, or 'application-context.xml'
-        // if the system property is not specified.
-        String resource = System.getProperty("application.context","application-context.xml");
-        initialize(resource);
-    }
-
-    private BeanFactory getBeanFactory()
-    {
-        synchronized (this)
-        {
-            if (beanFactory == null)
-                initialize();
-        }
-        return beanFactory;
     }
 
     /**
      * Explicitly initializes the service locator from the specified resource.
      * The resource must be in the class path, and it must be a Spring framework
      * XML 'application context' definition.
-     * @param resource The name of the resource.
+     * @param resource The name of the XML bean descriptor resource.
      */
     public void initialize(String resource)
+    {
+        initialize(resource,null);
+    }
+
+    /**
+     * Explicitly initializes the service locator from the specified resource.
+     * The resource must be in the class path, and it must be a Spring framework
+     * XML 'application context' definition.
+     * @param resource The name of the XML bean descriptor resource.
+     * @param propertiesResource The name of the properties resource (can be null).
+     */
+    public void initialize(String resource,String propertiesResource)
     {
         synchronized(this)
         {
@@ -97,7 +114,17 @@ public class ServiceLocator
             }
             log.info("Initializing from resource: " + resource);
             beanFactory = new XmlBeanFactory(new ClassPathResource(resource));
+            log.info("Processing with placeholder configurer...");
+            PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
+            // If there was a properties resource specified, use it.
+            if (!StringUtil.isEmpty(propertiesResource))
+            {
+                log.info("Initializing properties from resource: " + propertiesResource);
+                cfg.setLocation(new ClassPathResource(propertiesResource));
+            }
+            cfg.postProcessBeanFactory(beanFactory);
             this.resource = resource;
+            log.info("Initialization complete.");
         }
     }
 
@@ -109,7 +136,6 @@ public class ServiceLocator
      */
     public Object getBean(String name)
     {
-
         Object bean = getBeanFactory().getBean(name);
         if (bean == null)
         {
@@ -125,5 +151,54 @@ public class ServiceLocator
     public String getResourceName()
     {
         return resource;
+    }
+
+    /**
+     * Cleans up the bean factory and all associated resources.
+     */
+    public void destroy()
+    {
+        synchronized(this)
+        {
+            if (beanFactory != null)
+            {
+                log.info("Destroying singletons...");
+                beanFactory.destroySingletons();
+            }
+            beanFactory = null;
+            // NOTE: Keep the resource name so that this singleton will initialize the next time around.
+        }
+    }
+
+    protected BeanFactory getBeanFactory()
+    {
+        synchronized (this)
+        {
+            if (beanFactory == null)
+                initialize();
+        }
+        return beanFactory;
+    }
+
+    protected void setBeanFactory(XmlBeanFactory beanFactory)
+    {
+        synchronized (this)
+        {
+            this.beanFactory = beanFactory;
+        }
+    }
+
+    protected void finalize() throws Throwable
+    {
+        destroy();
+    }
+
+    private void initialize()
+    {
+        // Initialize the Spring framework with the configuration specified
+        // by the application.context system property, or 'application-context.xml'
+        // if the system property is not specified.
+        String resource = System.getProperty(CONTEXT_PROPERTY_NAME,DEFAULT_CONTEXT_RESOURCE);
+        initialize(resource);
     }
 }

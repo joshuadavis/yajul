@@ -10,6 +10,7 @@ package org.yajul.framework.test;
 public class SimpleBean
 {
     private String exampleProperty;
+    private String userName;
 
     public String getExampleProperty()
     {
@@ -21,5 +22,14 @@ public class SimpleBean
         this.exampleProperty = exampleProperty;
     }
 
+    public String getUserName()
+    {
+        return userName;
+    }
+
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
+    }
 
 }

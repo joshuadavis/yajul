@@ -9,6 +9,7 @@
 
 	<bean id="testBean" class="org.yajul.framework.test.SimpleBean">
         <property name="exampleProperty"><value>exampleProperty - value</value></property>
+        <property name="userName"><value>${user.name}</value></property>
     </bean>
 
 </beans>

@@ -16,9 +16,23 @@ public class ServiceLocatorTest extends TestCase
 {
     public static final String RESOURCE = "unit-test-context.xml";
 
+    private ServiceLocator instance;
+
     public ServiceLocatorTest(String name)
     {
         super(name);
+    }
+
+    protected void setUp() throws Exception
+    {
+        instance = ServiceLocator.getInstance();
+        instance.initialize(RESOURCE);
+    }
+
+    protected void tearDown() throws Exception
+    {
+        instance.destroy();
+        super.tearDown();
     }
 
     /**
@@ -26,9 +40,6 @@ public class ServiceLocatorTest extends TestCase
      */
     public void testSimpleBean() throws Exception
     {
-        // Initialize using the unit test context resource.
-        ServiceLocator instance = ServiceLocator.getInstance();
-        instance.initialize(RESOURCE);
         assertEquals(RESOURCE,instance.getResourceName());
         SimpleBean testBean = (SimpleBean) instance.getBean("testBean");
         assertNotNull(testBean);
@@ -40,6 +51,15 @@ public class ServiceLocatorTest extends TestCase
         instance.initialize(RESOURCE);
         SimpleBean testBean3 = (SimpleBean) instance.getBean("testBean");
         assertSame(testBean,testBean3);
+    }
+
+
+    public void testSystemPropertyConfigurer() throws Exception
+    {
+        SimpleBean testBean = (SimpleBean) instance.getBean("testBean");
+        assertNotNull(testBean);
+        assertNotNull(testBean.getUserName());
+        assertEquals(System.getProperty("user.name"),testBean.getUserName());
     }
 
     /**
