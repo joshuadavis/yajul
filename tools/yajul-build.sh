@@ -40,4 +40,4 @@ if [ ! -d $TOOLS_DIR ]; then
 fi
 cd $TOOLS_DIR
 echo "Running build.sh  in `pwd` ..."
-./build.sh -logger org.apache.tools.ant.listener.MailLogger
+./build.sh

@@ -73,6 +73,9 @@
 	<target name="publish" depends="site" description="Publish the build results on the local machine's web server.">
 		<fail unless="web.dir">The property 'web.dir' is not specified, please defined it in ${user.home}/yajul-build.properties.</fail>
 		<!-- Publish locally -->
+		<sync todir="${web.dir}" overwrite="true" failonerror="false">
+		  <fileset dir="${site.dir}/build/site"/>
+    </sync>		
 		<sync todir="${web.dir}/yajul-core" overwrite="true" failonerror="false">
 			<fileset dir="${yajul.dir}/yajul-core/build">
 				<include name="docs/**"/>
