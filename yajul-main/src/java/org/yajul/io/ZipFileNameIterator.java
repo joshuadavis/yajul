@@ -4,7 +4,6 @@ import org.yajul.util.EnumerationIterator;
 
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
-import java.util.NoSuchElementException;
 
 /**
  * An iterator that returns all of the entry names in a zip file.
