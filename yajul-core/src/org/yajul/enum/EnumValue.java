@@ -27,11 +27,13 @@
 
 package org.yajul.enum;
 
-import java.io.Serializable;
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
-import org.yajul.log.LogUtil;
+import org.yajul.bean.XmlBeanReader;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Provides basic value behavior for an enumerated type, including an id
@@ -41,10 +43,23 @@ import org.yajul.log.LogUtil;
  */
 public class EnumValue implements Serializable, Comparable
 {
+    public static final String ATTR_TEXT_VALUE = "textValue";
+    public static final String ATTR_XML_VALUE = "xmlValue";
+    public static final String ATTR_ID = "id";
+
     /**
      * The logger for this class.
      */
     private static Logger log = Logger.getLogger(EnumValue.class.getName());
+
+    private static final Set IGNORE_ATTRIBUTES;
+    static
+    {
+        IGNORE_ATTRIBUTES = new HashSet(3);
+        IGNORE_ATTRIBUTES.add(ATTR_ID);
+        IGNORE_ATTRIBUTES.add(ATTR_TEXT_VALUE);
+        IGNORE_ATTRIBUTES.add(ATTR_XML_VALUE);
+    }
 
     private int id;
     private Integer idInteger;
@@ -205,13 +220,18 @@ public class EnumValue implements Serializable, Comparable
     protected void loadFromElement(EnumTypeMap map,EnumType type,Element elem) throws Exception
     {
         typeId = type.getId();
-        String idString = elem.getAttribute("id");
-        if (log.isDebugEnabled())
-            log.debug("loadFromElement() : loading value "
-                    + idString + ", type " + typeId);
+        String idString = elem.getAttribute(ATTR_ID);
+//        if (log.isDebugEnabled())
+//            log.debug("loadFromElement() : loading value "
+//                    + idString + ", type " + typeId);
         setId(Integer.parseInt(idString));
-        setTextValue(elem.getAttribute("textValue"));
-        setXmlValue(elem.getAttribute("xmlValue"));
+        setTextValue(elem.getAttribute(ATTR_TEXT_VALUE));
+        setXmlValue(elem.getAttribute(ATTR_XML_VALUE));
+        if (type.isSetValueProperties())
+        {
+            XmlBeanReader reader = new XmlBeanReader(type.getValueClassPropertyAccessor());
+            reader.setPropertiesFromElementAttributes(this,elem,IGNORE_ATTRIBUTES);
+        }
     }
 
     /**
