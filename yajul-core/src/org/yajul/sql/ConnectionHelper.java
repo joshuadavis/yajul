@@ -25,7 +25,7 @@ public class ConnectionHelper
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(ConnectionHelper.class.getName());
+    private static Logger log = Logger.getLogger(ConnectionHelper.class.getName());
 
     private static final int TABLE_NAME_INDEX = 3;
 

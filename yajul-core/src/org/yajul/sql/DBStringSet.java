@@ -24,7 +24,7 @@ public class DBStringSet extends DatabaseSet
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(DBStringSet.class.getName());
+    private static Logger log = Logger.getLogger(DBStringSet.class.getName());
 
     /**
      * Creates a new DBStringSet

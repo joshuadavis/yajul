@@ -247,14 +247,14 @@ public class DOMUtil
 
     /**
      * Parse a file using it's name.
-     * @param fileName - The name of the file to parse.
-     * @return document - The DOM document.
+     * @param fileName The name of the file to parse.
+     * @return A DOM document.
      * @throws javax.xml.parsers.ParserConfigurationException - If the JAXP
      * implementation is configured incorrectly
      * @throws org.xml.sax.SAXException - If the document could not be parsed
      * @throws java.io.IOException - If there was something wrong with the
      * input stream.
-     **/
+     */
     public static final Document parseFile(String fileName)
             throws javax.xml.parsers.ParserConfigurationException,
             org.xml.sax.SAXException,
@@ -264,5 +264,27 @@ public class DOMUtil
                 new java.io.BufferedInputStream(
                         new java.io.FileInputStream(
                                 fileName)));
+    }
+
+    /**
+     * Parse an XML resource.
+     * @param resourceName The resource to parse.
+     * @return A DOM document.
+     * @throws javax.xml.parsers.ParserConfigurationException If the JAXP
+     * implementation is configured incorrectly
+     * @throws org.xml.sax.SAXException If the document could not be parsed
+     * @throws java.io.IOException If there was something wrong with the
+     * input stream.
+     */
+    public static final Document parseResource(String resourceName)
+            throws javax.xml.parsers.ParserConfigurationException,
+            org.xml.sax.SAXException,
+            java.io.IOException
+    {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classLoader.getResourceAsStream(resourceName);
+        if (is == null)
+            throw new java.io.IOException("Resource not found: '" + resourceName + "'");
+        return parse(is);
     }
 }

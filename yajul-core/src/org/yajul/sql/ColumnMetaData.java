@@ -20,7 +20,7 @@ public class ColumnMetaData implements Serializable
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(ColumnMetaData.class.getName());
+    private static Logger log = Logger.getLogger(ColumnMetaData.class.getName());
 
     private String name;
     private String tableName;

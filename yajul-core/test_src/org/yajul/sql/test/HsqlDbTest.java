@@ -21,7 +21,7 @@ public class HsqlDbTest extends TestCase
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(HsqlDbTest.class.getName());
+    private static Logger log = Logger.getLogger(HsqlDbTest.class.getName());
 
     public HsqlDbTest(String s)
     {

@@ -44,13 +44,14 @@ public class EnumValue implements Serializable, Comparable
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(EnumValue.class.getName());
+    private static Logger log = Logger.getLogger(EnumValue.class.getName());
 
     private int id;
     private Integer idInteger;
     private String xmlValue;
     private String textValue;
     private String typeId;
+    private String constantName;
 
     /**
      * Creates an uninitialized EnumValue.
@@ -211,5 +212,23 @@ public class EnumValue implements Serializable, Comparable
         setId(Integer.parseInt(idString));
         setTextValue(elem.getAttribute("textValue"));
         setXmlValue(elem.getAttribute("xmlValue"));
+    }
+
+    /**
+     * Returns the name of the constant in the Java constant class or interface.
+     * @return String - The constant name.
+     */
+    public String getConstantName()
+    {
+        return constantName;
+    }
+
+    /**
+     * Sets the constant name in the Java class.
+     * @param constantName The new constant name.
+     */
+    protected void setConstantName(String constantName)
+    {
+        this.constantName = constantName;
     }
 }

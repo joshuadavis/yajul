@@ -40,7 +40,7 @@ import java.io.OutputStream;
  */
 public class TeeOutputStream extends FilterOutputStream
 {
-    private static Logger log = LogUtil.getLogger(TeeOutputStream.class);
+    private static Logger log = Logger.getLogger(TeeOutputStream.class);
 
     private OutputStream[] teeOut;    // Array of streams to write to.
 

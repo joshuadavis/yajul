@@ -27,10 +27,9 @@
 
 package org.yajul.scheduler;
 
-import org.apache.log4j.Logger;
-
-import java.util.Enumeration;
 import java.util.Iterator;
+
+import org.apache.log4j.Logger;
 
 /**
  * Internal class that ScheduleEntry uses to launch runnable iterator.
@@ -41,7 +40,9 @@ class Monitor extends Thread
     private static Logger log = Logger.getLogger(Monitor.class);
 
     static final int ONE_SECOND = 1000;
-    static final int MAXIMUM_WAIT = ONE_SECOND;
+    /** The maximum wait time. **/
+    static final int MAXIMUM_WAIT = ONE_SECOND * 15;
+    /** The minimum wait time. **/
     static final int MINIMUM_WAIT = 10;
 
     private Scheduler scheduler;
@@ -140,7 +141,8 @@ class Monitor extends Thread
 
                 synchronized (this)
                 {
-                    //m_log.println("Waiting for "+waitTime+"ms ...");
+                    if (log.isDebugEnabled())
+                        log.debug("run() Waiting for "+waitTime+"ms ...");
                     // Wait for the specified minimum wait time, or for any new iterator.
                     notified = false;
                     // Give derived classes a chance to do something before waiting.

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<enum-types>
+    <enum-type id="TimeUnit" constantClass="org.yajul.time.TimeUnit">
+        <enum-value id="0" xmlValue="year" textValue="year"/>
+        <enum-value id="1" xmlValue="month" textValue="month"/>
+        <enum-value id="2" xmlValue="week" textValue="week"/>
+        <enum-value id="3" xmlValue="day" textValue="day"/>
+        <enum-value id="4" xmlValue="hour" textValue="hour"/>
+        <enum-value id="5" xmlValue="minute" textValue="minute"/>
+        <enum-value id="6" xmlValue="second" textValue="second"/>
+        <enum-value id="7" xmlValue="millisecond" textValue="millisecond"/>
+    </enum-type>
+</enum-types>

@@ -33,6 +33,7 @@ import java.io.InputStream;
 
 import org.yajul.xml.DOMUtil;
 import org.yajul.log.LogUtil;
+import org.yajul.util.InitializationError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.apache.log4j.Logger;
@@ -52,7 +53,7 @@ public class EnumTypeMap
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(EnumTypeMap.class.getName());
+    private static Logger log = Logger.getLogger(EnumTypeMap.class.getName());
 
     /**
      * The map of enumerated types (String{id}->EnumType).
@@ -74,6 +75,33 @@ public class EnumTypeMap
         ClassLoader classLoader =
                 Thread.currentThread().getContextClassLoader();
         return createTypeMapFromResource(resourceName, classLoader);
+    }
+
+    /**
+     * Creates a type map from a resource (in the classpath) using the current
+     * thread's class loader.
+     * @param resourceName The name of the resource to load.
+     * @return EnumTypeMap - The type map.
+     * @throws InitializationError If there was a problem loading
+     * the resource.
+     */
+    public static EnumTypeMap loadTypeMapFromResource(String resourceName)
+            throws InitializationError
+    {
+
+        try
+        {
+            ClassLoader classLoader =
+                    Thread.currentThread().getContextClassLoader();
+            return createTypeMapFromResource(resourceName, classLoader);
+        }
+        catch (Exception e)
+        {
+            String message = "Unable to load enumeration resource due to: "
+                    + e.getMessage();
+            log.fatal(message);
+            throw new InitializationError(message,e);
+        }
     }
 
     /**

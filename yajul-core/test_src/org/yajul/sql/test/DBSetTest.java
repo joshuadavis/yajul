@@ -24,7 +24,7 @@ public class DBSetTest extends TestCase
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(DBSetTest.class.getName());
+    private static Logger log = Logger.getLogger(DBSetTest.class.getName());
 
     private Connection con = null;
     private static final String TABLE_NAME = "TEST_DBIS";

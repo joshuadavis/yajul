@@ -40,6 +40,7 @@ import org.w3c.dom.Element;
 import org.yajul.log.LogUtil;
 import org.yajul.util.ArrayIterator;
 import org.yajul.util.StringUtil;
+import org.yajul.util.ReflectionUtil;
 import org.yajul.xml.DOMUtil;
 
 /**
@@ -53,13 +54,15 @@ public class EnumType
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(EnumType.class.getName());
+    private static Logger log = Logger.getLogger(EnumType.class.getName());
 
     /** The enum value id returned when there is an error. **/
     public static final int UNDEFINED = Integer.MIN_VALUE;
 
     /** The class of the values for this enumerated type. **/
     private Class enumValueClass;
+    /** The class or interface that defines Java constants for this enum. **/
+    private Class constantClass;
     /** The id of this enumerated type. **/
     private String id;
     /** The minimum value id. **/
@@ -88,6 +91,9 @@ public class EnumType
 
     /** Map of values by text string (case insensitive). **/
     private Map valuesByLowerCaseText;
+
+    /** Map of values by constant name. **/
+    private Map valuesByConstantName;
 
     /** The values of the enumerated type, in array form. */
     private EnumValue[] valueArray;
@@ -445,7 +451,6 @@ public class EnumType
             return valueById.values().iterator();
     }
 
-
     /**
      * Creates a subset of this enum type by passing the values
      * through a filter.  EnumValue elements will not be cloned.
@@ -468,6 +473,7 @@ public class EnumType
     }
 
     // --- java.lang.Object methods --
+
     /**
      * Returns a string representation of the object. In general, the
      * <code>toString</code> method returns a string that
@@ -517,14 +523,14 @@ public class EnumType
      * @throws EnumInitializationException If the enumerated type could not
      * be created from the DOM element.
      */
-    void loadFromElement(EnumTypeMap map, Element elem) throws EnumInitializationException
+    void loadFromElement(EnumTypeMap map, Element elem)
+            throws EnumInitializationException
     {
         // Synchronize, so that other threads will not retrieve incorrect
         // values.
         synchronized (this)
         {
-            id = elem.getAttribute("id");
-            setEnumValueClass(elem);
+            setFromAttributes(elem);
 
             // Look for the 'enum-value' elements inside this 'enum-type' element.
             Element[] valueElements = DOMUtil.getChildElements(elem, "enum-value");
@@ -582,6 +588,39 @@ public class EnumType
 
     private void afterAddingValues()
     {
+        initializeIdMap();
+        initializeConstantNames();
+        state = STATE_INITIALIZED;
+    }
+
+    private void initializeConstantNames()
+    {
+        // If the constantClass was specified, build the map of constants.
+        if (constantClass != null)
+        {
+            Map namesById = ReflectionUtil.getConstantNameMap(constantClass);
+            // Iterate through the constant values found in the class...
+            Set entries = namesById.entrySet();
+            for (Iterator iterator = entries.iterator(); iterator.hasNext();)
+            {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Integer id = (Integer) entry.getKey();
+                EnumValue value = findValueById(id.intValue());
+                if (value == null)
+                {
+                    if (log.isDebugEnabled())
+                        log.debug(
+                            "afterAddingValues() : No EnumValue found for "
+                            + id + " in class " + constantClass.getName());
+                    continue;
+                }
+                value.setConstantName((String)entry.getValue());
+            }
+        }
+    }
+
+    private void initializeIdMap()
+    {
         // Determine whether the ids are a contiguous sequence of integers.
         contiguous = ((maxId - minId) == (valueById.size() - 1));
 
@@ -605,7 +644,7 @@ public class EnumType
             // use this array for lookup.
             valueArrayById = (EnumValue[])
                     list.toArray(new EnumValue[list.size()]);
-            // If the ids are contiguous *AND* theminimum id is zero, then
+            // If the ids are contiguous *AND* the minimum id is zero, then
             // the array representation can be used for getValueArray() as well.
             if (minId == 0)
                 valueArray = valueArrayById;
@@ -614,8 +653,6 @@ public class EnumType
         } // if contiguous
         else if (log.isDebugEnabled())
             log.debug("afterAddingValues() : Using a TreeMap for the id map");
-
-        state = STATE_INITIALIZED;
     }
 
     private EnumValue loadValueFromElement(EnumTypeMap map,
@@ -653,9 +690,14 @@ public class EnumType
         return value;
     }
 
-    private void setEnumValueClass(Element elem)
+    private void setFromAttributes(Element elem)
             throws EnumInitializationException
     {
+        id = elem.getAttribute("id");
+        if (StringUtil.isEmpty(id))
+            throw new EnumInitializationException(
+                    "Expected 'id' attribute in enum-type!");
+
         try
         {
             String valueClassName = elem.getAttribute("valueClass");
@@ -663,6 +705,20 @@ public class EnumType
                 enumValueClass = Class.forName(valueClassName);
             else
                 enumValueClass = EnumValue.class;
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new EnumInitializationException(
+                    "Unable to find value class! " + e.getMessage(), e);
+        }
+
+        try
+        {
+            String constantClassName = elem.getAttribute("constantClass");
+            if (!StringUtil.isEmpty(constantClassName))
+                constantClass = Class.forName(constantClassName);
+            else
+                constantClass = null;
         }
         catch (ClassNotFoundException e)
         {

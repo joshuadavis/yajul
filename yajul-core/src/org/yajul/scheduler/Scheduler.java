@@ -29,6 +29,7 @@ package org.yajul.scheduler;
 
 import org.apache.log4j.Logger;
 import org.yajul.util.DateFormatConstants;
+import org.yajul.thread.ThreadPool;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -79,6 +80,7 @@ public class Scheduler
     private DateFormat timeFormat;
     /** Entry id generation. **/
     private long nextId;
+    private ThreadPool threadPool;
 
     /**
      * Creates a new Scheduler using the specified log file.
@@ -104,7 +106,6 @@ public class Scheduler
      * Starts up the job scheduling thread.  Jobs will begin executing.
      */
     public void start()
-            throws Exception
     {
         // TODO: Initialization goes here...
         log.info("Job scheduler starting...");
@@ -127,9 +128,8 @@ public class Scheduler
      * Adds a new schedule entry to the schedulers list of iterator.  If the
      * scheduler is starting.
      * @param entry New job entry for the scheduler.
-     * @exception java.lang.Exception An exception is thrown when a duplicate job entry is added.
      */
-    public void add(ScheduleEntry entry) throws Exception
+    public void add(ScheduleEntry entry)
     {
         synchronized (this)
         {
@@ -218,5 +218,19 @@ public class Scheduler
             nextId++;
             return rv;
         }
+    }
+
+    public void setThreadPool(ThreadPool pool)
+    {
+        if (monitor != null)
+            throw new IllegalStateException(
+                    "Thread pool cannot be set once the scheduler has been started!"
+            );
+        threadPool = pool;
+    }
+
+    public ThreadPool getThreadPool()
+    {
+        return threadPool;
     }
 }

@@ -28,9 +28,12 @@
 package org.yajul.scheduler;
 
 import org.apache.log4j.Logger;
+import org.yajul.util.DateFormatConstants;
 
 import java.util.Date;
 import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Represents an individal scheduled ScheduleEntry.  When instances of ScheduleEntry are
@@ -48,17 +51,20 @@ public class ScheduleEntry
     private Scheduler scheduler;
     /** The action to perform. **/
     private ScheduledTask task;
-    /** The thread the job is running on (null if not running). **/
-    private Thread thread;
+
+    private int runningTaskCount = 0;
 
     private ScheduleEntryAttributes attributes;
+
+    /** Format for displaying timestamps. **/
+    private DateFormat timeFormat;
 
     /**
      * Internal method that does the work for all of the constructors.
      */
     private void initialize(Scheduler scheduler, String name,
                             Date start, int intervalUnit, int interval,
-                            ScheduledTask runnable) throws Exception
+                            ScheduledTask runnable)
     {
         if (scheduler == null)
             throw new NullPointerException("Scheduler is null");
@@ -67,6 +73,9 @@ public class ScheduleEntry
             throw new NullPointerException("Start time is null");
 
         long id = scheduler.nextId();
+
+        timeFormat = new SimpleDateFormat(
+                DateFormatConstants.ISO8601_DATETIME_FORMAT);
 
         if (name == null)
             name = "ScheduleEntry-" + id;
@@ -122,12 +131,10 @@ public class ScheduleEntry
      * @param intervalUnit Interval unit from java.util.Calendar.
      * @param interval The time interval, in seconds.
      * @param runnable The task job.
-     * @exception java.lang.Exception
      * @see java.util.Calendar
      */
     public ScheduleEntry(Scheduler scheduler, int intervalUnit,
                     int interval, ScheduledTask runnable)
-            throws Exception
     {
         this(scheduler, null, new Date(), intervalUnit, interval, runnable);
     }
@@ -143,14 +150,13 @@ public class ScheduleEntry
      * @param intervalUnit Interval unit from java.util.Calendar.
      * @param interval The time interval, in seconds.
      * @param runnable The task job.
-     * @exception java.lang.Exception
      */
     public ScheduleEntry(Scheduler scheduler, String name,
                     Date start, int intervalUnit, int interval,
-                    ScheduledTask runnable) throws Exception
+                    ScheduledTask runnable)
     {
         if (interval <= 0)
-            throw new Exception("Interval must be > 0");
+            throw new IllegalArgumentException("Interval must be > 0");
         initialize(scheduler, name, start, intervalUnit, interval, runnable);
     }
 
@@ -179,15 +185,6 @@ public class ScheduleEntry
     }
 
     /**
-     * The thread that executed the most recent activation of the job.
-     * @return The thread that is currently (most recently) executing this job.
-     */
-    public Thread getThread()
-    {
-        return thread;
-    }
-
-    /**
      * Returns TRUE if the job is running.
      * @return TRUE if the most recent thread executing this job is still alive.
      */
@@ -195,33 +192,8 @@ public class ScheduleEntry
     {
         synchronized (this)
         {
-            if (thread == null)
-                return false;
-            else
-                return thread.isAlive();
+            return runningTaskCount > 0;
         }
-    }
-
-    private final static Date calculateNext(int unit, int interval, Date d)
-    {
-        Date now = new Date();
-        Calendar next = Calendar.getInstance();
-        next.setTime(d);
-        long before = next.getTime().getTime();
-        next.add(unit, interval);
-        //  Ensure that the date is actually in the future... ;->
-        long after = next.getTime().getTime();
-        long diff = after - now.getTime();
-        if (diff < 0)                                       // If the date is in the past...
-        {
-            diff = -diff;
-            long perInterval = after - before;              // Milliseconds per interval.
-            long count = diff / perInterval;                // Number of intervals to get to 'now'.
-            if ((diff % perInterval) > 0)                   // Add one if the modulo is not zero
-                count++;
-            next.add(unit, interval * (int) count);         // Add the number of intervals to get past 'now'.
-        }
-        return next.getTime();
     }
 
     /**
@@ -263,7 +235,7 @@ public class ScheduleEntry
     {
         attributes.setLastTime(
                 attributes.getNextTime());          // Set the last execution time to be the scheduled execution time.
-        boolean flag = task.before(this);       // Tell the task object it is about to be executed.
+        boolean flag = task.before(this);           // Tell the task object it is about to be executed.
         if (!flag)                                  // Cancel the execution?
         {
             log.info("execute() : " + attributes.getName() + " cancelled execution!");
@@ -273,20 +245,83 @@ public class ScheduleEntry
         String msg = (isRunning()) ? "ScheduleEntry (overlapped) " : "ScheduleEntry ";
 
         if (attributes.isRepeating())               // If this is a repeating job,
+        {
             attributes.setNextTime(
                 calculateNext(                      // compute the next execution time.
                     attributes.getIntervalUnit(),
                     attributes.getInterval(),
                     attributes.getNextTime()));
+            if (log.isDebugEnabled())
+                log.debug("execute() : " + msg + " next time: "
+                        + timeFormat.format(attributes.getNextTime()));
+        }
         else                                        // If this is a non-repeating job,
             scheduler.remove(this);                 // remove it from the schedule.
 
+        startTask();
+
+        return true;
+    }
+
+    void incrementRunningTaskCount()
+    {
+        synchronized (this)
+        {
+            runningTaskCount++;
+        }
+    }
+
+    void decrementRunningTaskCount()
+    {
+        synchronized (this)
+        {
+            runningTaskCount--;
+        }
+    }
+
+    private void startTask()
+    {
         attributes.incrementRunCount(1);            // Increment the number of executions.
 
-        thread = new Thread(task);              // TODO: Get a thread from a pool inside the scheduler?
-        thread.setName(attributes.getName() + ":" + thread.getName());
-        thread.start();                             // Begin executing the job on the new thread.
-        log.info(msg + attributes.getName() + " ... Thread " + thread.getName() + " started.");
-        return true;
+        // Create a new task runner.
+        TaskRunner runner = new TaskRunner(this);
+        // If there is no thread pool, start the task on a new thread.
+        if (scheduler.getThreadPool() == null)
+        {
+            Thread thread = new Thread(runner);
+            thread.setName(attributes.getName() + ":" + thread.getName());
+            thread.start();
+            if (log.isDebugEnabled())
+                log.debug("startTask() : " + attributes.getName() + " started.");
+        }
+        else
+        {
+            scheduler.getThreadPool().add(runner);
+            if (log.isDebugEnabled())
+                log.debug("startTask() : " + attributes.getName()
+                        + " added to thread pool.");
+        }
+    }
+
+    private final static Date calculateNext(int unit, int interval, Date d)
+    {
+        Date now = new Date();
+        Calendar next = Calendar.getInstance();
+        next.setTime(d);
+        long before = next.getTime().getTime();
+        next.add(unit, interval);
+        //  Ensure that the date is actually in the future... ;->
+        long after = next.getTime().getTime();
+        long diff = after - now.getTime();
+        if (diff < 0)                                       // If the date is in the past...
+        {
+            diff = -diff;
+            long perInterval = after - before;              // Milliseconds per interval.
+            long count = diff / perInterval;                // Number of intervals to get to 'now'.
+            if ((diff % perInterval) > 0)                   // Add one if the modulo is not zero
+                count++;
+            next.add(unit, interval * (int) count);         // Add the number of intervals to get past 'now'.
+        }
+        return next.getTime();
     }
 }

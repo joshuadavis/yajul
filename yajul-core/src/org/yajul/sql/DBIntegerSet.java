@@ -24,7 +24,7 @@ public class DBIntegerSet extends DatabaseSet
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(DBIntegerSet.class.getName());
+    private static Logger log = Logger.getLogger(DBIntegerSet.class.getName());
 
     // Assumes the target table has primary key that contains the
     // foreign key of the container object, and the value itself.
