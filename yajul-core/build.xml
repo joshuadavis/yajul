@@ -58,7 +58,8 @@
 
     <target name="with.clover">
         <taskdef resource="clovertasks"/>
-        <clover-setup initString="yajul_coverage.db"/>
+        <!-- <mkdir dir="${build.dir}/yajul_coverage.db"/> -->
+        <clover-setup initString="${build.dir}/yajul_coverage.db"/>
     </target>
 
     <target name="init">
@@ -241,11 +242,9 @@
         
     <target name="recompile" depends="clean.classes,compile,compile.tests"/>
         
-    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs">
-        <antcall target="with.clover"/>
-        <antcall target="recompile"/>
-        <antcall target="test"/>
-        <antcall target="report.html"/>
+    <target name="clover" depends="with.clover,recompile,test,report.html"/>
+
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,clover">
     </target>
 
     <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"
