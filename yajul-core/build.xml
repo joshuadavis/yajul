@@ -140,6 +140,30 @@
             basedir="${main.class.dir}"/>
     </target>
 
+    <target name="javadoc" depends="init" description="Builds the Javadoc.">
+      <javadoc
+               destdir="${build.dir}/docs/api"
+               author="true"
+               version="true"
+               use="true"
+               windowtitle="YAJUL Core API">
+    
+        <fileset dir="src" defaultexcludes="yes">
+          <include name="org/yajul/**/*.java" />
+        </fileset>
+    
+        <doctitle><![CDATA[<h1>YAJUL</h1>]]></doctitle>
+        <bottom><![CDATA[<i>Copyright &#169; 2001-2004, The YAJUL developers. All Rights Reserved.</i>]]></bottom>
+        <tag name="todo" scope="all" description="To do:" />
+<!--
+        <group title="Group 1 Packages" packages="com.dummy.test.a*"/>
+        <group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
+-->
+        <link offline="true" href="http://java.sun.com/products/jdk/1.3/docs/api/" packagelistLoc="${build.dir}/tmp"/>
+        <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+      </javadoc>    
+    </target>
+    
     <target name="dist.source" depends="init" description="Builds the source distribution file.">
         <!-- Zip up all of the source files -->
         <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
@@ -159,17 +183,6 @@
 
     <target name="default" depends="compile,jar,compile.tests"/>
 
-    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test">
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test,javadoc">
     </target>
-
 </project>
-
-
-
-
-
-
-
-
-
-
