@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.WeakHashMap;
 import java.util.Collections;
+import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
@@ -104,6 +105,8 @@ public class EnumType
     private EnumValue[] valueArray;
     /** Array of all ids, in order. **/
     private int[] idArray;
+    /** The list of all ids as Integers, in order. **/
+    private List idList;
     /** The array of all text values, in ID order. **/
     private String[] textArray;
 
@@ -207,6 +210,27 @@ public class EnumType
             }
         }
         return idArray;
+    }
+
+    /**
+     * Returns a list of Integers that are the IDs of all the values.
+     * @return List(Integer) - The array of all value ids as integers.
+     */
+    public List getIdList()
+    {
+        synchronized(this)
+        {
+            if (idList == null)
+            {
+                EnumValue[] values = getValueArray();
+                idList = new ArrayList(values.length);
+                for (int i = 0; i < values.length; i++)
+                {
+                    idList.add(values[i].getIdInteger());
+                }
+            }
+        }
+        return idList;
     }
 
     /**
