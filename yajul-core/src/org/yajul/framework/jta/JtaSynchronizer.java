@@ -168,7 +168,7 @@ public class JtaSynchronizer implements Synchronization
 
     private void release()
     {
-        currentTx = null;
+        currentTx.set(null);
     }
 
     private void checkThread()
