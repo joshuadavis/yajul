@@ -38,6 +38,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Provides functions that print DOM objects to streams.  Works with
@@ -50,6 +51,19 @@ public class DOMPrinter
     public static final String TRUE = "yes";
     /** Transformer output property value for 'false'. **/
     public static final String FALSE = "no";
+
+    /**
+     * Prints a node (Document or Element) into a string, without the
+     * XML declaration.
+     * @param node The new (Document or Element) to print.
+     * @throws TransformerException - If there was a problem.
+     */
+    public static final String nodeToString(Node node) throws TransformerException
+    {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        printNode(node,out);
+        return out.toString();
+    }
 
     /**
      * Prints a node (Document or Element) to the stream, without the

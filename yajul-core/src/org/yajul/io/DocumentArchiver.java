@@ -2,20 +2,8 @@
 package org.yajul.io;
 
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import org.yajul.util.StringUtil;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -37,15 +25,18 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * Javabean that can store objects in the filesystem.  The objects are stored in a hierarchy of directories
- * corresponding to the date value passed in.  Callers should persist the file name passed back from storeObject()
+ * corresponding to the date value passed in.  Callers can persist the file name passed back from storeObject()
  * so that the objects can easily be retrieved without knowing the date, etc.
+ * When an object or document is stored with the same filename more than once, the archiver
+ * will make a backup copy so the data is not lost.  If this is not desired, set the overwrite property
+ * to true.
  * <ul>
  * <li>Use storeObject() / retrieveObject() to store and retrieve serialized Java objects.</li>
- * <li>To store XML documents, use storeDocument() / retrieveDocument(), which will automatically serialize and
- * parse DOM documents.</li>
+ * <li>To store XML documents, XMLDocumentArchiver.</li>
  * <li>For more control over what is stored, use getSource() / getSink() which provides the generated file names
  * and input / output streams.</li>
  * </ul>
+ * See the setter / getter method javadoc for a description of the properties and the default values.
  * <br>
  * An example of a Spring initializer is listed here:
  * <pre>
@@ -70,15 +61,6 @@ public class DocumentArchiver
 {
     private static Logger log = Logger.getLogger(DocumentArchiver.class.getName());
 
-    /**
-     * Transformer output property value for 'true'. *
-     */
-    private static final String TRUE = "yes";
-    /**
-     * Transformer output property value for 'false'. *
-     */
-    private static final String FALSE = "no";
-
     public static final String DEFAULT_EXTENSION = ".dat.gz";
 
     private File storeageDirectory;
@@ -86,12 +68,11 @@ public class DocumentArchiver
     private List retrieveDirectories;
     private boolean gzip = true;
     private boolean buffered = true;
-    private static final String DEFAULT_URI = "file://";
+    private boolean overwrite = false;
 
     /**
-     * Returns the storage directory name.
-     *
-     * @return the storage directory name.
+     * Returns the storage directory.
+     * @return the storage directory.
      */
     public File getStoreageDirectory()
     {
@@ -99,20 +80,19 @@ public class DocumentArchiver
     }
 
     /**
-     * Sets the directory where documents will be stored.
-     *
+     * Sets the directory where documents will be stored.  This will also be the <i>first</i> directory where
+     * documents are retrieved from. No default.
      * @param storeageDirectory The document storeage directory.
      */
     public void setStoreageDirectory(File storeageDirectory)
     {
-        if (!storeageDirectory.isDirectory())
+        if (storeageDirectory.exists() && !storeageDirectory.isDirectory())
             throw new IllegalArgumentException(storeageDirectory.toString() + " is not a directory!");
         this.storeageDirectory = storeageDirectory;
     }
 
     /**
      * Returns the filename extension that will be used for the stored documents.
-     *
      * @return the filename extension that will be used for the stored documents.
      */
     public String getExtension()
@@ -122,7 +102,6 @@ public class DocumentArchiver
 
     /**
      * Sets the filename extension used for stored documents.
-     *
      * @param extension The filename extension, defaults to '.dat.gz'.
      */
     public void setExtension(String extension)
@@ -133,7 +112,6 @@ public class DocumentArchiver
     /**
      * Returns the list of retrieval directories.   Documents not found in the storeage directory will
      * be searched along this path of directories.
-     *
      * @return the list of retrieval directories
      */
     public List getRetrieveDirectories()
@@ -154,7 +132,6 @@ public class DocumentArchiver
 
     /**
      * Returns true if documents are being GZIP compressed.
-     *
      * @return true if documents are being GZIP compressed.
      */
     public boolean isGzip()
@@ -164,7 +141,6 @@ public class DocumentArchiver
 
     /**
      * Enbales/disables GZIP compression.
-     *
      * @param gzip True for gzip compression, false for uncompressed.
      */
     public void setGzip(boolean gzip)
@@ -174,7 +150,6 @@ public class DocumentArchiver
 
     /**
      * Returns true if the streams will be buffered.
-     *
      * @return true if the streams will be buffered.
      */
     public boolean isBuffered()
@@ -183,8 +158,9 @@ public class DocumentArchiver
     }
 
     /**
-     * Enables/disables stream buffering.
-     *
+     * Enables/disables stream buffering, the default is 'true'.  It is recommended that
+     * this value be set to true (the default) as performance can degrade rapidly if
+     * no buffering is used.
      * @param buffered If true, streams will be buffered.
      */
     public void setBuffered(boolean buffered)
@@ -192,9 +168,9 @@ public class DocumentArchiver
         this.buffered = buffered;
     }
 
+
     /**
      * Initializes the bean.
-     *
      * @throws IOException if something goes wrong.
      */
     public void init() throws IOException
@@ -229,7 +205,7 @@ public class DocumentArchiver
      *
      * @param subDirectory The sub-directory of the storeage directory where documents of this type are stored.
      * @param id           The id object that will be used to generate the file name.
-     * @param date         The date, which will be used to generate the diretory name.
+     * @param date         The date, which will be used to generate the directory name.
      * @param object       The object that will be stored.
      * @return The name of the file that was used to store the object.
      * @throws IOException if something goes wrong.
@@ -263,7 +239,6 @@ public class DocumentArchiver
 
     /**
      * Retrieves an object given the sub-directory, the id, and the date.
-     *
      * @param subDirectory The sub-directory.
      * @param id           The object id.
      * @param date         The date.
@@ -319,106 +294,6 @@ public class DocumentArchiver
     }
 
     /**
-     * Stores a DOM document, given the id, date and sub-directory.
-     *
-     * @param subDirectory The sub-directory of the storeage directory where documents of this type are stored.
-     * @param id           The id object that will be used to generate the file name.
-     * @param date         The date, which will be used to generate the diretory name.
-     * @param document     The document that will be stored.
-     * @return The name of the file that was used to store the object.
-     * @throws IOException if something goes wrong.
-     */
-    public String storeDocument(String subDirectory, Object id, Date date, Document document) throws IOException
-    {
-        if (log.isDebugEnabled())
-            log.debug("storeDocument() : ENTER");
-        try
-        {
-            Sink docOut = getSink(subDirectory, id, date);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer();
-            // Set the attributes of the transformer.
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.INDENT, TRUE);
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, FALSE);
-            // Do the transform.
-            transformer.transform(new DOMSource(document), new StreamResult(docOut.getStream()));
-            if (log.isDebugEnabled())
-                log.debug("storeDocument() : Document sucessfully stored.");
-            return docOut.getFilename();    // Return the relative file name.
-        }
-        catch (IOException e)
-        {
-            log.error(e, e);
-            throw e;
-        }
-        catch (TransformerConfigurationException e)
-        {
-            log.error(e, e);
-            throw new IOException(e.getMessage());
-        }
-        catch (TransformerException e)
-        {
-            log.error(e, e);
-            throw new IOException(e.getMessage());
-        }
-        finally
-        {
-            if (log.isDebugEnabled())
-                log.debug("storeDocument() : LEAVE");
-        }
-    }
-
-    /**
-     * Retrieves a DOM Document given the sub-directory and the file name.
-     *
-     * @param subDirectory The sub-directory.
-     * @param fileName     The name of the file, as returned by the storeObject() method.
-     * @return The object.
-     * @throws IOException if something goes wrong.
-     */
-    public Document retrieveDocument(String subDirectory, String fileName) throws IOException
-    {
-        if (log.isDebugEnabled())
-            log.debug("retrieveDocument() : ENTER");
-        try
-        {
-            Source source = getSource(subDirectory, fileName);
-            log.info("retrieveDocument() : " + source.getFilename());
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(source.getStream(), DEFAULT_URI);
-            if (log.isDebugEnabled())
-                log.debug("retrieveDocument() : Document sucessfully retrieved.");
-            return document;
-        } // try
-        catch (FileNotFoundException e)
-        {
-            throw e;
-        }
-        catch (IOException e)
-        {
-            log.error(e, e);
-            throw e;
-        }
-        catch (ParserConfigurationException e)
-        {
-            log.error(e, e);
-            throw new IOException(e.getMessage());
-        }
-        catch (SAXException e)
-        {
-            log.error(e, e);
-            throw new IOException(e.getMessage());
-        }
-        finally
-        {
-            if (log.isDebugEnabled())
-                log.debug("retrieveDocument() : LEAVE");
-        }
-    }
-
-    /**
      * Returns the Sink (information for writing a document) for a given id, date and sub-directory.
      *
      * @param subDirectory The sub-directory of the storeage directory where documents of this type are stored.
@@ -438,16 +313,26 @@ public class DocumentArchiver
         File f = new File(pathname);
         if (f.exists())
         {
-            int i = 1;
-            File backup = new File(pathname + "." + i);
-            while (backup.exists())
+            if (!overwrite)
             {
-                i++;
-                backup = new File(pathname + "." + i);
+                // This might need to be optimized a bit.  We could enumerate the directory
+                // to find a good filename for the backup.
+                int i = 1;
+                File backup = new File(pathname + "." + i);
+                while (backup.exists())
+                {
+                    i++;
+                    backup = new File(pathname + "." + i);
+                }
+                log.info("storeObject() : Renaming existing file to " + backup.getAbsolutePath());
+                f.renameTo(backup);
+                f = new File(pathname);
             }
-            log.info("storeObject() : Renaming existing file to " + backup.getAbsolutePath());
-            f.renameTo(backup);
-            f = new File(pathname);
+            else
+            {
+                f.delete();
+                f = new File(pathname);
+            }
         }
         log.info("storeObject() : " + f.getAbsolutePath());
         OutputStream os = getOutputStream(f);
@@ -576,7 +461,7 @@ public class DocumentArchiver
             throws IOException
     {
         f.getParentFile().mkdirs();
-        OutputStream os = new FileOutputStream(f);
+        OutputStream os = new FileOutputStream(f.getAbsolutePath());
         if (buffered)
             os = new BufferedOutputStream(os);
         if (gzip)
@@ -601,7 +486,6 @@ public class DocumentArchiver
             is = new GZIPInputStream(is);
         return is;
     }
-
 
     /**
      * Provides the filename and output stream for a given document.
@@ -642,7 +526,7 @@ public class DocumentArchiver
         {
             return stream;
         }
-    }
+    } // class Sink
 
 
     /**
@@ -684,5 +568,5 @@ public class DocumentArchiver
         {
             return stream;
         }
-    }
+    } // class Source
 }

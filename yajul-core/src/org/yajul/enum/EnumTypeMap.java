@@ -90,6 +90,7 @@ public class EnumTypeMap
      * @return EnumTypeMap - The type map.
      * @throws EnumInitializationError If there was a problem loading
      * the resource.
+     * @deprecated use createTypeMapFromResource instead
      */
     public static EnumTypeMap loadTypeMapFromResource(String resourceName)
             throws EnumInitializationError

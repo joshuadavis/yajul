@@ -212,26 +212,17 @@ public class ObjectFactory
     }
 
     /**
-     * Returnsthe current class loader.
-     * @return
+     * Returns the current class loader.
+     * @return the current class loader.
      */
     public static ClassLoader getCurrentClassLoader()
     {
-/*
-        if (log.isDebugEnabled())
-            log.debug("getCurrentClassLoader() : Looking for current class loader.");
-*/
         // lets get a class loader. By using the Thread's class loader, we allow
         // for more flexability.
         ClassLoader classLoader = null;
-
         try
         {
             classLoader = Thread.currentThread().getContextClassLoader();
-/*
-            if (log.isDebugEnabled())
-                log.debug("Using context ClassLoader " + classLoader);
-*/
         }
         catch (SecurityException se)
         {

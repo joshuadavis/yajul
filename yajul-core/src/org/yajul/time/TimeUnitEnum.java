@@ -5,7 +5,6 @@ import java.util.Calendar;
 import org.yajul.enum.EnumType;
 import org.yajul.enum.EnumTypeMap;
 import org.yajul.enum.EnumInitializationException;
-import org.yajul.util.DetailedError;
 
 /**
  * TODO: Add javadoc
@@ -21,7 +20,14 @@ public class TimeUnitEnum implements TimeUnit
     static
     {
         EnumTypeMap map = null;
-        map = EnumTypeMap.loadTypeMapFromResource("org/yajul/time/time-enums.xml");
+        try
+        {
+            map = EnumTypeMap.createTypeMapFromResource("org/yajul/time/time-enums.xml", TimeUnitEnum.class.getClassLoader());
+        }
+        catch (EnumInitializationException e)
+        {
+            throw new Error(e.getMessage());
+        }
         ENUM_TYPE = map.findEnumTypeById("TimeUnit");
     }
 
