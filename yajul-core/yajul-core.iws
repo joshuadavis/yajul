@@ -2,49 +2,82 @@
 <project version="3" relativePaths="true">
   <component name="FileEditorManager">
     <history>
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/jdk1.3.1_03/src.jar!/src/java/io/File.java" line="150" column="31" vertical-scroll-proportion="-0.05548854" horizontal-scroll-proportion="0.3455414" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayUtil.java" line="21" column="48" vertical-scroll-proportion="0.43063933" horizontal-scroll-proportion="0.53503186" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/log/LogUtil.java" line="252" column="43" vertical-scroll-proportion="1.6610374" horizontal-scroll-proportion="0.47929937" />
-      <source-position-entry url="jar://$PROJECT_DIR$/../../../java/jdk1.3.1_03/src.jar!/src/java/sql/DatabaseMetaData.java" line="1338" column="14" vertical-scroll-proportion="0.33293125" horizontal-scroll-proportion="0.15605095" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/DBIntegerSetTest.java" line="114" column="50" vertical-scroll-proportion="0.65741855" horizontal-scroll-proportion="0.5573248">
+      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="82" column="18" vertical-scroll-proportion="1.3787696" horizontal-scroll-proportion="0.20063694" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="49" column="13" vertical-scroll-proportion="-2.4523523" horizontal-scroll-proportion="0.07643312" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="0" column="39" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.22611465" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="2" column="32" vertical-scroll-proportion="0.09189189" horizontal-scroll-proportion="0.30853996" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="2" column="32" vertical-scroll-proportion="0.07981221" horizontal-scroll-proportion="0.30853996" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="128" column="27" vertical-scroll-proportion="2.9725432" horizontal-scroll-proportion="0.2603306" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/HsqlDbTest.java" line="18" column="13" vertical-scroll-proportion="0.27023122" horizontal-scroll-proportion="0.12534435" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="61" column="31" vertical-scroll-proportion="-0.18930636" horizontal-scroll-proportion="0.29889807" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/ConnectionHelper.java" line="318" column="27" vertical-scroll-proportion="0.65751445" horizontal-scroll-proportion="0.2603306" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DBIntegerSet.java" line="21" column="19" vertical-scroll-proportion="0.32080925" horizontal-scroll-proportion="0.18319559">
         <folding>
           <element signature="imports" expanded="true" />
         </folding>
       </source-position-entry>
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/ConnectionHelper.java" line="273" column="45" vertical-scroll-proportion="5.066345" horizontal-scroll-proportion="0.50159234" />
-      <source-position-entry url="file://$PROJECT_DIR$/build.xml" line="82" column="18" vertical-scroll-proportion="1.3787696" horizontal-scroll-proportion="0.20063694" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DBIntegerSet.java" line="57" column="37" vertical-scroll-proportion="0.19300362" horizontal-scroll-proportion="0.21496816" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumTypeMap.java" line="49" column="13" vertical-scroll-proportion="-2.4523523" horizontal-scroll-proportion="0.07643312" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumType.java" line="0" column="39" vertical-scroll-proportion="0.0" horizontal-scroll-proportion="0.22611465" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="2" column="32" vertical-scroll-proportion="0.06390978" horizontal-scroll-proportion="0.41713223" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="2" column="32" vertical-scroll-proportion="0.06390978" horizontal-scroll-proportion="0.41713223" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="128" column="27" vertical-scroll-proportion="3.8665414" horizontal-scroll-proportion="0.3519553" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/HsqlDbTest.java" line="18" column="13" vertical-scroll-proportion="0.35150376" horizontal-scroll-proportion="0.16945997" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="61" column="31" vertical-scroll-proportion="-0.17857143" horizontal-scroll-proportion="0.40409684" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DatabaseSet.java" line="20" column="2" vertical-scroll-proportion="0.18063584" horizontal-scroll-proportion="0.019283747">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/ColumnMetaData.java" line="143" column="19" vertical-scroll-proportion="0.12283237" horizontal-scroll-proportion="0.18319559" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DBStringSet.java" line="65" column="62" vertical-scroll-proportion="0.27890173" horizontal-scroll-proportion="0.59779614" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/DBSetTest.java" line="15" column="29" vertical-scroll-proportion="-1.251445" horizontal-scroll-proportion="0.27961433">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayUtil.java" line="40" column="13" vertical-scroll-proportion="0.6387283" horizontal-scroll-proportion="0.12534435">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
     </history>
     <open-files>
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="128" column="27" vertical-scroll-proportion="3.8665414" horizontal-scroll-proportion="0.3519553" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/HsqlDbTest.java" line="18" column="13" vertical-scroll-proportion="0.35150376" horizontal-scroll-proportion="0.16945997" />
-      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="61" column="31" vertical-scroll-proportion="-0.17857143" horizontal-scroll-proportion="0.40409684" selected="true" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest2.xml" line="2" column="32" vertical-scroll-proportion="0.06390978" horizontal-scroll-proportion="0.41713223" />
-      <source-position-entry url="file://$PROJECT_DIR$/test_data/EnumTest1.xml" line="2" column="32" vertical-scroll-proportion="0.06390978" horizontal-scroll-proportion="0.41713223" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test/EnumTest.java" line="128" column="27" vertical-scroll-proportion="2.9725432" horizontal-scroll-proportion="0.2603306" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/HsqlDbTest.java" line="18" column="13" vertical-scroll-proportion="0.27023122" horizontal-scroll-proportion="0.12534435" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/enum/EnumValue.java" line="61" column="31" vertical-scroll-proportion="-0.18930636" horizontal-scroll-proportion="0.29889807" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DBIntegerSet.java" line="21" column="19" vertical-scroll-proportion="0.32080925" horizontal-scroll-proportion="0.18319559">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DBStringSet.java" line="65" column="62" vertical-scroll-proportion="0.27890173" horizontal-scroll-proportion="0.59779614" />
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/util/ArrayUtil.java" line="40" column="13" vertical-scroll-proportion="0.6387283" horizontal-scroll-proportion="0.12534435" selected="true">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/DatabaseSet.java" line="20" column="2" vertical-scroll-proportion="0.18063584" horizontal-scroll-proportion="0.019283747">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/ConnectionHelper.java" line="318" column="27" vertical-scroll-proportion="0.65751445" horizontal-scroll-proportion="0.2603306" />
+      <source-position-entry url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test/DBSetTest.java" line="15" column="29" vertical-scroll-proportion="-1.251445" horizontal-scroll-proportion="0.27961433">
+        <folding>
+          <element signature="imports" expanded="true" />
+        </folding>
+      </source-position-entry>
+      <source-position-entry url="file://$PROJECT_DIR$/src/org/yajul/sql/ColumnMetaData.java" line="143" column="19" vertical-scroll-proportion="0.12283237" horizontal-scroll-proportion="0.18319559" />
     </open-files>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1288" height="1004" extended-state="0" />
-    <editor active="false" />
+    <frame x="13" y="10" width="1260" height="913" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.24979919" order="1" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24979457" order="1" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.24943566" order="5" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.3295711" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.32914573" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="sliding" type="sliding" visible="false" weight="0.4" order="0" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.2570281" order="0" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="3" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.10200803" order="1" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.3295711" order="1" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.3295711" order="8" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.34428924" order="0" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39949748" order="3" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.10188989" order="1" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.32914573" order="1" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="sliding" type="sliding" visible="false" weight="0.32914573" order="8" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.4" order="6" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="0" />
@@ -192,7 +225,7 @@
     </Diff>
     <Add>
       <option name="ADD_AS_BINARY" value="false" />
-      <option name="LOG_MESSAGE" value="" />
+      <option name="LOG_MESSAGE" value="Renamed DBIntegerSetTest" />
     </Add>
     <Status>
       <option name="NON_RECURSIVE" value="false" />
@@ -210,7 +243,7 @@
     <Remove>
       <option name="NON_RECURSIVE" value="false" />
       <option name="FORCE_RECURSIVE" value="false" />
-      <option name="DELETE_FILE" value="false" />
+      <option name="DELETE_FILE" value="true" />
     </Remove>
     <Log>
       <option name="DEFAULT_BRANCH" value="false" />
@@ -251,23 +284,24 @@
     </expanded_paths>
   </component>
   <component name="ProjectViewSettings">
-    <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="false" autoscrollToSource="false" splitterProportion="0.5" />
+    <navigator currentView="ProjectPane" flattenPackages="false" showMembers="false" showStructure="true" autoscrollToSource="false" splitterProportion="0.5" />
     <view id="ProjectPane">
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/sql" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/xml" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_data" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/sql/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/sql" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util/test" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/util" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/util" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_data" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/src/org/yajul/sql" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/test_src/org/yajul/enum/test" />
     </view>
     <view id="SourcepathPane" />
     <view id="ClasspathPane" />
@@ -313,7 +347,7 @@
       <Port>5050</Port>
       <LaunchServer>false</LaunchServer>
     </configuration>
-    <configuration name="EnumTest" type="JUnit" default="false" selected="true">
+    <configuration name="EnumTest" type="JUnit" default="false" selected="false">
       <option name="PACKAGE_NAME" />
       <option name="MAIN_CLASS_NAME" value="org.yajul.enum.test.EnumTest" />
       <option name="METHOD_NAME" />
@@ -340,18 +374,18 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="DBIntegerSetTest.testDBIntegerSet" type="JUnit" default="false" selected="false">
+    <configuration name="DBSetTest.createIntTable" type="JUnit" default="false" selected="false">
       <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.yajul.sql.test.DBIntegerSetTest" />
-      <option name="METHOD_NAME" value="testDBIntegerSet" />
+      <option name="MAIN_CLASS_NAME" value="org.yajul.sql.test.DBSetTest" />
+      <option name="METHOD_NAME" value="createIntTable" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="DBIntegerSetTest" type="JUnit" default="false" selected="false">
+    <configuration name="DBSetTest" type="JUnit" default="false" selected="true">
       <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" value="org.yajul.sql.test.DBIntegerSetTest" />
+      <option name="MAIN_CLASS_NAME" value="org.yajul.sql.test.DBSetTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -540,11 +574,6 @@
     <option name="PROJECT" value="" />
     <option name="VIEW" value="" />
     <option name="ALTERNATIVE_WORKING_PATH" value="" />
-  </component>
-  <component name="TransparentConfiguration">
-    <option name="implementation" value="net.sourceforge.transparent.CommandLineClearCase" />
-    <option name="clearcaseRoot" value="" />
-    <option name="isCheckoutReserved" value="false" />
   </component>
 </project>
 
