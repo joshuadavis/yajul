@@ -13,10 +13,6 @@
         </constructor-arg>
     </bean>
 
-    <bean id="postProcessor" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name=""></property>
-    </bean>
-
     <!-- This bean will be initialized by ServiceLocator.initialize() -->
     <bean id="serviceLocator" class="org.yajul.framework.ServiceLocator">
         <property name="resourceName"><value>unit-test-context.xml</value></property>
