@@ -1,18 +1,22 @@
 package org.yajul.net;
 
-import java.net.*;
-import java.io.*;
-import java.util.Vector;
-import java.util.Date;
-import java.util.Iterator;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
  * Provides a simple proxy for TCP/IP connections.
  */
-public class SpyProxy implements Runnable
+public class SpyProxy extends AbstractServerSocketListener
 {
     /**
      * java SpyProxy [-d] serverHost serverPort [localPort]
@@ -96,7 +100,7 @@ public class SpyProxy implements Runnable
         System.out.println("Usage: java SpyProxy [-d] [-t] serverHost serverPort [localPort]");
         System.out.println("Where -d prints binary trace information to stdout");
         System.out.println("      -t prints text trace information to stdout (ideal for WebServices and XML over HTTP)");
-        System.out.println("      serverHost is the DNS name or IP address of the target server");
+        System.out.println("      serverHost is the host name or IP address of the target server");
         System.out.println("      serverPort is the port on the target server");
         System.out.println("      localPort is the service port for the proxy");
     }
@@ -105,21 +109,11 @@ public class SpyProxy implements Runnable
     private boolean debugText;
     private boolean showConnections;
 
-    /** The port the proxy will listen on. **/
-    private int proxyPort;
-    /** The server socket that the proxy will listen on. **/
-    private ServerSocket listener;
     /** The host to forward all requests to. **/
     private InetAddress serverAddress;
     /** The port to forward all requests to. **/
     private int serverPort;
-
-    private boolean running = true;
-    private Vector openConnections;
-    private EventHandler eventHandler;
     private DateFormat dateFormat;
-
-    private int connectionsAccepted;
 
     /**
      * Creates a new SpyProxy object with the given underlying server
@@ -133,15 +127,10 @@ public class SpyProxy implements Runnable
     public SpyProxy(String serverHost, int serverPort, int proxyPort)
             throws UnknownHostException, IOException
     {
-        super();
+        super(proxyPort);
         serverAddress = InetAddress.getByName(serverHost);
         this.serverPort = serverPort;
-        this.proxyPort = proxyPort;
-        listener = new ServerSocket(proxyPort);
-        eventHandler = new ConnectionEventHandler();
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
-        openConnections = new Vector();
-        connectionsAccepted = 0;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
     }
 
     /**
@@ -200,145 +189,93 @@ public class SpyProxy implements Runnable
         return debugText || debugBinary;
     }
 
-
-    /**
-     * stops the server thread
-     */
-    public void shutdown()
-    {
-        for (Iterator iterator = openConnections.iterator(); iterator.hasNext();)
-        {
-            SpyClientConnection spyClientConnection = (SpyClientConnection) iterator.next();
-            spyClientConnection.shutdown();
-        }
-        openConnections.clear();
-
-        running = false;
-        try
-        {
-            listener.close();
-        }
-        catch (IOException ioex)
-        {
-            println("IOException caught while closing listener");
-        }
-    }
-
-    public int getConnectionsAccepted()
-    {
-        return connectionsAccepted;
-    }
-
     public int getProxyPort()
     {
-        return proxyPort;
+        return getPort();
     }
 
-    public void run()
+    protected AbstractClientConnection acceptClient(Socket in) throws IOException
     {
-        Socket in, out;
-
-        while (running)
+        SpyClientConnection con = null;
+        try
         {
-            in = null;
-            out = null;
-            try
+            Socket out;
+            out = new Socket(serverAddress, serverPort);
+            if (isDebug() || showConnections)
             {
-                in = listener.accept();
-                connectionsAccepted++;
-                out = new Socket(serverAddress, serverPort);
-                if (isDebug() || showConnections)
-                {
-                    println("Client "
-                            + in.getInetAddress().getHostName()
-                            + ":" + in.getPort() + " accepted, "
-                            + " proxy socket to "
-                            + out.getInetAddress().getHostName()
-                            + ":" + out.getPort() + " opened");
-                }
-                SpyClientConnection con = new SpyClientConnection(in, out);
-                con.setEventHandler(eventHandler);
-                openConnections.addElement(con);
-                con.start();
+                println("Client "
+                        + in.getInetAddress().getHostName()
+                        + ":" + in.getPort() + " accepted, "
+                        + " proxy socket to "
+                        + out.getInetAddress().getHostName()
+                        + ":" + out.getPort() + " opened");
             }
-            catch (ConnectException e)
+            con = new SpyClientConnection(in, out);
+        }
+        catch (ConnectException e)
+        {
+            if (in != null)
             {
-                if (in != null)
+                try
                 {
-                    try
-                    {
-                        in.close();
-                    }
-                    catch (IOException ioex)
-                    {
-                    }
-                    println("Failed to open new socket to server");
+                    in.close();
                 }
-                else
+                catch (IOException ioex)
                 {
-                    println("Unknown ConnectionException in SpyProxy.run loop");
-                    e.printStackTrace();
-                    running = false;
+                    unexpected(ioex);
                 }
-
+                unexpected(e);
             }
-            catch (SocketException e)
-            {
-                if (listener.isClosed() && running == false)
-                    println("Listener closed.");
-                else
-                    unexpected(e);
-                running = false;
-
-            }
-            catch (IOException e)
+            else
             {
                 unexpected(e);
-                running = false;
             }
-        }
-    } // SpyProxy.run()
 
-    private void unexpected(Throwable e)
+        }
+        return con;
+    }
+
+    protected void unexpected(Throwable e)
     {
         println("Unexpected exception: " + e.getMessage());
         e.printStackTrace();
     }
 
+    protected void serverClosed()
+    {
+        println("Shutting down...");
+    }
+
     private void println(String message)
     {
-        System.out.println(dateFormat.format(new Date()) + " | " + message);
+        synchronized (this)
+        {
+            System.out.println(dateFormat.format(new Date()) + "~" + message);
+            System.out.flush();
+        }
     }
 
     private void print(String message)
     {
-        System.out.print(dateFormat.format(new Date()) + " | " + message);
-    }
-
-    private class ConnectionEventHandler
-            implements EventHandler
-    {
-        /**
-         * @param terminatedObject terminatedObject
-         */
-        public void threadTerminated(Object terminatedObject)
+        synchronized (this)
         {
-            boolean found = openConnections.removeElement(terminatedObject);
+            System.out.print(message);
+            System.out.flush();
         }
     }
 
     /**
      * Handles a connection from a client.
      */
-    private class SpyClientConnection
+    private class SpyClientConnection extends AbstractClientConnection
     {
         private Socket client;
         private Socket server;
         private Channel incoming;
         private Channel outgoing;
-        private EventHandler eventHandler;
         private boolean incomingStopped = false;
         private boolean outgoingStopped = false;
+        private Channel currentChannel = null;
 
         /**
          * Bogo Conversation Pair
@@ -353,12 +290,14 @@ public class SpyProxy implements Runnable
             super();
             client = clientSocket;
             server = serverSocket;
-            incoming = new Channel(client, server);
-            outgoing = new Channel(server, client);
-            EventHandler handler =
-                    new ConnectionEventHandler(this);
-            incoming.setEventHandler(handler);
-            outgoing.setEventHandler(handler);
+            incoming = new Channel(client, server, this);
+            outgoing = new Channel(server, client, this);
+        }
+
+        public void initialize(AbstractServerSocketListener listener)
+        {
+            super.initialize(listener);
+            start();
         }
 
         private void start()
@@ -369,7 +308,7 @@ public class SpyProxy implements Runnable
             thread2.start();
         }
 
-        private void shutdown()
+        public void shutdown()
         {
             if (incoming.isAlive() || outgoing.isAlive())
             {
@@ -381,8 +320,7 @@ public class SpyProxy implements Runnable
                 }
                 catch (Exception ex)
                 {
-                    println("Exception " + ex + " caught while closing client socket");
-                    ex.printStackTrace();
+                    unexpected(ex);
                 }
 
                 try
@@ -391,8 +329,7 @@ public class SpyProxy implements Runnable
                 }
                 catch (Exception ex)
                 {
-                    println("Exception " + ex + " caught while closing server socket");
-                    ex.printStackTrace();
+                    unexpected(ex);
                 }
             }
 
@@ -400,56 +337,52 @@ public class SpyProxy implements Runnable
             server = null;
         }
 
-        /**
-         * @param l l
-         */
-        public void setEventHandler(EventHandler l)
+        public void channelClosed(Channel channel)
         {
-            eventHandler = l;
-        }
-
-        private class ConnectionEventHandler
-                implements EventHandler
-        {
-            private SpyClientConnection con;
-
-            /**
-             * @param con object of type SpyClientConnection
-             */
-            private ConnectionEventHandler(SpyClientConnection con)
+            if (channel == incoming)
             {
-                this.con = con;
+                if (isShowConnections() || isDebug())
+                    println("Incoming stream " + channel.getName() + " closed, " + channel.getBytes() + " bytes.");
+                incomingStopped = true;
             }
-
-            /**
-             * @param terminatedObject terminatedObject
-             */
-            public void threadTerminated(Object terminatedObject)
+            else if (channel == outgoing)
             {
-                if (terminatedObject == incoming)
-                {
-                    if (isShowConnections())
-                        println("Incoming stream closed.");
-                    incomingStopped = true;
-                }
-                else if (terminatedObject == outgoing)
-                {
-                    if (isShowConnections())
-                        println("Outgoing stream closed.");
-                    outgoingStopped = true;
-                }
-                else
-                    println("Unknown terminated object "
-                            + terminatedObject.toString());
+                if (isShowConnections() || isDebug())
+                    println("Outgoing stream " + channel.getName() + " closed, " + channel.getBytes() + " bytes.");
+                outgoingStopped = true;
+            }
+            else
+                println("Unknown channel "
+                        + channel.toString());
 
-                if (eventHandler != null
-                        && incomingStopped && outgoingStopped)
-                {
-                    eventHandler.threadTerminated(con);
-                }
+            if (incomingStopped && outgoingStopped)
+            {
+                onClose();
             }
         }
-    }
+
+        public void setCurrentChannel(Channel channel,long readLength)
+        {
+            synchronized (this)
+            {
+                boolean channelChanged = (currentChannel != channel);
+                currentChannel = channel;
+                if (channelChanged && (isShowConnections() || isDebug()))
+                {
+                    if (currentChannel == incoming)
+                    {
+                        if (isDebug()) print("\n");
+                        println(" CLIENT " + incoming.getName() + "  => SERVER " + outgoing.getName() + " : " + readLength + " bytes.");
+                    }
+                    else
+                    {
+                        if (isDebug()) print("\n");
+                        println(" SERVER " + outgoing.getName() + "  => CLIENT " + incoming.getName() + " : " + readLength + " bytes.");
+                    }
+                }
+            } // synchronized
+        }
+    } // class SpyClientConnection
 
     private class Channel implements Runnable
     {
@@ -461,10 +394,10 @@ public class SpyProxy implements Runnable
         private Socket out;
         private BufferedInputStream reader;
         private BufferedOutputStream writer;
-        private InetAddress inAddress, outAddress;
-        private int inPort,    outPort;
-        private EventHandler eventHandler;
-
+        private InetAddress inAddress;
+        private int inPort;
+        private SpyClientConnection con;
+        private long bytes;
 
         /**
          * Constructor
@@ -472,19 +405,18 @@ public class SpyProxy implements Runnable
          * @param out the receiving socket
          * @throws IOException if failed.
          */
-
-        private Channel(Socket in, Socket out)
+        private Channel(Socket in, Socket out, SpyClientConnection con)
                 throws IOException
         {
             super();
             this.in = in;
             this.out = out;
+            this.con = con;
             reader = new BufferedInputStream(this.in.getInputStream());
             writer = new BufferedOutputStream(this.out.getOutputStream());
             inAddress = this.in.getInetAddress();
-            outAddress = this.out.getInetAddress();
             inPort = this.in.getPort();
-            outPort = this.out.getPort();
+            bytes = 0;
         }
 
         private void shutdown()
@@ -492,17 +424,40 @@ public class SpyProxy implements Runnable
             running = false;
         }
 
+        public long getBytes()
+        {
+            return bytes;
+        }
+
+        public InetAddress getAddress()
+        {
+            return inAddress;
+        }
+
+        public int getPort()
+        {
+            return inPort;
+        }
+
+        public String getName()
+        {
+            return inAddress.getHostName() + ":" + inPort;
+        }
+
         public void run()
         {
             byte[] cbuf = new byte[BUFSZ];
             // Get the thread we've ben started on.
             thread = Thread.currentThread();
+            int readLength = 0;
+
             try
             {
-                int readLength = 0;
                 while (running &&
                         (readLength = reader.read(cbuf, 0, BUFSZ)) != -1)
                 {
+                    bytes += readLength;
+                    con.setCurrentChannel(this,readLength);
                     if (debugBinary)
                         printBinaryBuf(cbuf, readLength);
                     if (debugText)
@@ -510,32 +465,30 @@ public class SpyProxy implements Runnable
                     writer.write(cbuf, 0, readLength);
                     writer.flush();
                 }
-// we are here because the socket was in closed
-// close the corresponding recieve socket
-                if (readLength == -1 && isDebug() && isShowConnections())
-                    println("Socket " + inAddress.getHostName()
-                            + ":" + inPort + " closed");
-                try
-                {
-                    out.close();
-                }
-                catch (IOException ioex)
-                {
-                    println("Channel.run() could not close out socket");
-                }
+            }
+            catch (IOException e)
+            {
+                // Just assume the reading has stopped.
+                running = false;
+            }
+
+            // we are here because the socket was in closed
+            // close the corresponding recieve socket
+            if (readLength == -1 && (isDebug() || isShowConnections()))
+            {
+//                if (isDebug()) print("\n");
+//                println("Socket " + inAddress.getHostName()
+//                        + ":" + inPort + " closed");
+            }
+            try
+            {
+                out.close();
             }
             catch (IOException ioex)
             {
-// This is OK.
-                if (isDebug())
-                    println("Socket " + inAddress.getHostName()
-                            + ":" + inPort + " shutdown");
+                println("Channel.run() could not close socket");
             }
-//println("Channel.run() finishing") ;
-
-            if (eventHandler != null)
-                eventHandler.threadTerminated(this);
-
+            con.channelClosed(this);
         }
 
         /**
@@ -545,12 +498,7 @@ public class SpyProxy implements Runnable
          */
         private void printBinaryBuf(byte[] cbuf, int validLength)
         {
-            StringBuffer msg
-                    = new StringBuffer("Got a message of length " + validLength
-                    + " from " + inAddress.getHostName()
-                    + ":" + inPort
-                    + " to " + outAddress.getHostName()
-                    + ":" + outPort + "\n");
+            StringBuffer msg = new StringBuffer();
             int offset = 0;
             while (offset < validLength)
             {
@@ -587,7 +535,6 @@ public class SpyProxy implements Runnable
                 offset += subOffset;
             }
             print(msg.toString());
-            System.out.flush();
         }
 
         /**
@@ -620,27 +567,16 @@ public class SpyProxy implements Runnable
          */
         private void printTextBuf(byte[] cbuf, int validLength)
         {
-            StringBuffer msg
-                    = new StringBuffer("Got a message of length " + validLength
-                    + " from " + inAddress.getHostName()
-                    + ":" + inPort
-                    + " to " + outAddress.getHostName()
-                    + ":" + outPort + "\n");
+            String s = null;
             try
             {
-                msg.append(new String(cbuf, 0, validLength, "UTF-8"));
+                s = new String(cbuf, 0, validLength, "UTF-8");
             }
             catch (UnsupportedEncodingException x)
             {
-                msg.append("Could not print message due to UnsupportedEncodingException");
+                unexpected(x);
             }
-            println(msg.toString());
-            System.out.flush();
-        }
-
-        public void setEventHandler(EventHandler l)
-        {
-            eventHandler = l;
+            print(s);
         }
 
         public boolean isAlive()
@@ -648,17 +584,7 @@ public class SpyProxy implements Runnable
             return (thread != null) ? thread.isAlive() : false;
         }
 
-    } // Channel definition
-
-
-    interface EventHandler
-    {
-        /**
-         * @param terminatedObject terminatedObject
-         */
-        void threadTerminated(Object terminatedObject);
-    }
-
+    } // class Channel
 }
 
 
