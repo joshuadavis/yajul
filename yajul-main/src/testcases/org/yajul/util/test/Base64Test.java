@@ -11,9 +11,9 @@ package org.yajul.util.test;
 import junit.framework.TestCase;
 import org.yajul.io.Base64InputStream;
 import org.yajul.io.StreamCopier;
-import org.yajul.util.Base64Decoder;
-import org.yajul.util.Base64Encoder;
-import org.yajul.util.Base64FormatException;
+import org.yajul.io.Base64Decoder;
+import org.yajul.io.Base64Encoder;
+import org.yajul.io.Base64FormatException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,6 +35,36 @@ public class Base64Test extends TestCase
         assertEquals(plain, decoded);
     }
 
+    public void testOneByte()  throws Base64FormatException, IOException
+    {
+        // Test one byte.
+        byte[] inputBytes = new byte[] { 42 };
+        byte[] encoded = encode(inputBytes);
+        assertEquals(4,encoded.length);
+        byte[] decoded = decode(encoded);
+        assertTrue(Arrays.equals(inputBytes,decoded));
+    }
+
+    public void testTwoBytes()  throws Base64FormatException, IOException
+    {
+        // Test one byte.
+        byte[] inputBytes = new byte[] { 42, 43 };
+        byte[] encoded = encode(inputBytes);
+        assertEquals(4,encoded.length);
+        byte[] decoded = decode(encoded);
+        assertTrue(Arrays.equals(inputBytes,decoded));
+    }
+
+    public void testThreeBytes()  throws Base64FormatException, IOException
+    {
+        // Test one byte.
+        byte[] inputBytes = new byte[] { 42, 43, 44 };
+        byte[] encoded = encode(inputBytes);
+        assertEquals(4,encoded.length);
+        byte[] decoded = decode(encoded);
+        assertTrue(Arrays.equals(inputBytes,decoded));
+    }
+
     public void test128() throws Base64FormatException, IOException
     {
         for (int i = 1; i <= 128; i++)
@@ -44,35 +74,39 @@ public class Base64Test extends TestCase
             {
                 baos.write(j);
             }
+
             byte[] inputBytes = baos.toByteArray();
-//            System.out.println("input = "+hexdump(inputBytes));
-            ByteArrayInputStream in = new ByteArrayInputStream(inputBytes);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            Base64Encoder enc = new Base64Encoder(in, out);
-            enc.process();
-            byte[] encodedBytes = out.toByteArray();
-//            System.out.println("encoded = "+hexdump(encodedBytes));
-//            System.out.println("encoded (string) = "+new String(encodedBytes));
+            byte[] encodedBytes = encode(inputBytes);
             assertTrue(!Arrays.equals(inputBytes, encodedBytes));
             assertTrue(inputBytes.length <= encodedBytes.length);
-            in = new ByteArrayInputStream(encodedBytes);
-            out = new ByteArrayOutputStream();
-            Base64Decoder dec = new Base64Decoder(in, out);
-            dec.process();
-            byte[] decodedBytes = out.toByteArray();
-//            System.out.println("output = "+hexdump(decodedBytes));
+            byte[] decodedBytes = decode(encodedBytes);
             assertTrue(Arrays.equals(inputBytes,decodedBytes));
         }
     }
 
-    private String hexdump(byte[] bytes)
+    private byte[] decode(byte[] encodedBytes) throws IOException, Base64FormatException
     {
-        StringBuffer buf = new StringBuffer();
-        for(int i = 0; i < bytes.length; i++)
-        {
-            buf.append(Integer.toHexString(bytes[i]));
-        }
-        return buf.toString();
+        ByteArrayInputStream in;
+        ByteArrayOutputStream out;
+        in = new ByteArrayInputStream(encodedBytes);
+        out = new ByteArrayOutputStream();
+        Base64Decoder dec = new Base64Decoder(in, out);
+        dec.process();
+        byte[] decodedBytes = out.toByteArray();
+//        System.out.println("decoded = "+hexdump(decodedBytes));
+        return decodedBytes;
+    }
+
+    private byte[] encode(byte[] inputBytes) throws IOException
+    {
+//        System.out.println("input = "+hexdump(inputBytes));
+        ByteArrayInputStream in = new ByteArrayInputStream(inputBytes);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Base64Encoder enc = new Base64Encoder(in, out);
+        enc.process();
+        byte[] encodedBytes = out.toByteArray();
+//        System.out.println("encoded = "+hexdump(encodedBytes));
+        return encodedBytes;
     }
 
     public void testInputStream() throws

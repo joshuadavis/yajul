@@ -102,7 +102,7 @@ public class CacheTest extends TestCase
             TestElement elem = (TestElement) map.get(key);
             if (elem.active)
             {
-                log.error("Element is already active! " + elem.id);
+                // log.error("Element is already active! " + elem.id);
             }
 
             elem.active = true;

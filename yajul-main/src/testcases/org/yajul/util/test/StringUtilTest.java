@@ -103,4 +103,16 @@ public class StringUtilTest  extends TestCase
         assertEquals("xxxdefyyy",StringUtil.replace(a,b,c));
         assertEquals("xxxyyy",StringUtil.replace(a,b,""));
     }
+
+    public void testHexString()
+    {
+        byte[] bytes = new byte[] { 0, 10, 16, 63, 127,
+                                    (byte)128, (byte)129,
+                                    (byte)254, (byte)255,
+                                    (byte)256 };
+
+        String hex = StringUtil.hexString(bytes,",");
+        assertEquals("00,0a,10,3f,7f,80,81,fe,ff,00",hex);
+    }
 }
+
