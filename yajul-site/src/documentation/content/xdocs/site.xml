@@ -17,22 +17,25 @@ See http://xml.apache.org/forrest/linking.html for more info
 <site label="YAJUL site" href="" xmlns="http://apache.org/forrest/linkmap/1.0" tab="">
 
   <about label="About">
-    <index label="Index" href="index.html" description="Welcome to MyProj"/>
+    <index label="Index" href="index.html" description="Welcome to YAJUL"/>
     <changes label="Changes" href="changes.html" description="History of Changes" />
     <todo label="Todo" href="todo.html"  description="Todo List" />
   </about>
 
   <docs label="Documentation">
-    <javadoc label="API Javadoc" href="api/index.html"/>
+    <javadoc label="API Javadoc" href="ext:core-api"/>
   </docs>
+    
+  <core-build label="yajul-core">
+    <checkstyle label="Code Style Checks"      href="ext:core-checkstyle"/>
+    <jdepend    label="Dependencies"           href="ext:core-jdepend"/> 
+    <junit      label="Unit tests"             href="ext:core-junit"/>
+    <clover     label="Test coverage"          href="ext:core-clover"/>
+  </core-build>
   
-  <build label="Build" tab="build">
-    <checkstyle label="Code Style Checks"      href="checkstyle/index.html"/>
-    <jdepend    label="Dependencies"           href="jdepend/index.html"/> 
-    <junit      label="Unit tests"             href="junit/index.html"/>
-    <clover     label="Test coverage"          href="clover/index.html"/>
-    <viewcvs    label="Browse CVS"     	       href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul"/> 
-  </build>
+  <cvs label="CVS" tab="cvs">
+    <viewcvs    label="Browse CVS"     	       href="ext:yajul-cvs"/> 
+  </cvs>
 
 <!--  
   <samples label="Samples" href="samples/" tab="samples">
@@ -65,6 +68,20 @@ See http://xml.apache.org/forrest/linking.html for more info
   </all>
 
   <external-refs>
+    <sf-cvs href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/">
+      <yajul-cvs href="yajul"/>
+    </sf-cvs>
+    
+    <shrubbery href="http://shrubbery.mynetgear.net/yajul/">
+      <yajul-core href="yajul-core/">
+        <core-checkstyle href="checkstyle/index.html"/>
+        <core-jdepend href="jdepend/index.html"/>
+        <core-junit href="junit/index.html"/>
+        <core-clover href="clover_html/index.html"/>
+        <core-api href="docs/api/index.html"/>
+      </yajul-core>
+    </shrubbery>
+    
     <xml.apache.org href="http://xml.apache.org/">
       <forrest href="forrest/">
         <validation href="validation.html"/>

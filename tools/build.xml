@@ -12,7 +12,6 @@
 	<property name="forrest.home" value="${unpack.dir}/${forrest.name}"/>
 	<property name="site.dir" value="${yajul.dir}/yajul-site"/>
 	
-	
 	<target name="-init">
 		<tstamp/>
 		<fail unless="cvs.root">The property 'cvs.root' is not specified, please define it in ${user.home}/yajul-build.properties.</fail>
