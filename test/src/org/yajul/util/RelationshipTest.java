@@ -45,6 +45,22 @@ public class RelationshipTest extends TestCase {
 	}
 
 	/**
+	 * Runs org.yajul.util.ReflexiveRelationship through a number of tests where student names are
+	 * associated with classes
+	 */
+    public void testReflexiveRelationship() {
+        ReflexiveRelationship r = new ReflexiveRelationship();
+		studentClassTest(r);
+        
+        r.add("alice", "CS999");
+        r.add("alice", "CS888");
+        r.add("kent", "CS888");
+        assertTrue(r.getDeterminants("CS888").contains("alice"));
+        assertTrue(r.getDeterminants("CS888").contains("kent"));
+        assertTrue(!r.getDeterminants("CS999").contains("kent"));
+	}
+
+    /**
 	 * Runs org.yajul.util.Relationship through a number of tests where student names are
 	 * associated with classes
 	 */

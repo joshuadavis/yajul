@@ -96,6 +96,7 @@ TESTING                    *
 
    <target name="test" depends="makeTest">
         <ant dir="test" target="run"/>
+        <ant dir="test" target="report"/>
    </target>
 
    <target name="cleanTestReport">
