@@ -111,6 +111,11 @@ abstract class BeanFactoryProxy implements BeanFactory, BeanNameAware, BeanFacto
         return getDelegate().getBean(name);
     }
 
+    public Class getType(String name) throws NoSuchBeanDefinitionException
+    {
+        return getDelegate().getType(name);
+    }
+
     public Object getBean(String name, Class requiredType) throws BeansException
     {
         return getDelegate().getBean(name, requiredType);
