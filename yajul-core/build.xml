@@ -214,7 +214,7 @@
         </jdepend>
         <mkdir dir="${build.dir}/jdepend"/>
         <style in="${build.dir}/jdepend-xml/jdepend-report.xml" out="${build.dir}/jdepend/index.html"
-            style="${ant.home}/etc/jdepend.xsl" />
+            style="jdepend.xsl" />
     </target>
 
     <target name="docs" depends="junit.report,javadoc,jdepend"/>
