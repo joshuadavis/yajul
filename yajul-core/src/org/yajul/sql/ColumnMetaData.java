@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.apache.log4j.Logger;
+import org.yajul.log.LogUtil;
+
 /**
  * TODO: Add javadoc
  * User: jdavis
@@ -14,6 +17,11 @@ import java.sql.Types;
  */
 public class ColumnMetaData implements Serializable
 {
+    /**
+     * The logger for this class.
+     */
+    private static Logger log = LogUtil.getLogger(ColumnMetaData.class.getName());
+
     private String name;
     private String tableName;
     private short dataType;
@@ -142,11 +150,33 @@ public class ColumnMetaData implements Serializable
      */
     public static boolean isIntType(int dataType)
     {
+        if (log.isDebugEnabled())
+            log.debug("isIntType() : dataType = " + dataType);
         switch(dataType)
         {
-            case Types.BIGINT: return true;
-            case Types.INTEGER: return true;
-            case Types.SMALLINT: return true;
+            // --- Lossless conversion ---
+
+            // These types will always convert properly into an int.
+            case Types.INTEGER:     return true;
+            case Types.SMALLINT:    return true;
+            case Types.TINYINT:     return true;
+
+            // --- Potential conversion loss ---
+
+            // BIGINT values may lose data on conversion.
+            // TODO: Add a flag to allow/dissalow this.
+            case Types.BIGINT:      return true;
+            // NUMERIC values may lose data on conversion (depending on the
+            // size of the numeric value).
+            // TODO: Add a flag to allow/disallow this.
+            case Types.NUMERIC:     return true;
+            // DECIMAL values may lose data on conversion (depending on the
+            // size of the numeric value).
+            // TODO: Add a flag to allow/disallow this.
+            case Types.DECIMAL:     return true;
+
+            // --- All other types ---
+            // All other types are incompatible.
             default: return false;
         }
     }

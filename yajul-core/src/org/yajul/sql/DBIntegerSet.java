@@ -56,12 +56,19 @@ public class DBIntegerSet
         this.helper = new ConnectionHelper(con);
         // Ensure that the value column type is compatible with 'int'.
         ColumnMetaData md = helper.getColumnMetaData(targetTableName,valueColumnName);
+        if (md == null)
+            throw new IllegalArgumentException(
+                    "Column '" + valueColumnName
+                    + "' in table '"
+                    + targetTableName
+                    + "' not found!");
         if (!md.isIntType())
            throw new IllegalArgumentException(
                    "The type of column '" + valueColumnName
                    + "' in table '"
                    + targetTableName
                    + "' is not compatible with the 'int' data type!");
+
         // TODO: Determine the type of the key column.
     }
 

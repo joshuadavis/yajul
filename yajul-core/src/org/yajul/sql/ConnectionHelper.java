@@ -116,18 +116,28 @@ public class ConnectionHelper
         DatabaseMetaData md = getMetaData();
         ResultSet rs = null;
 
+        if (log.isDebugEnabled())
+            log.debug("getColumnMetaData() : tableName = "
+                    + tableName + " columnName = " + columnName);
         try
         {
-            rs = md.getColumns(null,null,tableName,columnName);
+            rs = md.getColumns(null,null,
+                    tableName.toUpperCase(),
+                    columnName.toUpperCase());
             while (rs.next())
             {
                 String table = rs.getString(TABLE_NAME_INDEX);
                 String column = rs.getString(COLUMN_NAME_INDEX);
-                if (tableName.equals(table) && columnName.equals(column))
+                if (tableName.equalsIgnoreCase(table)
+                        && columnName.equalsIgnoreCase(column))
                 {
                     return new ColumnMetaData(column,table,rs);
                 }
             } // while
+            if (log.isDebugEnabled())
+                log.debug("getColumnMetaData() : tableName = "
+                        + tableName + " columnName = " + columnName
+                        + " not found in result set.");
         }
         catch (SQLException e)
         {
