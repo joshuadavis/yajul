@@ -35,6 +35,7 @@
             		<fileset dir="${yajul.dir}/yajul-core/build">
 				<include name="docs/**"/>
 				<include name="lib/**"/>
+                                <include name="junit/**"/>
 			</fileset>
                 </sync>
                
