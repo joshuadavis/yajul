@@ -375,11 +375,16 @@ public abstract class AbstractServerSocketListener implements Runnable
 
     private void doAccept(Socket incoming) throws IOException
     {
+        AbstractClientConnection client = acceptClient(incoming);
+        if (client == null)
+        {
+            incoming.close();
+            log.info("Client rejected: acceptClient() returned null.");
+        }
         synchronized (this)
         {
             connectionsAccepted++;
         }
-        AbstractClientConnection client = acceptClient(incoming);
         client.initialize(this);
         addClient(client);
     }
