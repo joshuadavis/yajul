@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 /**
  * Provides stream copying capability in a Runnable class.  This can be used to
@@ -133,6 +134,38 @@ public class StreamCopier implements Runnable
             throws IOException
     {
         return copy(in, out, DEFAULT_BUFFER_SIZE);
+    }
+
+
+    /**
+     * Reads the entire input stream into an array list of byte arrays, each
+     * byte array being a maximum of 'blocksz' bytes long.
+     * @param blocksz The block size.  Byte arrays in the list will not
+     * be longer than this.
+     * @param in The input stream.
+     * @return ArrayList - An array list of byte arrays.
+     * @throws IOException When something happens while reading the stream.
+     */
+    public static final ArrayList readBlocks(InputStream in, int blocksz)
+            throws IOException
+    {
+        ArrayList list = new ArrayList();
+        byte[] chunk = null;
+        byte[] buf = new byte[blocksz];
+        int bytesRead = 0;
+        int total = 0;
+        while (true)
+        {
+            bytesRead = in.read(buf);
+            if (bytesRead == -1)
+                break;
+            total += bytesRead;
+            // Add a new chunk to the list.
+            chunk = new byte[bytesRead];
+            System.arraycopy(buf,0,chunk,0,bytesRead);
+            list.add(chunk);
+        } // while
+        return list;
     }
 
     /**

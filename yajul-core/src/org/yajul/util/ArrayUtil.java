@@ -95,4 +95,20 @@ public class ArrayUtil
         return set;
     }
 
+
+    /**
+     * Calculates the number of blocks that would be necessary for a given
+     * number of elements and a given block size.
+     * @param elements The total number of elements.
+     * @param blockSize The number of elements in a block.
+     * @return int - The number of blocks needed for 'elements' elements.
+     */
+    public static int calculateBlockCount(int elements,int blockSize)
+    {
+        int blocks = elements / blockSize;
+        if (elements % blockSize != 0)
+            blocks++;
+        return blocks;
+    }
+
 }
