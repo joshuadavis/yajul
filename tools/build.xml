@@ -29,19 +29,19 @@
 		<ant antfile="${yajul.dir}/yajul-core/build.xml" inheritall="false" target="full"/>
 	</target>
 
+    <target name="publish">
+            <jdepend>
+            </jdepend>
+            <sync todir="${web.dir}/yajul-core" overwrite="true" failonerror="false">
+        		<fileset dir="${yajul.dir}/yajul-core/build">
+    		        <include name="docs/**"/>
+    		        <include name="lib/**"/>
+                    <include name="junit/**"/>
+    	        </fileset>
+            </sync>
+    </target>
 
-    	<target name="publish">
-                <sync todir="${web.dir}/yajul-core" overwrite="true" failonerror="false">
-            		<fileset dir="${yajul.dir}/yajul-core/build">
-				<include name="docs/**"/>
-				<include name="lib/**"/>
-                                <include name="junit/**"/>
-			</fileset>
-                </sync>
-               
-     	</target>
-
-        <target name="all" depends="checkout,build">
+    <target name="all" depends="checkout,build">
 	</target>
 
 </project>

@@ -174,6 +174,17 @@
         </javadoc>
     </target>
 
+    <target name="junit.report">
+        <mkdir dir="${build.dir}/junit"/>
+        <mkdir dir="${build.dir}/junit-xml"/>
+        <junitreport todir="${build.dir}/junit-xml">
+          <fileset dir="${junit.dir}">
+            <include name="TEST-*.xml"/>
+          </fileset>
+          <report format="frames" todir="${build.dir}/junit"/>
+        </junitreport>
+    </target>
+    
     <target name="dist.source" depends="init" description="Build the source distribution file.">
         <!-- Zip up all of the source files -->
         <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
@@ -193,8 +204,23 @@
 
     <target name="default" depends="compile,jar,compile.tests"/>
 
+    <target name="jdepend">
+        <mkdir dir="${build.dir}/jdepend-xml"/>
+        <jdepend format="xml" outputfile="${build.dir}/jdepend-xml/jdepend-report.xml">
+            <sourcespath>
+                <pathelement location="classes" />
+            </sourcespath>
+            <classpath location="classes" />
+        </jdepend>
+        <mkdir dir="${build.dir}/jdepend"/>
+        <style basedir="${build.dir}/jdepend-xml" destdir="${build.dir}/jdepend"
+            includes="jdepend-report.xml" 
+            style="${ant.home}/etc/jdepend.xsl" />
+    </target>
 
-    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,javadoc">
+    <target name="docs" depends="junit.report,javadoc,jdepend"/>
+    
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs">
     </target>
 
     <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"
