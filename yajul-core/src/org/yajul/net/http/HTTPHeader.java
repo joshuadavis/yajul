@@ -71,12 +71,13 @@ public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderCo
         super(name,value);
     }
    
-    public void setValue(String v)
+    public String setValue(String v)
     {
         super.setValue(v);
         // Reset derived values.
         valueTokens = null;
         valueLower = null;
+        return getValue();
     }
 
     public String[] getValueTokens()

@@ -37,9 +37,9 @@ import javax.security.auth.login.LoginException;
 /**
  * Provides an implementation of the JAAS CallbackHandler interface using
  * a username string and a pssword.
- * User: josh
- * Date: Oct 22, 2003
- * Time: 6:34:13 AM
+ * <hr>User: josh
+ * <br>Date: Oct 22, 2003
+ * <br>Time: 6:34:13 AM
  */
 public class SimpleCallbackHandler implements CallbackHandler
 {
