@@ -130,41 +130,6 @@ public class StringUtil
         return pad(length, s, truncate, padding, true);
     }
 
-    private static String pad(int length, String s, boolean truncate,
-                              final String padding, boolean right)
-    {
-        int spaceCount = length - s.length();
-
-        // Is the string longer than the padded length?
-        if (spaceCount <= 0)
-        {
-            if (truncate)
-                return s.substring(0, length);
-            else
-                return s;
-        }
-
-        StringBuffer sb = null;
-
-        if (right)
-        {
-            sb = new StringBuffer();
-            // Add the padding.
-            appendPad(padding, spaceCount, sb);
-            // Add the string.
-            sb.append(s);
-        }
-        else
-        {
-            // Add the string.
-            sb = new StringBuffer(s);
-            // Add the padding.
-            appendPad(padding, spaceCount, sb);
-        }
-
-        return sb.toString();
-    }
-
     /**
      * Returns true if the string is null or zero length.
      * @param str The string to test.
@@ -230,6 +195,7 @@ public class StringUtil
 
         return (String[]) list.toArray(new String[list.size()]);
     }
+
     /**
      * Joins an array of strings using the given delimiter.
      * @param array An array of strings.
@@ -379,6 +345,41 @@ public class StringUtil
     }
 
     // --- Implementation private methods ---
+
+    private static String pad(int length, String s, boolean truncate,
+                              final String padding, boolean right)
+    {
+        int spaceCount = length - s.length();
+
+        // Is the string longer than the padded length?
+        if (spaceCount <= 0)
+        {
+            if (truncate)
+                return s.substring(0, length);
+            else
+                return s;
+        }
+
+        StringBuffer sb = null;
+
+        if (right)
+        {
+            sb = new StringBuffer();
+            // Add the padding.
+            appendPad(padding, spaceCount, sb);
+            // Add the string.
+            sb.append(s);
+        }
+        else
+        {
+            // Add the string.
+            sb = new StringBuffer(s);
+            // Add the padding.
+            appendPad(padding, spaceCount, sb);
+        }
+
+        return sb.toString();
+    }
 
     private static final void appendPad(final String padding, int spaceCount,
                                         StringBuffer sb)
