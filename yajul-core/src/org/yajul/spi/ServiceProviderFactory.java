@@ -216,6 +216,8 @@ public class ServiceProviderFactory
     {
         initialize(key, loader);
         descriptorURL = classLoader.getResource(serviceResourceName);
+        if (descriptorURL == null)
+            throw new IOException("Unable to find descriptor URL for service resource: " + serviceResourceName);
         location = descriptorURL.toExternalForm();
         readClassName(classLoader.getResourceAsStream(serviceResourceName));
     }

@@ -128,7 +128,6 @@ public class ObjectFactory
                                                               boolean resourceAndPropertyRequired)
         throws InitializationException
     {
-
         Properties properties = ResourceUtil.loadProperties(resourceName);
         String className = defaultClassName;
         if (properties == null)
@@ -141,20 +140,46 @@ public class ObjectFactory
                 log.debug(message + "  Using default class name '" + defaultClassName + "'.");
         }
         else
+            className = getClassName(properties, propertyName, resourceName, resourceAndPropertyRequired, defaultClassName);
+        Object inst = createInstance(className, properties);
+        return inst;
+    }
+
+    /**
+     * Creates an instance from the specified set of properties  If the
+     * class implements Initializeable, it will be initialized.
+     * @param properties The properties to use.
+     * @param propertyName The name of the property to look for.
+     * @param defaultClassName The default class name to use, if the property was not found.
+     * @param propertyRequired Set to true if the property name is required.
+     * @return Object - The new instance.
+     * @throws InitializationException if the resource could not be loaded.
+     */
+    public static Object createInstanceFromProperties(Properties properties,
+                                                              String propertyName,
+                                                              String defaultClassName,
+                                                              boolean propertyRequired)
+        throws InitializationException
+    {
+        String className = defaultClassName;
+        if (properties == null)
         {
-            className = properties.getProperty(propertyName);
-            if (StringUtil.isEmpty(className))
-            {
-                String message = "Properties resource " + resourceName
-                                        + " did not contain a value for " + propertyName
-                                            + ".";
-                if (resourceAndPropertyRequired)
-                    throw new InitializationException(message);
-                if (log.isDebugEnabled())
-                    log.debug(message + "  Using default class name '" + defaultClassName + "'.");
-                className = defaultClassName;
-            }
+            String message = "No properties specified.";
+            if (propertyRequired)
+                throw new InitializationException(message);
+            if (log.isDebugEnabled())
+                log.debug(message + "  Using default class name '" + defaultClassName + "'.");
         }
+        else
+            className = getClassName(properties, propertyName, null, propertyRequired, defaultClassName);
+        Object inst = createInstance(className, properties);
+        return inst;
+    }
+
+    // --- Implementation methods ---
+
+    private static Object createInstance(String className, Properties properties) throws InitializationException
+    {
         // Create the instance.
         Object inst = createInstance(className);
 
@@ -165,6 +190,25 @@ public class ObjectFactory
             initializeableObject.initialize(properties);
         }
         return inst;
+    }
+
+    private static String getClassName(Properties properties, String propertyName, String resourceName, boolean resourceAndPropertyRequired, String defaultClassName) throws InitializationException
+    {
+        String className;
+        className = properties.getProperty(propertyName);
+        if (StringUtil.isEmpty(className))
+        {
+            String message = "Properties " +
+                    ( (resourceName == null) ? "" : ( "resource " + resourceName ) )
+                    + " did not contain a value for " + propertyName
+                    + ".";
+            if (resourceAndPropertyRequired)
+                throw new InitializationException(message);
+            if (log.isDebugEnabled())
+                log.debug(message + "  Using default class name '" + defaultClassName + "'.");
+            className = defaultClassName;
+        }
+        return className;
     }
 
     /**
