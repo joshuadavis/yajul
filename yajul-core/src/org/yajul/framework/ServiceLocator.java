@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.yajul.util.StringUtil;
 import org.yajul.util.ObjectFactory;
 
+import java.util.Properties;
+
 /**
  * Provides service implementations (DAO instances, etc.) for the application.
  * The Spring framework is used to allow different configurations of the
@@ -70,6 +72,18 @@ public class ServiceLocator
     }
 
     /**
+     * Sets the current instance of the singleton.<br>
+     */
+    protected synchronized static void registerInstance(ServiceLocator locator)
+    {
+        if (ourInstance != null)
+        {
+            ourInstance.destroy();
+        }
+        ourInstance = locator;
+    }
+
+    /**
      * Empty (a.k.a. default) constructor.
      */
     public ServiceLocator()
@@ -116,12 +130,7 @@ public class ServiceLocator
             beanFactory = new XmlBeanFactory(new ClassPathResource(resource));
             log.info("Processing with placeholder configurer...");
             PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
-            // If there was a properties resource specified, use it.
-            if (!StringUtil.isEmpty(propertiesResource))
-            {
-                log.info("Initializing properties from resource: " + propertiesResource);
-                cfg.setLocation(new ClassPathResource(propertiesResource));
-            }
+            initializeConfigurer(propertiesResource, cfg);
             cfg.postProcessBeanFactory(beanFactory);
             this.resource = resource;
             log.info("Initialization complete.");
@@ -170,7 +179,16 @@ public class ServiceLocator
         }
     }
 
-    protected BeanFactory getBeanFactory()
+    /**
+     * Sub classes may override this to provide configuration properties.
+     * @return configuration properties
+     */
+    protected Properties getProperties()
+    {
+        return null;
+    }
+
+    protected final BeanFactory getBeanFactory()
     {
         synchronized (this)
         {
@@ -180,13 +198,6 @@ public class ServiceLocator
         return beanFactory;
     }
 
-    protected void setBeanFactory(XmlBeanFactory beanFactory)
-    {
-        synchronized (this)
-        {
-            this.beanFactory = beanFactory;
-        }
-    }
 
     protected void finalize() throws Throwable
     {
@@ -200,5 +211,26 @@ public class ServiceLocator
         // if the system property is not specified.
         String resource = System.getProperty(CONTEXT_PROPERTY_NAME,DEFAULT_CONTEXT_RESOURCE);
         initialize(resource);
+    }
+
+    /**
+     * Sub-classes can override this method to set up the configurer with properties.
+     * @param propertiesResource The name of the property resource to use (may be null).
+     * @param cfg The configurer.
+     */
+    private void initializeConfigurer(String propertiesResource, PropertyPlaceholderConfigurer cfg)
+    {
+        Properties props = getProperties();
+        if (props != null)
+        {
+
+            cfg.setProperties(props);
+        }
+
+        if (!StringUtil.isEmpty(propertiesResource))
+        {
+            log.info("Initializing properties from resource: " + propertiesResource);
+            cfg.setLocation(new ClassPathResource(propertiesResource));
+        }
     }
 }
