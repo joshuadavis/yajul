@@ -63,7 +63,8 @@ public class StreamCopier implements Runnable
      * Copies the input stream into the output stream in a thread safe and
      * efficient manner.
      * @param in The input stream.
-     * @param out The output stream.
+     * @param out The output stream.  If this is null, the input will be
+     * discarded, similar to piping to /dev/null on UN*X.
      * @param bufsz The size of the buffer to use.
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
@@ -76,10 +77,17 @@ public class StreamCopier implements Runnable
         // output while the copying is taking place.
         synchronized (in)
         {
-            synchronized (out)
+            if (out != null)
+            {
+                synchronized (out)
+                {
+                    return unsyncCopy(in, out, bufsz);
+                } // synchronized (out)
+            }
+            else
             {
                 return unsyncCopy(in, out, bufsz);
-            } // synchronized (out)
+            }
         } // synchronized (in)
     }
 
@@ -88,7 +96,8 @@ public class StreamCopier implements Runnable
      * This version does not synchronize on the streams, so it is not safe
      * to use when the streams are being accessed by multiple threads.
      * @param in The input stream.
-     * @param out The output stream.
+     * @param out The output stream.  If this is null, the input will be
+     * discarded, similar to piping to /dev/null on UN*X.
      * @param bufsz The size of the buffer to use.
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
@@ -105,7 +114,8 @@ public class StreamCopier implements Runnable
             if (bytesRead == -1)
                 break;
             total += bytesRead;
-            out.write(buf, 0, bytesRead);
+            if (out != null)
+                out.write(buf, 0, bytesRead);
         } // while
         return total;
     }
@@ -114,7 +124,8 @@ public class StreamCopier implements Runnable
      * Copies the input stream into the output stream in a thread safe and
      * efficient manner.
      * @param in The input stream.
-     * @param out The output stream.
+     * @param out The output stream.  If this is null, the input will be
+     * discarded, similar to piping to /dev/null on UN*X.
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
      **/
@@ -128,7 +139,8 @@ public class StreamCopier implements Runnable
      * Creates a new stream copier, that will copy the input stream into the
      * output stream when the run() method is caled.
      * @param    in     The input stream to read from.
-     * @param    out    The output stream to write to.
+     * @param out The output stream.  If this is null, the input will be
+     * discarded, similar to piping to /dev/null on UN*X.
      */
     public StreamCopier(InputStream in, OutputStream out)
     {
@@ -159,7 +171,8 @@ public class StreamCopier implements Runnable
             // Copy, using the a buffer.
             unsyncCopy(in, out, bufsz);
             // Flush the output.
-            out.flush();
+            if (out != null)
+                out.flush();
             // Completed state.
             synchronized (this)
             {
@@ -203,6 +216,4 @@ public class StreamCopier implements Runnable
             return complete;
         }
     }
-
-
 }

@@ -28,6 +28,7 @@
 package org.yajul.scheduler;
 
 import org.apache.log4j.Logger;
+import org.yajul.io.StreamCopier;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,6 +43,8 @@ public class ScheduledShellTask implements ScheduledTask
     private static Logger log = Logger.getLogger(ScheduledShellTask.class);
 
     private OutputStream out;
+
+    private OutputStream err;
 
     /**
      * The OS-specific command line that will be executed.
@@ -84,16 +87,24 @@ public class ScheduledShellTask implements ScheduledTask
     /**
      * Creates a new command line task.
      * @param commandLine The (system-specific) command line to execute.
-     * @param out Optional OutputStream that will capture the 'standard output' of the child process.
+     * @param out Optional OutputStream that will capture the 'standard output'
+     * of the child process.
+     * @param err Optional OutputStream that will capture the 'standard error'
+     * stream of the child process.
      */
-    public ScheduledShellTask(String commandLine, OutputStream out)
+    public ScheduledShellTask(String commandLine,
+                              OutputStream out,
+                              OutputStream err)
     {
         this.out = out;
+        this.err = err;
         this.commandLine = commandLine;
         process = null;
         // Use System.out if no output sream was specified.
         if (this.out == null)
             this.out = System.out;
+        if (this.err == null)
+            this.err = System.err;
     }
 
     /**
@@ -102,21 +113,12 @@ public class ScheduledShellTask implements ScheduledTask
      */
     public ScheduledShellTask(String commandLine)
     {
-        this(commandLine, null);
+        this(commandLine, null, null);
     }
 
     public boolean before(ScheduleEntry entry)
     {
         return true;
-    }
-
-    private void copyStdout() throws java.io.IOException
-    {
-        InputStream in = process.getInputStream();
-        byte[] buf = new byte[1024];
-        int bytes = 0;
-        while ((bytes = in.read(buf, 0, buf.length)) > 0)
-            out.write(buf, 0, bytes);
     }
 
     public void run()
@@ -127,8 +129,17 @@ public class ScheduledShellTask implements ScheduledTask
         {
             log.info("Starting '" + commandLine + "'");
             process = rt.exec(commandLine);
-            copyStdout();
+            InputStream in = process.getInputStream();
+            // Copy stderr on another thread.
+            StreamCopier errCopier = new StreamCopier(process.getErrorStream(),err);
+            Thread errThread = new Thread(errCopier);
+            errThread.start();
+            // Copy stdout on this thread.
+            StreamCopier.unsyncCopy(in,out,StreamCopier.DEFAULT_BUFFER_SIZE);
+            // Wait for the process to complete.
             status = process.waitFor();
+            // Wait for the error stream thread to complete.
+            errThread.join();
             log.info("Completed '" + commandLine + "', status = " + status);
         }
         catch (java.lang.Exception ex)
@@ -140,4 +151,10 @@ public class ScheduledShellTask implements ScheduledTask
     public void shutdown(ScheduleEntry entry)
     {
     }
+
+    // --- Implementation methods --
+    private void copyStdout() throws java.io.IOException
+    {
+    }
+
 }
