@@ -31,6 +31,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     <jdepend    label="Dependencies"           href="ext:core-jdepend"/> 
     <junit      label="Unit tests"             href="ext:core-junit"/>
     <clover     label="Test coverage"          href="ext:core-clover"/>
+    <download	label="Download"	       href="ext:core-download"/>
   </core-build>
   
   <cvs label="CVS" tab="cvs">
@@ -79,6 +80,7 @@ See http://xml.apache.org/forrest/linking.html for more info
         <core-junit href="junit/index.html"/>
         <core-clover href="clover_html/index.html"/>
         <core-api href="docs/api/index.html"/>
+        <core-download href="lib"/>
       </yajul-core>
     </shrubbery>
     
