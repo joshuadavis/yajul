@@ -27,14 +27,14 @@
 
 package org.yajul.util;
 
-import java.util.LinkedList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Iterator;
-
 import org.yajul.log.Logger;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Cache provides a mechanism for storing a map of objects, which are activated
@@ -65,16 +65,16 @@ public class Cache
     {
         /** The object is being passivated because it is the least recently
          * used. */
-        public static final int PASSIVATE_LRU       = 0;
+        public static final int PASSIVATE_LRU = 0;
         /** The object is being passivated because of a timeout. */
-        public static final int PASSIVATE_TIMEOUT   = 1;
+        public static final int PASSIVATE_TIMEOUT = 1;
         /** The object is being passivated because the cache entry has been
          * finalized. */
         public static final int PASSIVATE_FINALIZED = 2;
         /** The object is being passivated because the cache has been
          * cleared. */
-        public static final int PASSIVATE_CLEAR     = 3;
-        
+        public static final int PASSIVATE_CLEAR = 3;
+
         /**
          * Activates the object associated with the specified information (for
          * example, read the object from persistent storage).
@@ -84,7 +84,7 @@ public class Cache
          * @throws Exception Something went wrong during the activation.
          */
         Object activate(Object key) throws Exception;
-        
+
         /**
          * Passivates the object, indicating that it is no longer in the cache.
          * The object may want to release resources at this point.
@@ -97,10 +97,10 @@ public class Cache
          */
         void passivate(Object key, Object obj, int reason) throws Exception;
     }
-    
+
     /** A logger for this class. */
     private static Logger log = Logger.getLogger(Cache.class.getName());
-    
+
     /** Inner class that is the intermediate object that points to the actual
      * cached objects. **/
     private static class Entry
@@ -108,24 +108,34 @@ public class Cache
         /** A logger for this class. */
         private static Logger log = Logger.getLogger(Entry.class.getName());
         /** The key for this entry. */
-        Object  key;
+        private Object key;
         /** The cached object. */
-        Object  object;
+        private Object object;
         /** The number of hits on this entry. */
-        int     hits;
+        private int hits;
         /** The system time of the last hit on this entry. */
-        long    lastHit;
+        private long lastHit;
         /** The system time of the last activation of this entry. */
-        long    lastActivation;
+        private long lastActivation;
         /** The cache that owns this entry. */
-        Cache   cache;
-        
+        private Cache cache;
+
+        /**
+         * Creates a cache entry
+         * @param c The cache
+         * @param k The key
+         */
         Entry(Cache c, Object key)
         {
             this.cache = c;
             this.key = key;
         }
-        
+
+        /**
+         * Finalizer: Notifies the cache that this entry is being passivated
+         * by the garbage collector (useful when the cache set is using
+         * weak references).
+         */
         public void finalize()
         {
             // Notify the cache that this entry is being garbage collected.
@@ -137,103 +147,103 @@ public class Cache
                 log.debug("No key.");
             else
                 cache.entryFinalized(this);
-                
+
             this.key = null;
             this.object = null;
             this.cache = null;
         }
     }
-    
+
     /**
      * A list of keys, in order of use.  The most recently used is first.
      */
-    private LinkedList      usedKeys;
-    
+    private LinkedList usedKeys;
+
     /**
      * A map of the cached object entries (Entry) by key.
      */
-    private Map             entryMap;
-    
+    private Map entryMap;
+
     /**
      * The maximum number of objects this cache will have in it before
      * it removes objects.  This is the maximum size of the LRU list.
      */
-    private int             maxSize;
-    
+    private int maxSize;
+
     /**
      * The cache timeout, in millilseconds.  If zero, there will be no timeout.
      */
-    private long            timeout;
-    /** 
+    private long timeout;
+    /**
      * An interface to something that provides acitvation of objects.  This is
      * a 'factory', that produces objects based on a key.
      * @see Activator
      */
-    private Activator       activator;
-    
+    private Activator activator;
+
     /** If true, parallel activation is allowed.  Otherwise,
      * object activation is serialized. */
-    private boolean         parallelActivation;
-    
+    private boolean parallelActivation;
+
     /** If true, statistics are kept. */
-    private boolean         keepStats;
+    private boolean keepStats;
 
     //statistics
-    private int             activations;
-    private int             requests;
-    private int             timeouts;
-    private Set             allRequests;  // A set of all keys requested so far.
-    
+    private int activations;
+    private int requests;
+    private int timeouts;
+    private Set allRequests;  // A set of all keys requested so far.
+
     //statistics methods
-    
-    /** Gets the maximum size the cache can grow to 
+
+    /** Gets the maximum size the cache can grow to
      * @return int The maximum cache size. */
-    public int getMaxSize()             
+    public int getMaxSize()
     {
-        return maxSize; 
+        return maxSize;
     }
-    
-    /** Gets the current size of the cache. 
+
+    /** Gets the current size of the cache.
      * @return int The current cache size. */
-    public int getCurrentSize()         
-    { 
-        return entryMap.size(); 
+    public int getCurrentSize()
+    {
+        return entryMap.size();
     }
-    
+
     /** Gets the number of times an activation had to be perfomed (a cache
      * miss).
      * @return int The number of activations. */
-    public int getActivations()         
+    public int getActivations()
     {
-        return activations; 
+        return activations;
     }
-    
-    /** Gets the number request made of the cache. 
+
+    /** Gets the number request made of the cache.
      * @return int The number of requests made. */
-    public int getRequests()            
+    public int getRequests()
     {
-        return requests; 
+        return requests;
     }
-    
+
     /** Gets the number unique keys asked for, this will allways be zero if
-     * 'keepStats' is false. 
+     * 'keepStats' is false.
      * @return int The number of unique requests. */
-    public int getUniqueRequests()      
+    public int getUniqueRequests()
     {
         return allRequests.size();
     }
-    
+
     /** Gets the number of 'timeout' passivations (zero, unless a timeout was
-     * specified). 
+     * specified).
      * @return int The number of passivations due to a timeout condition. **/
-    public int getTimeouts()            
+    public int getTimeouts()
     {
         return timeouts;
     }
-    
+
     /** Gets the rate at which requested object were available in the cache
      * [0..1]
-     * @return double The hit rate of the cache (requests - activations) / 
+     * @return double The hit rate of the cache (requests - activations) /
      * requests **/
     public double getHitRate()
     {
@@ -241,7 +251,7 @@ public class Cache
         double dact = (double) activations;
         return ((dreq - dact)) / dreq;
     }
-    
+
     /** Gets the rate at which requested objects timed out [0..1]
      * @return double The ration of requests to timeouts (requests - timeouts)
      * / requests **/
@@ -251,7 +261,7 @@ public class Cache
         double dto = (double) timeouts;
         return ((dreq - dto)) / dreq;
     }
-    
+
     /**
      * Creates a new cache with the specified size.  Object are activated by
      * the given activator interface.
@@ -264,10 +274,10 @@ public class Cache
     public Cache(Activator activator, int maxSize)
     {
         this(activator, maxSize,
-            0,          // No timeout.
-            true,       // Allow parallel activation.
-            false,      // Don't keep statistics.
-            new HashMap(maxSize)); // Default map.
+                0, // No timeout.
+                true, // Allow parallel activation.
+                false, // Don't keep statistics.
+                new HashMap(maxSize)); // Default map.
     }
 
     /**
@@ -296,7 +306,7 @@ public class Cache
         this.keepStats = keepStats;
         this.timeout = timeout;
         // Clear the stats.
-        do_clearStats();
+        doClearStats();
 
         log.debug("maxSize = " + maxSize + " timeout = " + timeout);
 
@@ -312,7 +322,7 @@ public class Cache
     {
         requests++;
     }
-    
+
     /**
      * Logs the activation of the key for statistics
      */
@@ -326,13 +336,13 @@ public class Cache
             {
                 entry.lastActivation = System.currentTimeMillis();
             }
-            
+
             // Keep track of the unique keys if 'keepStats' is true.
             if (keepStats)
                 allRequests.add(key);
         }
     }
-    
+
     /**
      * Gets the object associated to the given key.  Activates a new one if
      * necessary.
@@ -343,9 +353,9 @@ public class Cache
     public Object get(Object key) throws Exception
     {
         logRequest();
-        
+
         Entry entry = null; // The entry that will point to the value.
-        
+
         if (parallelActivation)
         {
             // Do a 'synchronized' lookup in the cache.
@@ -353,7 +363,7 @@ public class Cache
             {
                 entry = find(key);
             }
-            
+
             // Now, we are unsynchronized.
             // NOTE: Multiple threads may create an entry and invoke the
             // activator simultaneously!!!
@@ -361,7 +371,7 @@ public class Cache
             // If there's no entry, make one.
             if (entry == null)
                 entry = new Entry(this, key);
-            
+
             // If an activation is required, do it!
             if (entry.object == null)
                 activate(key, entry);
@@ -376,7 +386,7 @@ public class Cache
             // the blank entry.
             synchronized (entryMap)
             {
-                // Find the entry in the map.  Already syncrhonized, so 
+                // Find the entry in the map.  Already syncrhonized, so
                 // we can use the unsynchronized find method.
                 entry = find(key);
 
@@ -385,12 +395,12 @@ public class Cache
                 if (entry == null)
                 {
                     entry = new Entry(this, key);
-                    
+
                     if (maxSize > 0)
                         addToCollection(key, entry);
                 }
             }
-            
+
             // Now, serialize the threads on the entry that was found / created
             // in the previous step.  Since this is synchronized on the entry,
             // the first thread in will activate the object, and all other
@@ -455,7 +465,7 @@ public class Cache
         }
         return e;
     }
-    
+
     /**
      * Activates the object with the specified key and adds it to the collection
      * @param key   The key.
@@ -464,16 +474,16 @@ public class Cache
     private void activate(Object key, Entry entry) throws Exception
     {
         logActivation(key, entry);
-        
+
         // perform the work of activation
-        
+
         entry.object = activator.activate(key);
-                
+
         //cache the value
         if (maxSize > 0)
             addToCollection(key, entry);
     }
-    
+
     /**
      * Adds the specified key/value pair to the cache
      * @param key       The key.
@@ -485,7 +495,7 @@ public class Cache
         // Check if the value is already added from a contending thread.
         if (entryMap.get(key) != null)
             return;
-        
+
         // Shrink the cache if necessary.
         if (entryMap.size() >= maxSize)
         {
@@ -496,7 +506,7 @@ public class Cache
         usedKeys.addFirst(key);
         entryMap.put(key, entry);
     }
-    
+
     /**
      * Called when a key is used. Moves it to the front of the usedKeys list
      */
@@ -511,11 +521,11 @@ public class Cache
             }
         }
     }
-    
+
     /**
      * Clears the cache contents and resets the stats.
      * @throws Exception If there was an error during passivation.
-     */    
+     */
     public void clear() throws Exception
     {
         synchronized (this)
@@ -537,34 +547,34 @@ public class Cache
     }
 
     /**
-    * If true, statistics info is kept.
-    * @param keepStats True if statistics should be kept, false if not.
-    */
+     * If true, statistics info is kept.
+     * @param keepStats True if statistics should be kept, false if not.
+     */
     public synchronized void setKeepStats(boolean keepStats)
     {
         keepStats = keepStats;
     }
 
     /**
-    * If true, statistics info is kept.
-    * @return boolean True if statistics are being kept, false if not.
-    */
+     * If true, statistics info is kept.
+     * @return boolean True if statistics are being kept, false if not.
+     */
     public synchronized boolean getKeepStats()
     {
         return keepStats;
     }
 
     /**
-    * Clears the statistics
-    */  
+     * Clears the statistics
+     */
     public synchronized void clearStats()
     {
         allRequests.clear();
 
-        do_clearStats();
+        doClearStats();
     }
 
-    private void do_clearStats()
+    private void doClearStats()
     {
         activations = 0;
         requests = 0;
@@ -581,8 +591,8 @@ public class Cache
             if (activator == null)
             {
                 if (log.isDebugEnabled())
-                    log.debug("Entry finalized, but activator is null: " +
-                        "not passivating.");
+                    log.debug("Entry finalized, but activator is null: " 
+                            + "not passivating.");
                 return;
             }
             passivate(e.key, Activator.PASSIVATE_FINALIZED);
@@ -593,7 +603,7 @@ public class Cache
         }
     }
 
-    private void internal_passivate(Entry e, int reason) throws Exception
+    private void internalPassivate(Entry e, int reason) throws Exception
     {
         if (e.key == null)
             return;
@@ -620,6 +630,6 @@ public class Cache
             e = (Entry) entryMap.remove(key);
         }
         if (e != null)
-            internal_passivate(e, reason);
+            internalPassivate(e, reason);
     }
 }
