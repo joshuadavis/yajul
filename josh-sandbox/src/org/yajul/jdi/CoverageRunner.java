@@ -1,281 +1,123 @@
 /*
  * Created by IntelliJ IDEA.
  * User: josh
- * Date: Sep 14, 2002
- * Time: 12:23:56 PM
+ * Date: Sep 15, 2002
+ * Time: 9:49:02 PM
  * To change template for new class use
  * Code Style | Class Templates options (Tools | IDE Options).
  */
 package org.yajul.jdi;
 
-import com.sun.jdi.Bootstrap;
-import com.sun.jdi.VirtualMachine;
-import com.sun.jdi.VirtualMachineManager;
-import com.sun.jdi.connect.Connector;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
-import com.sun.jdi.connect.LaunchingConnector;
-import com.sun.jdi.connect.VMStartException;
-import com.sun.jdi.request.ClassPrepareRequest;
-import com.sun.jdi.request.EventRequest;
-import com.sun.jdi.request.EventRequestManager;
-import com.sun.jdi.request.ExceptionRequest;
-import com.sun.jdi.request.MethodEntryRequest;
-import com.sun.jdi.request.MethodExitRequest;
-import com.sun.jdi.request.ThreadDeathRequest;
-import org.yajul.log.Logger;
-import org.yajul.util.StreamCopier;
-import org.yajul.util.WriterOutputStream;
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import junit.framework.AssertionFailedError;
+import junit.framework.Test;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import junit.runner.BaseTestRunner;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+
+import org.yajul.xml.DOMUtil;
+import org.yajul.junit.LogSupressingSetup;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
- * A JUnit test runner that provides very simple method coverage analysis using JDI (Java Debug
- * Interface - Part of <a href="http://java.sun.com/products/jpda/">JPDA</a>.
- * @see http://java.sun.com/products/jpda
- * @see http://java.sun.com/j2se/1.4.1/docs/guide/jpda/
+ * CoverageShell uses this class inside the JDI JVM to execute the tests.  This class is responsible for
+ * communicating the test results back to the CoverageShell (for now, via a temporary file).
+ * @author Joshua Davis
  */
-public class CoverageRunner
+public class CoverageRunner extends BaseTestRunner
 {
-    private static Logger log = Logger.getLogger(CoverageRunner.class);
-
-    private static final Class JUNIT_RUNNER_CLASS = junit.textui.TestRunner.class;
-
-    // Class patterns for which we don't want events
-    private static final String[] DEFAULT_EXCLUDES =
+    public void addError(Test test, Throwable throwable)
     {
-        "java.*",
-        "javax.*",
-        "sun.*",
-        "com.sun.*",
-        "junit.*",
-        "org.apache.*"
-    };
+        // TODO: Write information about the error to the output file.
+    }
 
-    private String testClass;       // The test class (invokes target package methods).
-    private String targetPackage;   // The test target package
-    private Thread eventThread;     // Thread that receives events from the JDI VM and dispatches them.
-    private Thread outThread;       // Thread that reads stdout from the JDI VM and pumps it out.
-    private Thread errThread;       // Thread that reads stderr from the JDI VM and pumps it out.
+    public void addFailure(Test test, AssertionFailedError error)
+    {
+        // TODO: Write information about the failure to the output file.
+    }
+
+    public void endTest(Test test)
+    {
+        // TODO: Figure out what this is supposed to do.
+    }
+
+    protected void runFailed(String s)
+    {
+        // TODO: Figure out what this is suposed to do.
+    }
+
+    public void startTest(Test test)
+    {
+        System.out.println("test = " + test.toString());
+    }
+
     /**
-     * Creates a CoverageRunner.
+     * Creates the TestResult to be used for the test run.
      */
-    public CoverageRunner(String packageFilter,String testClass)
+    protected TestResult createTestResult()
     {
-        this.targetPackage = packageFilter;
-        this.testClass = testClass;
+        return new TestResult();
     }
 
-    private void go() throws IOException, IllegalConnectorArgumentsException, VMStartException
+    public TestResult doRun(Test suite)
     {
-        String classpath = System.getProperty("java.class.path");
-        String commandLine = JUNIT_RUNNER_CLASS.getName() + " " + testClass;
-
-        // Get access to the VirtualMachineManager.  This object is a singleton that
-        // provides access to JDI.
-        VirtualMachineManager vmm = Bootstrap.virtualMachineManager();
-        log.debug("setUp() : Obtained VirtualMachineManager");
-
-        VirtualMachine vm = launchJVM(vmm, commandLine, classpath);
-
-        // Tell the VM which events we are interested in receiving.
-        registerInterestInEvents(vm);
-
-        // Create a dispatcher that will listen on the queue directly
-        // and route all events to a list of 'listeners'.
-        JDIEventDispatcher dispatcher = new JDIEventDispatcher(vm);
-
-        // Create a model that will be updated based on the events
-        // sent from the dispatcher.
-        ThreadStatusMonitor threadModel = new ThreadStatusMonitor(new CallGraph());
-        threadModel.setIncludeFilter(this.targetPackage);
-        dispatcher.addListener(threadModel);
-
-        // Start the dispatcher on a thread.
-        Thread eventThread = new Thread(dispatcher, "JDI event dispatcher");
-        eventThread.start();
-        log.info("JDIEventDispatcher started.");
-
-        redirectOutput(vm);
-
-        log.info("Resuming JVM...");
-        vm.resume();
-        log.info("VM Resumed.  Waiting for threads to join...");
-
-        // Shutdown begins when event thread terminates
-        try
-        {
-            eventThread.join();
-            errThread.join();   // Make sure output is forwarded
-            outThread.join();   // before we exit
-        }
-        catch (InterruptedException exc)
-        {
-            // we don't interrupt
-        }
-
-        // Dump the call graph
-        CallGraph graph = threadModel.getCallGraph();
-
-        Iterator iter = graph.iterator();
-        CallGraph.MethodNode node = null;
-        while(iter.hasNext())
-        {
-            node = (CallGraph.MethodNode)iter.next();
-            log.debug(node.toString());
-        }
+        TestResult result = createTestResult();
+        TestConsolePrinter printer = new TestConsolePrinter(System.out);
+        result.addListener(printer);
+        long startTime = System.currentTimeMillis();
+        suite.run(result);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        printer.print(result, runTime);
+        return result;
     }
 
-    private void redirectOutput(VirtualMachine vm)
+    /**
+     * Starts a test run. Analyzes the command line arguments
+     * and runs the given test suite.
+     */
+    protected TestResult start(String args[]) throws Exception
     {
-        Process process = vm.process();
-        log.info("JVM process obtained.");
 
-        // Copy target's output and error to our output and error.
-        Runnable r = new StreamCopier(process.getErrorStream(), System.err);
+            // Turn off the dynamic class reloading.
+            setLoading(false);
 
-        errThread = new Thread(
-                new StreamCopier(
-                        process.getErrorStream(),
-                        new WriterOutputStream(log)),
-                "error reader"
-        );
-        outThread = new Thread(
-                new StreamCopier(
-                        process.getInputStream(),
-                        new WriterOutputStream(log)),
-                "output reader"
-        );
-        errThread.start();
-        outThread.start();
-        log.info("Output and error stream threads started.");
-    }
+            // Open up the input file.
+            File f = new File(args[0]);
+            if (!f.exists())
+                throw new IOException("Input file '" + args[0] + "' does not exist!");
+            Document doc = DOMUtil.parseFile(args[0]);
 
-    private VirtualMachine launchJVM(VirtualMachineManager vmm, String commandLine, String classpath) throws IOException, IllegalConnectorArgumentsException, VMStartException
-    {
-        // Get a Connector that can launch the target test program.
-        LaunchingConnector connector = vmm.defaultConnector();
-        log.debug("setUp() : Obtained LaunchingConnector");
-
-        // Get the default arguments.
-        Map arguments = connector.defaultArguments();
-        // Get the arguments for the 'main' method of the target program.
-        Connector.Argument arg =
-                (Connector.Argument) arguments.get("main");
-        if (arg == null)
-            throw new Error("Bad launching connector");
-        // Pass the test class name as the argument to the JUnit runner.
-        arg.setValue(commandLine);
-
-        // If the classpath was not specified, pass through the parent's classpath.
-        if (classpath == null)
-            classpath = System.getProperty("java.class.path");
-        arg = (Connector.Argument) arguments.get("options");
-        if (arg == null)
-            throw new Error("Bad launching connector");
-        arg.setValue("-classpath " + classpath);
-
-        // Make sure the JVM will start in 'halted' state!
-
-        // Start the JVM!
-        log.info("Launching JVM...");
-        if (log.isDebugEnabled())
-        {
-            log.debug("java.class.path=" + classpath);
-            log.debug(connector.name() + " - " + connector.description());
-            Iterator iter = arguments.values().iterator();
-            while (iter.hasNext())
+            // Get all of the test file names, in order.   Add them all to a test suite.
+            TestSuite suite = new TestSuite("CoverageRunner-Suite");
+            Element[] elem = DOMUtil.getChildElements(doc,"test");
+            String text = null;
+            for(int i = 0 ; i < elem.length; i++)
             {
-                arg = (Connector.Argument) iter.next();
-                log.debug(arg + " : " + arg.description());
-            } // while
-        }
-        VirtualMachine vm = connector.launch(arguments);
-        log.info("JVM launched.");
-        return vm;
-    }
+                text = DOMUtil.getChildText(elem[i]);
+                suite.addTest(getTest(text));
+            }
 
-    private void registerInterestInEvents(VirtualMachine vm)
-    {
-        // Set up all requests.
-        EventRequestManager mgr = vm.eventRequestManager();
-
-//        // want all exceptions
-//        ExceptionRequest excReq = mgr.createExceptionRequest(null,
-//                true, true);
-//        // suspend so we can step
-//        excReq.setSuspendPolicy(EventRequest.SUSPEND_ALL);
-//        excReq.enable();
-//
-//        log.info("Exception request enabled (SUSPEND_ALL).");
-
-        MethodEntryRequest menr = mgr.createMethodEntryRequest();
-        String[] excludes = DEFAULT_EXCLUDES;
-        for (int i = 0; i < excludes.length; ++i)
-        {
-            menr.addClassExclusionFilter(excludes[i]);
-        }
-        menr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
-        menr.enable();
-
-        log.info("Method entry request enabled.");
-
-        MethodExitRequest mexr = mgr.createMethodExitRequest();
-        for (int i = 0; i < excludes.length; ++i)
-        {
-            mexr.addClassExclusionFilter(excludes[i]);
-        }
-        mexr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
-        mexr.enable();
-        log.info("Method exit request enabled.");
-
-//        ThreadDeathRequest tdr = mgr.createThreadDeathRequest();
-//        // Make sure we sync on thread death
-//        tdr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
-//        tdr.enable();
-//        log.info("Thread death request enabled (SUSPEND_ALL)");
-//
-        ClassPrepareRequest cpr = mgr.createClassPrepareRequest();
-        for (int i = 0; i < excludes.length; ++i)
-        {
-            cpr.addClassExclusionFilter(excludes[i]);
-        }
-        cpr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
-        cpr.enable();
-
-        log.info("Class prepare request enabled (SUSPEND_ALL)");
+            return doRun(new LogSupressingSetup(suite));
     }
 
     public static void main(String[] args)
     {
+        // args[0]  The input file name, with the names of the tests to run.
+        // args[1]  The output file name, the results will be placed.
         try
         {
-            // args[0] The package filter
-            // args[1] The test suite class name.
-            CoverageRunner runner = new CoverageRunner(args[0],args[1]);
-            runner.go();
+            CoverageRunner aTestRunner = new CoverageRunner();
+            TestResult r = aTestRunner.start(args);
         }
         catch (Exception e)
         {
-            log.unexpected(e);
-        }
-        finally
-        {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
-    }
-
-    /**
-     * Print command line usage help
-     */
-    void usage()
-    {
-        System.err.println("Usage: java CoverageRunner <test class>");
-        System.err.println("<test class> is the program to perform coverage analysis on");
     }
 }

@@ -9,17 +9,20 @@
 package org.yajul.jdi;
 
 import com.sun.jdi.Method;
-import com.sun.jdi.ThreadReference;
 import com.sun.jdi.ReferenceType;
+import com.sun.jdi.ThreadReference;
+import com.sun.jdi.event.ClassPrepareEvent;
 import com.sun.jdi.event.MethodEntryEvent;
 import com.sun.jdi.event.MethodExitEvent;
-import com.sun.jdi.event.ClassPrepareEvent;
+import com.sun.jdi.request.EventRequest;
+import com.sun.jdi.request.EventRequestManager;
+import com.sun.jdi.request.MethodEntryRequest;
+import com.sun.jdi.request.MethodExitRequest;
+import org.yajul.log.Logger;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.HashMap;
-
-import org.yajul.log.Logger;
 
 /**
  * Represents the status of all of the threads in the JDI target VM.
@@ -28,6 +31,7 @@ import org.yajul.log.Logger;
 public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIEventListener
 {
     private Logger log = Logger.getLogger(ThreadStatusMonitor.class);
+
     /**
      * Represents the status of a single thread in the JDI target VM.
      */
@@ -44,13 +48,13 @@ public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIE
 
         public void push(Method method)
         {
-            Method caller = (active.size() > 0) ? (Method)active.getFirst() : null;
+            Method caller = (active.size() > 0) ? (Method) active.getFirst() : null;
 
             active.addFirst(method);
             // If there is a call graph, tell it about the new call.
             if (callGraph != null)
             {
-                callGraph.addCall(caller,method);
+                callGraph.addCall(caller, method);
             }
         }
 
@@ -58,7 +62,7 @@ public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIE
         {
             if (active.size() > 0)
             {
-                Method m = (Method)active.removeFirst();
+                Method m = (Method) active.removeFirst();
                 if (!method.name().equals(m.name()))
                     throw new IllegalStateException("Got " + method.toString() + ", expected " + m.toString());
                 active.remove(method);
@@ -68,8 +72,8 @@ public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIE
 
     private Map statusMap;                  // Map of (ThreadReference,ThreadStatus)
     private CallGraph callGraph;            // The call graph (may be null)
-    private String  contextClass;           // Class name to start the graph from (may be null)
-    private String  packageName;            // Package name filter (may be null).
+    private String contextClass;           // Class name to start the graph from (may be null)
+    private String packageName;            // Package name filter (may be null).
     private JDIEventDispatcher dispatcher;  // The dipatcher that is feeding events to this class.
 
     /**
@@ -171,6 +175,25 @@ public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIE
         // This method expects that the VM has been told to halt all threads when a new class is loaded.
         // This way, the ThreadStatusMonitor can tell the JDI layer to *ignore* events from methods of this
         // class if it is not 'interesting'.
-        log.debug("classPrepareEvent(" + event.referenceType().name() + ")");
+
+        // NOTE: 2002-09-16 [jsd] This actually makes things way slower for some reason.  Hmmmm...
+
+//        log.debug("classPrepareEvent(" + event.referenceType().name() + ")");
+//        if (ignore(event.referenceType()))
+//        {
+//            log.info("Excluding " + event.referenceType().name() + " from method entry and exit events.");
+//            // Set up requests.
+//            EventRequestManager mgr = dispatcher.getVm().eventRequestManager();
+//            MethodEntryRequest menr = mgr.createMethodEntryRequest();
+//            menr.addClassExclusionFilter(event.referenceType().name());
+//            menr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
+//            menr.enable();
+//            log.info("Method entry request enabled.");
+//            MethodExitRequest mexr = mgr.createMethodExitRequest();
+//            mexr.addClassExclusionFilter(event.referenceType().name());
+//            mexr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
+//            mexr.enable();
+//            log.info("Method exit request enabled.");
+//        }
     }
 }
