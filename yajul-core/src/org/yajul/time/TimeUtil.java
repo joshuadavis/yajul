@@ -12,10 +12,10 @@ import java.util.Calendar;
  */
 public class TimeUtil
 {
-    private static long MILLIS_PER_SECOND = 1000;
-    private static long MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;
-    private static long MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
-    private static long MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
+    public static long MILLIS_PER_SECOND = 1000;
+    public static long MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;
+    public static long MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    public static long MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
 
     /**
      * Returns the current date, at midnight (default time zone).
@@ -99,17 +99,28 @@ public class TimeUtil
 
     /**
      * Calculates the number of 24 hour days between two timestamps.
-     * @param start
-     * @param end
-     * @return
+     * @param start The start time.
+     * @param end The end time.
+     * @return the number of 24 hour days between two timestamps.
      */
-    public static long daysBetween(long start, long end)
+    public static final int daysBetween(long start, long end)
     {
         long d = end - start;
-        long days = d / MILLIS_PER_DAY;
+        int days = (int)(d / MILLIS_PER_DAY);
         if (d % MILLIS_PER_DAY != 0)
             days += (d >= 0) ? 1 : -1;
         return days;
     }
 
+    /**
+     * Returns the number of milliseconds since the given time, or since
+     * the epoch (1/1/1970 midnight GMT) if the time is null.
+     * @param time The time.
+     * @return the number of milliseconds since the given time, or since
+     * the epoch (1/1/1970 midnight GMT) if the time is null.
+     */
+    public static final long elapsedMillis(Date time)
+    {
+        return System.currentTimeMillis() - (time == null ? 0 : time.getTime());
+    }
 }

@@ -56,7 +56,7 @@ import java.util.Iterator;
  * </pre>
  * <h3>Adding a new scheduled task</h3>
  * <pre>
- *       Calendar when = Calendar.getInstance();
+ *       Calendar when = Calendar.currentInstance();
  *       when.add(Calendar.SECOND,5);               // Execute five seconds from now.
  *
  *       ScheduleEntry e = new ScheduleEntry(aScheduler,null,
