@@ -44,4 +44,10 @@ public interface DateFormatConstants
      */
     public final static String ISO8601_DATETIME_FORMAT =
             "yyyy-MM-dd'T'HH:mm:ss.S";
+
+    /**
+     * ISO 8601 date format yyyy-MM-dd.
+     */
+    public final static String ISO8601_DATE_FORMAT =
+            "yyyy-MM-dd";
 }
