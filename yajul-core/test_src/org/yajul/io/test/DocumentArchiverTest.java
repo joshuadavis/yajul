@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Date;
 
 /**
- * Tests the DocumentArchiver classes.
+ * Tests DocumentArchiver and XMLDocumentArchiver
  * <hr>
  * User: jdavis<br>
  * Date: May 14, 2004<br>
@@ -113,7 +113,6 @@ public class DocumentArchiverTest extends TestCase
         // Return the default test suite: No setup, all public methods with
         // no return value, no parameters, and names that begin with 'test'
         // are added to the suite.
-        // TODO: Add setups and decorators here.
         return new TestSuite(DocumentArchiverTest.class);
     }
 }
