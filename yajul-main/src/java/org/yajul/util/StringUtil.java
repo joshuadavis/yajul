@@ -40,7 +40,7 @@ public class StringUtil
     private static final String PADDING = "                    ";
 
     /**
-     * Prints the class name of the object, followed by '@', followed by the 
+     * Prints the class name of the object, followed by '@', followed by the
      * hash code of the object, just like java.lang.Object.toString().
      * @param o The object to print.
      * @return String - The object's default string representation.
@@ -60,7 +60,7 @@ public class StringUtil
     }
 
     /**
-     * Left-pads a string with spaces out to the specified length and returns 
+     * Left-pads a string with spaces out to the specified length and returns
      * it.
      * @param s The string to pad.
      * @param length The desired length of the padded string.
@@ -97,8 +97,8 @@ public class StringUtil
      * @param padding   The string to use as padding.
      * @return String   - The padded (truncated) string.
      */
-    public static String padLeft(String s, int length, boolean truncate, 
-        final String padding)
+    public static String padLeft(String s, int length, boolean truncate,
+                                 final String padding)
     {
         return pad(length, s, truncate, padding, false);
     }
@@ -114,7 +114,7 @@ public class StringUtil
      * @return String   - The padded (truncated) string.
      */
     public static String padRight(String s, int length, boolean truncate,
-        final String padding)
+                                  final String padding)
     {
         return pad(length, s, truncate, padding, true);
     }
@@ -178,8 +178,8 @@ public class StringUtil
     public static final boolean isEmpty(String str)
     {
         return (str == null || str.length() == 0);
-    } 
-    
+    }
+
     /**
      * Splits a string into an array of strings using the delimiters given.
      * @param str The string to split.
@@ -195,7 +195,7 @@ public class StringUtil
         {
             list.add(st.nextToken());
         } // while
-        return (String[]) list.toArray(new String[list.size()]);        
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
     /**
@@ -209,7 +209,7 @@ public class StringUtil
     public static final String join(String[] array, String delim)
     {
         StringBuffer b = new StringBuffer();
-        for (int i = 0; i < array.length ; i++)
+        for (int i = 0; i < array.length; i++)
         {
             if (i > 0)           // If this is not the first element,
                 b.append(delim); // add a delimiter before adding the element.
@@ -266,11 +266,71 @@ public class StringUtil
         // Both a and be are non-null
         if (a.length != b.length)
             return false;
-        for (int i = a.length - 1; i > 0 ; i--)
+        for (int i = a.length - 1; i > 0; i--)
         {
             if (!equals(a[i], b[i]))
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Returns a string containing the hexadecimal representation of the array
+     * of bytes.
+     * @param bytes The array of bytes to turn into hex.
+     * @return String - The hex string.
+     */
+    public static final String hexString(byte[] bytes)
+    {
+        return hexString(bytes, null);
+    }
+
+    /**
+     * Returns a string containing the hexadecimal representation of the
+     * array of bytes, separated by an optional string.
+     * @param bytes The array of bytes to turn into hex.
+     * @param separator The separator string.  If null or zero length, no
+     * separator will be used.
+     * @return String - The hex string.
+     */
+    public static final String hexString(byte[] bytes, String separator)
+    {
+        StringBuffer buf = new StringBuffer();
+        boolean separatorRequested =
+                (separator != null && separator.length() > 0);
+        int b = 0;
+        for (int i = 0; i < bytes.length; i++)
+        {
+            // Add the separator, if required.
+            if (separatorRequested && (i > 0))
+                buf.append(separator);
+
+            // Get the int value 0-255.
+            b = 0x000000FF & bytes[i];
+            // Add a leading zero, to ensure all bytes are represented
+            // by two hex characters.
+            if (b < 16)
+                buf.append("0");
+            buf.append(Integer.toHexString(b));
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Parses a long value from a string.  If the string
+     * begins with '0x', the string will be interpreted as a hexadecimal
+     * number.
+     * @param str String to parse.
+     * @return Long value of the string, 0 if 'str' is empty.
+     * @see #isEmpty(String)
+     */
+    public static long parseLong(String str)
+    {
+        if (isEmpty(str))
+            return 0;
+        if (str.startsWith("0x"))
+            return Long.parseLong(str.substring(2), 16);
+        else
+            return Long.parseLong(str);
     }
 } // class StringUtil
