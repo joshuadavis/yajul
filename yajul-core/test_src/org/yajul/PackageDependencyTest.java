@@ -83,5 +83,6 @@ public class PackageDependencyTest extends TestCase
      */
     public void testLibraryDependency()
     {
+        // TODO: Make sure that org.yajul.* does not depend on commons-logging.
     }
 }

@@ -24,8 +24,10 @@ import java.util.Properties;
  * <ul>
  * <li>The spring framework (lib/spring.jar)</li>
  * <li>Log4j (lib/log4j.jar)</li>
- * <li>Jakarta commons-logging (lib/commons-logging.jar)</li>
+ * <li>Jakarta commons-logging (lib/commons-logging.jar)<br>
+ * <i>Note: This is only required by Spring.  YAJUL-core depends on Log4J directly.</i></li>
  * </ul>
+ * <br>
  * User: jdavis
  * Date: Feb 19, 2004
  * Time: 10:58:33 AM

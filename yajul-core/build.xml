@@ -34,11 +34,11 @@
     </path>
 
     <path id="test.runtime.classpath">
+        <pathelement path="${basedir}/test_data/resources"/>
         <path refid="test.classpath"/>
         <pathelement location="${test.class.dir}"/>
         <!-- Required for testing -->
         <pathelement path="${lib.dir}/hsqldb.jar"/>
-        <pathelement path="${basedir}/test_data/resources"/>
         <pathelement path="${lib.dir}/commons-logging.jar"/>
     </path>
 

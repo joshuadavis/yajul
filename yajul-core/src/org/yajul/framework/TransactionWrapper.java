@@ -10,6 +10,9 @@ import org.apache.log4j.Logger;
  * A template bean that can be used to associate business logic with a transaction.
  * Depending on the type of Spring PlatformTransactionManager used, this can be used
  * in EJBs or in Spring's transaction framework.
+ * <br>
+ * TODO: Provide a useage example.
+ * <br>
  * User: jdavis
  * Date: Mar 11, 2004
  * Time: 5:19:17 PM
