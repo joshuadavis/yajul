@@ -10,7 +10,9 @@ package org.yajul.util;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.framework.Test;
 import org.yajul.log.Logger;
+import org.yajul.junit.LogSupressingSetup;
 
 public class SimpleQueueTest  extends TestCase
 {
