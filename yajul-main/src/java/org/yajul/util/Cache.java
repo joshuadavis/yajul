@@ -27,12 +27,10 @@
 
 package org.yajul.util;
 
-import org.yajul.log.Logger;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -105,14 +103,10 @@ public class Cache
      * cached objects. **/
     private static class Entry
     {
-        /** A logger for this class. */
-        private static Logger log = Logger.getLogger(Entry.class.getName());
         /** The key for this entry. */
         private Object key;
         /** The cached object. */
         private Object object;
-        /** The system time of the last hit on this entry. */
-        private long lastHit;
         /** The system time of the last activation of this entry. */
         private long lastActivation;
         /** The cache that owns this entry. */
@@ -147,7 +141,7 @@ public class Cache
 
         void activate() throws Exception
         {
-           Activator activator = null;
+            Activator activator = null;
 
             synchronized (this)
             {
@@ -178,7 +172,7 @@ public class Cache
             Object obj = activator.activate(key);
 
             // Serialize thread access again to set the fields.
-            synchronized(this)
+            synchronized (this)
             {
                 object = obj;
                 active = true;      // Allows passivation.
@@ -204,7 +198,7 @@ public class Cache
                 active = false;     // Other threads won't passivate this now.
 
                 // Passivate in the synchronized block to avoid duplicates.
-                activator.passivate(key,obj,reason);
+                activator.passivate(key, obj, reason);
             }
         }
 
@@ -224,8 +218,10 @@ public class Cache
 
     /**
      * A list of keys, in order of use.  The most recently used is first.
+     * NOTE: This object keeps a second map of all the keys, which is a bit
+     * redundant, since the main map and the cache entries already do this.
      */
-    private MRUSet keys;
+    private MRUSet mruList;
 
     /**
      * A map of the cached object entries (Entry) by key.
@@ -311,9 +307,10 @@ public class Cache
         log.debug("maxSize = " + maxSize + " timeout = " + timeout);
 
         entryMap = map;
-        keys = new MRUSet();
+        initMRUList();
         allRequests = new HashSet(0);
     }
+
     //statistics methods
 
     /** Gets the maximum size the cache can grow to
@@ -410,6 +407,11 @@ public class Cache
         return timeout;
     }
 
+    /**
+     * Sets the maximum amount of time that an element will remain in the cache
+     * before being re-activated.
+     * @param timeout The timeout in milliseconds.
+     */
     public void setTimeout(long timeout)
     {
         this.timeout = timeout;
@@ -478,10 +480,11 @@ public class Cache
             if (keepStats)                  // Keep track of unique keys,
                 allRequests.add(key);       // if required.
 
-            entry = (Entry)entryMap.get(key);
+            entry = (Entry) entryMap.get(key);
             if (entry != null)              // Entry found?
             {
-                keys.touch(key);            // Make the key the MRU.
+                // Make the key MRU.
+                touch(key,entry);
 
                 stale = entry.isStale();
 
@@ -494,13 +497,13 @@ public class Cache
             else                            // Entry not found?
             {
                 found = false;
-                entry = new Entry(this,key);        // Make a new one.
+                entry = new Entry(this, key);        // Make a new one.
                 if (entryMap.size() >= maxSize)     // Overflow?
                 {
                     // Remove the LRU key.
-                    Object lruKey = keys.removeLRU();
+                    Object lruKey = removeLRU();
                     // Remove the LRU entry from the map.
-                    lru = (Entry)entryMap.remove(lruKey);
+                    lru = (Entry) entryMap.remove(lruKey);
                 }
             }
 
@@ -536,13 +539,16 @@ public class Cache
         {
             synchronized (this)
             {
-                keys.add(key);                      // Add as the MRU!
-                entryMap.put(key,entry);
+                // Add as the MRU.
+                addMRU(key);
+                entryMap.put(key, entry);
             }
         }
 
         return entry.object;
     }
+
+
 
     /**
      * Clears the cache contents and resets the stats.
@@ -553,8 +559,39 @@ public class Cache
         synchronized (this)
         {
             entryMap.clear();  // Entries will be finalized.
-            keys.clear();
+            clearMRUList();
             clearStats();
         }
     }
+
+    // --- MRU List maintenance ---
+    // These are here to allow re-implementation of the MRU list for
+    // optimization. [jsd]
+
+    private void initMRUList()
+    {
+        mruList = new MRUSet();
+    }
+
+    private void addMRU(Object key)
+    {
+        mruList.add(key);                      // Add as the MRU!
+    }
+
+    private Object removeLRU()
+    {
+        Object lruKey = mruList.removeLRU();
+        return lruKey;
+    }
+
+    private void touch(Object key,Entry entry)
+    {
+        mruList.touch(key);            // Make the key the MRU.
+    }
+
+    private void clearMRUList()
+    {
+        mruList.clear();
+    }
+
 }

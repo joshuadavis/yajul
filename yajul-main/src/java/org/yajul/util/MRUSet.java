@@ -33,16 +33,22 @@
  */
 package org.yajul.util;
 
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * A set of key objects that keeps track of the most recently used and
- * least recently used keys.  Provides specialized methods for moving any element to the top of the MRU list,
- * as well as accessing the most recent and the least recently used elements.
+ * least recently used keys.  Provides specialized methods for moving any
+ * element to the top of the MRU list, as well as accessing the most recent and
+ * the least recently used elements.
  * <ul>
  * <li>The Set.add() method will add objects as 'most recent'.</li>
- * <li>Collection.addAll() will not guarantee any order of the insertion.  If you need to insert
- * the elements of another set in order, use an iterator and add the elements using the add() method.</li>
+ * <li>Collection.addAll() will not guarantee any order of the insertion.  If
+ * you need to insert the elements of another set in order, use an iterator and
+ * add the elements using the add() method.</li>
  * </ul>
  * TODO: Decide if this should implent List or SortedSet
  * @author Joshua Davis
@@ -94,7 +100,8 @@ public class MRUSet extends AbstractSet implements Set
     /**
      * Moves the key to the front of the MRU list.
      * @param key The key object.
-     * @return Object - Null if 'key' was not in the set, non-null if the key has been made MRU.
+     * @return Object - Null if 'key' was not in the set, non-null if the key
+     * has been made MRU.
      */
     public Object touch(Object key)
     {
@@ -103,7 +110,8 @@ public class MRUSet extends AbstractSet implements Set
 
     /**
      * Removes the least recently used entry.
-     * @return Object - The least recently used entry, or null if there are no entries.
+     * @return Object - The least recently used entry, or null if there are
+     * no entries.
      */
     public Object removeLRU()
     {
@@ -131,8 +139,8 @@ public class MRUSet extends AbstractSet implements Set
     }
 
     /**
-     * Adds a new object (key) as the most recently used.  If the object already exists, then it is
-     * promoted to most recently used status.
+     * Adds a new object (key) as the most recently used.  If the object
+     * already exists, then it is promoted to most recently used status.
      * @param key The new key object.
      * @return boolean - True if the key was added, false if it already existed.
      */
@@ -171,7 +179,8 @@ public class MRUSet extends AbstractSet implements Set
     }
 
     /**
-     * Returns an iterator that will return the objects in the set, in MRU-first order.
+     * Returns an iterator that will return the objects in the set, in
+     * MRU-first order.
      * @return Iterator - Iterates over the values in the set.
      */
     public Iterator iterator()
@@ -199,32 +208,42 @@ public class MRUSet extends AbstractSet implements Set
     {
         boolean exists;
 
-        // Find the sequence number for the key, and remove the mapping if it was found.
+        // Find the sequence number for the key, and remove the mapping if
+        // it was found.
         Object seq = sequenceNumbers.remove(key);
-        if (seq == null)                    // If the key is not in the sequence # map,
+        // If the key is not in the seq # map,
+        if (seq == null)
         {
             exists = false;
-            if (operation != INSERT)        // If not inserting new keys (update or delete),
-                return null;                // return null.
+            // If not inserting new keys (update or delete),
+            if (operation != INSERT)
+                return null;            // return null.
         }
-        else                                // The key was in the sequence # map.
+        else                            // The key was in the sequence # map.
         {
             exists = true;
-            key = keys.remove(seq);         // Remove the existing sequence # -> key entry.
+            // Remove the existing seq # -> key entry.
+            key = keys.remove(seq);
             if (operation == DELETE)        // Deleting?
             {
-                lru = keys.firstKey();     // The LRU is the lowest sequence in the key set.
-                mru = keys.lastKey();      // The MRU is the hightest sequence in the key set.
-                return key;                // Return the old key.
+                // The LRU is the lowest sequence in the key set.
+                lru = keys.firstKey();
+                // The MRU is the hightest sequence in the key set.
+                mru = keys.lastKey();
+                return key;                 // Return the old key.
             }
         }
 
         // Add the key with a new sequence number.
         seq = new Integer(sequence++);      // Get a new sequence #.
-        sequenceNumbers.put(key, seq);      // Add the new key -> sequence # association.
-        keys.put(seq, key);                 // Add the new sequence # -> key association.
-        lru = keys.firstKey();              // The LRU is the lowest sequence in the key set.
-        mru = seq;                          // The MRU is (of course) the new key.
+        // Add the new key -> sequence # association.
+        sequenceNumbers.put(key, seq);
+        // Add the new sequence # -> key association.
+        keys.put(seq, key);
+        // The LRU is the lowest sequence in the key set.
+        lru = keys.firstKey();
+        // The MRU is (of course) the new key.
+        mru = seq;
 
         if (operation == INSERT)            // If the operation was 'INSERT'
             return exists ? null : key;     // and the key existed, return null.

@@ -31,7 +31,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.yajul.junit.LogSupressingSetup;
-import org.yajul.log.Logger;
+import org.apache.log4j.Logger;
 import org.yajul.util.Cache;
 
 import java.util.HashMap;
@@ -76,7 +76,6 @@ public class CacheTest extends TestCase
         private int passivations;
         private int finalized;
         private int stale;
-        private Cache cache;
 
         public TestActivator()
         {
@@ -88,14 +87,6 @@ public class CacheTest extends TestCase
                 elem = new TestElement(i, "TestElement #" + i);
                 map.put(new Integer(i), elem);
             }
-        }
-
-        /**
-         * Sets the cache pointer for debugging.
-         */
-        public void setCache(Cache cache)
-        {
-            this.cache = cache;
         }
 
 
@@ -129,7 +120,7 @@ public class CacheTest extends TestCase
         public void passivate(Object key, Object obj, int reason) throws Exception
         {
             TestElement elem = (TestElement) obj;
-            log.debug("passivating " + key + " reason = " + reason);
+//            log.debug("passivating " + key + " reason = " + reason);
             if (!elem.active)
             {
                 throw new Exception("Element is already passive! " + elem.id);
@@ -272,7 +263,7 @@ public class CacheTest extends TestCase
         }
         catch (Exception e)
         {
-            log.unexpected(e);
+            log.error("Unexpected: " + e.getMessage(),e);
             fail("Unexpected exception: " + e.getMessage());
         }
         log.info("readElements() : LEAVE");
@@ -302,7 +293,7 @@ public class CacheTest extends TestCase
 
     public void testSequence() throws Exception
     {
-        boolean parallelActivation = false;
+
         int cacheSize = 10;
 
         readSequence(cacheSize, false);
@@ -454,7 +445,7 @@ public class CacheTest extends TestCase
         }
         catch (Exception ex)
         {
-            log.unexpected(ex);
+            log.error("Unexpected: " + ex.getMessage(),ex);
             fail("Unexpected exception: " + ex.getMessage());
         }
         log.info("testTimeout() : LEAVE");
@@ -499,7 +490,7 @@ public class CacheTest extends TestCase
         }
         catch (Exception ex)
         {
-            log.unexpected(ex);
+            log.error("Unexpected: " + ex.getMessage(),ex);
             fail("Unexpected exception: " + ex.getMessage());
         }
         log.info("testWeakMap() : LEAVE");
