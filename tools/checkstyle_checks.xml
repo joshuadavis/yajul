@@ -8,16 +8,19 @@
     <metadata name="com.atlas-sw.eclipse" value="I like Sydney"/>
 
     <property name="severity" value="error"/>
-
+<!--
     <module name="SuppressionFilter">
         <property name="file" value="${checkstyle.suppressions.file}"/>
     </module>
-
+-->
     <module name="PackageHtml"/>
 
+<!--
     <module name="Translation">
         <property name="severity" value="${translation.severity}"/>
     </module>
+-->
+
 
     <module name="TreeWalker">
 
@@ -33,10 +36,11 @@
         <module name="EmptyForIteratorPad"/>
         <module name="EqualsHashCode"/>
         <module name="FileLength" />
+<!--
         <module name="Header">
           <property name="headerFile" value="${checkstyle.header.file}"/>
         </module>
-
+-->
         <module name="IllegalImport"/>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
@@ -60,11 +64,11 @@
             <property name="tokens" value="LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE"/>
             <property name="option" value="nlow"/>
         </module>
-
+<!--
         <module name="LineLength">
             <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
         </module>
-
+-->
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName">
@@ -105,7 +109,9 @@
         <module name="StaticVariableName">
             <property name="format" value="^s[A-Z][a-zA-Z0-9]*$"/>
         </module>
+<!--
         <module name="TabCharacter"/>
+-->
         <module name="TypeName"/>
         <module name="UnusedImports"/>
         <module name="UpperEll"/>

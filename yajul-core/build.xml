@@ -208,13 +208,12 @@
         <mkdir dir="${build.dir}/jdepend-xml"/>
         <jdepend format="xml" outputfile="${build.dir}/jdepend-xml/jdepend-report.xml">
             <sourcespath>
-                <pathelement location="classes" />
+                <pathelement location="${build.dir}/classes" />
             </sourcespath>
-            <classpath location="classes" />
+            <classpath location="${build.dir}/classes" />
         </jdepend>
         <mkdir dir="${build.dir}/jdepend"/>
-        <style basedir="${build.dir}/jdepend-xml" destdir="${build.dir}/jdepend"
-            includes="jdepend-report.xml" 
+        <style in="${build.dir}/jdepend-xml/jdepend-report.xml" out="${build.dir}/jdepend/index.html"
             style="${ant.home}/etc/jdepend.xsl" />
     </target>
 
