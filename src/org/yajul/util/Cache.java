@@ -493,7 +493,10 @@ public class Cache
     {
         if (e.key == null)
             return;
-        usedKeys.remove(e.key);
+        synchronized(this)
+        {
+            usedKeys.remove(e.key);
+        }
         if (e.object != null)
             activator.passivate(e.key,e.object,reason);
     }
@@ -505,11 +508,12 @@ public class Cache
      */
     public void passivate(Object key,int reason) throws Exception
     {
+        Entry e = null;
         synchronized (entryMap)
         {
-            Entry e = (Entry)entryMap.remove(key);
-            if (e != null)
-                internal_passivate(e,reason);
-        }           
+            e = (Entry)entryMap.remove(key);
+        }
+        if (e != null)
+            internal_passivate(e,reason);
     }
 }
