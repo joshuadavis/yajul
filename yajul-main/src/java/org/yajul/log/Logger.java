@@ -27,10 +27,7 @@
 
 package org.yajul.log;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
-import org.apache.log4j.PatternLayout;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -59,16 +56,13 @@ public class Logger extends Writer
     public static final int LEVEL_FATAL = 0;
 
     /** The delegate log object. */
-    private Logger log;
+    private org.apache.log4j.Logger log;
 
     /** A print writer that is piped to this log. */
     private PrintWriter printWriter;
 
     /** A string buffer for the Writer implementation. **/
     private StringBuffer lineBuffer;
-
-    /** Flag that indicates whether Log4J has been initialized or not. */
-    private static boolean configured = false;
 
     /** A map of existing logger instances. **/
     private static Map loggerMap = new WeakHashMap();
@@ -93,7 +87,8 @@ public class Logger extends Writer
     private Logger(String loggerName)
     {
         log = (loggerName == null || loggerName.length() == 0) ?
-                Logger.getRootLogger() : Logger.getLogger(loggerName);
+                org.apache.log4j.Logger.getRootLogger() :
+                org.apache.log4j.Logger.getLogger(loggerName);
         printWriter = new PrintWriter(this);
         lineBuffer = new StringBuffer();
     }
@@ -193,7 +188,7 @@ public class Logger extends Writer
         if (level < 0 || level >= LEVELS.length)
             throw new IllegalArgumentException(
                     "The supplied logging level was not valid: " + level);
-        log.setLevel(LEVELS[level].toInt());
+        log.setLevel(LEVELS[level]);
     }
 
     /**
