@@ -102,6 +102,9 @@ public class StringUtilTest  extends TestCase
         String c = "def";
         assertEquals("xxxdefyyy",StringUtil.replace(a,b,c));
         assertEquals("xxxyyy",StringUtil.replace(a,b,""));
+        assertEquals("xxxabc",StringUtil.replace(a,"yyy",""));
+        assertEquals("abcyyy",StringUtil.replace(a,"xxx",""));
+        assertEquals("java/lang/String$1.class",StringUtil.replace("java/lang/String.class",".class","$1.class"));
     }
 
     public void testHexString()
