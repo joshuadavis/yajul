@@ -34,8 +34,9 @@ package org.yajul.util;
  */
 public class Bytes
 {
-    /***
+    /**
      * Builds a 4-byte array from an int, MSB first.
+     *
      * @param n The number to convert.
      * @param b The output array.
      * @return The output array (b).
@@ -54,8 +55,9 @@ public class Bytes
         return b;
     }
 
-    /***
+    /**
      * Builds a 8-byte array from an int, MSB first.
+     *
      * @param n The number to convert.
      * @param b The output array.
      * @return The output array (b).
@@ -81,21 +83,28 @@ public class Bytes
         return b;
     }
 
-    /** Lowercase hex characters. **/
+    /**
+     * Lowercase hex characters. *
+     */
     public static final byte[] HEX_BYTES_LOWER = "0123456789abcdef".getBytes();
-    /** Uppercase hex characters. **/
+    /**
+     * Uppercase hex characters. *
+     */
     public static final byte[] HEX_BYTES_UPPER = "0123456789ABCDEF".getBytes();
-    /** Lower nybble mask. **/
+    /**
+     * Lower nybble mask. *
+     */
     private static final int MASK = 0x0000000F;
 
     /**
      * Converts the byte into a two element array of hex characters.
+     *
      * @param hexBytes The hex encoding set to use (e.g. HEX_BYTES_LOWER /
-     *  HEX_BYTES_UPPER).
-     * @param inBytes The input byte array.
-     * @param length The number of bytes to convert to hex.
-     * @param out The output array of hex bytes.  The length of this array
-     * must be >= 2 * length.
+     *                 HEX_BYTES_UPPER).
+     * @param inBytes  The input byte array.
+     * @param length   The number of bytes to convert to hex.
+     * @param out      The output array of hex bytes.  The length of this array
+     *                 must be >= 2 * length.
      */
     public static void hexBytes(final byte[] hexBytes, byte[] inBytes, byte[] out, int length)
     {
@@ -113,14 +122,53 @@ public class Bytes
 
     /**
      * Converts the byte into a two element array of hex characters.
+     *
      * @param hexBytes The hex character set to use (e.g. HEX_BYTES_LOWER / HEX_BYTES_UPPER).
-     * @param inByte The input byte.
-     * @param out The output array of characters.  Length must be >= 2.
+     * @param inByte   The input byte.
+     * @param out      The output array of characters.  Length must be >= 2.
      */
     public static void hexBytes(final byte[] hexBytes, int inByte, byte[] out)
     {
         out[1] = hexBytes[MASK & inByte];   // Get the lower nybble and set the second char.
-        inByte >>= 4;                    // Shift off the lower nybble.
+        inByte >>= 4;                       // Shift off the lower nybble.
         out[0] = hexBytes[MASK & inByte];   // Get the upper nybble and set the first char.
+    }
+
+    /**
+     * Parses a hex string into an array of bytes.
+     * @param hexString the hex string
+     * @return an array of bytes, parsed from the hex string
+     */
+    public static byte[] parseHex(String hexString)
+    {
+        int length = hexString.length();
+        if ((length % 2) != 0)
+            throw new IllegalArgumentException("Hex strings must have an even number of characters!");
+        int bytes = length / 2;
+        if (bytes == 0)
+            return new byte[0];
+        byte[] data = new byte[bytes];
+        char[] chars = hexString.toCharArray();
+        int byteValue = 0;
+        for (int i = 0; i < length; i++)
+        {
+            char c = Character.toLowerCase(chars[i]);
+            int number;
+            if (c >= '0' && c <= '9')
+                number = c - '0';
+            else if (c >= 'a' && c <= 'f')
+                number = 10 + c - 'a';
+            else
+                throw new IllegalArgumentException("Unexpected hex character: '" + c + "'");
+
+            if ((i % 2) == 0)
+                byteValue = number * 16;
+            else
+            {
+                byteValue += number;
+                data[i / 2] = (byte) byteValue;
+            }
+        }
+        return data;
     }
 }
