@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="3" relativePaths="true">
   <component name="ProjectRootManager" version="2">
-    <jdk name="java version &quot;1.4.2_01&quot;" />
+    <jdk name="java version &quot;1.4.2_03&quot;" />
     <projectPath>
       <root type="composite">
         <root type="simple" url="file://$PROJECT_DIR$" />
@@ -9,20 +9,20 @@
     </projectPath>
     <sourcePath>
       <root type="composite">
+        <root type="jdk" rootType="sourcePath" name="java version &quot;1.4.2_03&quot;" />
         <root type="simple" url="file://$PROJECT_DIR$/src" />
-        <root type="jdk" rootType="sourcePath" name="java version &quot;1.4.2_01&quot;" />
         <root type="simple" url="file://$PROJECT_DIR$/test_src" />
       </root>
     </sourcePath>
     <classPath>
       <root type="composite">
+        <root type="jdk" rootType="classPath" name="java version &quot;1.4.2_03&quot;" />
         <root type="output" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/log4j-1.2.7.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/xml-apis.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/xercesImpl.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/xalan.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/junit.jar!/" />
-        <root type="jdk" rootType="classPath" name="java version &quot;1.4.2_01&quot;" />
         <root type="simple" url="file://$PROJECT_DIR$/src" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/jdbc2_0-stdext.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/lib/hsqldb.jar!/" />
@@ -37,7 +37,7 @@
     </excludePath>
     <javadocPath>
       <root type="composite">
-        <root type="jdk" rootType="javadocPath" name="java version &quot;1.4.2_01&quot;" />
+        <root type="jdk" rootType="javadocPath" name="java version &quot;1.4.2_03&quot;" />
       </root>
     </javadocPath>
     <assert_keyword enabled="no" />
@@ -46,7 +46,7 @@
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <option name="SYNCHRONIZE_OUTPUT_DIRECTORY" value="false" />
-    <option name="DEFAULT_OUTPUT_PATH" value="$PROJECT_DIR$/idea-classes" />
+    <option name="DEFAULT_OUTPUT_PATH" value="$PROJECT_DIR$/build/classes" />
     <option name="OUTPUT_MODE" value="single" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html)" />

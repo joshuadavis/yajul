@@ -220,6 +220,20 @@ public class StreamCopier implements Runnable
      * @exception IOException Thrown if there was an error while copying.
      * @return An array of bytes read from the input.
      */
+    public static byte[] readByteArray(InputStream in,int limit)
+        throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        unsyncCopy(in,baos,DEFAULT_BUFFER_SIZE,limit);
+        return baos.toByteArray();
+    }
+
+    /** Reads the entire input stream into a byte array with a limit.
+     * @param in The input reader
+     * @param limit The number of bytes to read.
+     * @exception IOException Thrown if there was an error while copying.
+     * @return An array of bytes read from the input.
+     */
     public static byte[] readByteArray(Reader in,int limit)
         throws IOException
     {
