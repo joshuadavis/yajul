@@ -35,7 +35,7 @@ public class CSVReader extends TextReader
         }
 
         // Remove redundant quotes
-        firstToken = cleanupQuotes(firstToken);
+        firstToken = removeQuotes(firstToken);
 
         // emit the <value> element
         emitTag(handler, getValueElement(), firstToken);
@@ -74,7 +74,7 @@ public class CSVReader extends TextReader
 
     // remove quotes around a token, as well as pairs of quotes
     // within a token.
-    private String cleanupQuotes(String token)
+    private String removeQuotes(String token)
     {
         StringBuffer buf = new StringBuffer();
         int length = token.length();
