@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import org.yajul.enum.EnumType;
 import org.yajul.enum.EnumTypeMap;
+import org.yajul.enum.EnumInitializationException;
+import org.yajul.util.DetailedError;
 
 /**
  * TODO: Add javadoc

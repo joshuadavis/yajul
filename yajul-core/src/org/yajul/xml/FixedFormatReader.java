@@ -60,10 +60,7 @@ public class FixedFormatReader extends TextReader
 
     public void addField(int offset,int length,int separator)
     {
-        FieldDefinition def = new FieldDefinition();
-        def.offset = offset;
-        def.length = length;
-        def.separator = separator;
+        FieldDefinition def = new FieldDefinition(offset,length,separator,true);
         fieldDefinitions.add(def);
     }
 
@@ -100,24 +97,61 @@ public class FixedFormatReader extends TextReader
         for (Iterator iterator = fieldDefinitions.iterator(); iterator.hasNext();)
         {
             FieldDefinition fieldDefinition = (FieldDefinition) iterator.next();
-            int endIndex = fieldDefinition.offset + fieldDefinition.length;
-            String sub = currentLine.substring(fieldDefinition.offset, endIndex);
-            if (fieldDefinition.separator != -1)
-            {
-                char c = currentLine.charAt(endIndex);
-                if (fieldDefinition.separator != c)
-                    throw new SAXException("Unexpected separator character '" + c + "'!");
-            } // if
-            tokens.add(sub);
+            tokens.add(fieldDefinition.getToken(currentLine));
         } // for
         return (String[]) tokens.toArray(new String[tokens.size()]);
     }
 
+    protected String prepareLine(String curLine)
+    {
+        // Fixed format: We don't want to trim or anything like that because it's stupid fixed format.
+        return curLine;
+    }
 
     private class FieldDefinition
     {
         int offset;
         int length;
         int separator;
+        boolean trim;
+
+        public FieldDefinition(int offset, int length, int separator, boolean trim)
+        {
+            this.offset = offset;
+            this.length = length;
+            this.separator = separator;
+            this.trim = trim;
+        }
+
+        String getToken(String currentLine) throws SAXException
+        {
+            // If the offset is past the end of the line, then BOOM!
+            if (offset >= currentLine.length())
+                throw new SAXException(
+                        "Field offset " + offset + " is greater than the line length!\n" +
+                        "current line: '" + currentLine + "'");
+
+            int endIndex = offset + length;
+            // If the end index is past the end of the line, we should be nice and just get what
+            // we can.
+            if (endIndex > currentLine.length())
+                throw new SAXException(
+                        "End index " + endIndex + " is greater than the line length!\n" +
+                        "current line: '" + currentLine + "'");
+
+            String token = currentLine.substring(offset, endIndex);
+            if (separator != -1)
+            {
+                char c = currentLine.charAt(endIndex);
+                if (separator != c)
+                    throw new SAXException("Unexpected separator character '" + c + "'!");
+            } // if
+
+            // If trimming is enabled, trim the value.
+            if (trim)
+                token = token.trim();
+
+            return token;
+        }
     }
 }

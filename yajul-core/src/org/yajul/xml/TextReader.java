@@ -51,7 +51,7 @@ public abstract class TextReader extends AbstractXMLReader
         lineCounter = 0;
         while ((curLine = br.readLine()) != null)
         {
-            curLine = curLine.trim();
+            curLine = prepareLine(curLine);
             if (curLine.length() > 0)
             {
                 getContentHandler().startElement("", "", lineElement, EMPTY_ATTR);
@@ -63,6 +63,11 @@ public abstract class TextReader extends AbstractXMLReader
 
         getContentHandler().endElement("", "", fileElement);
         getContentHandler().endDocument();
+    }
+
+    protected String prepareLine(String curLine)
+    {
+        return curLine.trim();
     }
 
     public String getFileElement()

@@ -128,6 +128,7 @@ public class ServiceLocator
             }
             log.info("Initializing from resource: " + resource);
             beanFactory = new XmlBeanFactory(new ClassPathResource(resource));
+
             log.info("Processing with placeholder configurer...");
             PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
             initializeConfigurer(propertiesResource, cfg);
@@ -223,11 +224,10 @@ public class ServiceLocator
         Properties props = getProperties();
         if (props != null)
         {
-
+            log.info("Using properties provided by sub-class.");
             cfg.setProperties(props);
         }
-
-        if (!StringUtil.isEmpty(propertiesResource))
+        else if (!StringUtil.isEmpty(propertiesResource))
         {
             log.info("Initializing properties from resource: " + propertiesResource);
             cfg.setLocation(new ClassPathResource(propertiesResource));
