@@ -194,7 +194,7 @@
     <target name="default" depends="compile,jar,compile.tests"/>
 
 
-    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test,javadoc">
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,javadoc">
     </target>
 
     <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"
