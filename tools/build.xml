@@ -38,11 +38,26 @@
 		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}" dest="${yajul.dir}" package="tools"/>
 	</target>
 	<target name="checkout" description="Update all of the source code from CVS">
-		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}" dest="${yajul.dir}" package="yajul-core"/>
-		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}" dest="${yajul.dir}" package="yajul-site"/>
+		<mkdir dir="build/cvslog"/>
+		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}" dest="${yajul.dir}" package="yajul-core" output="build/cvslog/yajul-core.checkout.log"/>
+		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}" dest="${yajul.dir}" package="yajul-site" output="build/cvslog/yajul-site.checkout.log"/>
+	</target>
+	<target name="launch.ant">
+                <echo>JAVA_HOME=${java.home}</echo>
+                <echo>ant.home=${ant.home}</echo>
+		<java classname="org.apache.tools.ant.launch.Launcher" fork="true" failonerror="true">
+			<classpath>
+				<fileset dir="${ant.home}/lib" includes="*.jar"/>
+				<pathelement location="${java.home}/lib/tools.jar"/>
+			</classpath>
+			<sysproperty key="ant.home" value="${ant.home}"/>
+		        <sysproperty key="java.awt.headless" value="true"/>
+             		<env key="JAVA_HOME" value="${java.home}"/>
+			<arg line="-logger org.apache.tools.ant.XmlLogger -verbose -logfile ${launch.buildlog} -f ${launch.buildfile} ${launch.target}"/>
+		</java>
 	</target>
 	<target name="build">
-		<ant antfile="${yajul.dir}/yajul-core/build.xml" inheritall="false" target="full"/>
+		<ant antfile="${yajul.dir}/yajul-core/build.xml" inheritAll="false" target="full"/>
 	</target>
 	<target name="checkstyle">
 		<taskdef resource="checkstyletask.properties" classpath="ant/lib/checkstyle-all-3.4.jar"/>
@@ -75,7 +90,7 @@
 		<!-- Publish locally -->
 		<sync todir="${web.dir}" overwrite="true" failonerror="false">
 		  <fileset dir="${site.dir}/build/site"/>
-    </sync>		
+                </sync>		
 		<sync todir="${web.dir}/yajul-core" overwrite="true" failonerror="false">
 			<fileset dir="${yajul.dir}/yajul-core/build">
 				<include name="docs/**"/>
