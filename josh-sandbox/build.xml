@@ -1,0 +1,130 @@
+<project name="core" default="default">
+
+<!-- Global properties - Mostly absolute paths and other settings -->
+
+<property file="build.properties" />
+<property name="project.name" value="core"/>
+<property name="src" value="./src"/>
+<property name="test.src" value="./test_src"/>
+<property name="classes" value="./classes"/>
+<property name="test.classes" value="./test_classes"/>
+<property name="lib" value="./lib"/>
+<property name="bin" value="./bin"/>
+<property name="dist.home" value="./dist"/>
+<property name="dist.temp" value="${dist.home}/temp"/>
+<property name="www" value="./www"/>
+
+<!-- The classpath for compilation -->
+<path id="compile.classpath">
+  <pathelement location="${classes}" />
+  <fileset dir="${lib}">
+    <include name="**/*.jar" />
+  </fileset>
+</path>
+
+<path id="runtime.classpath">
+  <pathelement location="${classes}" />
+  <fileset dir="${lib}">
+    <include name="**/*.jar" />
+  </fileset>    
+</path>
+
+<path id="test.classpath">
+  <pathelement location="${classes}" />
+  <fileset dir="${lib}">
+    <include name="**/*.jar" />
+  </fileset>    
+  <pathelement location="${test.classes}"/>
+</path>
+
+<target name="init" description="Initializes the build directories, etc.">
+<!--    <taskdef name="torque-sql"
+      classname="org.apache.turbine.torque.TorqueSQLTask">
+      <classpath refid="classpath"/>
+    </taskdef> -->
+    <!-- Create directories -->
+    <mkdir dir="${dist.home}"/>
+    <mkdir dir="${classes}"/>
+    <mkdir dir="${dist.temp}"/>
+    <tstamp/>
+    <echo>Build project initialized: ${DSTAMP} ${TSTAMP}</echo>
+</target>
+
+<target name="compile" depends="init" description="Compiles all files">
+  <mkdir dir="${classes}"/>
+  <javac srcdir="${src}" destdir="${classes}">
+    <classpath>
+    	<path refid="compile.classpath"/>
+    </classpath>
+  </javac>
+  <!-- Copy the resources as well. -->
+  <copy todir="${classes}" >
+    <fileset dir="${src}" >
+      <include name="**/*.properties"/>
+      <include name="**/*.xml"/>
+    </fileset>
+  </copy>
+</target>
+
+<target name="compile.tests" depends="compile" description="Compiles the test suites.">
+  <mkdir dir="${test.classes}"/>
+  <javac srcdir="${test.src}" destdir="${test.classes}">
+    <classpath>
+    	<path refid="compile.classpath"/>
+    	<path location="${classes}"/>
+    </classpath>
+  </javac>
+</target>
+
+<target name="javadoc" depends="init" description="Generate javadoc">
+  <mkdir dir="docs/api"/>
+  <javadoc packagenames="org.webcm.*"
+           sourcepath="src"
+           excludepackagenames="**.test.*"
+           defaultexcludes="yes"
+           destdir="docs/api"
+           author="true"
+           version="true"
+           use="true"
+           windowtitle="WebCM API">
+    <!-- <doctitle><![CDATA[<h1>WebCM API</h1>]]></doctitle> -->
+    <!-- <bottom><![CDATA[<i>Copyright &#169; 2001 PGMJSD, Inc. All Rights Reserved.</i>]]></bottom> -->
+    <!--
+    <group title="Group 1 Packages" packages="com.dummy.test.a*"/>
+    <group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
+    -->
+    <link offline="${javadoc.offline}" href="http://java.sun.com/products/jdk/1.3/docs/api/" packagelistLoc="${javadoc.package-lists}/jdk1.3-package-list"/>
+    <link offline="${javadoc.offline}" href="http://java.sun.com/xml/jaxp/dist/1.1/docs/api/" packagelistLoc="${javadoc.package-lists}/jaxp1.1-package-list"/>
+  </javadoc>
+</target>
+
+<target name="clean" description="Removes generated files.">
+  <delete dir="${classes}"/>
+  <delete dir="${test.classes}"/>
+</target>
+
+<target name="test" depends="compile.tests" description="Runs unit tests.">
+    <junit printsummary="yes" fork="yes" haltonfailure="yes">
+      <classpath refid="test.classpath"/>
+      <formatter type="plain" />
+      <test name="org.pgmjsd.cache.CacheTest" />
+    </junit>
+</target>
+
+<target name="default" depends="test">
+</target>
+
+<target name="dist.src" depends="init" description="Create source distribution package.">
+  <zip zipfile="${dist.home}/src-${DSTAMP}.zip">
+    <fileset dir=".">
+        <include name="bin/**"/>
+        <include name="lib/**"/>
+        <include name="src/**"/>
+        <include name="doc/**"/>
+        <include name="xml/**"/>
+        <include name="*"/>
+    </fileset>
+  </zip>
+</target>
+
+</project>
