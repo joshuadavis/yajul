@@ -33,9 +33,10 @@ import java.io.PrintWriter;
 /**
  * Provides an exception that contains a throwable detail exception.
  * This allows the caller to throw a new exception adding a new message and
- * retaining the existing (nested) stack trace.
- * <i>NOTE: This is not needed for JDK
- * 1.4 and higher, as new constructors for Exception were introduced.</i>
+ * retaining the existing (nested) stack trace.  Allows JDK 1.4 code to be
+ * ported 'down' to JDK 1.3 as well.
+ * <i>NOTE: This is not necessary for JDK 1.4 and higher, as new constructors
+ * for Exception were introduced.</i>
  * @author Joshua Davis
  */
 public class DetailedException extends Exception
