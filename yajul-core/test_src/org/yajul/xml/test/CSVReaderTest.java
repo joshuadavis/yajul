@@ -5,10 +5,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.yajul.xml.CSVReader;
 import org.yajul.xml.DOMUtil;
-import org.yajul.xml.DOMPrinter;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
