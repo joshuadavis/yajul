@@ -6,7 +6,7 @@
  * To change template for new class use
  * Code Style | Class Templates options (Tools | IDE Options).
  */
-package org.yajul.util.test;
+package org.yajul.io.test;
 
 import junit.framework.TestCase;
 import org.yajul.io.Base64InputStream;
@@ -119,6 +119,6 @@ public class Base64Test extends TestCase
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         StreamCopier.copy(in, out);
         String decoded = new String(out.toByteArray());
-        System.out.println(decoded);
+//        System.out.println(decoded);
     }
 }
