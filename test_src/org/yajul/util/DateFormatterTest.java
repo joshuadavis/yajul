@@ -43,7 +43,7 @@ public class DateFormatterTest extends TestCase
     } 
     
     /** Test the formatting and parsing methods. **/
-    public void parseAndFormat()
+    public void testParseAndFormat()
     {
         // Test the basic timestamp and date formats.
         DateFormatter tzf = new DateFormatter(DateFormatter.ISO8601_UTC_FORMAT,"GMT");
