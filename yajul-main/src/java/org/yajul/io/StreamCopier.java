@@ -27,7 +27,7 @@
 
 package org.yajul.io;
 
-import org.yajul.log.Logger;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -153,7 +153,7 @@ public class StreamCopier implements Runnable
         catch (IOException e)
         {
             // Log the exception!
-            log.unexpected(e);
+            log.error("Unexpected: " + e.getMessage(),e);
             // Remember the exception, just in case anyone cares.
             synchronized(this)
             {
@@ -164,7 +164,7 @@ public class StreamCopier implements Runnable
 
     /**
      * Returns the exception thrown in the run() method, if any.
-     * @returns IOException The exception thrown during the run() method,
+     * @return IOException  - The exception thrown during the run() method,
      * or null if there were no errors.
      */
     public IOException getException()
@@ -177,7 +177,7 @@ public class StreamCopier implements Runnable
 
     /**
      * Returns true if the copying is complete.
-     * @return boolean true if the copying is complete.  Returns false if
+     * @return boolean - true if the copying is complete.  Returns false if
      * the copying is in progress, not started, or encountered an error.
      */
     public boolean isComplete()
