@@ -274,8 +274,8 @@ public class ExceptionList extends Exception
         if (list.size() == 1)
             throw getFirst();
         // Otherwise, throw the whole list.
-        else
-            throw this;
+        else if (list.size() > 0)
+            throw this.fillInStackTrace();
     }
 
     /**
@@ -295,10 +295,12 @@ public class ExceptionList extends Exception
                 Exception exception = (Exception) t;
                 throw exception;
             }
+            fillInStackTrace();
             throw this;
         }
-        else
+        else if (list.size() > 0)
         {
+            fillInStackTrace();
             throw this;
         }
     }

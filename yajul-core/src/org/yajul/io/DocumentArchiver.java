@@ -338,17 +338,18 @@ public class DocumentArchiver
                     i++;
                     backup = new File(pathname + "." + i);
                 }
-                log.info("storeObject() : Renaming existing file to " + backup.getAbsolutePath());
+                log.info("getSink() : Renaming existing file to " + backup.getAbsolutePath());
                 f.renameTo(backup);
                 f = new File(pathname);
             }
             else
             {
+                log.info("getSink() : deleting " + f.getAbsolutePath());
                 f.delete();
                 f = new File(pathname);
             }
         }
-        log.info("storeObject() : " + f.getAbsolutePath());
+        log.info("getSink() : " + f.getAbsolutePath());
         OutputStream os = getOutputStream(f);
         Sink docOut = new Sink(fileName, os);
         return docOut;
@@ -477,7 +478,7 @@ public class DocumentArchiver
             throws IOException
     {
         f.getParentFile().mkdirs();
-        OutputStream os = new FileOutputStream(f.getAbsolutePath());
+        OutputStream os = new FileOutputStream(f);
         if (buffered)
             os = new BufferedOutputStream(os);
         if (gzip)

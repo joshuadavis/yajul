@@ -195,6 +195,7 @@ public class BeanProperties
         ArrayList values = new ArrayList(size());
         Iterator iter = accessorMethods();
         ExceptionList exceptions = new ExceptionList();
+
         while (iter.hasNext())
         {
             PropertyAccessors accessorMethods = (PropertyAccessors) iter.next();
