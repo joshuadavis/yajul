@@ -55,14 +55,6 @@ public class DateFormatter
     {
         return GregorianCalendar.getInstance(TimeZone.getTimeZone("GMT"),Locale.US);
     }
-
-/*
- * Together 'Audit' Sez:
- * UOSM     Use of synchronized method - Can cause confusion / maintenance problems.
- * Use synchronized blocks around the statements instead of synchronized method.
- * DBJAOC   Distinguish Between JavaDoc And Ordinary Comments
- * Use double star slash to end JavaDoc comments.
- */
     // --- Internal state ---
 
     /** The formatter delegate. **/
@@ -162,4 +154,4 @@ public class DateFormatter
             return f.parse(text, pos);
         }
     }
-} // class DateFormatter
+}
