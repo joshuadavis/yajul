@@ -28,10 +28,9 @@
 package org.yajul.log;
 
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Category;
 import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
-import org.apache.log4j.Priority;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -39,14 +38,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Provides an isolation layer between the Log4J code and
- * the org.yajul packages.
  * Extends 'Writer' so that it can be used as a 'DataSource' logger.
  */
 public class Logger extends Writer
 {
-    /** The Log4J layout for the default logging configuration. */
-    public static final String LAYOUT = "%-6r [%8t] %-5p %15.15c{1} - %m\n";
 
     /** Logging level for 'debug' messages. */
     public static final int LEVEL_DEBUG = 4;
@@ -64,7 +59,7 @@ public class Logger extends Writer
     public static final int LEVEL_FATAL = 0;
 
     /** The delegate log object. */
-    private Category log;
+    private Logger log;
 
     /** A print writer that is piped to this log. */
     private PrintWriter printWriter;
@@ -78,27 +73,27 @@ public class Logger extends Writer
     /** A map of existing logger instances. **/
     private static Map loggerMap = new WeakHashMap();
 
-    /** An array of Log4J priorities to make decoding
+    /** An array of Log4J LEVELS to make decoding
      * the LEVEL_xxx values easier. */
-    private static final Priority[] priorities =
+    private static final Level[] LEVELS =
             {
-                Priority.FATAL,
-                Priority.ERROR,
-                Priority.WARN,
-                Priority.INFO,
-                Priority.DEBUG
+                Level.FATAL,
+                Level.ERROR,
+                Level.WARN,
+                Level.INFO,
+                Level.DEBUG
             };
 
 
     /**
      * Creates a new logger with a delegate that logs to the Log4J category
-     * 'categoryName'
-     * @param catagoryName      The name of the category.
+     * 'loggerName'
+     * @param loggerName      The name of the category.
      */
-    private Logger(String categoryName)
+    private Logger(String loggerName)
     {
-        log = (categoryName == null || categoryName.length() == 0) ?
-                Category.getRoot() : Category.getInstance(categoryName);
+        log = (loggerName == null || loggerName.length() == 0) ?
+                Logger.getRootLogger() : Logger.getLogger(loggerName);
         printWriter = new PrintWriter(this);
         lineBuffer = new StringBuffer();
     }
@@ -113,8 +108,6 @@ public class Logger extends Writer
      */
     public void write(char[] buf, int off, int len)
     {
-        // TODO: Find newlines and only write when there is a newline.
-        int start = off;
         for (int i = off; i < len; i++)
         {
             if (buf[i] == '\n')
@@ -187,10 +180,7 @@ public class Logger extends Writer
      * @return boolean      True if 'debug' is enabled.*/
     public boolean isDebugEnabled()
     {
-        Priority p = Priority.DEBUG;
-        if (!log.isEnabledFor(p))
-            return false;
-        return p.isGreaterOrEqual(log.getChainedPriority());
+        return log.isDebugEnabled();
     }
 
     /**
@@ -200,10 +190,10 @@ public class Logger extends Writer
      */
     public void setLevel(int level)
     {
-        if (level < 0 || level >= priorities.length)
+        if (level < 0 || level >= LEVELS.length)
             throw new IllegalArgumentException(
                     "The supplied logging level was not valid: " + level);
-        log.setPriority(priorities[level]);
+        log.setLevel(LEVELS[level].toInt());
     }
 
     /**
@@ -220,7 +210,7 @@ public class Logger extends Writer
      **/
     public void debug(Object message)
     {
-        log.log(Priority.DEBUG, message);
+        log.debug(message);
     }
 
     /** Log the message and the exception with a level of DEBUG.
@@ -229,16 +219,13 @@ public class Logger extends Writer
      **/
     public void debug(Object message, Throwable t)
     {
-        log.log(Priority.DEBUG, message, t);
+        log.debug( message, t);
     }
 
     /** Returns true if INFO level is enabled for this logger. */
     public boolean isInfoEnabled()
     {
-        Priority p = Priority.INFO;
-        if (log.isEnabledFor(p) == false)
-            return false;
-        return p.isGreaterOrEqual(log.getChainedPriority());
+        return log.isInfoEnabled();
     }
 
     /** Log the message with a level of INFO.
@@ -246,7 +233,7 @@ public class Logger extends Writer
      */
     public void info(Object message)
     {
-        log.log(Priority.INFO, message);
+        log.info(message);
     }
 
     /** Log the message and the exception with a level of INFO.
@@ -255,7 +242,7 @@ public class Logger extends Writer
      */
     public void info(Object message, Throwable t)
     {
-        log.log(Priority.INFO, message, t);
+        log.info(message, t);
     }
 
     /** Log the message with a level of WARN.
@@ -263,7 +250,7 @@ public class Logger extends Writer
      */
     public void warn(Object message)
     {
-        log.log(Priority.WARN, message);
+        log.warn(message);
     }
 
     /** Log the message and the exception with a level of WARN.
@@ -272,7 +259,7 @@ public class Logger extends Writer
      */
     public void warn(Object message, Throwable t)
     {
-        log.log(Priority.WARN, message, t);
+        log.warn(message, t);
     }
 
     /** Log the message with a level of ERROR.
@@ -280,7 +267,7 @@ public class Logger extends Writer
      */
     public void error(Object message)
     {
-        log.log(Priority.ERROR, message);
+        log.error(message);
     }
 
     /** Log the message and the exception with a level of ERROR.
@@ -289,7 +276,7 @@ public class Logger extends Writer
      */
     public void error(Object message, Throwable t)
     {
-        log.log(Priority.ERROR, message, t);
+        log.error(message, t);
     }
 
     /** Log the message with a level of FATAL.
@@ -297,7 +284,7 @@ public class Logger extends Writer
      */
     public void fatal(Object message)
     {
-        log.log(Priority.FATAL, message);
+        log.fatal(message);
     }
 
     /** Log the message and the exception with a level of FATAL.
@@ -306,7 +293,7 @@ public class Logger extends Writer
      */
     public void fatal(Object message, Throwable t)
     {
-        log.log(Priority.FATAL, message, t);
+        log.fatal(message, t);
     }
 
     /**
@@ -328,19 +315,7 @@ public class Logger extends Writer
      */
     private static Logger internalGetLogger(String categoryName)
     {
-        if (!configured)    // If Log4J has not been configured, set up a default configuration.
-        {
-            synchronized (Logger.class)  // Synchronize thread on the class and check the configuraiton flag again...
-            {
-                if (!configured)
-                {
-                    PatternLayout layout = new PatternLayout(LAYOUT);
-                    ConsoleAppender console = new ConsoleAppender(layout);
-                    BasicConfigurator.configure(console);
-                    configured = true;
-                } // if
-            } // synchronized
-        } // if
+        LogUtil.configure();
 
         // Before making a new logger, look for an existing one.
         synchronized (loggerMap)
@@ -354,4 +329,5 @@ public class Logger extends Writer
             return logger;
         }
     }
+
 }

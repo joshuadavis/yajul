@@ -10,7 +10,8 @@ package org.yajul.junit;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
-import org.yajul.log.Logger;
+
+import org.yajul.log.LogUtil;
 
 /**
  * A test setup class that supresses log messages.  Use the system property
@@ -29,6 +30,12 @@ public class LogSupressingSetup extends TestSetup
      */
     public static final String SYSTEM_PROPERTY = "junit.logger.level";
 
+    /** Configure Log4J, if needed. **/
+    static
+    {
+        LogUtil.configure();
+    }
+
     public LogSupressingSetup(Test test)
     {
         super(test);
@@ -37,17 +44,8 @@ public class LogSupressingSetup extends TestSetup
     protected void setUp() throws Exception
     {
         super.setUp();
-        int level = Logger.LEVEL_ERROR;
         // Check the system property 'junit.logger.level'
         String levelString = System.getProperty(SYSTEM_PROPERTY);
-        if ("ERROR".equalsIgnoreCase(levelString))
-            level = Logger.LEVEL_ERROR;
-        else if ("WARNING".equalsIgnoreCase(levelString))
-            level = Logger.LEVEL_WARNING;
-        else if ("INFO".equalsIgnoreCase(levelString))
-            level = Logger.LEVEL_INFO;
-        else if ("DEBUG".equalsIgnoreCase(levelString))
-            level = Logger.LEVEL_DEBUG;
-        Logger.getRootLogger().setLevel(level);
+        LogUtil.setRootLevel(levelString);
     }
 }
