@@ -6,7 +6,7 @@
  * To change template for new class use 
  * Code Style | Class Templates options (Tools | IDE Options).
  */
-package org.yajul.util;
+package org.yajul.io;
 
 import java.io.OutputStream;
 import java.io.Writer;

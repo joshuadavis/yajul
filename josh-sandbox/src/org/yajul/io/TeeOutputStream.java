@@ -7,6 +7,9 @@
  *********************************************************************************/
 /*********************************************************************************
 *      $Log$
+*      Revision 1.1  2002/11/04 13:47:49  pgmjsd
+*      - Add new IO classes
+*
 *      Revision 1.1  2002/09/15 22:29:03  pgmjsd
 *      Fix up build.xml and add the new files.
 *
@@ -19,7 +22,7 @@
 * Added VSS header.
 **********************************************************************************/
 
-package org.yajul.util;
+package org.yajul.io;
 
 import java.io.OutputStream;
 import java.io.IOException;
