@@ -1,17 +1,18 @@
 package org.yajul.enum.test;
 
+import junit.framework.TestCase;
+import org.yajul.enum.EnumInitializationException;
+import org.yajul.enum.EnumType;
+import org.yajul.enum.EnumTypeMap;
+import org.yajul.enum.EnumValue;
+import org.yajul.enum.EnumValueFilter;
+import org.yajul.framework.ServiceLocator;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
-
-import junit.framework.TestCase;
-import org.yajul.enum.EnumTypeMap;
-import org.yajul.enum.EnumType;
-import org.yajul.enum.EnumValue;
-import org.yajul.enum.EnumValueFilter;
-import org.yajul.enum.EnumInitializationException;
-import org.yajul.framework.ServiceLocator;
 
 /**
  * Test case for the EnumType, EnumTypeMap, and EnumValue objects.
@@ -23,7 +24,6 @@ import org.yajul.framework.ServiceLocator;
 public class EnumTest extends TestCase
 {
     private static final String ID_ENUMTYPE1 = "TestEnumType1";
-    private static final String ID_ENUMTYPE2 = "TestEnumType2";
     private static final String ID_ENUMTYPE2A = "TestEnumType2a";
     public static final String XML_FILE1 = "test_data/EnumTest1.xml";
     private static final String XML_FILE2 = "test_data/EnumTest2.xml";
@@ -192,6 +192,47 @@ public class EnumTest extends TestCase
         checkEnumType1(map);
         checkEnumType2a(map);
     }
+
+    public void testPropertySet() throws Exception
+    {
+        EnumType type = getTestEnumType3();
+        Value1[] values = (Value1[])type.toArray(new Value1[type.size()]);
+        assertEquals(3,values.length);
+        assertEquals("one ee one", values[0].getSymbol());
+        assertEquals("two ee two", values[1].getSymbol());
+        assertEquals("tree ee tree", values[2].getSymbol());
+    }
+
+    public void testUniquePropertyLookup() throws Exception
+    {
+        EnumType type = getTestEnumType3();
+        Value1 v = (Value1) type.findValueByProperty("symbol","tree ee tree");
+        assertEquals("tree ee tree", v.getSymbol());
+        assertEquals(2,v.getId());
+        Map bySymbol = type.getUniquePropertyMap("symbol");
+        assertEquals(type.size(),bySymbol.size());
+    }
+
+    public void testPropertyGroup() throws Exception
+    {
+        EnumType type = getTestEnumType3();
+        Map map = type.getGroupPropertyMap("group");
+        EnumType groupa = (EnumType) map.get("a");
+        EnumType groupb = (EnumType) map.get("b");
+        assertEquals(2,groupa.size());
+        assertEquals(1,groupb.size());
+    }
+
+    private EnumType getTestEnumType3()
+    {
+        ServiceLocator locator = ServiceLocator.getInstance();
+        locator.initialize("unit-test-context.xml");
+        EnumTypeMap map = (EnumTypeMap) locator.getBean("testEnumTypeMap");
+        EnumType type = map.findEnumTypeById("TestEnumType3");
+        return type;
+    }
+
+
     private void checkValue1(EnumValue value)
     {
         assertEquals(0,value.getId());
@@ -204,5 +245,32 @@ public class EnumTest extends TestCase
      */
     public static class Value1 extends EnumValue
     {
+        private String symbol;
+        private String group;
+
+        public String getSymbol()
+        {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol)
+        {
+            this.symbol = symbol;
+        }
+
+        public String getGroup()
+        {
+            return group;
+        }
+
+        public void setGroup(String group)
+        {
+            this.group = group;
+        }
+
+        public String toString()
+        {
+            return "[ " + super.toString() + " symbol='" + symbol + "' group='" + group +"' ]";
+        }
     }
 }

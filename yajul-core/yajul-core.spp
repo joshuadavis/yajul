@@ -4,6 +4,7 @@
 	<Folder FolderName="XSL Files" ExtStr="xsl;xslt"/>
 	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
 	<Folder FolderName="DTD/Schemas" ExtStr="dtd;dcd;xdr;biz;xsd">
+		<File FilePath=".\src\org\yajul\enum\enum-types.dtd" HomeFolder="Yes"/>
 		<File FilePath=".\xsd\enum-types.xsd" HomeFolder="Yes"/>
 	</Folder>
 	<Folder FolderName="Entities" ExtStr="ent"/>
