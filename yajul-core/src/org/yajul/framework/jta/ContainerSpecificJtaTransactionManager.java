@@ -4,11 +4,11 @@ package org.yajul.framework.jta;
 import org.apache.log4j.Logger;
 
 /**
- * TODO: Add class javadoc
- * 
+ * Sub-classes specify the container-specific JNDI names of the TransactionManager and
+ * UserTransaction objects.
  * @author josh Apr 2, 2004 8:08:34 AM
  */
-public abstract class ContainerSpecificJtaTransactionManager extends org.springframework.transaction.jta.JtaTransactionManager
+public abstract class ContainerSpecificJtaTransactionManager extends JtaTransactionManager
 {
     /**
      * A logger for this class.
