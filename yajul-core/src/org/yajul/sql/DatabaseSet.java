@@ -104,7 +104,7 @@ public abstract class DatabaseSet
      * @param key The set id.
      * @return ArrayList - The members of the set specified by the key.
      */
-    protected final ArrayList selectArrayList(Object key)
+    protected final ArrayList selectArrayList(Object key) throws SQLException
     {
         ResultSet rs = null;
         ArrayList list = new ArrayList();
@@ -133,9 +133,8 @@ public abstract class DatabaseSet
         }
         catch (SQLException e)
         {
-            if (log.isDebugEnabled())
-                log.debug("selectArrayList() : Unexpected exception "
-                        + e.getMessage(), e);
+            log.error(e,e);
+            throw e;
         }
         finally
         {

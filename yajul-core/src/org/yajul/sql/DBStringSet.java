@@ -62,7 +62,7 @@ public class DBStringSet extends DatabaseSet
      * @param key The key (id) of the set.
      * @return String[] - The strings in the set.
      */
-    public String[] select(Object key)
+    public String[] select(Object key) throws SQLException
     {
         ArrayList list = selectArrayList(key);
         return (String[])list.toArray(new String[list.size()]);

@@ -249,7 +249,8 @@
     <target name="clover" depends="clover.compile,test,report.html" description="Generate a unit test coverage report">
     </target>
 
-    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,clover">
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,clover"
+        description="Full build and test">
     </target>
 
     <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"

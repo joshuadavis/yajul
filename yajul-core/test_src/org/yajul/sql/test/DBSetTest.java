@@ -114,7 +114,7 @@ public class DBSetTest extends TestCase
         dbIntegerSet.close();
     }
 
-    private void verify(DBIntegerSet dbIntegerSet, Integer key, int[] expected)
+    private void verify(DBIntegerSet dbIntegerSet, Integer key, int[] expected) throws Exception
     {
         int[] verify = dbIntegerSet.select(key);
         assertEquals(expected.length,verify.length);
@@ -163,7 +163,7 @@ public class DBSetTest extends TestCase
         dbStringSet.close();
     }
 
-    private void verify(DBStringSet dbStringSet, Integer key, String[] expected)
+    private void verify(DBStringSet dbStringSet, Integer key, String[] expected) throws SQLException
     {
         String[] verify = dbStringSet.select(key);
         assertEquals(expected.length,verify.length);

@@ -53,7 +53,7 @@ public class DBIntegerSet extends DatabaseSet
      * @param key The key (id) of the set.
      * @return int[] - The integers in the set.
      */
-    public int[] select(Object key)
+    public int[] select(Object key) throws SQLException
     {
         ArrayList list = selectArrayList(key);
         return ArrayUtil.toIntArray(list);
