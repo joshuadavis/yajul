@@ -29,6 +29,7 @@
               <properties>conf/checkstyle.properties</properties>
             </checkstyle>
             <javasrc />
+
             <!-- not currently used but working
                  <antidote/>   
                  <xmldoclet/>

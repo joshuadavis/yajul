@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
 <project default="interactive" basedir="." name="project build file">
 	
-    <description>
-                       * ===================================== *
-                       |   Krysalis Centipede Build System     |
-                       * ===================================== *
-                                         by
+	
+	    <description>
+	                       * ===================================== *
+	                       |   Krysalis Centipede Build System     |
+	                       * ===================================== *
+	                                         by
+	
+	                       Nicola Ken Barozzi (nicolaken@apache.org)
+	                       Marc Johnson (mjohnson@apache.org)
+	    </description>
 
-                       Nicola Ken Barozzi (nicolaken@apache.org)
-                       Marc Johnson (mjohnson@apache.org)
 
-
-                       For a simple interactive build, simply
-                       run the build script (build.bar or build.sh)
-    </description>
 
 
     <!-- =================================================================== -->
@@ -30,17 +29,17 @@
           its name starts with a hyphen.
           To make it invisible when using -projecthelp, it lacks a description.
     -->
-
     <import file="${ant.home}/src/core/xbuild.xml"/>
     <taskdef file="${ant.home}/src/core/tasks.properties"/>
+    <importcent name="java" />
+     
     <importcent name="antidote"/> 
-    <importcent name="java"/>
     <importcent name="checkstyle"/> 
     <importcent name="forrest"/> 
+ 
     <importcent name="gump"/>
     <importcent name="javasrc"/> 
     <importcent name="junit"/>
-
 
     <!-- =================================================================== -->
     <!-- Basic build targets for the project                                 -->
@@ -57,6 +56,7 @@
 
         --------------------------------------------------------------
          Using ${ant.version}
+         ANT home: ${ant.home}
          Build file ${ant.file}
         --------------------------------------------------------------
          These are the most common build targets.
