@@ -14,6 +14,9 @@
         <property name="userName">
             <value>${user.name}</value>
         </property>
+        <property name="resource">
+            <value>file://./resources/test-properties.properties</value>
+        </property>
     </bean>
 
     <bean id="testEnumTypeMap" class="org.yajul.enum.EnumTypeMap">
@@ -23,6 +26,17 @@
                 <value>enum/EnumTest2.xml</value>
             </list>
         </constructor-arg>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="org.springframework.core.io.Resource">
+                    <bean id="resourceEditor" class="org.yajul.framework.test.ResourceEditor">
+                    </bean>
+                </entry>
+            </map>
+        </property>
     </bean>
 
 </beans>

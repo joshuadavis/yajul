@@ -9,6 +9,7 @@ import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * A proxy that delegates to a BeanFactory implementation that is created by a sub-class.
@@ -71,9 +72,13 @@ abstract class BeanFactoryProxy implements BeanFactory, BeanNameAware, BeanFacto
     {
         synchronized (this)
         {
-            if ((delegate != null) && (delegate instanceof ConfigurableBeanFactory))
+            if (delegate != null)
             {
-                ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) delegate;
+                ConfigurableBeanFactory configurableBeanFactory = null;
+                if (delegate instanceof ConfigurableBeanFactory)
+                    configurableBeanFactory = (ConfigurableBeanFactory) delegate;
+                else if (delegate instanceof ConfigurableApplicationContext)
+                    configurableBeanFactory = ((ConfigurableApplicationContext)delegate).getBeanFactory();
                 log.info("Destroying singletons...");
                 configurableBeanFactory.destroySingletons();
             }

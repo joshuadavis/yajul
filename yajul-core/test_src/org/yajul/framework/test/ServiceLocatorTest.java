@@ -98,6 +98,10 @@ public class ServiceLocatorTest extends TestCase
         assertNotNull(e);
         locator.initialize("unit-test-context2.xml","test-properties.properties");
         assertNotNull(locator.getBean("testBean"));
+        assertTrue(locator.isSingleton("testBean"));
+        String[] aliases = locator.getAliases("testBean");
+        assertNotNull(aliases);
+        assertEquals(0,aliases.length);
         locator.initialize("unit-test-context.xml","test-properties.properties");
         assertNotNull(locator.getBean("testBean"));
         Exception ex = null;
@@ -125,6 +129,8 @@ public class ServiceLocatorTest extends TestCase
         assertTrue(locator2.getMetaBeanFactory().containsBean("serviceLocator2"));
         assertNotSame(locator2, instance);
         assertNotSame(locator2, locator);
+        assertEquals("serviceLocator2",locator2.getBeanName());
+        locator2.release();
         locator2.release();
         locator.release();
     }

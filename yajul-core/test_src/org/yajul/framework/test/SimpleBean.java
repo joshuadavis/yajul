@@ -1,6 +1,7 @@
 package org.yajul.framework.test;
 
 import org.yajul.util.FieldPrinter;
+import org.springframework.core.io.Resource;
 
 /**
  * A Java Bean used to test the ServiceLocator class.
@@ -14,6 +15,7 @@ public class SimpleBean
     private String exampleProperty;
     private String userName;
     private Object thing;
+    private Resource resource;
 
     public String getExampleProperty()
     {
@@ -43,6 +45,16 @@ public class SimpleBean
     public void setThing(Object thing)
     {
         this.thing = thing;
+    }
+
+    public Resource getResource()
+    {
+        return resource;
+    }
+
+    public void setResource(Resource resource)
+    {
+        this.resource = resource;
     }
 
     /**

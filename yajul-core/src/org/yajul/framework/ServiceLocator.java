@@ -2,25 +2,16 @@
 package org.yajul.framework;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.StaticListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.UrlResource;
-import org.yajul.util.DetailedRuntimeException;
 import org.yajul.util.StringUtil;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.Properties;
 
 /**
@@ -126,16 +117,16 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
      */
     private BeanFactoryReference bootFactoryReference;
 
+    /**
+     * The post processor.
+     */
+    private BeanFactoryPostProcessor beanFactoryPostProcessor;
+
 
     /**
      * A parent bean factory.
      */
     private BeanFactory parentBeanFactory;
-
-    /**
-     * The post processor.
-     */
-    private BeanFactoryPostProcessor beanFactoryPostProcessor;
 
     /**
      * Returns the current instance of the singleton.
@@ -260,21 +251,21 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
     }
 
     /**
-     * Sets the bean factory that will be used as the parent of the child bean factory.
-     * @param parentBeanFactory
-     */
-    public void setParentBeanFactory(BeanFactory parentBeanFactory)
-    {
-        this.parentBeanFactory = parentBeanFactory;
-    }
-
-    /**
      * Sets the post processor that will be used after the bean definitions are loaded.
      * @param beanFactoryPostProcessor the post processor that will be used after the bean definitions are loaded.
      */
     public void setBeanFactoryPostProcessor(BeanFactoryPostProcessor beanFactoryPostProcessor)
     {
         this.beanFactoryPostProcessor = beanFactoryPostProcessor;
+    }
+
+    /**
+     * Sets the bean factory that will be used as the parent of the child bean factory.
+     * @param parentBeanFactory
+     */
+    public void setParentBeanFactory(BeanFactory parentBeanFactory)
+    {
+        this.parentBeanFactory = parentBeanFactory;
     }
 
     /**
@@ -322,12 +313,13 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
      */
     protected BeanFactory createDelegate()
     {
-        DefaultListableBeanFactory beanFactory = loadBeanDefinitions();
+        ConfigurableApplicationContext context = loadBeanDefinitions();
         BeanFactoryPostProcessor factoryPostProcessor = getBeanFactoryPostProcessor();
-        log.info("Post processing the bean factory...");
-        factoryPostProcessor.postProcessBeanFactory(beanFactory);
-        log.info("BeanFactory created and post-processed: " + beanFactory);
-        return beanFactory;
+        context.addBeanFactoryPostProcessor(factoryPostProcessor);
+        context.refresh();
+        if (parentBeanFactory != null)
+            context.getBeanFactory().setParentBeanFactory(parentBeanFactory);
+        return context;
     }
 
     private BeanFactoryPostProcessor getBeanFactoryPostProcessor()
@@ -360,60 +352,11 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
         return factoryPostProcessor;
     }
 
-    private DefaultListableBeanFactory loadBeanDefinitions()
+    private ConfigurableApplicationContext loadBeanDefinitions()
     {
-        DefaultListableBeanFactory beanFactory = createBeanFactory();
-        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
-        int count = 0;
-        try
-        {
-            // If there are multiple resources, load 'em!
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            Enumeration enum = loader.getResources(resource);
-            while (enum.hasMoreElements())
-            {
-                URL url = (URL) enum.nextElement();
-                String path = url.toExternalForm();
-                reader.loadBeanDefinitions(new UrlResource(path));
-                count++;
-                log.info("#" + count + " : Loaded bean definitions from " + path);
-            }
-        }
-        catch (IOException e)
-        {
-            log.error("Unable to load bean definitions due to: " + e);
-            throw new DetailedRuntimeException("Unable to create bean factory from resource '" + resource + "' due to: " + e, e);
-        }
-        // If the class loader was not able to return a list of resources, try a single resource.
-        if (count == 0)
-        {
-            try
-            {
-                reader.loadBeanDefinitions(new ClassPathResource(resource));
-            }
-            catch (BeansException e)
-            {
-                log.error("Unable to load bean definitions due to: " + e);
-                throw e;
-            }
-            log.info("Loaded bean definitions from unique resource " + resource);
-        }
-        return beanFactory;
-    }
-
-    private DefaultListableBeanFactory createBeanFactory()
-    {
-        StaticListableBeanFactory parent = new StaticListableBeanFactory();
-        log.info("Including " + this + " as " + getBeanName());
-        parent.addBean(getBeanName(),this);
-
-        if (parentBeanFactory != null)
-        {
-            ConfigurableBeanFactory cbf = (ConfigurableBeanFactory)parentBeanFactory;
-            cbf.setParentBeanFactory(parent);
-        }
-        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory(parent);
-        return beanFactory;
+        ServiceLocatorApplicationContext applicationContext = new ServiceLocatorApplicationContext();
+        applicationContext.setResource(resource);
+        return applicationContext;
     }
 
     /**
