@@ -111,4 +111,40 @@ public class ArrayUtil
         return blocks;
     }
 
+    /**
+     * Sums an aray of hash codes into a single hash code using an algorithm
+     * similar to that used by java.lang.String.
+     * @param components An array of ints that will be the components of the
+     * new hash code.
+     * @return int - A new hash code, based on the components.
+     */
+    public static int computeHashCode(int[] components)
+    {
+        // Sum all of the hash codes of the components, using an algorithm similar to that used by
+        // java.lang.String.
+        int rv = 0;
+        int limit = components.length;
+        for (int i = 0; i < limit; i++)
+            rv += components[i] * (31 ^ (limit - i));
+        return rv;
+    }
+
+    /**
+     * Computes the hash code for an array of objects using an algorithm
+     * similar to that used by java.lang.String.
+     * @param components An array of objects that will supply the hash code
+     * components.
+     * @return int - The new, compound hash value.
+     */
+    public static final int computeHashCode(Object[] components)
+    {
+        // Sum all of the hash codes of the components, using an algorithm similar to that used by
+        // java.lang.String.
+        int rv = 0;
+        int limit = components.length;
+        for (int i = 0; i < limit; i++)
+            rv += components[i].hashCode() * (31 ^ (limit - i));
+        return rv;
+    }
+
 }

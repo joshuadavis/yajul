@@ -64,6 +64,8 @@ public class StreamCopier implements Runnable
     /** True, if the copying is complete. **/
     private boolean complete = false;
     private static final int DEFAULT_BYTE_ARRAY_BUFSZ = 128;
+    private static final int UNLIMITED = -1;
+    private static final int EOS = -1;
 
     /**
      * Copies the input stream into the output stream in a thread safe and
@@ -111,13 +113,44 @@ public class StreamCopier implements Runnable
     public final static int unsyncCopy(InputStream in, OutputStream out,
                                        int bufsz) throws IOException
     {
+        return unsyncCopy(in, out, bufsz, UNLIMITED);
+    }
+
+    /**
+     * Copies the input stream into the output stream in an efficient manner.
+     * This version does not synchronize on the streams, so it is not safe
+     * to use when the streams are being accessed by multiple threads.
+     * @param in The input stream.
+     * @param out The output stream.  If this is null, the input will be
+     * discarded, similar to piping to /dev/null on UN*X.
+     * @param bufsz The size of the buffer to use.
+     * @param limit The number of bytes to copy, or UNLIMITED (-1) to copy
+     * until the end of the input stream.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     **/
+    public static int unsyncCopy(InputStream in, OutputStream out, int bufsz, int limit) throws IOException
+    {
+        if (bufsz <= 0)
+            throw new IllegalArgumentException("Buffer size must be > 0");
         byte[] buf = new byte[bufsz];
         int bytesRead = 0;
         int total = 0;
+        int readLimit = bufsz;
         while (true)
         {
-            bytesRead = in.read(buf);
-            if (bytesRead == -1)
+            // If a limit was specified, calculate the number of bytes
+            // that should be read by the next read operation.
+            if (limit > 0)
+            {
+                readLimit = limit - total;
+                if (readLimit > bufsz)
+                    readLimit = bufsz;
+                else if (readLimit <= 0)
+                    break;
+            }
+            bytesRead = in.read(buf,0,readLimit);
+            if (bytesRead == EOS)
                 break;
             total += bytesRead;
             if (out != null)

@@ -358,6 +358,11 @@ public abstract class AbstractServerSocketListener implements Runnable
         return connectionTimeout;
     }
 
+    public void setConnectionTimeout(int timeout)
+    {
+        this.connectionTimeout = timeout;
+    }
+
     /**
      * Accept the incoming connection and create a client connection object.
      * @param incoming The incoming socket.

@@ -24,9 +24,11 @@ public abstract class AbstractClientConnection
     private AbstractServerSocketListener listener;
     private Socket socket;
     /** The response stream. */
-    private OutputStream out;    // Response stream server->client.
+    private OutputStream out;       // Response stream server->client.
     /** The request stream. **/
-    private InputStream in;      // Request stream client->server.
+    private InputStream in;         // Request stream client->server.
+    /** True if the input and output streams are being buffered. **/
+    private boolean buffered;
 
     public AbstractClientConnection(AbstractServerSocketListener listener,
                                     Socket socket) throws IOException
@@ -113,8 +115,12 @@ public abstract class AbstractClientConnection
      */
     protected void addStreamBuffers()
     {
-        in = new BufferedInputStream(in, DEFAULT_BUFFER_SIZE);
-        out = new BufferedOutputStream(out, DEFAULT_BUFFER_SIZE);
+        if (!buffered)  // Don't buffer twice.
+        {
+            in = new BufferedInputStream(in, DEFAULT_BUFFER_SIZE);
+            out = new BufferedOutputStream(out, DEFAULT_BUFFER_SIZE);
+            buffered = true;
+        }
     }
 
 

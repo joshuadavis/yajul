@@ -32,6 +32,8 @@ import org.yajul.util.Bytes;
 import java.io.FilterOutputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * An output stream that prints lines of hexadecimal output containing the byte
@@ -61,6 +63,27 @@ public class HexDumpOutputStream extends FilterOutputStream
     private final byte[] SEPARATOR = " | ".getBytes();
     private static final char NON_PRINTABLE = '.';
     private static final char NEWLINE = '\n';
+
+    /**
+     * Returns a hex representation of the buffer.
+     * @param buf The buffer.
+     * @return String - a hex representation of the buffer.
+     */
+    public static String toHexString(byte[] buf,int length)
+    {
+        ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        HexDumpOutputStream out = new HexDumpOutputStream(baos,16);
+        try
+        {
+            StreamCopier.unsyncCopy(bais,out,StreamCopier.DEFAULT_BUFFER_SIZE,length);
+            out.flush();
+        }
+        catch (IOException ignore)
+        {
+        }
+        return new String(baos.toByteArray());
+    }
 
     /**
      * Creates an output stream filter built on top of the specified
@@ -111,10 +134,7 @@ public class HexDumpOutputStream extends FilterOutputStream
         // as a hex string.
         if (count == 0)
         {
-            Bytes.toBytes(total,intBytes);  // Convert the integer into bytes.
-            // Re-use 'buf' to hold the hex representation.
-            Bytes.hexBytes(Bytes.HEX_BYTES_LOWER,intBytes,buf,4);
-            out.write(buf,0,8);
+            writeTotal();
             out.write(SEPARATOR);
         }
 
@@ -150,6 +170,8 @@ public class HexDumpOutputStream extends FilterOutputStream
             writeASCII();
             out.write(NEWLINE);
         }
+        // Write the total number of bytes.
+        writeTotal();
         super.flush();
     }
 
@@ -163,5 +185,13 @@ public class HexDumpOutputStream extends FilterOutputStream
             else
                 out.write(NON_PRINTABLE);
         }
+    }
+
+    private void writeTotal() throws IOException
+    {
+        Bytes.toBytes(total,intBytes);  // Convert the integer into bytes.
+        // Re-use 'buf' to hold the hex representation.
+        Bytes.hexBytes(Bytes.HEX_BYTES_LOWER,intBytes,buf,4);
+        out.write(buf,0,8);
     }
 }
