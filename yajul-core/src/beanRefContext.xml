@@ -6,7 +6,9 @@
  -->
 <beans>
 
+    <!--
     <bean id="log4j-config" class="org.yajul.log.Log4JConfigurationBean" lazy-init="false" init-method="init"/>
+    -->
 
     <!-- This bean will be initialized by ServiceLocator.initialize() -->
     <bean id="serviceLocator" class="org.yajul.framework.ServiceLocator"/>
