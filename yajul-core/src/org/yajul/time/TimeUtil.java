@@ -12,12 +12,17 @@ import java.util.Calendar;
  */
 public class TimeUtil
 {
+    private static long MILLIS_PER_SECOND = 1000;
+    private static long MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;
+    private static long MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    private static long MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
+
     /**
      * Returns the current date, at midnight (default time zone).
      * @return A java.util.Date, with the hours, minutes, seconds, and milliseconds
      * set to zero.
      */
-    public static Date today()
+    public static final Date today()
     {
         Calendar c = Calendar.getInstance();
         floorCalendar(c,Calendar.DAY_OF_YEAR);
@@ -68,6 +73,43 @@ public class TimeUtil
                         "Only following Calendar constants are supported: " +
                         "MILLISECOND,SECOND,HOUR,HOUR_OF_DAY,DAY_OF_YEAR,DAY_OF_MONTH,MONTH,YEAR");
         }
+    }
+
+    /**
+     * Returns the hour, minute, second and millisecond offset from midnight
+     * GMT on the given date.
+     * @param dateMillis The date, in milliseconds since the epoch.
+     * @return The hour, minute, second and milliseconds since midnight of the
+     * current day.
+     */
+    public static final long timeOfDayGMT(long dateMillis)
+    {
+        return dateMillis % MILLIS_PER_DAY;
+    }
+
+    /**
+     * Floors the current date to midnight GMT.
+     * @param dateMillis The date, in milliseconds since the epoch.
+     * @return The floored date, midnight GMT.
+     */
+    public static final long startOfDayGMT(long dateMillis)
+    {
+        return dateMillis - timeOfDayGMT(dateMillis);
+    }
+
+    /**
+     * Calculates the number of 24 hour days between two timestamps.
+     * @param start
+     * @param end
+     * @return
+     */
+    public static long daysBetween(long start, long end)
+    {
+        long d = end - start;
+        long days = d / MILLIS_PER_DAY;
+        if (d % MILLIS_PER_DAY != 0)
+            days += (d >= 0) ? 1 : -1;
+        return days;
     }
 
 }
