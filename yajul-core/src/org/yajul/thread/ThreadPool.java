@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
- * A simple pool of threads.
+ * A 'simple pool' of threads.
  * <br>
  * Created on Aug 28, 2002 6:00:01 PM
  * @author jdavis
@@ -22,6 +22,9 @@ public class ThreadPool
 
         Request(Runnable target, Object lock)
         {
+            if (target == null)
+                throw new IllegalArgumentException(
+                        "ThreadPool.Request: Target cannot be null!");
             this.target = target;
             this.lock = lock;
         }
@@ -72,26 +75,39 @@ public class ThreadPool
             while (isRunning())
             {
                 // Get the next request from the queue, if it is empty, wait.
+                BusyFlag flag = parent.flag;
                 try
                 {
-                    parent.flag.acquire();
+                    flag.acquire();
+                    LinkedList queue = parent.requestQueue;
                     while (request == null && isRunning())
                     {
-                        try
+                        if (queue.size() > 0)
                         {
-                            request = (Request) parent.requestQueue.removeFirst();
+                            try
+                            {
+                                request = (Request) queue.removeFirst();
+                                if (request.target == null)
+                                    throw new IllegalStateException("Target is null!");
+                                parent.activeThreads++;     // Increment the active thread count.
+                                if ((queue.size() == 0))    // If the queue is empty...
+                                    parent.ready.signal();  // Signal a 'ready' condition.
+                            }
+                            catch (NoSuchElementException nsee)
+                            {
+                                // log.debug("Queue is empty.");
+                                request = null; // The list is empty.
+                            }
+                            catch (ClassCastException cce)
+                            {
+                                // DOH!  What the heck is in the queue!
+                                log.error(cce);
+                                request = null;
+                            }
                         }
-                        catch (NoSuchElementException nsee)
-                        {
-                            // log.debug("Queue is empty.");
-                            request = null; // The list is empty.
-                        }
-                        catch (ClassCastException cce)
-                        {
-                            // DOH!  What the heck is in the queue!
-                            log.fatal(cce);
+                        else
                             request = null;
-                        }
+
                         if (request == null)
                         {
                             try
@@ -109,7 +125,7 @@ public class ThreadPool
                 }
                 finally
                 {
-                    parent.flag.release();
+                    flag.release();
                 }
 
                 // If a shutdown was requested, stop now.
@@ -119,36 +135,29 @@ public class ThreadPool
                     return;
                 }
 
-                try
-                {
-                    parent.flag.acquire();
-                    parent.activeThreads++;     // One more active thread.
-                }
-                finally
-                {
-                    parent.flag.release();
-                }
-
                 // Run the target!
                 request.target.run();
 
                 // Signal the empty condition, if it is so.
                 try
                 {
-                    parent.flag.acquire();
+                    flag.acquire();
                     parent.activeThreads--;                 // One less active thread.
                     parent.activeRequests--;                // One less request is running or enqueued.
-                    if (parent.requestQueue.size() == 0)    // If the queue is empty...
-                        parent.ready.signal();              // Signal a 'ready' condition.
                     if (parent.activeRequests == 0)
                     {
                         // log.debug("Signalling: Idle pool condition.");
                         parent.idle.signal();
                     }
+                    // If there is more than one thread available, signal 'ready'.
+                    if (parent.activeThreads < parent.threads.length)
+                    {
+                        parent.ready.signal();
+                    }
                 }
                 finally
                 {
-                    parent.flag.release();
+                    flag.release();
                 }
 
                 // If there is a lock, notify on it.
@@ -167,7 +176,7 @@ public class ThreadPool
             } // while
             // log.info("run() : LEAVE (shutdown)");
         } // run()
-   } // class
+    } // class
 
     /** A logger for this class. **/
     private static Logger log = Logger.getLogger(ThreadPool.class);
@@ -205,6 +214,15 @@ public class ThreadPool
     }
 
     /**
+     * Returns the number of threads in the pool.
+     * @return int - The number of threads in the pool.
+     */
+    public int getSize()
+    {
+        return threads.length;
+    }
+
+    /**
      * Creates a new thread pool of the specified size.
      * @param size The number of threads in the pool.
      * @param group The thread group that the threads will be created in.
@@ -229,7 +247,8 @@ public class ThreadPool
         {
             threads[i] = new PooledThread(this, i);
             threads[i].start();
-            log.debug("Thread " + threads[i].getName() + " started.");
+            if (log.isDebugEnabled())
+                log.debug("Thread " + threads[i].getName() + " started.");
         }
     }
 
@@ -313,7 +332,7 @@ public class ThreadPool
 
     /**
      * Shut down the pool.
-     * @see #waitForAll(boolean)
+     * @see ThreadPool#waitForAll(boolean)
      */
     public void shutdown()
     {
@@ -384,6 +403,17 @@ public class ThreadPool
     public ThreadGroup getGroup()
     {
         return group;
+    }
+
+    /**
+     * Returns the array of threads in the pool.<br>
+     * WARNING: Modifying the state of the threads in the pool may
+     * cause the pool to become inconsistent.  Be careful!
+     * @return Thread[] - The array of threads the make up the pool.
+     */
+    public Thread[] getThreads()
+    {
+        return threads;
     }
 
     /**
