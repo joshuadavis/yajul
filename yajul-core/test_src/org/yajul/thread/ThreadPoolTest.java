@@ -172,7 +172,6 @@ public class ThreadPoolTest extends TestCase
         ThreadPool pool = new ThreadPool(3, new ThreadGroup("Group1"));
         TestRunnable tr = new TestRunnable();
 
-/*
         // Make sure that the pool starts in the ready state.
         try
         {
@@ -183,7 +182,6 @@ public class ThreadPoolTest extends TestCase
             log.error(e);
             throw new AssertionFailedError("Unexpected exception! " + e.getMessage());
         }
-*/
 
         log.debug("Pool is ready.");
 

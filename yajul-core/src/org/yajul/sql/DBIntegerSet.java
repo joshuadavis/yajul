@@ -1,7 +1,6 @@
 package org.yajul.sql;
 
 import org.apache.log4j.Logger;
-import org.yajul.log.LogUtil;
 import org.yajul.util.ArrayUtil;
 
 import java.sql.Connection;
