@@ -16,7 +16,8 @@
     <property name="test.src.dir" value="test_src"/>
     <property name="test.class.dir" value="${build.dir}/test_classes"/>
     <property name="test.log.dir" value="${build.dir}/test/log"/>
-    
+    <property name="junit.dir" value="${test.log.dir}"/>
+
     <path id="compile.classpath">
         <pathelement path="lib/xml-apis.jar:lib/xercesImpl.jar:lib/xalan.jar"/>
         <pathelement path="lib/log4j-1.2.7.jar"/>
