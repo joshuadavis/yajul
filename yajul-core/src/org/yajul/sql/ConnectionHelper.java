@@ -23,7 +23,9 @@ public class ConnectionHelper
      */
     private static Logger log = LogUtil.getLogger(ConnectionHelper.class.getName());
 
-    private static final int TABLE_NAME_COLUMN_INDEX = 3;
+    private static final int TABLE_NAME_INDEX = 3;
+
+    private static final int COLUMN_NAME_INDEX = 4;
 
     private Connection con;
     private Statement stmt;
@@ -104,6 +106,50 @@ public class ConnectionHelper
     }
 
     /**
+     * Returns the column meta data for the given column in the given table.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @return ColumnMetaData - The column meta data.
+     */
+    public ColumnMetaData getColumnMetaData(String tableName,String columnName)
+    {
+        DatabaseMetaData md = getMetaData();
+        ResultSet rs = null;
+
+        try
+        {
+            rs = md.getColumns(null,null,tableName,columnName);
+            while (rs.next())
+            {
+                String table = rs.getString(TABLE_NAME_INDEX);
+                String column = rs.getString(COLUMN_NAME_INDEX);
+                if (tableName.equals(table) && columnName.equals(column))
+                {
+                    return new ColumnMetaData(column,table,rs);
+                }
+            } // while
+        }
+        catch (SQLException e)
+        {
+            LogUtil.unexpected(log,e);
+        }
+        finally
+        {
+            if (rs != null)
+            {
+                try
+                {
+                    rs.close();
+                }
+                catch (SQLException e)
+                {
+                    LogUtil.unexpected(log,e);
+                }
+            }
+        }
+        return null;
+    }
+    /**
      * Returns true if the specified table exists.
      * @param tableName The name of the table to look for.
      * @return boolean - True if the table exists, false if not or if there
@@ -122,7 +168,7 @@ public class ConnectionHelper
             rs = md.getTables(null,null,tableName,null);
             while (rs.next())
             {
-                String name = rs.getString(TABLE_NAME_COLUMN_INDEX);
+                String name = rs.getString(TABLE_NAME_INDEX);
                 if (name.equals(tableName))
                     return true;
             } // while

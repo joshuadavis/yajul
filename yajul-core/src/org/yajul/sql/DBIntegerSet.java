@@ -54,7 +54,14 @@ public class DBIntegerSet
         this.keyColumnName = keyColumnName;
         this.valueColumnName = valueColumnName;
         this.helper = new ConnectionHelper(con);
-        // TODO: Ensure that the value column type is compatible with 'int'.
+        // Ensure that the value column type is compatible with 'int'.
+        ColumnMetaData md = helper.getColumnMetaData(targetTableName,valueColumnName);
+        if (!md.isIntType())
+           throw new IllegalArgumentException(
+                   "The type of column '" + valueColumnName
+                   + "' in table '"
+                   + targetTableName
+                   + "' is not compatible with the 'int' data type!");
         // TODO: Determine the type of the key column.
     }
 
@@ -191,11 +198,10 @@ public class DBIntegerSet
      */
     public void delete(Object key)
     {
-        int rc = 0;
         // DELETE targetTableName WHERE primaryKeyFieldName = primaryKey
         String sql = "DELETE " + targetTableName
                 + " WHERE " + keyColumnName + " =  " + key;
-        rc = helper.executeUpdate(sql);
+        helper.executeUpdate(sql);
     }
 
     /**
