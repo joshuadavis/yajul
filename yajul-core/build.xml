@@ -147,7 +147,7 @@
     </zip>
 </target>
 
-<target name="default" depends="compile,jar"/>
+<target name="default" depends="compile,jar,compile.tests"/>
 
 <target name="full" depends="clean,compile,jar,compile.tests,test">
 </target>

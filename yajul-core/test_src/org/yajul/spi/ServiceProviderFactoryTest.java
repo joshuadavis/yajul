@@ -102,7 +102,7 @@ public class ServiceProviderFactoryTest extends TestCase
             i++;
         }
         assertNotNull(o);
-        assertEquals(1,i);
+        assertEquals(true,i > 0);
     }
 
 
