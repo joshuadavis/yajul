@@ -18,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
  * When used with JDKs prior to 1.4, JSSE is required.
  * @author josh Jul 3, 2004 6:13:39 AM
  */
-public class CredentialDigester
+public class CredentialDigester extends Encoder
 {
 
     /**
@@ -27,7 +27,6 @@ public class CredentialDigester
     public static final String DEFAULT_ALGORITHM = "MD5";
 
     private String algorithm = DEFAULT_ALGORITHM;
-    private boolean base16 = false;
     private MessageDigest messageDigest = null;
 
     /**
@@ -50,24 +49,6 @@ public class CredentialDigester
             this.algorithm = algorithm;
             this.messageDigest = null;
         }
-    }
-
-    /**
-     * Returns true if the digest will be hex encoded (if false, it will be Base64 encoded, which is the default).
-     * @return True if the digest will be hex encoded (if false, it will be Base64 encoded, which is the default).
-     */
-    public boolean isBase16()
-    {
-        return base16;
-    }
-
-    /**
-     * Set to true to use hexadecimal digest encoding, false to use BASE64 encoding.
-     * @param base16 true to use hexadecimal digest encoding, false to use BASE64 encoding.
-     */
-    public void setBase16(boolean base16)
-    {
-        this.base16 = base16;
     }
 
     /**
@@ -111,15 +92,4 @@ public class CredentialDigester
         return messageDigest;
     }
 
-    private String encodeBytes(byte[] digestBytes)
-    {
-        return (isBase16()) ? encodeBase16(digestBytes) : Base64Encoder.encode(digestBytes);
-    }
-
-    private String encodeBase16(byte[] digestBytes)
-    {
-        StringBuffer buf = new StringBuffer();
-        StringUtil.hexString(buf,digestBytes,null,true);  // Use lower case hex chars.
-        return buf.toString();
-    }
 }

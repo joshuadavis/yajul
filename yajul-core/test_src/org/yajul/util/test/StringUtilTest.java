@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import org.yajul.util.StringUtil;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * TODO: Document this test case here.
@@ -59,6 +60,12 @@ public class StringUtilTest extends TestCase
         assertEquals("00,0a,10,3f,7f,80,81,fe,ff,00",hex);
         hex = StringUtil.hexString(bytes);
         assertEquals("000a103f7f8081feff00",hex);
+        byte[] bytes2 = StringUtil.parseHexString(hex);
+        assertTrue(Arrays.equals(bytes,bytes2));
+        hex = "000A103F7F8081FEFF00";
+        assertTrue(Arrays.equals(bytes,StringUtil.parseHexString(hex)));
+        hex = "00A103F7F8081FEFF00";
+        assertTrue(Arrays.equals(bytes,StringUtil.parseHexString(hex)));
         StringBuffer buf = new StringBuffer();
         StringUtil.hexString(buf,bytes,",",false);
         hex = buf.toString();

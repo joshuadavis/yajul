@@ -37,6 +37,7 @@ import java.io.UnsupportedEncodingException;
  * <hr>User: jdavis
  * <br>Date: Jul 15, 2003
  * <br>Time: 12:17:49 PM
+ *
  * @author jdavis
  */
 public class StringUtil
@@ -50,6 +51,7 @@ public class StringUtil
      * Returns the <tt>String</tt> encoded into an array of bytes using the
      * named charset.   This is identical to String.getBytes(charset), except that
      * it will use the default encoding if the charset is not available.
+     *
      * @param charset the name of a supported
      *                {@link java.nio.charset.Charset </code>charset<code>} , or null if the default
      *                charset is to be used.
@@ -128,6 +130,45 @@ public class StringUtil
         StringBuffer buf = new StringBuffer();
         hexString(buf, bytes, separator, true);
         return buf.toString();
+    }
+
+    /**
+     * Convert a string of hexadecimal characters to a byte array.
+     * @param hexString The hexadecimal string
+     * @return The string of hexadecimal characters as a byte array. 
+     */
+    public static byte[] parseHexString(String hexString)
+    {
+        int l = (hexString.length() + 1) / 2;
+        byte[] r = new byte[l];
+        int i = 0;
+        int j = 0;
+        if (hexString.length() % 2 == 1)
+        {
+            // Odd number of characters: must handle half byte first.
+            r[0] = parseHexChar(hexString.charAt(0));
+            i = j = 1;
+        }
+        while (i < l)
+            r[i++] = (byte) ((parseHexChar(hexString.charAt(j++)) << 4) | parseHexChar(hexString.charAt(j++)));
+        return r;
+    }
+
+    private static final int VALUE_UPPERCASE_A = 'A' - 10;
+    private static final int VALUE_LOWERCASE_A = 'a' - 10;
+
+    /**
+     * Convert a hexadecimal character to a byte.
+     * @param n The hex character
+     */
+    public static byte parseHexChar(char n)
+    {
+        if (n <= '9')
+            return (byte) (n - '0');
+        if (n <= 'G')
+            return (byte) (n - VALUE_UPPERCASE_A);
+        else
+            return (byte) (n - VALUE_LOWERCASE_A);
     }
 
     /**
