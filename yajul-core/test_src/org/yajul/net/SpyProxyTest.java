@@ -81,7 +81,7 @@ public class SpyProxyTest extends TestCase
         SpyProxy proxy = new SpyProxy(host,80,8888);
         // proxy.setDebugText(true);
         proxy.setShowConnections(true);
-        proxy.setClientLimit(CLIENT_LIMIT);
+        proxy.setMaxConnections(CLIENT_LIMIT);
         Thread proxyThread = new Thread(proxy,"SpyProxy-8888");
         log.info("\nStarting proxy server on port " + proxy.getProxyPort() + "...");
         proxyThread.start();

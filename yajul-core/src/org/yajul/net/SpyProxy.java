@@ -1,8 +1,8 @@
 package org.yajul.net;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -199,18 +199,7 @@ public class SpyProxy extends AbstractServerSocketListener
         SpyClientConnection con = null;
         try
         {
-            Socket out;
-            out = new Socket(serverAddress, serverPort);
-            if (isDebug() || showConnections)
-            {
-                println("Client "
-                        + in.getInetAddress().getHostName()
-                        + ":" + in.getPort() + " accepted, "
-                        + " proxy socket to "
-                        + out.getInetAddress().getHostName()
-                        + ":" + out.getPort() + " opened");
-            }
-            con = new SpyClientConnection(in, out);
+            con = new SpyClientConnection(in);
         }
         catch (ConnectException e)
         {
@@ -269,7 +258,6 @@ public class SpyProxy extends AbstractServerSocketListener
      */
     private class SpyClientConnection extends AbstractClientConnection
     {
-        private Socket client;
         private Socket server;
         private Channel incoming;
         private Channel outgoing;
@@ -278,20 +266,34 @@ public class SpyProxy extends AbstractServerSocketListener
         private Channel currentChannel = null;
 
         /**
-         * Bogo Conversation Pair
-         * @param clientSocket the client socket
-         * @param serverSocket the server socket
+         * Creates a SpyClientConnection.
+         * @param in the client socket
          * @throws IOException if failed.
          */
 
-        private SpyClientConnection(Socket clientSocket, Socket serverSocket)
+        private SpyClientConnection(Socket in)
                 throws IOException
         {
-            super();
-            client = clientSocket;
-            server = serverSocket;
-            incoming = new Channel(client, server, this);
-            outgoing = new Channel(server, client, this);
+            super(SpyProxy.this,in);
+            server = new Socket(serverAddress, serverPort);
+            if (isDebug() || showConnections)
+            {
+                println("Client "
+                        + in.getInetAddress().getHostName()
+                        + ":" + in.getPort() + " accepted, "
+                        + " proxy socket to "
+                        + server.getInetAddress().getHostName()
+                        + ":" + server.getPort() + " opened");
+            }
+            Socket socket = getSocket();
+            incoming = new Channel(socket,
+                    getInputStream(),
+                    server,
+                    server.getOutputStream(),
+                    this);
+            outgoing = new Channel(
+                    server, server.getInputStream(),
+                    socket, socket.getOutputStream(), this);
         }
 
         public void initialize(AbstractServerSocketListener listener)
@@ -314,15 +316,7 @@ public class SpyProxy extends AbstractServerSocketListener
             {
                 incoming.shutdown();
                 outgoing.shutdown();
-                try
-                {
-                    client.close();
-                }
-                catch (Exception ex)
-                {
-                    unexpected(ex);
-                }
-
+                super.close();
                 try
                 {
                     server.close();
@@ -332,8 +326,6 @@ public class SpyProxy extends AbstractServerSocketListener
                     unexpected(ex);
                 }
             }
-
-            client = null;
             server = null;
         }
 
@@ -357,11 +349,11 @@ public class SpyProxy extends AbstractServerSocketListener
 
             if (incomingStopped && outgoingStopped)
             {
-                onClose();
+                close();
             }
         }
 
-        public void setCurrentChannel(Channel channel,long readLength)
+        public void setCurrentChannel(Channel channel)
         {
             synchronized (this)
             {
@@ -372,12 +364,12 @@ public class SpyProxy extends AbstractServerSocketListener
                     if (currentChannel == incoming)
                     {
                         if (isDebug()) print("\n");
-                        println(" CLIENT " + incoming.getName() + "  => SERVER " + outgoing.getName() + " : " + readLength + " bytes.");
+                        println(" CLIENT " + incoming.getName() + "  => SERVER " + outgoing.getName());
                     }
                     else
                     {
                         if (isDebug()) print("\n");
-                        println(" SERVER " + outgoing.getName() + "  => CLIENT " + incoming.getName() + " : " + readLength + " bytes.");
+                        println(" SERVER " + outgoing.getName() + "  => CLIENT " + incoming.getName());
                     }
                 }
             } // synchronized
@@ -392,8 +384,8 @@ public class SpyProxy extends AbstractServerSocketListener
         private boolean running = true;
         private Socket in;
         private Socket out;
-        private BufferedInputStream reader;
-        private BufferedOutputStream writer;
+        private InputStream reader;
+        private OutputStream writer;
         private InetAddress inAddress;
         private int inPort;
         private SpyClientConnection con;
@@ -403,17 +395,15 @@ public class SpyProxy extends AbstractServerSocketListener
          * Constructor
          * @param in the transmitting socket
          * @param out the receiving socket
-         * @throws IOException if failed.
          */
-        private Channel(Socket in, Socket out, SpyClientConnection con)
-                throws IOException
+        private Channel(Socket in,InputStream inputStream, Socket out, OutputStream outputStream, SpyClientConnection con)
         {
             super();
             this.in = in;
             this.out = out;
             this.con = con;
-            reader = new BufferedInputStream(this.in.getInputStream());
-            writer = new BufferedOutputStream(this.out.getOutputStream());
+            reader = inputStream;
+            writer = outputStream;
             inAddress = this.in.getInetAddress();
             inPort = this.in.getPort();
             bytes = 0;
@@ -457,7 +447,7 @@ public class SpyProxy extends AbstractServerSocketListener
                         (readLength = reader.read(cbuf, 0, BUFSZ)) != -1)
                 {
                     bytes += readLength;
-                    con.setCurrentChannel(this,readLength);
+                    con.setCurrentChannel(this);
                     if (debugBinary)
                         printBinaryBuf(cbuf, readLength);
                     if (debugText)
@@ -474,12 +464,6 @@ public class SpyProxy extends AbstractServerSocketListener
 
             // we are here because the socket was in closed
             // close the corresponding recieve socket
-            if (readLength == -1 && (isDebug() || isShowConnections()))
-            {
-//                if (isDebug()) print("\n");
-//                println("Socket " + inAddress.getHostName()
-//                        + ":" + inPort + " closed");
-            }
             try
             {
                 out.close();
