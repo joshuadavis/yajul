@@ -15,6 +15,7 @@ import org.yajul.io.EchoInputStream;
 import org.yajul.io.TeeOutputStream;
 import org.yajul.io.ByteCountingInputStream;
 import org.yajul.io.ByteCountingOutputStream;
+import org.yajul.io.HexDumpOutputStream;
 
 /**
  * Tests org.yajul.io classes:
@@ -120,5 +121,19 @@ public class StreamCopierTest extends TestCase
         StreamCopier.unsyncCopy(input,out,8);
         assertTrue(Arrays.equals(bytes,output.toByteArray()));
         assertEquals(bytes.length,out.getByteCount());
+    }
+
+    public void testHexDumpOutputStream() throws IOException
+    {
+        byte[] bytes = new byte[50];
+        for (int i = 0; i < bytes.length; i++)
+            bytes[i] = (byte)i;
+
+        ByteArrayInputStream input = new ByteArrayInputStream(bytes);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        HexDumpOutputStream out = new HexDumpOutputStream(output,16);
+        StreamCopier.unsyncCopy(input,out,8);
+        out.flush();
+        // TODO: Test the result.
     }
 }

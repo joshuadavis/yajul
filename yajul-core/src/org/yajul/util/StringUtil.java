@@ -37,6 +37,7 @@ package org.yajul.util;
  */
 public class StringUtil
 {
+
     /**
      * Prints the class name of the object, followed by '@', followed by the hash code
      * of the object, just like java.lang.Object.toString().
@@ -65,5 +66,78 @@ public class StringUtil
     public static final boolean isEmpty(String str)
     {
         return (str == null || str.length() == 0);
+    }
+
+    /**
+     * Returns a string containing the hexadecimal representation of the array
+     * of bytes.
+     * @param bytes The array of bytes to turn into hex.
+     * @return String - The hex string.
+     */
+    public static final String hexString(byte[] bytes)
+    {
+        return hexString(bytes, null);
+    }
+
+    /**
+     * Returns a string containing the hexadecimal representation of the
+     * array of bytes, separated by an optional string.
+     * @param bytes The array of bytes to turn into hex.
+     * @param separator The separator string.  If null or zero length, no
+     * separator will be used.
+     * @return String - The hex string.
+     */
+    public static final String hexString(byte[] bytes, String separator)
+    {
+        StringBuffer buf = new StringBuffer();
+        hexString(buf, bytes, separator, true);
+        return buf.toString();
+    }
+
+    /** Lowercase hex characters. **/
+    public static final char[] HEX_CHARS_LOWER = "0123456789abcdef".toCharArray();
+    /** Uppercase hex characters. **/
+    public static final char[] HEX_CHARS_UPPER = "0123456789ABCDEF".toCharArray();
+    /** Lower nybble mask. **/
+    private static final int MASK = 0x0000000F;
+
+    /**
+     * Appends the hex representation of the bytes to the string buffer, separated
+     * by an optional separator string.
+     * @param bytes The bytes to convert to hex.
+     * @param buf The buffer to append to.
+     * @param separator The separator string.  If null or zero length, no
+     * separator will be used.
+     * @param lowerCase True for lower case hex (e.g. 34f0), false for upper
+     * case hex (e.g. 34F0).
+     */
+    public static void hexString(StringBuffer buf,
+                                 byte[] bytes, String separator,
+                                 boolean lowerCase)
+    {
+        char[] out = new char[2];
+        final char[] chars = (lowerCase) ? HEX_CHARS_LOWER : HEX_CHARS_UPPER;
+        final char[] sep = (separator != null && separator.length() > 0) ?
+                separator.toCharArray() : null;
+        for (int i = 0; i < bytes.length; i++)
+        {
+            if ((sep != null) && (i > 0))   // Add the separator, if required.
+                buf.append(sep);
+            hexChars(chars, bytes[i], out);
+            buf.append(out);            // Append the two hex chars.
+        }
+    }
+
+    /**
+     * Converts the byte into a two element array of hex characters.
+     * @param chars The hex character set to use (e.g. HEX_BYTES_LOWER / HEX_BYTES_UPPER).
+     * @param inByte The input byte.
+     * @param out The output array of characters.  Length must be >= 2.
+     */
+    public static void hexChars(final char[] chars, int inByte, char[] out)
+    {
+        out[1] = chars[MASK & inByte];   // Get the lower nybble and set the second char.
+        inByte >>= 4;                    // Shift off the lower nybble.
+        out[0] = chars[MASK & inByte];   // Get the upper nybble and set the first char.
     }
 }
