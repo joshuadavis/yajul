@@ -28,6 +28,7 @@
 package org.yajul.io;
 
 import org.apache.log4j.Logger;
+import org.yajul.util.Copier;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,32 +135,7 @@ public class StreamCopier implements Runnable
      **/
     public static int unsyncCopy(InputStream in, OutputStream out, int bufsz, int limit) throws IOException
     {
-        if (bufsz <= 0)
-            throw new IllegalArgumentException("Buffer size must be > 0");
-        byte[] buf = new byte[bufsz];
-        int bytesRead = 0;
-        int total = 0;
-        int readLimit = bufsz;
-        while (true)
-        {
-            // If a limit was specified, calculate the number of bytes
-            // that should be read by the next read operation.
-            if (limit > 0)
-            {
-                readLimit = limit - total;
-                if (readLimit > bufsz)
-                    readLimit = bufsz;
-                else if (readLimit <= 0)
-                    break;
-            }
-            bytesRead = in.read(buf,0,readLimit);
-            if (bytesRead == EOS)
-                break;
-            total += bytesRead;
-            if (out != null)
-                out.write(buf, 0, bytesRead);
-        } // while
-        return total;
+        return Copier.copy(in,out,bufsz,limit);
     }
 
     /**
@@ -177,32 +153,7 @@ public class StreamCopier implements Runnable
      **/
     public static int unsyncCopy(Reader in, Writer out, int bufsz, int limit) throws IOException
     {
-        if (bufsz <= 0)
-            throw new IllegalArgumentException("Buffer size must be > 0");
-        char[] buf = new char[bufsz];
-        int bytesRead = 0;
-        int total = 0;
-        int readLimit = bufsz;
-        while (true)
-        {
-            // If a limit was specified, calculate the number of bytes
-            // that should be read by the next read operation.
-            if (limit > 0)
-            {
-                readLimit = limit - total;
-                if (readLimit > bufsz)
-                    readLimit = bufsz;
-                else if (readLimit <= 0)
-                    break;
-            }
-            bytesRead = in.read(buf,0,readLimit);
-            if (bytesRead == EOS)
-                break;
-            total += bytesRead;
-            if (out != null)
-                out.write(buf, 0, bytesRead);
-        } // while
-        return total;
+        return Copier.copy(in,out,bufsz,limit);
     }
 
     /**

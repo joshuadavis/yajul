@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 
-import org.yajul.io.StreamCopier;
-
 /**
  * Provides utility methods for finding and loading resources.
  * User: josh
@@ -70,8 +68,6 @@ public class ResourceUtil
         InputStream is = getResourceAsStream(name);
         if (is == null)
             return null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        StreamCopier.unsyncCopy(is,baos,StreamCopier.DEFAULT_BUFFER_SIZE);
-        return baos.toByteArray();
+        return Copier.toByteArray(is);
     }
 }

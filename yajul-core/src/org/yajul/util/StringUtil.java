@@ -140,4 +140,16 @@ public class StringUtil
         inByte >>= 4;                    // Shift off the lower nybble.
         out[0] = chars[MASK & inByte];   // Get the upper nybble and set the first char.
     }
+    
+    /**
+     * Appends the string to the string buffer IFF it is not null and not empty.
+     * @param string The string to append.
+     * @param buf The string buffer.
+     */
+    public static final void appendIfNotEmpty(String string,StringBuffer buf)
+    {
+        if (!isEmpty(string))
+            buf.append(string);
+    }
+    
 }

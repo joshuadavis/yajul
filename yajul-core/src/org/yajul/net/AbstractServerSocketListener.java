@@ -250,10 +250,20 @@ public abstract class AbstractServerSocketListener implements Runnable
     {
         synchronized (clientConnections)
         {
-            for (Iterator iterator = clientConnections.iterator(); iterator.hasNext();)
+            AbstractClientConnection[] clients = (AbstractClientConnection[])
+                    clientConnections.toArray(
+                            new AbstractClientConnection[clientConnections.size()]);
+            for (int i = 0; i < clients.length; i++)
             {
-                AbstractClientConnection client = (AbstractClientConnection) iterator.next();
-                client.shutdown();
+
+                try
+                {
+                    clients[i].shutdown();
+                }
+                catch (Throwable e)
+                {
+                    log.error(e,e);
+                }
             }
         }
 
