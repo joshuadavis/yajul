@@ -294,7 +294,7 @@ public class ReconnectingDataSource implements DataSource
                     throw new SQLException("Null connnection returned!");
 //                if (con.isClosed())
 //                    throw new SQLException("Connection already closed!");
-                if (attempts != 0)
+                if (attempts > 1)
                     log.info("Connection obtained after " + attempts + " attempt" + ((attempts > 1) ? "s" : ""));
                 return con;
             }
