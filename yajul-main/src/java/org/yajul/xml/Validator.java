@@ -83,22 +83,28 @@ public class Validator
     public static boolean validateFile(String fileName,
                                        OutputStream errors) throws FileNotFoundException
     {
-        ErrorCounter errorHandler = new ErrorCounter(errors);
-
         //make input source
         InputSource is = new InputSource(new FileInputStream(fileName));
         File file = new File(fileName);
         String systemID = file.getAbsolutePath();
-//        log.debug("systemId = " + systemID);
         is.setSystemId(systemID);
         EntityResolver resolver = new FileEntityResolver(file.getParent());
-        return validate(is, errorHandler, resolver);
+        return validate(is, errors, resolver);
 
     }
 
-    private static boolean validate(InputSource is, ErrorCounter errorHandler,
-                                    EntityResolver resolver)
+    /**
+     * Validates the input source.
+     * @param is The input source.
+     * @param errors The stream to write errors to.  If it is null, no errors
+     * will be displayed, but they will be counted.
+     * @param resolver EntityResolver that will be used to find the DTDs.
+     * @return true iff the document had no errors
+     */
+    public static boolean validate(InputSource is, OutputStream errors,
+                                   EntityResolver resolver)
     {
+        ErrorCounter errorHandler = new ErrorCounter(errors);
         try
         {
             DocumentBuilder builder = getFactory().newDocumentBuilder();
