@@ -16,9 +16,7 @@
 			<!-- header -->
 			<div id="header"><table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr>
-						<!--
-						<td id="jakartaLogoTD" valign="middle" align="left"><a href="@group-logo.href@"><img id="jakartaLogo" src="@group-logo.src@" border="0"/></a></td>
-						-->
+						<td id="jakartaLogoTD" valign="middle" align="left"><a href="http://sourceforge.net"><img id="jakartaLogo" src="http://sourceforge.net/sflogo.php?group_id=56167&amp;amp;type=6" border="0"/></a></td>
 						<td id="projectLogoTD" valign="middle" align="right"><a href="@project-logo.href@"><img id="projectLogo" src="@project-logo.src@" border="0"/></a></td>
 						</tr>
 			</table></div>
