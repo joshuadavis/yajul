@@ -6,9 +6,11 @@ import junit.framework.TestCase;
 import org.yajul.matrix.ArrayListMatrix;
 import org.yajul.matrix.ArrayMatrix;
 import org.yajul.matrix.Matrix;
+import org.yajul.matrix.MatrixIterator;
 import org.yajul.matrix.MatrixUtil;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 /**
  * Tests the ArrayListMatrix class.
@@ -54,27 +56,70 @@ public class MatrixTest extends TestCase
         fill2d1(m);
         int iterations = countIterations(m);
         assertEquals(20 * 10, iterations);
-        assertEquals(20 * 10, m.getTotalSize());
+        assertEquals(20 * 10, m.size());
         m = createMatrix();
         fill1d(m);
         iterations = countIterations(m);
         assertEquals(20, iterations);
-        assertEquals(20, m.getTotalSize());
+        assertEquals(20, m.size());
     }
 
     private int countIterations(Matrix m)
     {
-        int[] coord = new int[m.getDimensions()];
-        int[] sizes = m.getSizes();
+        MatrixIterator iterator = new MatrixIterator(m);
         int iterations = 0;
-        do
+        while (iterator.increment())
         {
             iterations++;
         }
-        while (MatrixUtil.increment(coord, sizes));
         return iterations;
     }
 
+    public void testIterator() throws Exception
+    {
+        matrixClass = ArrayMatrix.class;
+        Matrix m = createMatrix();
+        fill2d1(m);
+        MatrixIterator iterator = (MatrixIterator) m.iterator();
+        int iterations = 0;
+        int[] sizes = m.getSizes();
+        int[] coords = new int[sizes.length];
+        while (iterator.hasNext())
+        {
+            Object o = iterator.next();
+            int val = coords[0] * 10 + coords[1];
+            assertEquals(val,((Integer)o).intValue());
+            int[] c = iterator.getCoords();
+            assertEquals(coords.length,c.length);
+            for (int i = 0; i < c.length; i++)
+                assertEquals(coords[i],c[i]);
+            iterations++;
+            MatrixUtil.increment(coords,sizes);
+        }
+        assertEquals(20 * 10, iterations);
+        assertEquals(20 * 10, m.size());
+
+        Exception x = null;
+        try
+        {
+            iterator.next();
+        }
+        catch (NoSuchElementException e)
+        {
+            x = e;
+        }
+        assertNotNull(x);
+        x = null;
+        try
+        {
+            iterator.remove();
+        }
+        catch (UnsupportedOperationException e)
+        {
+            x = e;
+        }
+        assertNotNull(x);
+    }
     /**
      * Test basic put/get.
      */
@@ -96,6 +141,7 @@ public class MatrixTest extends TestCase
     private void doTest2d() throws IllegalAccessException, InstantiationException
     {
         Matrix m = createMatrix();
+        assertTrue(m.isEmpty());
         int[] coords = new int[2];
         fill2d1(m);
         check2d(m, coords);

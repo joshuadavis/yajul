@@ -50,4 +50,13 @@ public class ArrayMatrix extends AbstractMatrix implements Matrix
         return array[address];
     }
 
+    /**
+     * Returns the internal object array.
+     * @return
+     */
+    public Object[] getObjectArray()
+    {
+        return array;
+    }
+
 }

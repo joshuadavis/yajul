@@ -1,6 +1,9 @@
 // $Id$
 package org.yajul.matrix;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Provides common getters and setters for matrix implementations.
  * @author josh Sep 5, 2004 12:49:30 PM
@@ -93,7 +96,76 @@ public abstract class AbstractMatrix implements Matrix
         return s;
     }
 
-    public int getTotalSize()
+    public void clear()
+    {
+        // TODO: Implement this method.
+    }
+
+    public boolean isEmpty()
+    {
+        return size() == 0;
+    }
+
+    public Object[] toArray()
+    {
+        // TODO: Implement this method.
+        return new Object[0];
+    }
+
+    public boolean add(Object o)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public boolean contains(Object o)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public boolean remove(Object o)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public boolean addAll(Collection c)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public boolean containsAll(Collection c)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public boolean removeAll(Collection c)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public boolean retainAll(Collection c)
+    {
+        // TODO: Implement this method.
+        return false;
+    }
+
+    public Iterator iterator()
+    {
+        return new MatrixIterator(this);
+    }
+
+    public Object[] toArray(Object a[])
+    {
+        // TODO: Implement this method.
+        return new Object[0];
+    }
+
+    public int size()
     {
         return MatrixUtil.totalSize(sizes);
     }
@@ -129,6 +201,9 @@ public abstract class AbstractMatrix implements Matrix
 
     protected void beforePut(int[] coords)
     {
+        if (coords.length < sizes.length)
+            throw new ArrayIndexOutOfBoundsException("Coordinates must have at least " + sizes.length + " dimensions!");
+
         if (canGrow)
         {
             if (coords.length > sizes.length)
