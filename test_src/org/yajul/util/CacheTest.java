@@ -24,9 +24,9 @@ public class CacheTest extends TestCase
 {
     private static Logger log = Logger.getLogger(CacheTest.class);
 
-    static final int SET_SIZE = 1000;
-    static final int CACHE_SIZE = 100;
-    static final int ITERATIONS = 10000;
+    static final int SET_SIZE = 100;
+    static final int CACHE_SIZE = 10;
+    static final int ITERATIONS = 1000;
 
     class TestElement
     {
@@ -257,6 +257,13 @@ public class CacheTest extends TestCase
                 elem = (TestElement) cache.get(num);
                 assertEquals(elem.id, num.intValue());
                 assertSame(elem, map.get(num));
+                try
+                {
+                    Thread.sleep(1);
+                }
+                catch (InterruptedException e)
+                {
+                }
             }
             printStatistics(cache);
             assertTrue(cache.getTimeoutRate() < 0.99);

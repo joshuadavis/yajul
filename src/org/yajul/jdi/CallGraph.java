@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.yajul.log.Logger;
+
 /**
  * Represents a graph of all methods, which methods call them, and which methods are called by them.
  * Each method is represented by a MethodNode, which has a set of callers, and a set of called MethodNodes
@@ -24,6 +26,8 @@ import java.util.Set;
  */
 public class CallGraph
 {
+    private static Logger log = Logger.getLogger(CallGraph.class);
+
     public class TypeNode
     {
         private ReferenceType type;
@@ -168,6 +172,7 @@ public class CallGraph
             while (iter.hasNext())
             {
                 node = (MethodNode) iter.next();
+                buf.append("\t");
                 appendFullMethodName(buf, node.getMethod());
                 if (iter.hasNext())
                     buf.append("\n");
@@ -197,11 +202,13 @@ public class CallGraph
 
     private Map methods;    // A map of (method,MethodNode) for callers
     private Map types;      // A map of (type,TypeNode) for all methods.
+    private int callCount;  // The total number of calls.
 
     public CallGraph()
     {
         methods = new HashMap();
         types = new HashMap();
+        callCount = 0;
     }
 
     MethodNode findMethodNode(Method m)
@@ -238,6 +245,10 @@ public class CallGraph
      */
     public void addCall(Method caller, Method called)
     {
+        callCount++;
+        if (log.isDebugEnabled() && ((callCount % 1000) == 0))
+            log.debug("total calls = " + callCount);
+
         if (caller != null)
         {
             MethodNode source = findMethodNode(caller);

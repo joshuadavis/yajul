@@ -26,6 +26,7 @@ public class PackageTests extends TestCase
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
+        suite.addTestSuite(Base64Test.class);
         suite.addTestSuite(CacheTest.class);
         suite.addTestSuite(DateFormatterTest.class);
         suite.addTestSuite(PoolTest.class);
