@@ -59,8 +59,8 @@ public class NameValuePair implements java.io.Serializable
      * Sets the value to a new value.
 	 * @param v The new value.
 	 */
-	public void setValue(String v) { value = v; }
-    
+	public String setValue(String v) { value = v; return value; }
+
     /**
      * Default string conversion.
 	 * @return String of the form [&lt;name&gt;,&lt;value&gt;]
@@ -79,6 +79,6 @@ public class NameValuePair implements java.io.Serializable
      */
     public Object clone() throws CloneNotSupportedException
     {
-        return super.clone();
+        return new NameValuePair(name,value);
     }
 }

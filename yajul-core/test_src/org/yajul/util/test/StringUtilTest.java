@@ -29,6 +29,8 @@ package org.yajul.util.test;
 import junit.framework.TestCase;
 import org.yajul.util.StringUtil;
 
+import java.nio.charset.Charset;
+
 /**
  * TODO: Document this test case here.
  */
@@ -83,5 +85,14 @@ public class StringUtilTest extends TestCase
         StringUtil.appendIfNotEmpty(null,buf);
         StringUtil.appendIfNotEmpty("def",buf);
         assertEquals("abcdef",buf.toString());
+    }
+
+    public void testGetBytes()
+    {
+        byte[] bytes = StringUtil.getBytes("hello",null);
+        String s = new String(bytes);
+        assertEquals("hello",s);
+        bytes = StringUtil.getBytes("hello","fubar");
+        assertEquals("hello",new String(bytes));
     }
 }

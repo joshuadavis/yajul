@@ -57,21 +57,14 @@ public class ObjectFactory
      */
     public static Object createInstance(String className, ClassLoader loader)
     {
-        if (log.isDebugEnabled())
-            log.debug("createInstance() : Creating instance from '" + className + "'");
-
         try
         {
             Class c;
 
             if (loader == null)
-            {
-                c = Class.forName(className);
-            }
-            else
-            {
-                c = loader.loadClass(className);
-            }
+                loader = getCurrentClassLoader();
+
+            c = loader.loadClass(className);
 
             return c.newInstance();
         }
@@ -140,10 +133,7 @@ public class ObjectFactory
             if (log.isDebugEnabled())
                 log.debug(message + "  Using default class name '" + defaultClassName + "'.");
         }
-        else
-            className = getClassName(properties, propertyName, resourceName, resourceAndPropertyRequired, defaultClassName);
-        Object inst = createInstance(className, properties);
-        return inst;
+        return createInstanceFromProperties(properties,propertyName,defaultClassName,resourceAndPropertyRequired);
     }
 
     /**
@@ -196,7 +186,7 @@ public class ObjectFactory
     private static String getClassName(Properties properties, String propertyName, String resourceName, boolean resourceAndPropertyRequired, String defaultClassName) throws InitializationException
     {
         String className;
-        className = properties.getProperty(propertyName);
+        className = (properties == null) ? null : properties.getProperty(propertyName);
         if (StringUtil.isEmpty(className))
         {
             String message = "Properties " +

@@ -28,20 +28,53 @@
 
 package org.yajul.util;
 
+import org.apache.log4j.Logger;
+
+import java.io.UnsupportedEncodingException;
+
 /**
  * Provides commonly used string functions.
- * User: jdavis
- * Date: Jul 15, 2003
- * Time: 12:17:49 PM
+ * <hr>User: jdavis
+ * <br>Date: Jul 15, 2003
+ * <br>Time: 12:17:49 PM
  * @author jdavis
  */
 public class StringUtil
 {
+    /**
+     * A logger for this class.
+     */
+    private static Logger log = Logger.getLogger(StringUtil.class);
+
+    /**
+     * Returns the <tt>String</tt> encoded into an array of bytes using the
+     * named charset.   This is identical to String.getBytes(charset), except that
+     * it will use the default encoding if the charset is not available.
+     * @param charset the name of a supported
+     *                {@link java.nio.charset.Charset </code>charset<code>} , or null if the default
+     *                charset is to be used.
+     * @return The string, encoded in either the default charset or the specified charset.
+     */
+    public static final byte[] getBytes(String s, String charset)
+    {
+        byte[] bytes;
+        try
+        {
+            bytes = (isEmpty(charset)) ? s.getBytes() : s.getBytes(charset);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            log.warn("Encoding " + charset + " is not supported, using default encoding");
+            bytes = s.getBytes();
+        }
+        return bytes;
+    }
 
     /**
      * Prints the class name of the object, followed by '@', followed by the hash code
      * of the object, just like java.lang.Object.toString().
-     * @param o - The object to print.
+     *
+     * @param o The object to print.
      * @return String - The object's default string representation.
      */
     public static final String defaultToString(Object o)
@@ -60,9 +93,10 @@ public class StringUtil
 
     /**
      * Returns true if the string is null or zero length.
+     *
      * @param str - The string to test.
      * @return boolean - True if the string is null or zero length.
-     **/
+     */
     public static final boolean isEmpty(String str)
     {
         return (str == null || str.length() == 0);
@@ -71,6 +105,7 @@ public class StringUtil
     /**
      * Returns a string containing the hexadecimal representation of the array
      * of bytes.
+     *
      * @param bytes The array of bytes to turn into hex.
      * @return String - The hex string.
      */
@@ -82,9 +117,10 @@ public class StringUtil
     /**
      * Returns a string containing the hexadecimal representation of the
      * array of bytes, separated by an optional string.
-     * @param bytes The array of bytes to turn into hex.
+     *
+     * @param bytes     The array of bytes to turn into hex.
      * @param separator The separator string.  If null or zero length, no
-     * separator will be used.
+     *                  separator will be used.
      * @return String - The hex string.
      */
     public static final String hexString(byte[] bytes, String separator)
@@ -94,26 +130,33 @@ public class StringUtil
         return buf.toString();
     }
 
-    /** Lowercase hex characters. **/
+    /**
+     * Lowercase hex characters. *
+     */
     public static final char[] HEX_CHARS_LOWER = "0123456789abcdef".toCharArray();
-    /** Uppercase hex characters. **/
+    /**
+     * Uppercase hex characters. *
+     */
     public static final char[] HEX_CHARS_UPPER = "0123456789ABCDEF".toCharArray();
-    /** Lower nybble mask. **/
+    /**
+     * Lower nybble mask. *
+     */
     private static final int MASK = 0x0000000F;
 
     /**
      * Appends the hex representation of the bytes to the string buffer, separated
      * by an optional separator string.
-     * @param bytes The bytes to convert to hex.
-     * @param buf The buffer to append to.
+     *
+     * @param bytes     The bytes to convert to hex.
+     * @param buf       The buffer to append to.
      * @param separator The separator string.  If null or zero length, no
-     * separator will be used.
+     *                  separator will be used.
      * @param lowerCase True for lower case hex (e.g. 34f0), false for upper
-     * case hex (e.g. 34F0).
+     *                  case hex (e.g. 34F0).
      */
     public static final void hexString(StringBuffer buf,
-                                 byte[] bytes, String separator,
-                                 boolean lowerCase)
+                                       byte[] bytes, String separator,
+                                       boolean lowerCase)
     {
         char[] out = new char[2];
         final char[] chars = (lowerCase) ? HEX_CHARS_LOWER : HEX_CHARS_UPPER;
@@ -130,9 +173,10 @@ public class StringUtil
 
     /**
      * Converts the byte into a two element array of hex characters.
-     * @param chars The hex character set to use (e.g. HEX_BYTES_LOWER / HEX_BYTES_UPPER).
+     *
+     * @param chars  The hex character set to use (e.g. HEX_BYTES_LOWER / HEX_BYTES_UPPER).
      * @param inByte The input byte.
-     * @param out The output array of characters.  Length must be >= 2.
+     * @param out    The output array of characters.  Length must be >= 2.
      */
     public static final void hexChars(final char[] chars, int inByte, char[] out)
     {
@@ -143,8 +187,9 @@ public class StringUtil
 
     /**
      * Appends the string to the string buffer IFF it is not 'empty' (null or zero length).
+     *
      * @param string The string to append.
-     * @param buf The string buffer.
+     * @param buf    The string buffer.
      * @see #isEmpty(String)
      */
     public static final void appendIfNotEmpty(String string, StringBuffer buf)

@@ -243,6 +243,17 @@ public class ExceptionTest extends TestCase
         de = null;
         try
         {
+            throw new InitializationException();
+        }
+        catch (InitializationException e)
+        {
+            de = e;
+        }
+        assertNull(de.getMessage());
+        
+        de = null;
+        try
+        {
             throw new InitializationException(new Error("test 2"));
         }
         catch (InitializationException e)
@@ -280,6 +291,17 @@ public class ExceptionTest extends TestCase
         de = null;
         try
         {
+            throw new InitializationError();
+        }
+        catch (InitializationError e)
+        {
+            de = e;
+        }
+        assertNull(de.getMessage());
+
+        de = null;
+        try
+        {
             throw new InitializationError(new Error("test 2"));
         }
         catch (InitializationError e)
@@ -301,7 +323,7 @@ public class ExceptionTest extends TestCase
         printStackTrace(de);
     }
 
-    public void testExceptionList()
+    public void testExceptionList() throws Throwable
     {
         // Empty exception list.
         ExceptionList de = null;
@@ -430,7 +452,6 @@ public class ExceptionTest extends TestCase
         assertEquals("test 3",t.getMessage());
         t = (Throwable) iter.next();
         assertEquals("another",t.getMessage());
-
         th = null;
         try
         {
@@ -452,6 +473,24 @@ public class ExceptionTest extends TestCase
             th = tt;
         }
         assertSame(de,th);
+
+        // Test empty list.
+        de = null;
+        try
+        {
+            throw new ExceptionList("test empty list");
+        }
+        catch (ExceptionList e)
+        {
+            de = e;
+        }
+        assertEquals("test empty list",de.getMessage());
+        assertNull(de.getCause());
+
+        th = null;
+        de.throwIfThrowable();
+        de.throwIfException();
+        assertNull(th);
     }
 
     private void printStackTrace(Throwable t)
