@@ -54,6 +54,33 @@ public class Bytes
         return b;
     }
 
+    /***
+     * Builds a 8-byte array from an int, MSB first.
+     * @param n The number to convert.
+     * @param b The output array.
+     * @return The output array (b).
+     */
+    public static byte[] toBytes(long n, byte[] b)
+    {
+        // The LSB goes in the last byte.
+        b[7] = (byte) (n);
+        n >>>= 8;
+        b[6] = (byte) (n);
+        n >>>= 8;
+        b[5] = (byte) (n);
+        n >>>= 8;
+        b[4] = (byte) (n);
+        n >>>= 8;
+        b[3] = (byte) (n);
+        n >>>= 8;
+        b[2] = (byte) (n);
+        n >>>= 8;
+        b[1] = (byte) (n);
+        n >>>= 8;
+        b[0] = (byte) (n);
+        return b;
+    }
+
     /** Lowercase hex characters. **/
     public static final byte[] HEX_BYTES_LOWER = "0123456789abcdef".getBytes();
     /** Uppercase hex characters. **/
@@ -96,5 +123,4 @@ public class Bytes
         inByte >>= 4;                    // Shift off the lower nybble.
         out[0] = hexBytes[MASK & inByte];   // Get the upper nybble and set the first char.
     }
-
 }
