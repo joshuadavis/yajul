@@ -28,7 +28,12 @@ td           { font-family: Tahoma; font-size: 10pt }
       <h1 align="center">YAJUL</h1>
       <p align="center"><b>Yet Another Java Utility Library</b>
           </td>
-          <td width="140"><img border="0" src="http://cvs.sourceforge.net/sourceforge_whitebg.gif" width="136" height="79"></td>
+          <td width="140">
+          <A href="http://sourceforge.net">
+          <IMG src="http://sourceforge.net/sflogo.php?group_id=56167&amp;type=6" 
+          width="210" height="62" border="0" alt="SourceForge Logo">
+          </A> 
+          </td>
         </tr>
       </table>
     </td>
@@ -40,26 +45,87 @@ td           { font-family: Tahoma; font-size: 10pt }
 <p><font size="2">Ever get annoyed that some basic features aren't part of the JDK?&nbsp; Tired
 of writing the same Servlet or JDBC code over and over again?&nbsp; YAJUL is
 made to address these concerns.</font></p>
-<p><font size="2">J2SE Library</font></p>
+<p><font size="2">Reasons why corporate and commercial software development
+teams <i>don't</i> use Open Source libraries:</font></p>
 <ul>
-  <li><font size="2">Multi-threading.</font></li>
-  <li><font size="2">Networking.</font></li>
-  <li><font size="2">String Parsing.</font></li>
+  <li>
+    <p><font size="2"><i>Open Source libraries don't have support.</i><br>
+    This is usually a result of the NIH, CYA, or Boat Anchor
+    anti-patterns.&nbsp; It can also be an assumption made on the bases of the
+    cost of the libraries ($0).<br>
+    <br>
+    YAJUL comes with support forums and e-mail lists (like most other Open
+    Source projects ;-&gt;).</font></p>
+  </li>
+  <li>
+    <p><font size="2"><i>Open Source libraries aren't tested.<br>
+    </i>Sadly, this is true of many libraries.&nbsp; They are tested by
+    developers during the 'beta' phase.<br>
+    <br>
+    YAJUL should be different.&nbsp; The YAJUL project will strive to reach 100%
+    coverage with the unit tests that are available with the library.</font></p>
+  </li>
+  <li>
+    <p><font size="2"><i>Open Source source code is (choose expletive that means
+    very bad or sloppy)<br>
+    </i>Also true (ever looked at the Apache Web Server source code?).&nbsp;
+    Even some of the best projects are riddled with style problems, lack of
+    documentation.&nbsp; These are all the result of anti patterns.<br>
+    <br>
+    The YAJUL development process will strive to create code of the highest
+    quality and re-useability.</font></p>
+  </li>
 </ul>
-<p><font size="2">Servlet Library</font></p>
+<hr>
+<h2>Main Libraries</h2>
+<p>YAJUL is comprised of several libraries, allowing the developer to choose a
+minimal, lightweight set.</p>
+<p><font size="2"><b>J2SE Library</b></font></p>
+<ul>
+  <li><font size="2">Multi-threading.</font>
+    <ul>
+      <li><font size="2">Semaphores and POSIX-Like condvars.</font></li>
+      <li><font size="2">Thread safe queue and topics.</font></li>
+      <li><font size="2">ThreadPool</font></li>
+    </ul>
+  </li>
+  <li><font size="2">Networking.</font>
+    <ul>
+      <li><font size="2">Generic socket server</font></li>
+      <li><font size="2">FTP server</font></li>
+    </ul>
+  </li>
+  <li><font size="2">String Parsing</font></li>
+  <li><font size="2">I/O Utilities</font>
+    <ul>
+      <li><font size="2">Copying streams</font></li>
+      <li><font size="2">Inverting stream direction.</font></li>
+    </ul>
+  </li>
+</ul>
+<p><b>GUI Library</b></p>
+<ul>
+  <li>MVC Components</li>
+  <li>Drawing utilities</li>
+</ul>
+<p><font size="2"><b>Servlet Library</b></font></p>
 <ul>
   <li><font size="2">File Upload</font></li>
   <li><font size="2">XSLT Servlet</font></li>
   <li><font size="2">XML-RPC Server</font></li>
 </ul>
-<p><font size="2">J2EE</font></p>
+<p><font size="2"><b>J2EE</b></font></p>
       <ul>
         <li><font size="2">Simple JNDI Tree (for testing)</font></li>
-        <li><font size="2">JDBC Connection Pool</font></li>
+        <li><font size="2">JDBC Connection Pool / DataSource objects.</font></li>
       </ul>
+<hr>
+<h2>Links</h2>
       <p><a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul/"><font size="2">Browse
       the CVS Repository</font></a></p>
-      <p>&nbsp;</td>
+<p><font size="2">YAJUL Developers: </font><a href="https://sourceforge.net/projects/yajul/">Log
+In to the YAJUL project on Sourceforge</a></p>
+    </td>
   </tr>
 </table>
 </body>

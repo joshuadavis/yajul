@@ -1,3 +1,6 @@
 vti_encoding:SR|utf8-nl
-http\://cvs.sourceforge.net/sourceforge_whitebg.gif:index.html
-http\://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul/:index.html
+https\://sourceforge.net/projects/yajul/:index.html
+http\://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul/:cvs/base/index.html index.html
+http\://cvs.sourceforge.net/sourceforge_whitebg.gif:cvs/base/index.html
+http\://sourceforge.net:index.html
+http\://sourceforge.net/sflogo.php:index.html
