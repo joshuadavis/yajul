@@ -5,6 +5,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.log4j.Logger;
 import org.yajul.framework.ServiceLocator;
+import org.springframework.beans.factory.access.BeanFactoryLocator;
+import org.springframework.beans.factory.access.BeanFactoryReference;
+import org.springframework.beans.factory.ListableBeanFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +15,9 @@ import java.net.URL;
 import java.util.Enumeration;
 
 /**
- * Tests the ServiceLocator class. User: jdavis Date: Feb 25, 2004 Time: 10:37:08 AM
- *
+ * Tests the ServiceLocator class.
+ * <br>
+ * User: jdavis Date: Feb 25, 2004 Time: 10:37:08 AM
  * @author jdavis
  */
 public class ServiceLocatorTest extends TestCase
@@ -59,7 +63,6 @@ public class ServiceLocatorTest extends TestCase
         assertSame(testBean, testBean3);
     }
 
-
     public void testSystemPropertyConfigurer() throws Exception
     {
         SimpleBean testBean = (SimpleBean) instance.getBean("testBean");
@@ -73,16 +76,29 @@ public class ServiceLocatorTest extends TestCase
 //        instance.release();
 //        log.info("Getting test bean...");
 //        instance.getBean("testBean");
-
         log.info("Finding test locator instance...");
         showUrls("beanRefContext.xml");
         showUrls("test-beanRefContext.xml");
         // Get a *different* service locator.
-        ServiceLocator locator = ServiceLocator.getInstance("test-beanRefContext.xml");
+        String bootContext = "test-beanRefContext.xml";
+        ServiceLocator locator = ServiceLocator.getInstance(bootContext);
+        BeanFactoryLocator bfl = ServiceLocator.getBeanFactoryLocator(bootContext);
+        BeanFactoryReference bfr = bfl.useBeanFactory("testChild");
+        ListableBeanFactory bf = (ListableBeanFactory) bfr.getFactory();
+        String[] names = bf.getBeanDefinitionNames();
+        for (int i = 0; i < names.length; i++)
+        {
+            log.info(names[i]);
+        }
+        assertNotNull(bf);
+        log.info("testChild = " + bf);
+        Object o = bf.getBean("testBean");
+        log.info("testBean = " + o.toString());
+        Object o2 = bf.getBean("testBean2");
+        log.info("testBean2 = " + o2.toString());
+        bfr.release();
         assertNotSame(locator, instance);
         locator.release();
-
-
     }
 
     private void showUrls(String resource)
@@ -98,7 +114,6 @@ public class ServiceLocatorTest extends TestCase
             URL url = (URL) enum.nextElement();
             log.info("URL " + i + ": " + url);
         }
-
         URL url = cl.getResource(resource);
         log.info("getResource URL: " + url);
         InputStream in = cl.getResourceAsStream(resource);
@@ -107,7 +122,6 @@ public class ServiceLocatorTest extends TestCase
 
     /**
      * Constructs a test suite for this test case, providing any required Setup wrappers, or decorators as well.
-     *
      * @return Test - The test suite.
      */
     public static Test suite()

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
 <!--
  This is the default Spring 'reference context' for YAJUL-core.
  -->
@@ -8,7 +7,31 @@
 
     <bean id="test-log4j-config" class="org.yajul.log.Log4JConfigurationBean" lazy-init="false" init-method="init"/>
 
-    <!-- This bean will be initialized by ServiceLocator.initialize() -->
-    <bean id="serviceLocator" class="org.yajul.framework.ServiceLocator"/>
+    <bean id="testParent" class="org.springframework.beans.factory.xml.XmlBeanFactory">
+        <constructor-arg index="0">
+            <value>classpath:child-applicationContext.xml</value>
+        </constructor-arg>
+    </bean>
 
+    <bean id="postProcessor" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name=""></property>
+    </bean>
+
+    <!-- This bean will be initialized by ServiceLocator.initialize() -->
+    <bean id="serviceLocator" class="org.yajul.framework.ServiceLocator">
+        <property name="resourceName"><value>unit-test-context.xml</value></property>
+        <!-- Inherit some bean definitions from the parent. -->
+        <property name="parentBeanFactory">
+            <ref bean="testParent"/>
+        </property>
+    </bean>
+
+    <bean id="testChild" class="org.springframework.beans.factory.xml.XmlBeanFactory">
+        <constructor-arg index="0">
+            <value>classpath:child-applicationContext.xml</value>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <ref bean="serviceLocator"/>
+        </constructor-arg>
+    </bean>
 </beans>
