@@ -22,11 +22,12 @@ public class TriangleApplet extends ApplicationApplet
 {
     private Dimension preferredSize = new Dimension(640, 480);
 
+    protected static final Color BLACK = new Color(0, 0, 0);
+    protected static final Color BLUE = new Color(0, 0, 255);
+    protected static final Color RED = new Color(255, 0, 0);
+
     class TrianglePanel extends JPanel
     {
-        protected static final Color BLACK = new Color(0, 0, 0);
-        protected static final Color BLUE = new Color(0, 0, 255);
-        protected static final Color RED = new Color(255, 0, 0);
 
         private Point point;
         private Dimension size;
