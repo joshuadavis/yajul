@@ -299,10 +299,9 @@ public class SpyProxy extends AbstractServerSocketListener
         public void initialize(AbstractServerSocketListener listener)
         {
             super.initialize(listener);
-            start();
         }
 
-        private void start()
+        public void start()
         {
             Thread thread = new Thread(incoming);
             thread.start();

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.yajul.thread.ThreadPool;
 
 /**
  * Manages a set of client connections accepted via a server socket.  Provides
@@ -52,6 +53,12 @@ public abstract class AbstractServerSocketListener implements Runnable
 
     /** The server socket that the proxy will listen on. **/
     private ServerSocket socket;
+
+    /** The thread that is being used for the listener. **/
+    private Thread thread;
+
+    /** The thread pool to use for incoming connections. **/
+    private ThreadPool threadPool;
 
     /** Active connections to clients. **/
     private ArrayList clientConnections = new ArrayList();
@@ -120,6 +127,11 @@ public abstract class AbstractServerSocketListener implements Runnable
         }
     }
 
+    public void setThreadPool(ThreadPool pool)
+    {
+        this.threadPool = pool;
+    }
+
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's
@@ -133,8 +145,11 @@ public abstract class AbstractServerSocketListener implements Runnable
      */
     public void run()
     {
+        if (thread != null)
+            throw new Error("Wrong thread!");
         while (!shutdownRequested)
         {
+            thread = Thread.currentThread();
             try
             {
                 boolean reject = false;
@@ -166,8 +181,13 @@ public abstract class AbstractServerSocketListener implements Runnable
                     } // while
                 } // synchronized
 
+                if (log.isDebugEnabled())
+                    log.debug("run() : Listening...");
                 // Accept a socket connection...
                 Socket incoming = socket.accept();
+
+                if (log.isDebugEnabled())
+                    log.debug("run() : Socket accepted.");
 
                 // If we're in 'rude mode', reject it.
                 if (reject)
@@ -217,6 +237,7 @@ public abstract class AbstractServerSocketListener implements Runnable
             }
         }
         shutdownRequested = false;
+        thread = null;
     }
 
     /**
@@ -387,7 +408,6 @@ public abstract class AbstractServerSocketListener implements Runnable
      */
     protected abstract void unexpected(Throwable t);
 
-
     private void doAccept(Socket incoming) throws IOException
     {
         AbstractClientConnection client = acceptClient(incoming);
@@ -406,12 +426,25 @@ public abstract class AbstractServerSocketListener implements Runnable
 
         try
         {
+            // NOTE: The client *must not* start any threads until this method is called!
             client.initialize(this);
+            client.start(); // GO!
+            if (log.isDebugEnabled())
+                log.debug("doAccept() : Client connection handler started.");
         }
         catch (Throwable t)
         {
             log.error(t,t);
-            client.close();
+
+            try
+            {
+                removeClient(client);
+                client.close();
+            }
+            catch (Throwable e)
+            {
+                log.error(e,e);
+            }
             return;
         }
     }

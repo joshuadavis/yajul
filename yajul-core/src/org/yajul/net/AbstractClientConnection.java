@@ -24,7 +24,7 @@ public abstract class AbstractClientConnection
     private AbstractServerSocketListener listener;
     private Socket socket;
     /** The response stream. */
-    private OutputStream out;       // HTTPResponse stream server->client.
+    private OutputStream out;       // Message stream server->client.
     /** The request stream. **/
     private InputStream in;         // RequestHeaders stream client->server.
     /** True if the input and output streams are being buffered. **/
@@ -49,6 +49,11 @@ public abstract class AbstractClientConnection
     {
         this.listener = listener;
     }
+
+    /**
+     * Implementors will obtain threads and start running.
+     */
+    public abstract void start();
 
     /**
      * Notifies the server that this connection has been closed.
