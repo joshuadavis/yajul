@@ -43,13 +43,14 @@
            style="checkstyle-noframes-sorted.xsl"/>
   </target>
 
-    <target name="publish">
+    <target name="publish" description="Publish the build results on the local machine's web server.">
             <sync todir="${web.dir}/yajul-core" overwrite="true" failonerror="false">
         	<fileset dir="${yajul.dir}/yajul-core/build">
     		        <include name="docs/**"/>
     		        <include name="lib/**"/>
                     	<include name="junit/**"/>
                     	<include name="jdepend/**"/>
+                        <include name="clover_html/**"/>
     	        </fileset>
 		<fileset dir="build/yajul-core">
 			<include name="checkstyle/**"/>
