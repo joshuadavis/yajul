@@ -9,7 +9,6 @@
 package org.yajul.ant;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.FileScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
@@ -17,8 +16,6 @@ import org.apache.tools.ant.types.Reference;
 import org.yajul.jdi.CoverageShell;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**
