@@ -20,6 +20,7 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionStatus;
+import org.apache.log4j.Logger;
 
 /**
  * A special implementation of Spring's JtaTransactionManager that exposes
@@ -33,7 +34,9 @@ public class JtaTransactionManager extends AbstractPlatformTransactionManager im
 
 	public static final String DEFAULT_USER_TRANSACTION_NAME = "java:comp/UserTransaction";
 
-	private JndiTemplate jndiTemplate = new JndiTemplate();
+    private static Logger logger = Logger.getLogger(JtaTransactionManager.class);
+
+    private JndiTemplate jndiTemplate = new JndiTemplate();
 
 	private UserTransaction userTransaction;
 

@@ -149,7 +149,11 @@ public class JtaSynchronizer implements Synchronization
             log.fatal(e,e);
             throw new TransactionSystemException("Unable to process synchronization.beforeCompletion() due to: " + e, e);
         }
-
+        finally
+        {
+            this.txStatus = null;
+            this.txManager = null;
+        }
     }
 
     public void afterCompletion(int status)
@@ -157,10 +161,14 @@ public class JtaSynchronizer implements Synchronization
         if (log.isDebugEnabled())
             log.debug("afterCompletion() status = " + statusNames.get(new Integer(status)));
         checkThread();
-        txManager = null;
-        txStatus = null;
         jtaTransaction = null;
         thread = null;
+        release();
+    }
+
+    private void release()
+    {
+        currentTx = null;
     }
 
     private void checkThread()
