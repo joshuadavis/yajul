@@ -46,7 +46,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
-
+import java.util.Arrays;
 
 /**
  * A SAX ContentHandler that write an XML document to an underlying Writer.
@@ -78,11 +78,6 @@ import java.util.Stack;
 public class XMLWriter implements DTDHandler, ContentHandler
         // implements DocumentHandler <<<-- DEPRECATED!
 {
-    ////////////////////////////////////////////////////////////////////
-    // Constants.
-    ////////////////////////////////////////////////////////////////////
-
-
     /**
      * Escape non-ASCII characters.
      *
@@ -1032,6 +1027,8 @@ public class XMLWriter implements DTDHandler, ContentHandler
         }
         else
         {
+/* Hmmm... this implementation is a bit odd [jsd].
+
             // Write the atts sorted.  First,
             // populate an array of indices.
             int indices[] = new int[length];
@@ -1055,12 +1052,21 @@ public class XMLWriter implements DTDHandler, ContentHandler
                 }
                 indices[j + 1] = n;
             }
+*/
+
+            // Create an array of the QNames.
+            String[] qnames = new String[length];
+            for (int i = 0; i < qnames.length; i++)
+                qnames[i] = atts.getQName(i);
+
+            // Sort the qnames.
+            Arrays.sort(qnames);
 
             // Now, display the sorted atts.
             for (int i = 0; i < length; i++)
             {
-                writeAttribute(atts.getQName(indices[i]),
-                        atts.getValue(indices[i]));
+                writeAttribute(qnames[i],
+                        atts.getValue(qnames[i]));
             }
         }
     }
