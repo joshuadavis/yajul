@@ -1,0 +1,6 @@
+<!DOCTYPE Document SYSTEM "xmlvalidator-test1.dtd">
+<Document>
+    <Element>
+        text
+    </Element>
+</Document>
