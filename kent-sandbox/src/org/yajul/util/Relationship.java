@@ -21,7 +21,6 @@ import java.util.Set;
  * <b>Important:</b>  Subsets retrned by getDependents(...) are 'live'
  * views of the containing set.  Modification to <code>adamsClasses</code> above would modify the
  * containing relationship, and vice-versa.
-
  */
 public interface Relationship {
 
