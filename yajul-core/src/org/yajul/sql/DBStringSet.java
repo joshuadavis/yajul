@@ -89,19 +89,6 @@ public class DBStringSet extends DatabaseSet
     }
 
     /**
-     * Sets the key into the prepared statement by invoking the appropriate setXxxx(int,...) method.
-     * @param preparedStatement The prepared statement.
-     * @param paramIndex The parameter index.
-     * @param key The key object.
-     * @throws SQLException if something goes wrong.
-     */
-    protected void setKey(PreparedStatement preparedStatement, int paramIndex, Object key)
-            throws SQLException
-    {
-        preparedStatement.setInt(paramIndex, ((Integer) key).intValue());
-    }
-
-    /**
      * Sets the value into the prepared statement by invoking the appropriate setXxxx(int,...) method.
      * @param preparedStatement The prepared statement.
      * @param paramIndex The parameter index.
