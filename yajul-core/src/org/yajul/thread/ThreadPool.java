@@ -420,6 +420,16 @@ public class ThreadPool
      */
     public void waitForReady() throws InterruptedException
     {
+        waitForReady(0);    // Wait forever.
+    }
+
+    /**
+     * Waits for a ready condition (at least one idle thread).
+     *
+     * @throws InterruptedException If the calling thread is interrupted.
+     */
+    public void waitForReady(long millis) throws InterruptedException
+    {
         try
         {
             flag.acquire();             // Get the lock.
@@ -429,7 +439,7 @@ public class ThreadPool
                     (activeThreads >= threads.length))
             {
                 // log.debug("Waiting for ready condition...");
-                ready.cvWait();
+                ready.timedWait(millis);
             }
         }
         finally
