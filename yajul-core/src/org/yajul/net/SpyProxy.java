@@ -99,7 +99,7 @@ public class SpyProxy extends AbstractServerSocketListener
     {
         System.out.println("Usage: java SpyProxy [-d] [-t] serverHost serverPort [localPort]");
         System.out.println("Where -d prints binary trace information to stdout");
-        System.out.println("      -t prints text trace information to stdout (ideal for WebServices and XML over HTTP)");
+        System.out.println("      -t prints text trace information to stdout (ideal for WebServices and XML over HTTPConstants)");
         System.out.println("      serverHost is the host name or IP address of the target server");
         System.out.println("      serverPort is the port on the target server");
         System.out.println("      localPort is the service port for the proxy");

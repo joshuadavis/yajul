@@ -36,6 +36,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.Reader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 
 /**
@@ -160,6 +163,49 @@ public class StreamCopier implements Runnable
     }
 
     /**
+     * Copies the input stream (reader) into the output stream (writer) in an efficient manner.
+     * This version does not synchronize on the streams, so it is not safe
+     * to use when the streams are being accessed by multiple threads.
+     * @param in The input reader
+     * @param out The output writer.  If this is null, the input will be
+     * discarded, similar to piping to /dev/null on UN*X.
+     * @param bufsz The size of the buffer to use.
+     * @param limit The number of bytes to copy, or UNLIMITED (-1) to copy
+     * until the end of the input stream.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     **/
+    public static int unsyncCopy(Reader in, Writer out, int bufsz, int limit) throws IOException
+    {
+        if (bufsz <= 0)
+            throw new IllegalArgumentException("Buffer size must be > 0");
+        char[] buf = new char[bufsz];
+        int bytesRead = 0;
+        int total = 0;
+        int readLimit = bufsz;
+        while (true)
+        {
+            // If a limit was specified, calculate the number of bytes
+            // that should be read by the next read operation.
+            if (limit > 0)
+            {
+                readLimit = limit - total;
+                if (readLimit > bufsz)
+                    readLimit = bufsz;
+                else if (readLimit <= 0)
+                    break;
+            }
+            bytesRead = in.read(buf,0,readLimit);
+            if (bytesRead == EOS)
+                break;
+            total += bytesRead;
+            if (out != null)
+                out.write(buf, 0, bytesRead);
+        } // while
+        return total;
+    }
+
+    /**
      * Copies the input stream into the output stream in a thread safe and
      * efficient manner.
      * @param in The input stream.
@@ -215,6 +261,32 @@ public class StreamCopier implements Runnable
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         unsyncCopy(in,baos,DEFAULT_BYTE_ARRAY_BUFSZ);
         return baos.toByteArray();
+    }
+
+    /** Reads the entire input stream into a byte array with a limit.
+     * @param in The input reader
+     * @param limit The number of bytes to read.
+     * @exception IOException Thrown if there was an error while copying.
+     * @return An array of bytes read from the input.
+     */
+    public static byte[] readByteArray(Reader in,int limit)
+        throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        unsyncCopy(in,new OutputStreamWriter(baos),DEFAULT_BUFFER_SIZE,limit);
+        return baos.toByteArray();
+    }
+
+    /**
+     * Reads the entire input stream into a byte array.
+     * @param in The input reader
+     * @exception IOException Thrown if there was an error while copying.
+     * @return An array of bytes read from the input.
+     */
+    public static byte[] readByteArray(Reader in)
+        throws IOException
+    {
+        return readByteArray(in,-1);
     }
 
     /**
