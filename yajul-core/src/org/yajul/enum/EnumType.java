@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
@@ -41,7 +44,7 @@ import org.yajul.xml.DOMUtil;
 
 /**
  * Provides a collection of enumerated values, otherwise known as an enumerated
- * type.  Each value can be found by it's id (integer >= 0), it's XML text
+ * type.  Each value can be found by it's id, it's XML text
  * value, or it's UI text value.
  * @author Joshua Davis
  */
@@ -66,14 +69,23 @@ public class EnumType
 
     /**
      * An array of all values, where the index is the id.
+     * This will be null, if the value ids are not sequential (ish).
      */
     private EnumValue[] valueArray;
+
+    /**
+     * A map of values, by their id.
+     */
+    private SortedMap valueById;
 
     /** Map of values by XML string. **/
     private Map valueByXML;
 
     /** Map of values by text string. **/
     private Map valueByText;
+
+    /** Map of values by text string (case insensitive). **/
+    private Map valuesByLowerCaseText;
 
     /**
      * Creates a new EnumType object.
@@ -82,6 +94,7 @@ public class EnumType
     {
         valueByXML = new HashMap();
         valueByText = new HashMap();
+        valueById = new TreeMap();
     }
 
     /**
@@ -121,10 +134,23 @@ public class EnumType
      */
     public EnumValue findValueById(int id)
     {
-        if (id < 0 || id >= valueArray.length)
-            return null;
+        // If the values are in the 'index' array, use it.
+        if (valueArray != null)
+        {
+            // Subtract the minimum id, so the index of the first
+            // element is zero.
+            int index = id - minId;
+//            if (log.isDebugEnabled())
+//                log.debug("findValueById() : id = "
+//                        + id + " index = " + index );
+            if (index < 0 || index >= valueArray.length)
+                return null;
+            else
+                return valueArray[index];
+        }
+        // Otherwise, use the valueById map.
         else
-            return valueArray[id];
+            return (EnumValue) valueById.get(new Integer(id));
     }
 
     /**
@@ -148,7 +174,7 @@ public class EnumType
     {
         EnumValue value = (EnumValue) valueByXML.get(xml);
         if (value == null)
-            throw new EnumValueNotFoundException(id,xml);
+            throw new EnumValueNotFoundException(id, xml);
         return value;
     }
 
@@ -160,6 +186,19 @@ public class EnumType
     public EnumValue findValueByText(String text)
     {
         return (EnumValue) valueByText.get(text);
+    }
+
+    /**
+     * Returns the value, given it's UI textual representation, ignoring
+     * case.
+     * @param text The text to look for.
+     * @return EnumValue - The enumerated value.
+     */
+    public EnumValue findValueByTextIgnoreCase(String text)
+    {
+        if (valuesByLowerCaseText == null)
+            createLowerCaseTextMap();
+        return (EnumValue) valuesByLowerCaseText.get(text.toLowerCase());
     }
 
     /**
@@ -210,7 +249,10 @@ public class EnumType
      */
     public Iterator iterator()
     {
-        return new ValueIterator();
+        if (valueArray != null)
+            return new ValueIterator();
+        else
+            return valueById.values().iterator();
     }
 
     /**
@@ -237,7 +279,7 @@ public class EnumType
      * @throws EnumInitializationException If the enumerated type could not
      * be created from the DOM element.
      */
-    void loadFromElement(Element elem) throws EnumInitializationException
+    void loadFromElement(EnumTypeMap map, Element elem) throws EnumInitializationException
     {
         id = elem.getAttribute("id");
         try
@@ -251,14 +293,11 @@ public class EnumType
         catch (ClassNotFoundException e)
         {
             throw new EnumInitializationException(
-                    "Unable to find value class! " + e.getMessage(),e);
+                    "Unable to find value class! " + e.getMessage(), e);
         }
 
         // Look for the 'enum-value' elements inside this 'enum-type' element.
         Element[] valueElements = DOMUtil.getChildElements(elem, "enum-value");
-        // Create an array-list of values to ultimately create the
-        // 'values by id' array.
-        ArrayList valuesById = new ArrayList(valueElements.length);
 
         // Set the minimum and maximum index values to their limits, so the
         // loop can set them as the elements are parsed.
@@ -282,63 +321,78 @@ public class EnumType
             {
                 throw new EnumInitializationException(
                         "Unable to instantiate value class due to: "
-                        + e.getMessage(),e);
+                        + e.getMessage(), e);
             }
             catch (IllegalAccessException e)
             {
                 throw new EnumInitializationException(
                         "Unable to instantiate value class due to: "
-                        + e.getMessage(),e);
+                        + e.getMessage(), e);
             }
 
             try
             {
-                value.loadFromElement(this, valueElement);
+                value.loadFromElement(map, this, valueElement);
             }
             catch (Exception e)
             {
                 throw new EnumInitializationException(
                         "Unable to load value instance due to: "
-                        + e.getMessage(),e);
+                        + e.getMessage(), e);
             }
 
             id = value.getId();
-            if (id < 0)
-                throw new EnumInitializationException("Illegal enum id: " + id);
-
-            if (id < valuesById.size() && valuesById.get(id) != null)
-                log.warn("Value '" + id
-                        + " already defined in EnumType " + getId());
-
-
-            // Ensure that the array list has the proper capacity, and is
-            // has nulls inserted at the beginning of the array so that
-            // the value can be added.
-            valuesById.ensureCapacity(id+1);
-            for(int j = valuesById.size(); j < id ; j++)
-            {
-                if (log.isDebugEnabled())
-                    log.debug("loadFromElement() : adding null value at index "
-                            + j);
-                valuesById.add(null);
-            } // for (j)
-
-            valuesById.add(id,value);
 
             if (id > maxId)
                 maxId = id;
             if (id < minId)
                 minId = id;
-            // Set up the index maps (by xml value and by text value).
+            // Set up the index maps.
+            valueById.put(value.getIdInteger(), value);
             valueByXML.put(value.getXmlValue(), value);
             valueByText.put(value.getTextValue(), value);
         } // for (i)
 
-        valueArray = (EnumValue[]) valuesById.toArray(
-                new EnumValue[valuesById.size()]);
-        if (log.isDebugEnabled())
-            log.debug("loadFromElement() : valueArray.length = "
-                + valueArray.length);
+        // If ids will fit in an array, use an array
+        // for the main element index.
+        if (maxId - minId == (valueById.size() - 1))
+        {
+            if (log.isDebugEnabled())
+                log.debug("loadFromElement() : Using an array for the id map");
+            Set entries = valueById.entrySet();
+            ArrayList list = new ArrayList(valueById.size());
+            for (Iterator iterator = entries.iterator(); iterator.hasNext();)
+            {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Integer key = (Integer) entry.getKey();
+                EnumValue value = (EnumValue) entry.getValue();
+                int index = key.intValue() - minId;
+//                if (log.isDebugEnabled())
+//                    log.debug(
+//                            "loadFromElement() : " +
+//                            "valueArray[" + index + "], id = " + key);
+                list.add(index, value);
+            }
+            valueArray = (EnumValue[]) list.toArray(new EnumValue[list.size()]);
+        }
+        else if (log.isDebugEnabled())
+            log.debug("loadFromElement() : Using a TreeMap for the id map");
+    }
+
+    private void createLowerCaseTextMap()
+    {
+        // Create a map using the lower case text.
+        valuesByLowerCaseText = new HashMap();
+        Map.Entry entry = null;
+        String key = null;
+        EnumValue value = null;
+        for (Iterator iterator = valuesByLowerCaseText.entrySet().iterator(); iterator.hasNext();)
+        {
+            entry = (Map.Entry) iterator.next();
+            key = (String) entry.getKey();
+            value = (EnumValue) entry.getValue();
+            valuesByLowerCaseText.put(key.toLowerCase(), value);
+        } // for
     }
 
     /** Iterates the values of the enumerated type. **/
@@ -349,7 +403,7 @@ public class EnumType
          */
         public ValueIterator()
         {
-            super(valueArray,true);
+            super(valueArray, true);
         }
     }
 }

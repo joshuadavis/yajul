@@ -60,6 +60,79 @@ public class EnumTypeMap
     private Map types;
 
     /**
+     * Creates a type map from a resource (in the classpath) using the current
+     * thread's class loader.
+     * @param resourceName The name of the resource to load.
+     * @return EnumTypeMap - The type map.
+     * @throws EnumInitializationException If there was a problem loading
+     * the resource.
+     */
+    public static EnumTypeMap createTypeMapFromResource(String resourceName)
+            throws EnumInitializationException
+    {
+
+        ClassLoader classLoader =
+                Thread.currentThread().getContextClassLoader();
+        return createTypeMapFromResource(resourceName, classLoader);
+    }
+
+    /**
+     * Creates a type map from a resource (in the classpath).
+     * @param resourceName The name of the resource to load.
+     * @param classLoader The class loader to use.
+     * @return EnumTypeMap - The type map.
+     * @throws EnumInitializationException If there was a problem loading
+     * the resource.
+     */
+    public static EnumTypeMap createTypeMapFromResource(
+            String resourceName,
+            ClassLoader classLoader)
+            throws EnumInitializationException
+    {
+        if (log.isDebugEnabled())
+            log.debug("createTypeMapFromResource() : Creating new type map...");
+
+        EnumTypeMap typeMap = new EnumTypeMap();
+
+        if (log.isDebugEnabled())
+            log.debug("createTypeMapFromResource() : Loading "
+                    + resourceName + "...");
+        InputStream is =
+                classLoader.getResourceAsStream(
+                        resourceName);
+        if (is == null)
+        {
+            EnumInitializationException ie = new EnumInitializationException(
+                    "Unable to find " + resourceName);
+            String message = "UNABLE TO LOAD ENUMERATED TYPES DUE TO: " +
+                    ie.getMessage();
+            typeMap = null;
+            log.fatal(message, ie);
+            throw ie;
+        }
+
+        try
+        {
+            if (log.isDebugEnabled())
+                log.debug("getTypeMap() : Parsing XML...");
+            typeMap.loadXML(is);
+        }
+        catch (EnumInitializationException e)
+        {
+            String message = "UNABLE TO LOAD ENUMERATED TYPES DUE TO: " +
+                    e.getMessage();
+            log.fatal(message, e);
+            typeMap = null;
+            throw e;
+        }
+
+        if (log.isDebugEnabled())
+            log.debug("createTypeMapFromResource() : "
+                    + "Type map created successfully.");
+        return typeMap;
+    }
+
+    /**
      * Creates a new map of enumerated types.
      */
     public EnumTypeMap()
@@ -82,9 +155,9 @@ public class EnumTypeMap
         }
         catch (Exception e)
         {
-            EnumInitializationException x =  new EnumInitializationException(
+            EnumInitializationException x = new EnumInitializationException(
                     "Unable parse XML input due to: "
-                    + e.getMessage(),e);
+                    + e.getMessage(), e);
             log.error(x);
             throw x;
         }
@@ -106,11 +179,11 @@ public class EnumTypeMap
             EnumType enumType = new EnumType();
             try
             {
-                enumType.loadFromElement(type);
+                enumType.loadFromElement(this, type);
                 if (types.get(enumType.getId()) != null)
                     log.warn("loadXML() : Multiple definitions encountered " +
                             "for enum-type '" + enumType.getId() + "'");
-                types.put(enumType.getId(),enumType);
+                types.put(enumType.getId(), enumType);
             }
             catch (Exception e)
             {
@@ -133,7 +206,7 @@ public class EnumTypeMap
      */
     public EnumType findEnumTypeById(String enumTypeId)
     {
-        return (EnumType)types.get(enumTypeId);
+        return (EnumType) types.get(enumTypeId);
     }
 
 }

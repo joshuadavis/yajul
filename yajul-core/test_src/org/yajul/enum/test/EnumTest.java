@@ -1,6 +1,8 @@
 package org.yajul.enum.test;
 
 import java.io.FileInputStream;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 import org.yajul.enum.EnumTypeMap;
@@ -17,13 +19,14 @@ import org.yajul.enum.EnumValue;
 public class EnumTest extends TestCase
 {
     private static final String ID_ENUMTYPE1 = "TestEnumType1";
+    private static final String ID_ENUMTYPE2 = "TestEnumType2";
 
     public EnumTest(String s)
     {
         super(s);
     }
 
-    public void testEnumTypeMap() throws Exception
+    public void testEnumTypeMap1() throws Exception
     {
         EnumTypeMap map = new EnumTypeMap();
         map.loadXML(new FileInputStream("test_data/EnumTest1.xml"));
@@ -39,13 +42,86 @@ public class EnumTest extends TestCase
         EnumValue value2 = enumType.findValueByText("value one");
         checkValue1(value2);
         assertEquals(value,value2);
+
+        // Make sure the iterator returns things in the right order.
+        Iterator iter = enumType.iterator();
+        value = (EnumValue)iter.next();
+        assertNotNull(value);
+        checkValue1(value);
+
+        value = (EnumValue)iter.next();
+        assertNotNull(value);
+        assertEquals( 1, value.getId());
+        assertEquals("two",value.getXmlValue());
+        assertEquals("value two",value.getTextValue());
+
+        value = (EnumValue)iter.next();
+        assertNotNull(value);
+        assertEquals( 2, value.getId());
+        assertEquals("three",value.getXmlValue());
+        assertEquals("value three",value.getTextValue());
+
+        NoSuchElementException exception = null;
+        try
+        {
+            value = (EnumValue)iter.next();
+        }
+        catch (NoSuchElementException e)
+        {
+            exception = e;
+        }
+        assertNotNull(exception);   // Make sure e got an exception.
+    }
+
+    public void testEnumTypeMap2() throws Exception
+    {
+        EnumTypeMap map = new EnumTypeMap();
+        map.loadXML(new FileInputStream("test_data/EnumTest2.xml"));
+
+        EnumType enumType = map.findEnumTypeById(ID_ENUMTYPE2);
+        assertNotNull(enumType);
+        assertEquals(ID_ENUMTYPE2,enumType.getId());
+        EnumValue value = enumType.findValueById(0);
+        assertNull(value);
+
+        // Make sure the iterator returns things in the right order.
+        Iterator iter = enumType.iterator();
+
+        value = (EnumValue)iter.next();
+        assertNotNull(value);
+        assertEquals( -1, value.getId());
+        assertEquals("minusOne",value.getXmlValue());
+        assertEquals("minus one",value.getTextValue());
+
+        value = (EnumValue)iter.next();
+        assertNotNull(value);
+        assertEquals( 7, value.getId());
+        assertEquals("seven",value.getXmlValue());
+        assertEquals("Value seven",value.getTextValue());
+
+        value = (EnumValue)iter.next();
+        assertNotNull(value);
+        assertEquals( 12, value.getId());
+        assertEquals("twelve",value.getXmlValue());
+        assertEquals("value twelve",value.getTextValue());
+
+        NoSuchElementException exception = null;
+        try
+        {
+            value = (EnumValue)iter.next();
+        }
+        catch (NoSuchElementException e)
+        {
+            exception = e;
+        }
+        assertNotNull(exception);   // Make sure e got an exception.
     }
 
     private void checkValue1(EnumValue value)
     {
-        assertEquals(value.getId(), 0);
-        assertEquals(value.getXmlValue(),"one");
-        assertEquals(value.getTextValue(),"value one");
+        assertEquals(0,value.getId());
+        assertEquals("one",value.getXmlValue());
+        assertEquals("value one",value.getTextValue());
     }
 
     /**

@@ -188,12 +188,13 @@ public class EnumValue implements Serializable, Comparable
     /**
      * Loads this instance from the XML element.  Sub-classes should override
      * this to load in specialized properties.
+     * @param map The EnumTypeMap currently being loaded.
      * @param type The type that this value will belong to.
      * @param elem The DOM element to load the attributes from.
      * @throws Exception If there was a problem creating the value from the
      * DOM element.
      */
-    protected void loadFromElement(EnumType type,Element elem) throws Exception
+    protected void loadFromElement(EnumTypeMap map,EnumType type,Element elem) throws Exception
     {
         typeId = type.getId();
         String idString = elem.getAttribute("id");
