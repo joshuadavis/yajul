@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="tools/antipede/resources/stylesheets/status.xsl"?>
+<status>
+
+  <developers>
+    <!-- in strict id alphabetical order -->
+    <person name="Joshua Davis"       id="pgmjsd"  email="pgmjsd@sourceforge.net"/>
+    <person name="Kent Vogel"         id="kentv"     email="kentv@sourceforge.net"/>
+  </developers>
+  
+  <todo>
+   <actions priority="high">
+    <action context="docs" assigned-to="pgmjsd">
+	Finish the mission statement, and outline the core library.
+    </action>   
+   </actions>   
+  </todo>
+  
+    <changes>
+  </changes>  
+  
+</status>

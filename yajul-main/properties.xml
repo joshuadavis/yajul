@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="tools/antipede/resources/stylesheets/properties.xsl"?>
+<!-- Build properties - these override any property specified in the build -->
+<properties>
+
+   <!-- Properties of the build -->
+   <build>
+      <!-- What to tell the compiler -->
+      <compiler
+       emacs="on"
+       warnings="true"
+       pedantic="false"
+       depend="true"
+       fulldepend="true"
+       debug="on"
+       optimize="off"
+       deprecation="on"
+       nowarn="off"
+       type="jikes"
+       vm="1.2" />
+   </build>
+
+   <centipede>
+      <tools>
+         <cents repository="http://krysalis.org/jjar/">
+            <!-- not currently used but working
+                 <antidote/>   
+                 <xmldoclet/>
+            -->      
+            <centipede>
+             <!-- example: -->
+             <!-- <javadocs group="POIFS org.apache.poi.poifs*,HSSF org.apache.poi.hssf*,HPSF org.apache.poi.hpsf*,"> -->
+              <javadocs group="">
+                <altenative views="uml">
+                  <uml prefix="uml-" suffix="" extension="html"/>
+                </altenative>
+              </javadocs>
+            </centipede>
+            <junit/>
+            <automagic/>
+            <jdepend/>
+            <checkstyle/>
+            <javasrc/>
+            <umldoclet/>
+            <maven/> 
+            <forrest loglevel="WARN">
+              <!-- Custom site skin -->
+               <skin name="simple-site">
+                  <navlinks>
+                     <link1
+                      href="http://www.sf.net/">sourceforge</link1>
+                     <link2
+                      href="http://yajul.sourceforge.net">YAJUL</link2>
+                  </navlinks>
+
+                  <logo>
+<!--
+                     <group
+                      src="images/group-logo.gif"
+                      href="http://www.krysalis.org" />
+-->
+                     <project
+                      src="images/project-logo.gif"
+                      href="https://sourceforge.net/projects/yajul/" />
+
+                  </logo>
+               </skin>
+            </forrest>
+         </cents>
+      </tools>
+   </centipede>
+</properties>
+
