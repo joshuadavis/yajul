@@ -28,6 +28,7 @@ package org.yajul.util;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,5 +74,31 @@ public class ReflectionUtil
             }
         } // for
         return map;
+    }
+
+    /**
+     * Returns true if the method is a property getter.
+     * @param method The method.
+     * @return true if the method is a property getter.
+     */
+    public static boolean isPropertyGetter(Method method)
+    {
+        // It can't be a getter if it has a void return type.
+        Class returnType = method.getReturnType();
+        if (returnType.equals(Void.TYPE))
+            return false;
+        // It can't be a getter if it has parameters.
+        if (method.getParameterTypes().length != 0)
+            return false;
+        // It can't be a getter if it's static.
+        if (Modifier.isStatic(method.getModifiers()))
+            return false;
+        String name = method.getName();
+        if (name.startsWith("get"))
+            return true;
+        else if (name.startsWith("is") && (returnType.equals(Boolean.TYPE) || returnType.equals(Boolean.class)))
+            return true;
+        else
+            return false;
     }
 }

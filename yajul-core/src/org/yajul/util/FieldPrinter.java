@@ -108,10 +108,8 @@ public class FieldPrinter
                 {
                     // assume this method not a 'getter'
                     validAttribute = false;
-                    String methodName = methods[i].getName();
                     // if it begins with 'get' or 'is' & has 0 parameters, use it
-                    if ((methodName.startsWith("get") || methodName.startsWith("is"))
-                            && methods[i].getParameterTypes().length == 0)
+                    if (ReflectionUtil.isPropertyGetter(methods[i]))
                     {
                         validAttribute = true;
                         if (validMethodCount > 0)
