@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.io.BufferedReader;
 
 /**
- * TODO: Add javadoc
- * User: jdavis
- * Date: Mar 16, 2004
- * Time: 5:07:35 PM
+ * Parses text files and sends SAX events into a ContentHandler.
+ * <br>
+ * User: jdavis<br>
+ * Date: Mar 16, 2004<br>
+ * Time: 5:07:35 PM<br>
  * @author jdavis
  */
 public abstract class TextReader extends AbstractXMLReader

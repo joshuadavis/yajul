@@ -167,4 +167,9 @@ public class GenericURL implements java.io.Serializable
     {
         return toString();
     }
+
+    public boolean isRelative()
+    {
+        return StringUtil.isEmpty(protocol) && StringUtil.isEmpty(host);
+    }
 }

@@ -17,7 +17,10 @@ import java.io.ByteArrayOutputStream;
 public class Copier
 {
     private static int EOS = -1;
+    /** The default buffer size. **/
     public static int DEFAULT_BUFFER_SIZE = 1024;
+    /** Use this to indicate a non-length limited copy. **/
+    public static int UNLIMITED = -1;
 
     /**
      * Copies the input stream into the output stream in an efficient manner.

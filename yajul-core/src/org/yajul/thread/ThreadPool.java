@@ -7,10 +7,9 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
- * A 'simple pool' of threads.
+ * Provides a pool of threads that execute Runnable implementations from a queue.
  * <br>
  * Created on Aug 28, 2002 6:00:01 PM
- *
  * @author jdavis
  */
 public class ThreadPool
@@ -319,7 +318,6 @@ public class ThreadPool
     /**
      * Adds the target to the queue, and blocks the calling thread until the target has been fully executed
      * by one of the threads in the pool.
-     *
      * @param target The target runnable object.
      * @throws InterruptedException If the wait was interrupted.
      */
@@ -370,7 +368,6 @@ public class ThreadPool
 
     /**
      * Shut down the pool.
-     *
      * @see ThreadPool#waitForAll(boolean)
      */
     public void shutdown()
@@ -387,7 +384,6 @@ public class ThreadPool
 
     /**
      * Waits for all running targets to complete.
-     *
      * @throws InterruptedException If the wait was interrupted.
      */
     public void waitForAll() throws InterruptedException

@@ -2,8 +2,7 @@
 package org.yajul.framework.jta;
 
 /**
- * TODO: Add class javadoc
- * 
+ * PlatformTransactionManager for Weblogic JTA.
  * @author josh Apr 2, 2004 8:18:06 AM
  */
 public class WeblogicJtaTransactionManager extends ContainerSpecificJtaTransactionManager

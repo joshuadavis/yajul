@@ -69,6 +69,8 @@ public class HTTPClient implements HTTPConstants
         throws Exception
     {
         // Get a connection to the host
+        // TODO: If we are allowing keepalive, find the connection based on the protocol/host/port string.
+
         HTTPConnection con = new HTTPConnection(this,req.getProtocol(),req.getHost(),req.getPort());
         
         // Send the request, wait for the response, and then parse the headers.
@@ -95,7 +97,13 @@ public class HTTPClient implements HTTPConstants
 	public Message post(String url,byte[] content)
 	    throws Exception
 	{
-        RequestHeader req = new RequestHeader(METHOD_GET,url);
+        RequestHeader req = new RequestHeader(METHOD_POST,url);
+        return post(req, content);
+    }
+
+    public Message post(RequestHeader req, byte[] content)
+            throws Exception
+    {
         req.setHeaderValue(HeaderConstants.CONTENT_LENGTH,Integer.toString(content.length));
         return processRequest(req,new ByteArrayInputStream(content));
     }

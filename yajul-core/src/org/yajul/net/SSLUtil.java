@@ -55,9 +55,9 @@ public class SSLUtil
     public static final String DEFAULT_KEY_MANAGER          = "SunX509";
     /** The default key store name. */
     public static final String DEFAULT_KEY_STORE_NAME       = "JKS";
-    /** The system property name that will define the trust store (keystore). */
+    /** The system property name that will Constants the trust store (keystore). */
     public static final String PROP_TRUST_STORE             = "javax.net.ssl.trustStore";
-    /** The system property name that will define the trust store (keystore) password. */
+    /** The system property name that will Constants the trust store (keystore) password. */
     public static final String PROP_TRUST_STORE_PASSWORD    = "javax.net.ssl.trustStorePassword";
 
     public static SSLSessionContext initializeSSLContext()

@@ -31,6 +31,7 @@ import org.yajul.io.StreamCopier;
 
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 /**
  * TODO: Add class javadoc
@@ -81,29 +82,25 @@ public class Message implements HTTPConstants
     /**
      * Reads 'chunked' content from the reader.
      */
-    private byte[] readChunked(HTTPInputStream r) throws IOException
+    private void readChunked(HTTPInputStream r,OutputStream out) throws IOException
     {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
         byte[] chunk = r.readChunk();
         int chunks = 0;
         while (chunk != null && chunk.length > 0)
         {
             chunks++;
-            baos.write(chunk);
+            out.write(chunk);
             chunk = r.readChunk();
         }
 
         if (log.isDebugEnabled())
             log.debug("readChunked() : " + chunks + " chunks read.");
-
-        return baos.toByteArray();
     }
 
     /**
      * Read the message content.
      */
-    public void readContent() throws IOException
+    public void readContent(OutputStream out) throws IOException
     {
         HTTPInputStream r = getInputStream();
 
@@ -111,30 +108,23 @@ public class Message implements HTTPConstants
             throw new IOException("Response reader is null!");
 
         long start = System.currentTimeMillis();
-        byte[] content = null;
         switch (header.getTransferMode())
         {
             case MessageHeader.TRANSFER_MODE_LENGTH:
                 int len = header.getContentLength();
-                content = StreamCopier.readByteArray(r, len);
+                StreamCopier.unsyncCopy(r,out,StreamCopier.DEFAULT_BUFFER_SIZE,len);
                 break;
             case MessageHeader.TRANSFER_MODE_CLOSE:
-                content = StreamCopier.readByteArray(r);
+                StreamCopier.unsyncCopy(r,out,StreamCopier.DEFAULT_BUFFER_SIZE);
                 break;
             case MessageHeader.TRANSFER_MODE_CHUNKED:
-                content = readChunked(r);
+                readChunked(r,out);
                 break;
             default:
                 throw new IOException("Unsupported transfer encoding or content length!");
         }
-        setContent(content);
         transferTime = System.currentTimeMillis() - start;
         close();
-    }
-
-    private void setContent(byte[] content)
-    {
-        this.content = content;
     }
 
     /** Returns the content as an array of bytes.  If the content has not been
@@ -146,11 +136,14 @@ public class Message implements HTTPConstants
         {
             try
             {
-                readContent();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                readContent(baos);
+                content = baos.toByteArray();
             }
             catch (IOException ioe)
             {
-                return new byte[0];
+                log.error(ioe,ioe);
+                content = new byte[0];
             }
         }
         return content;
