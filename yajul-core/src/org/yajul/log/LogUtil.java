@@ -246,6 +246,17 @@ public class LogUtil
     }
 
     /**
+     * Logs an unexpected exception message with error priority.
+     * @param logger The logger to use.
+     * @param t The unexpected exception.
+     */
+    public static void unexpected(Logger logger, Throwable t)
+    {
+        String message = "Unexpected exception: " + t.getMessage();
+        logger.error(message,t);
+    }
+
+    /**
      * Internal: Returns a logger for the category name, or the root if the category name is null.
      * Also configures Log4J, if it has not already been configured.
      * @param loggerName - The category requested.

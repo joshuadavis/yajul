@@ -243,6 +243,21 @@ public class EnumType
     }
 
     /**
+     * Converts an id into a UI text value for this map.  Returns
+     * null if the id was not valid.
+     * @param id - The enum value id.
+     * @return String - The UI text, or null if the id was invalid.
+     */
+    public String valueIdToText(int id)
+    {
+        EnumValue value = findValueById(id);
+        if (value == null)
+            return null;
+        else
+            return value.getTextValue();
+    }
+
+    /**
      * Returns an iterator that will produce all of the values of this type
      * in ID order.
      * @return Iterator - An iterator of all the enumerated values.

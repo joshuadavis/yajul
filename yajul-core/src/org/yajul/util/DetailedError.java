@@ -24,21 +24,20 @@
  * THE SOFTWARE.
  *
  ******************************************************************************/
-
 package org.yajul.util;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
- * Provides an exception that contains a throwable detail exception.
- * This allows the caller to throw a new exception adding a new message and
- * retaining the existing (nested) stack trace.
- * <i>NOTE: This is not needed for JDK
- * 1.4 and higher, as new constructors for Exception were introduced.</i>
- * @author Joshua Davis
+ * Enhances java.lang.Error with the ability to contain a detailed nested
+ * stack trace.
+ * User: jdavis
+ * Date: Jul 21, 2003
+ * Time: 1:37:09 PM
+ * @author jdavis
  */
-public class DetailedException extends Exception
+public class DetailedError extends Error
 {
     /**
      * The nested exception... An object of type Throwable.
@@ -46,37 +45,39 @@ public class DetailedException extends Exception
     private Throwable cause;
 
     /**
-     * Default contstructor.
+     * Default constructor.
      */
-    public DetailedException()
+    public DetailedError()
     {
     }
 
     /**
-     * Creates a new exception with no nested exception and the specified detail message.
+     * Creates a new exception with no nested exception and the specified
+     * detail message.
      * @param s the detail message.
      */
-    public DetailedException(String s)
+    public DetailedError(String s)
     {
         super(s);
     }
 
     /**
-     * Constructs a DetailedException with the specified Throwable as the nested exception.
+     * Constructs a DetailedError with the specified Throwable as the
+     * nested exception.
      * @param t an object of type Throwable
      */
-    public DetailedException(Throwable t)
+    public DetailedError(Throwable t)
     {
         cause = t;
     }
 
     /**
-     * Constructs a DetailedException with the specified detail message and
+     * Constructs a DetailedError with the specified detail message and
      * the specified throwable as the nested exception.
      * @param s the detail message.
      * @param t an object of type Throwable
      */
-    public DetailedException(String s,Throwable t)
+    public DetailedError(String s,Throwable t)
     {
         super(s);
         cause = t;
@@ -140,4 +141,5 @@ public class DetailedException extends Exception
             cause.printStackTrace(w);
         }
     }
+
 }

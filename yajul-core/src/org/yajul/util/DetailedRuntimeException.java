@@ -31,9 +31,11 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
- * Provides a runtime exception that contains a throwable detail exception..  This allows the caller to throw a new
- * exception adding a new message and retaining the existing (nested) stack trace.  NOTE: This is not needed for JDK
- * 1.4 and higher, as new constructors for Exception were introduced.
+ * Provides a runtime exception that contains a throwable detail exception..
+ * This allows the caller to throw a new exception adding a new message and
+ * retaining the existing (nested) stack trace.
+ * <i>NOTE: This is not needed for JDK 1.4 and higher, as new constructors
+ * for Exception were introduced.</i>
  * @author Joshua Davis
  */
 public class DetailedRuntimeException extends RuntimeException
@@ -51,7 +53,8 @@ public class DetailedRuntimeException extends RuntimeException
     }
 
     /**
-     * Creates a new exception with no nested exception and the specified detail message.
+     * Creates a new exception with no nested exception and the specified
+     * detail message.
      * @param s the detail message.
      */
     public DetailedRuntimeException(String s)
@@ -60,7 +63,8 @@ public class DetailedRuntimeException extends RuntimeException
     }
 
     /**
-     * Constructs a DetailedException with the specified Throwable as the nested exception.
+     * Constructs a DetailedException with the specified Throwable as the
+     * nested exception.
      * @param t an object of type Throwable
      */
     public DetailedRuntimeException(Throwable t)
