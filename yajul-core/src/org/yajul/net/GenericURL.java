@@ -104,4 +104,9 @@ public class GenericURL implements java.io.Serializable
     {
         return toString().hashCode();
     }
+
+    public String toExternalForm()
+    {
+        return toString();
+    }
 }
