@@ -49,9 +49,9 @@ import java.util.Stack;
 
 
 /**
- * Write an XML document.
+ * A SAX ContentHandler that write an XML document to an underlying Writer.
  *
- * This class effectively serializes SAX DocumentHandler events back
+ * This class effectively serializes SAX ContentHandler events back
  * into XML.  The result is identical to the original document from
  * the SAX 1.0 perspective, but it loses information (such as
  * comments or the document type declaration) that are not available
@@ -60,12 +60,15 @@ import java.util.Stack;
  * demand.
  *
  * This class can also function as an application for normalizing
- * an XML document.  The application uses the AElfred SAX driver
- * by default if the org.xml.sax.parser system property is null.
+ * an XML document.
+ *
+ * <br>
+ * TODO: Handle namespaces correctly.
+ * TODO: Add setters for boolean flags.
  *
  * <br>
  * 2003-02-13 [jsd] - Replaced deprecated interfaces with newer,
- * JAXP 1.1 interfaces.
+ * JAXP 1.1 interfaces.   Eliminated 'bit flags' from public view.
  *
  * @author David Megginson, david@megginson.com
  * @author Joshua Davis, pgmjsd@sourceforge.net (refactoring and updating)
@@ -87,7 +90,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * as character references.  The flag does not affect characters
      * in element names, attribute names, or processing instructions.
      */
-    public final static int ESCAPE_NON_ASCII = 1;
+    private boolean escapeNonAscii = false;
 
 
     /**
@@ -97,7 +100,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * specification and before the closing delimiter of start and
      * end tags, to improve document readability.
      */
-    public final static int ADD_NEWLINES = 2;
+    private boolean addNewlines = false;
 
 
     /**
@@ -111,7 +114,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * @see #notationDecl
      * @see #unparsedEntityDecl
      */
-    public final static int INCLUDE_DOCTYPE = 4;
+    private boolean includeDoctype = false;
 
 
     /**
@@ -119,7 +122,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      *
      * This flag causes the XML declaration to be omitted.
      */
-    public final static int EXCLUDE_XMLDECL = 8;
+    private boolean excludeXMLDecl = false;
 
 
     /**
@@ -130,7 +133,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * is set, the writer will run much faster, but attributes
      * will appear in random order.
      */
-    public final static int UNSORTED_ATTRIBUTES = 16;
+    private boolean unsortedAttributes = true;
 
 
     /**
@@ -143,7 +146,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * set.  If this flag is set, EXCLUDE_XMLDECL will be enabled
      * and INCLUDE_DOCTYPE will be disabled automatically.
      */
-    public final static int LEVEL3_COMPAT = 32;
+    private boolean level3Compatibility = false;
 
     /**
      * Filter ignorable whitespace.
@@ -151,7 +154,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * Any ignorable whitespace will be... IGNORED! The default
      * setting is to outtput any ignorable whitespace.
      */
-    public final static int NO_IGNORABLE_WHITESPACE = 64;
+    private boolean noIgnorableWhitespace = false;
 
     /**
      * Use empty tag shorthand.
@@ -159,18 +162,17 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * If this flag is set, elements with no children will be written
      * as empty tags.
      */
-    public final static int USE_EMPTY_TAGS = 128;
+    private boolean useEmptyTags = false;
 
     /**
      * Add a newline at the end of the document.
      */
-    public final static int NEWLINE_AT_END = 256;
+    private boolean newlineAtEndOfDocument = false;
 
     ////////////////////////////////////////////////////////////////////
     // Internal state.
     ////////////////////////////////////////////////////////////////////
 
-    private int flags;
     private String encoding;
     private boolean writing = false;
     private boolean seenElement = false;
@@ -182,7 +184,6 @@ public class XMLWriter implements DTDHandler, ContentHandler
     // Remember the potentially empty tag for making <tag/> shorthand.
     private String emptyElementTag;
 
-//    private AttributeList   emptyElementAttributes;  <<<<-- DEPRECATED!
     private Attributes emptyElementAttributes;
 
     ////////////////////////////////////////////////////////////////////
@@ -198,7 +199,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
     public XMLWriter(Writer output)
     {
         super();
-        init(output, 0, null);
+        init(output, null);
     }
 
     /**
@@ -214,50 +215,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
     public XMLWriter(Writer output, String encoding)
     {
         super();
-        init(output, 0, encoding);
-    }
-
-
-    /**
-     * Construct a new XML writer with options.
-     *
-     * @param output The writer for the output.
-     * @param flags Option flags for the writer, OR'ed together.
-     * @see #ESCAPE_NON_ASCII
-     * @see #ADD_NEWLINES
-     * @see #INCLUDE_DOCTYPE
-     * @see #EXCLUDE_XMLDECL
-     * @see #UNSORTED_ATTRIBUTES
-     * @see #LEVEL3_COMPAT
-     */
-    public XMLWriter(Writer output, int flags)
-    {
-        super();
-        init(output, flags, null);
-    }
-
-
-    /**
-     * Construct a new XML writer with options and encoding.
-     *
-     * The XML writer has no way to check that the writer supplied
-     * actually uses the specified encoding -- it is up to the
-     * application to ensure that the two are in sync.
-     *
-     * @param output The writer for the output.
-     * @param flags Option flags for the writer, OR'ed together.
-     * @param encoding The output encoding for the writer.
-     * @see #ESCAPE_NON_ASCII
-     * @see #ADD_NEWLINES
-     * @see #INCLUDE_DOCTYPE
-     * @see #EXCLUDE_XMLDECL
-     * @see #UNSORTED_ATTRIBUTES
-     * @see #LEVEL3_COMPAT
-     */
-    public XMLWriter(Writer output, int flags, String encoding)
-    {
-        super();
-        init(output, flags, encoding);
+        init(output, encoding);
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -266,10 +224,17 @@ public class XMLWriter implements DTDHandler, ContentHandler
 
     public void setExcludeXMLDecl(boolean flag)
     {
+        excludeXMLDecl = flag;
+    }
+
+    public void setLevel3Compatibility(boolean flag)
+    {
         if (flag)
-            flags = flags | EXCLUDE_XMLDECL;
-        else
-            flags = flags & (~EXCLUDE_XMLDECL);
+        {
+            excludeXMLDecl = true;
+            includeDoctype = false;
+        }
+
     }
 
     public void emptyElement(String name, Attributes atts)
@@ -283,7 +248,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             {
                 error("XML allows only one root element in each document.");
             }
-            else if (checkFlag(INCLUDE_DOCTYPE))
+            else if (includeDoctype)
             {
                 writeDoctype(name);
             }
@@ -318,7 +283,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * @param systemId The notation's system identifer.
      * @exception org.xml.sax.SAXException When the document is not
      *            currently being written.
-     * @see #INCLUDE_DOCTYPE
+     * @see #includeDoctype
      * @see org.xml.sax.DTDHandler#notationDecl
      */
     public void notationDecl(String name,
@@ -328,7 +293,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
     {
         // Return if we're not doing the
         // DOCTYPE thing.
-        if (!checkFlag(INCLUDE_DOCTYPE))
+        if (!includeDoctype)
         {
             return;
         }
@@ -375,7 +340,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * @param notationName The name of the data content notation.
      * @exception org.xml.sax.SAXException When the document is not
      *            currently being written.
-     * @see #INCLUDE_DOCTYPE
+     * @see #includeDoctype
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
     public void unparsedEntityDecl(String name,
@@ -386,7 +351,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
     {
         // Return if we're not doing the
         // DOCTYPE thing.
-        if (!checkFlag(INCLUDE_DOCTYPE))
+        if (!includeDoctype)
         {
             return;
         }
@@ -446,7 +411,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             throws SAXException
     {
         elementStack = new Stack();
-        if (checkFlag(INCLUDE_DOCTYPE))
+        if (includeDoctype)
         {
             declarations = new ArrayList();
         }
@@ -458,7 +423,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
         {
             writing = true;
             seenElement = false;
-            if (!checkFlag(EXCLUDE_XMLDECL))
+            if (!excludeXMLDecl)
             {
                 write("<?xml version=\"1.0\"");
                 if (encoding != null)
@@ -487,7 +452,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             throws SAXException
     {
         // If there is a tag that is not written, write it!
-        if (checkFlag(USE_EMPTY_TAGS) && emptyElementTag != null)
+        if (useEmptyTags && emptyElementTag != null)
             writeTag(emptyElementTag, emptyElementAttributes, false);
 
         checkWriting("endDocument");
@@ -500,7 +465,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
         }
         else
         {
-            if (checkFlag(NEWLINE_AT_END))
+            if (newlineAtEndOfDocument)
                 write("\n");
             writing = false;
         }
@@ -521,7 +486,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             throws SAXException
     {
         // If there is a tag that is not written, write it!
-        if (checkFlag(USE_EMPTY_TAGS) && emptyElementTag != null)
+        if (useEmptyTags && emptyElementTag != null)
             writeTag(emptyElementTag, emptyElementAttributes, false);
 
         // Basic well-formedness checking.
@@ -558,11 +523,11 @@ public class XMLWriter implements DTDHandler, ContentHandler
             throws SAXException
     {
         // If ignorable whitespace is not to be written, just return.
-        if (checkFlag(NO_IGNORABLE_WHITESPACE))
+        if (noIgnorableWhitespace)
             return;
 
         // If there is a tag that is not written, write it!
-        if (checkFlag(USE_EMPTY_TAGS) && emptyElementTag != null)
+        if (useEmptyTags && emptyElementTag != null)
             writeTag(emptyElementTag, emptyElementAttributes, false);
 
         // Minimal well-formedness checking.
@@ -585,7 +550,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             throws SAXException
     {
         // If there is a tag that is not written, write it!
-        if (checkFlag(USE_EMPTY_TAGS) && emptyElementTag != null)
+        if (useEmptyTags && emptyElementTag != null)
             writeTag(emptyElementTag, emptyElementAttributes, false);
 
         // Minimal well-formedness checking
@@ -593,7 +558,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
         checkWriting("processingInstruction");
         // Skip PIs in level 3 browser
         // compatibility mode.
-        if (checkFlag(LEVEL3_COMPAT))
+        if (level3Compatibility)
         {
             return;
         }
@@ -742,7 +707,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             throws SAXException
     {
         // If there is a tag that is not written, write it!
-        if (checkFlag(USE_EMPTY_TAGS) && emptyElementTag != null)
+        if (useEmptyTags && emptyElementTag != null)
             writeTag(emptyElementTag, emptyElementAttributes, false);
 
         // Do some basic well-formedness checking,
@@ -757,7 +722,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             {
                 error("XML allows only one root element in each document.");
             }
-            else if (checkFlag(INCLUDE_DOCTYPE))
+            else if (includeDoctype)
             {
                 writeDoctype(name);
             }
@@ -769,7 +734,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
         emptyElementAttributes = atts;
 
         // If USE_EMPTY_TAGS is not selected, write out the start tag.
-        if (!checkFlag(USE_EMPTY_TAGS))
+        if (!useEmptyTags)
             writeTag(name, atts, false);
 
     }
@@ -812,7 +777,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
                     '"');
         }
         // If there is an empty element that is not written, write it!
-        if (checkFlag(USE_EMPTY_TAGS) && emptyElementTag != null)
+        if (useEmptyTags && emptyElementTag != null)
         {
             if (!emptyElementTag.equals(name))
                 throw new SAXException("Start of empty tag " + emptyElementTag + " didn't mach the end tag " + name);
@@ -824,7 +789,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
         // Write the end tag.
         write("</");
         write(name);
-        if (checkFlag(ADD_NEWLINES))
+        if (addNewlines)
         {
             write("\n>");
         }
@@ -955,7 +920,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
                         }
                         // else fall through...
                     default:
-                        if (checkFlag(ESCAPE_NON_ASCII) && ch[i] > 127)
+                        if (escapeNonAscii && ch[i] > 127)
                         {
                             output.write("&#");
                             output.write(new Integer(ch[i]).toString());
@@ -1028,11 +993,11 @@ public class XMLWriter implements DTDHandler, ContentHandler
         writeAttributes(atts);
 
         // Finish the start tag.
-        if (checkFlag(ADD_NEWLINES))
+        if (addNewlines)
         {
             write('\n');
         }
-        else if (isEmpty && checkFlag(LEVEL3_COMPAT))
+        else if (isEmpty && level3Compatibility)
         {
             write(' ');
         }
@@ -1056,7 +1021,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
             return;
         }
 
-        if (checkFlag(UNSORTED_ATTRIBUTES))
+        if (unsortedAttributes)
         {
             // Write the atts unsorted.
             for (int i = 0; i < atts.getLength(); i++)
@@ -1107,7 +1072,7 @@ public class XMLWriter implements DTDHandler, ContentHandler
     private void writeAttribute(String name, String value)
             throws SAXException
     {
-        if (checkFlag(ADD_NEWLINES))
+        if (addNewlines)
         {
             write('\n');
         }
@@ -1126,18 +1091,6 @@ public class XMLWriter implements DTDHandler, ContentHandler
     ////////////////////////////////////////////////////////////////////
     // Internal methods.
     ////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * Check whether a flag is set.
-     *
-     * @param flag The flag's constant value.
-     * @return true if the flag is set.
-     */
-    private boolean checkFlag(int flag)
-    {
-        return ((flags & flag) > 0);
-    }
 
 
     /**
@@ -1187,18 +1140,11 @@ public class XMLWriter implements DTDHandler, ContentHandler
      * <i>I guess this guy doesn't know that that doesn't make sense! [jsd]</i>
      *
      * @param output The output writer.
-     * @param flags The output flags, or 0 if none.
      * @param encoding The output encoding, or null if none.
      */
-    private void init(Writer output, int flags, String encoding)
+    private void init(Writer output, String encoding)
     {
-        if ((flags & LEVEL3_COMPAT) > 0)
-        {
-            flags |= EXCLUDE_XMLDECL;
-            flags &= ~INCLUDE_DOCTYPE;
-        }
         this.output = output;
-        this.flags = flags;
         this.encoding = encoding;
     }
 }
