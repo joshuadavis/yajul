@@ -58,7 +58,6 @@
 
     <target name="with.clover">
         <taskdef resource="clovertasks"/>
-        <!-- <mkdir dir="${build.dir}/yajul_coverage.db"/> -->
         <clover-setup initString="${build.dir}/yajul_coverage.db"/>
     </target>
 
@@ -239,10 +238,16 @@
     </target>
     
     <target name="docs" depends="junit.report,javadoc,jdepend"/>
-        
-    <target name="recompile" depends="clean.classes,compile,compile.tests"/>
-        
-    <target name="clover" depends="with.clover,recompile,test,report.html" description="Generate a unit test coverage report"/>
+
+    <target name="clover.compile" depends="with.clover"
+        description="Compile with clover support">
+    	<antcall target="clean.classes"/>
+	<antcall target="compile"/>
+	<antcall target="compile.tests"/>
+    </target>
+
+    <target name="clover" depends="clover.compile,test,report.html" description="Generate a unit test coverage report">
+    </target>
 
     <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,clover">
     </target>
