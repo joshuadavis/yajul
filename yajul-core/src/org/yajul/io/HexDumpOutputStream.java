@@ -26,7 +26,6 @@
  ******************************************************************************/
 package org.yajul.io;
 
-import org.yajul.util.StringUtil;
 import org.yajul.util.Bytes;
 
 import java.io.FilterOutputStream;
@@ -43,7 +42,8 @@ import java.io.ByteArrayOutputStream;
  * Date: Jan 11, 2004
  * Time: 9:23:13 PM
  */
-public class HexDumpOutputStream extends FilterOutputStream
+public class HexDumpOutputStream
+        extends HexEncodingOutputStream
 {
     /** The width of each line (# of bytes). **/
     private int width;
@@ -55,10 +55,6 @@ public class HexDumpOutputStream extends FilterOutputStream
     private byte[] buf;
     /** Another buffer, used in converting the stream position into hex. **/
     private byte[] intBytes;
-    /** Hex chars buffer. **/
-    private char[] hex;
-    /** Hex byte buffer. **/
-    private byte[] hexBytes;
 
     private final byte[] SEPARATOR = " | ".getBytes();
     private static final char NON_PRINTABLE = '.';
@@ -102,8 +98,6 @@ public class HexDumpOutputStream extends FilterOutputStream
         this.count = 0;
         this.total = 0;
         this.buf = new byte[width]; // Create a buffer for the bytes.
-        this.hex = new char[2];
-        this.hexBytes = new byte[2];
         this.intBytes = new byte[4];
     }
 
@@ -139,10 +133,7 @@ public class HexDumpOutputStream extends FilterOutputStream
         }
 
         buf[count] = (byte)(0x000000FF & b);
-        StringUtil.hexChars(StringUtil.HEX_CHARS_LOWER,b,hex);
-        hexBytes[0] = (byte)hex[0];
-        hexBytes[1] = (byte)hex[1];
-        out.write(hexBytes);
+        writeHex(b);
         count++;
         total++;
     }

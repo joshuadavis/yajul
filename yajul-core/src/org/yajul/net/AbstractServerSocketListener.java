@@ -390,8 +390,20 @@ public abstract class AbstractServerSocketListener implements Runnable
         {
             connectionsAccepted++;
         }
-        client.initialize(this);
+
+        // Add the client to the list before initializing.
         addClient(client);
+
+        try
+        {
+            client.initialize(this);
+        }
+        catch (Throwable t)
+        {
+            log.error(t,t);
+            client.close();
+            return;
+        }
     }
 
     private void clearAllClients()
@@ -408,6 +420,8 @@ public abstract class AbstractServerSocketListener implements Runnable
         synchronized (clientConnections)
         {
             boolean found = clientConnections.remove(client);
+            if (found)
+                log.info("Client connection " + client + " removed.");
             clientConnections.notifyAll();
             return found;
         }
@@ -418,6 +432,7 @@ public abstract class AbstractServerSocketListener implements Runnable
         synchronized (clientConnections)
         {
             clientConnections.add(client);
+            log.info("Client connection " + client + " added.");
             clientConnections.notifyAll();
         }
     }

@@ -24,11 +24,11 @@ public class ThreadPool
         {
             if (target == null)
                 throw new IllegalArgumentException(
-                        "ThreadPool.Request: Target cannot be null!");
+                        "ThreadPool.RequestHeaders: Target cannot be null!");
             this.target = target;
             this.lock = lock;
         }
-    } // class Request
+    } // class RequestHeaders
 
     private static class PooledThread extends Thread
     {

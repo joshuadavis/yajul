@@ -24,9 +24,9 @@ public abstract class AbstractClientConnection
     private AbstractServerSocketListener listener;
     private Socket socket;
     /** The response stream. */
-    private OutputStream out;       // Response stream server->client.
+    private OutputStream out;       // HTTPResponse stream server->client.
     /** The request stream. **/
-    private InputStream in;         // Request stream client->server.
+    private InputStream in;         // RequestHeaders stream client->server.
     /** True if the input and output streams are being buffered. **/
     private boolean buffered;
 
@@ -99,6 +99,42 @@ public abstract class AbstractClientConnection
         onClose();
     }
 
+
+    protected Socket usurpSocket()
+    {
+        Socket rv = socket;
+        flushOutputStream();
+        if (rv == null)
+            throw new IllegalStateException("There is no socket to usurp!");
+        // Set the socket and the input streams to null, so they won't get closed.
+        socket = null;
+        in = null;
+        out = null;
+        // Close this connection.
+        close();
+        // Return the socket.
+        return rv;
+    }
+
+    /**
+     * Flushes the output stream, if it is buffered.
+     */
+    private void flushOutputStream()
+    {
+        // If buffered, flush the buffers.
+        if (buffered)
+        {
+            if (out != null)
+                try
+                {
+                    out.flush();
+                }
+                catch (IOException e)
+                {
+                    listener.unexpected(e);
+                }
+        }
+    }
 
     protected InputStream getInputStream()
     {

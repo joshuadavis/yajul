@@ -59,7 +59,7 @@ public class TokenizingInputStream extends AbstractByteFilterInputStream
      * @param   in   the underlying input stream, or <code>null</code> if
      *          this instance is to be created without an underlying stream.
      */
-    protected TokenizingInputStream(InputStream in,byte[] delimiter)
+    public TokenizingInputStream(InputStream in,byte[] delimiter)
     {
         super(in);
         this.delimiter = delimiter;
