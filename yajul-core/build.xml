@@ -8,7 +8,7 @@
     <property name="dist.dir" value="${build.dir}/dist"/>
     <property name="main.class.dir" value="${build.dir}/classes"/>
     <property name="main.jar.dir" value="${build.dir}/lib"/>
-    <property name="javac.debug" value="false"/>
+    <property name="javac.debug" value="true"/>
     <property name="javac.optimize" value="true"/>
     <property name="javac.deprecation" value="true"/>
     <property name="javac.verbose" value="false"/>
@@ -111,7 +111,7 @@
         </junit>
     </target>
 
-    <target name="test.xmlreport" depends="init" description="Performs unit tests, generating an XML report.">
+    <target name="test.xmlreport" depends="init" description="Perform unit tests, generating an XML report.">
         <mkdir dir="${junit.dir}"/>
         <junit fork="yes"
             printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
@@ -128,7 +128,7 @@
         </junit>
     </target>
 
-    <target name="test.textreport" depends="init" description="Performs unit tests, generating a text report.">
+    <target name="test.textreport" depends="init" description="Perform unit tests, generating a text report.">
         <junit fork="yes"
             printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
             <classpath>
@@ -150,7 +150,7 @@
             basedir="${main.class.dir}"/>
     </target>
 
-    <target name="javadoc" depends="init" description="Builds the Javadoc.">
+    <target name="javadoc" depends="init" description="Build the Javadoc.">
         <javadoc
             destdir="${build.dir}/docs/api"
             author="true"
@@ -174,7 +174,7 @@
         </javadoc>
     </target>
 
-    <target name="dist.source" depends="init" description="Builds the source distribution file.">
+    <target name="dist.source" depends="init" description="Build the source distribution file.">
         <!-- Zip up all of the source files -->
         <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
             <fileset dir=".">
@@ -186,13 +186,19 @@
         </zip>
     </target>
 
-    <target name="jar.src" depends="init">
+    <target name="jar.src" depends="init" description="Create the source jar.">
         <jar jarfile="${main.jar.dir}/${ant.project.name}-src.jar"
             basedir="${main.src.dir}"/>
     </target>
 
     <target name="default" depends="compile,jar,compile.tests"/>
 
+
     <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test,javadoc">
     </target>
+
+    <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"
+        description="Clean and build everything but the Javadoc.">
+    </target>
+    
 </project>
