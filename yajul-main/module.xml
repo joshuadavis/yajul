@@ -78,7 +78,9 @@
 
 	<!-- Jars in the /lib directory, direct dependencies -->
         <depend project="log4j"  version="supplied" export="yes"/>
-
+	<depend project="xerces" version="supplied" export="yes"/>
+	<depend project="xmlParserAPIs" version="supplied" export="yes"/>
+	
         <!-- Work dirs to be included in classpath  -->
         <work nested="build/classes"/>
 
