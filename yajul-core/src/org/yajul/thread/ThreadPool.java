@@ -1,5 +1,4 @@
 
-
 package org.yajul.thread;
 
 import org.apache.log4j.Logger;
@@ -11,6 +10,7 @@ import java.util.NoSuchElementException;
  * A 'simple pool' of threads.
  * <br>
  * Created on Aug 28, 2002 6:00:01 PM
+ *
  * @author jdavis
  */
 public class ThreadPool
@@ -23,8 +23,7 @@ public class ThreadPool
         Request(Runnable target, Object lock)
         {
             if (target == null)
-                throw new IllegalArgumentException(
-                        "ThreadPool.RequestHeaders: Target cannot be null!");
+                throw new IllegalArgumentException("ThreadPool.RequestHeaders: Target cannot be null!");
             this.target = target;
             this.lock = lock;
         }
@@ -59,14 +58,14 @@ public class ThreadPool
          * <code>Runnable</code> run object, then that
          * <code>Runnable</code> object's <code>run</code> method is called;
          * otherwise, this method does nothing and returns.
-         * <p>
+         * <p/>
          * Subclasses of <code>Thread</code> should override this method.
          *
-         * @see     java.lang.Thread#start()
-         * @see     java.lang.Thread#stop()
-         * @see     java.lang.Thread#Thread(java.lang.ThreadGroup,
-         *          java.lang.Runnable, java.lang.String)
-         * @see     java.lang.Runnable#run()
+         * @see java.lang.Thread#start()
+         * @see java.lang.Thread#stop()
+         * @see java.lang.Thread#Thread(java.lang.ThreadGroup,
+                *      java.lang.Runnable, java.lang.String)
+         * @see java.lang.Runnable#run()
          */
         public void run()
         {
@@ -178,43 +177,67 @@ public class ThreadPool
         } // run()
     } // class
 
-    /** A logger for this class. **/
+    /**
+     * A logger for this class. *
+     */
     private static Logger log = Logger.getLogger(ThreadPool.class);
-    /** The thread group for all threads in the pool. **/
+    /**
+     * The thread group for all threads in the pool. *
+     */
     private ThreadGroup group;
-    /** Mutex lock that protects the request queue, and the condvars. **/
+    /**
+     * Mutex lock that protects the request queue, and the condvars. *
+     */
     private BusyFlag flag;
-    /** Condition: Signalled when there are pending jobs. **/
+    /**
+     * Condition: Signalled when there are pending jobs. *
+     */
     private CondVar pending;
-    /** Condition: Signalled when *all* threads in the pool are idle. **/
+    /**
+     * Condition: Signalled when *all* threads in the pool are idle. *
+     */
     private CondVar idle;
-    /** Condition: Signalled when a thread becomes idle, and the queue is empty. **/
+    /**
+     * Condition: Signalled when a thread becomes idle, and the queue is empty. *
+     */
     private CondVar ready;
-    /** The list of requests that are wating to be executed by the pool. **/
+    /**
+     * The list of requests that are wating to be executed by the pool. *
+     */
     private LinkedList requestQueue;
-    /** The threads in the pool. **/
+    /**
+     * The threads in the pool. *
+     */
     private PooledThread[] threads;
-    /** Pool termination flag. **/
+    /**
+     * Pool termination flag. *
+     */
     private boolean terminated;
 
-    /** The number of requests that are in the queue or being processed by a thread. **/
+    /**
+     * The number of requests that are in the queue or being processed by a thread. *
+     */
     private int activeRequests;
 
-    /** The number of threads that are active. **/
+    /**
+     * The number of threads that are active. *
+     */
     private int activeThreads;
 
     /**
      * Creates a new thread pool of the specified size.
-     * @param size The number of threads in the pool.
+     *
+     * @param size      The number of threads in the pool.
      * @param groupName The nameof the thread group for the threads.
      */
     public ThreadPool(int size, String groupName)
     {
-        this(size,new ThreadGroup(groupName));
+        this(size, new ThreadGroup(groupName));
     }
 
     /**
      * Returns the number of threads in the pool.
+     *
      * @return int - The number of threads in the pool.
      */
     public int getSize()
@@ -224,7 +247,8 @@ public class ThreadPool
 
     /**
      * Creates a new thread pool of the specified size.
-     * @param size The number of threads in the pool.
+     *
+     * @param size  The number of threads in the pool.
      * @param group The thread group that the threads will be created in.
      */
     public ThreadPool(int size, ThreadGroup group)
@@ -252,6 +276,17 @@ public class ThreadPool
         }
     }
 
+    /**
+     * Sets the priority for all pooled threads.
+     * @param priority The new priority.
+     * @see Thread#setPriority(int)
+     */
+    public void setPooledThreadPriority(int priority)
+    {
+        for (int i = 0; i < threads.length; i++)
+            threads[i].setPriority(priority);
+    }
+
     private void add(Runnable target, Object lock)
     {
         try
@@ -273,6 +308,7 @@ public class ThreadPool
     /**
      * Adds the target to the queue of runnable requests for the pool.  The runnable target will
      * be executed at some later point by one of the threads.
+     *
      * @param target The target runnable object.
      */
     public void add(Runnable target)
@@ -283,6 +319,7 @@ public class ThreadPool
     /**
      * Adds the target to the queue, and blocks the calling thread until the target has been fully executed
      * by one of the threads in the pool.
+     *
      * @param target The target runnable object.
      * @throws InterruptedException If the wait was interrupted.
      */
@@ -299,6 +336,7 @@ public class ThreadPool
 
     /**
      * Waits for all running targets to complete.
+     *
      * @param terminate True if the thread pool is to terminate after all targets complete.
      * @throws InterruptedException If the wait was interrupted.
      */
@@ -332,6 +370,7 @@ public class ThreadPool
 
     /**
      * Shut down the pool.
+     *
      * @see ThreadPool#waitForAll(boolean)
      */
     public void shutdown()
@@ -348,6 +387,7 @@ public class ThreadPool
 
     /**
      * Waits for all running targets to complete.
+     *
      * @throws InterruptedException If the wait was interrupted.
      */
     public void waitForAll() throws InterruptedException
@@ -357,6 +397,7 @@ public class ThreadPool
 
     /**
      * Returns the number of idle threads in the pool.
+     *
      * @return int The number of idle threads.
      */
     public int getIdleThreadCount()
@@ -374,6 +415,7 @@ public class ThreadPool
 
     /**
      * Waits for a ready condition (at least one idle thread).
+     *
      * @throws InterruptedException If the calling thread is interrupted.
      */
     public void waitForReady() throws InterruptedException
@@ -384,7 +426,7 @@ public class ThreadPool
             // If there are requests in the queue, or there are no
             // idle threads, wait.
             if ((requestQueue.size() > 0) ||
-                (activeThreads >= threads.length))
+                    (activeThreads >= threads.length))
             {
                 // log.debug("Waiting for ready condition...");
                 ready.cvWait();
@@ -398,6 +440,7 @@ public class ThreadPool
 
     /**
      * Returns the thread group for the pool.
+     *
      * @return ThreadGroup The thread group for the pool.
      */
     public ThreadGroup getGroup()
@@ -409,6 +452,7 @@ public class ThreadPool
      * Returns the array of threads in the pool.<br>
      * WARNING: Modifying the state of the threads in the pool may
      * cause the pool to become inconsistent.  Be careful!
+     *
      * @return Thread[] - The array of threads the make up the pool.
      */
     public Thread[] getThreads()
@@ -418,6 +462,7 @@ public class ThreadPool
 
     /**
      * Returns the number of requests that are waiting to be processed.
+     *
      * @return int The size of the queue.
      */
     public int getQueueSize()
