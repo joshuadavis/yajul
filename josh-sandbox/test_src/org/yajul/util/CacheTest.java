@@ -24,15 +24,17 @@ public class CacheTest extends TestCase
 {
     private static Logger log = Logger.getLogger(CacheTest.class);
 
-    static final int SET_SIZE = 100;
-    static final int CACHE_SIZE = 10;
-    static final int ITERATIONS = 1000;
+    static final int FACTOR = 1;
+    static final int SET_SIZE = 100 * FACTOR;
+    static final int CACHE_SIZE = 10 * FACTOR;
+    static final int ITERATIONS = 1000 * FACTOR;
+    static final int THREAD_COUNT = 4;
 
     class TestElement
     {
         int id;
         String name;
-        boolean active;
+        volatile boolean active;
 
         TestElement(int id, String name)
         {
@@ -124,6 +126,24 @@ public class CacheTest extends TestCase
         }
     }
 
+    class CacheReader implements Runnable
+    {
+        private Cache cache;
+        private int iterations;
+
+        public CacheReader(Cache cache, int iterations)
+        {
+            this.cache = cache;
+            this.iterations = iterations;
+        }
+
+        public void run()
+        {
+            readElements(cache,iterations);
+        }
+    }
+
+
     private Random random = new Random(System.currentTimeMillis());
     private Map map = new HashMap();
     private TestActivator activator;
@@ -175,20 +195,21 @@ public class CacheTest extends TestCase
                 else
                     passive++;
             }
-            log.info("-- readElements() --");
-            log.info("iterations   = " + iterations);
-            // log.info("unique keys  = " + unique.size());
-            log.info("cacheSize    = " + cacheSize);
-            log.info("active       = " + active);
-            log.info("passive      = " + passive);
-            log.info("total        = " + (active + passive));
-            log.info("SET_SIZE     = " + SET_SIZE);
+//            log.info("-- readElements() --");
+//            log.info("iterations   = " + iterations);
+//            log.info("unique keys  = " + unique.size());
+//            log.info("cacheSize    = " + cacheSize);
+//            log.info("active       = " + active);
+//            log.info("passive      = " + passive);
+//            log.info("total        = " + (active + passive));
+//            log.info("SET_SIZE     = " + SET_SIZE);
 
             // assertEquals((float)cacheSize,(float)active,2.0);
+            if (active > cacheSize)
+                log.error("active = " + active + " cacheSize = " + cacheSize);
             assertTrue(active <= cacheSize);
             assertEquals(active + passive, SET_SIZE);
-            assertEquals(cache.getRequests(), iterations);
-            if (cacheSize < SET_SIZE)
+             if (cacheSize < SET_SIZE)
                 assertEquals((float) cacheSize / (float) SET_SIZE, cache.getHitRate(), 0.09);
             printStatistics(cache);
         }
@@ -206,6 +227,8 @@ public class CacheTest extends TestCase
         readElements(cache, ITERATIONS);
         assertEquals(cache.getTimeouts(), 0);
         assertEquals(cache.getTimeoutRate(), 1.0, 0.01);
+        assertEquals(cache.getRequests(), ITERATIONS);
+
     }
 
     public void testSmall()
@@ -223,19 +246,47 @@ public class CacheTest extends TestCase
         readElements(SET_SIZE);
     }
 
+    public void testMultiThreaded()
+    {
+        int cacheSize = SET_SIZE;
+
+        Cache cache = new Cache(activator, cacheSize);
+        Thread[] thread = new Thread[THREAD_COUNT];
+
+        for(int i = 0; i < thread.length ; i++)
+        {
+            thread[i] = new Thread(new CacheReader(cache,ITERATIONS / THREAD_COUNT));
+            thread[i].start();
+        }
+
+        for(int i = 0; i < thread.length; i++)
+            try
+            {
+                thread[i].join();
+            }
+            catch (InterruptedException e)
+            {
+                // Ignore.
+            }
+
+        assertEquals(cache.getTimeouts(), 0);
+        assertEquals(cache.getTimeoutRate(), 1.0, 0.01);
+
+    }
+
     private void printStatistics(Cache cache)
     {
-        log.info("--- cache ---");
-        log.info("requests     = " + cache.getRequests());
-        log.info("activations  = " + cache.getActivations());
-        log.info("time outs    = " + cache.getTimeouts());
-        log.info("hit rate     = " + cache.getHitRate());
-        log.info("timeout rate = " + cache.getTimeoutRate());
-        log.info("--- activator ---");
-        log.info("activations  = " + activator.getActivations());
-        log.info("passivations = " + activator.getPassivations());
-        log.info("finalizations= " + activator.getFinalizations());
-        log.info("stale        = " + activator.getStale());
+//        log.info("--- cache ---");
+//        log.info("requests     = " + cache.getRequests());
+//        log.info("activations  = " + cache.getActivations());
+//        log.info("time outs    = " + cache.getTimeouts());
+//        log.info("hit rate     = " + cache.getHitRate());
+//        log.info("timeout rate = " + cache.getTimeoutRate());
+//        log.info("--- activator ---");
+//        log.info("activations  = " + activator.getActivations());
+//        log.info("passivations = " + activator.getPassivations());
+//        log.info("finalizations= " + activator.getFinalizations());
+//        log.info("stale        = " + activator.getStale());
         activator.clearStatistics();
     }
 
@@ -275,5 +326,10 @@ public class CacheTest extends TestCase
             fail("Unexpected exception: " + ex.getMessage());
         }
         log.info("testTimeout() : LEAVE");
+    }
+
+    public static Test suite()
+    {
+        return new LogSupressingSetup(new TestSuite(CacheTest.class)) ;
     }
 }
