@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="3" relativePaths="false">
+<project version="3" relativePaths="true">
   <component name="ProjectRootManager" version="2">
-    <jdk name="java version &quot;1.4.1-rc&quot;" />
+    <jdk name="java version &quot;1.4.1_01&quot;" />
+    <library name="Log4J" />
+    <library name="JUnit" />
+    <library name="ANT" />
     <projectPath>
       <root type="composite">
         <root type="simple" url="file://$PROJECT_DIR$" />
-        <root type="simple" url="file://C:/dev/box/yajul/josh-sandbox/src" />
-        <root type="simple" url="file://C:/dev/box/yajul/josh-sandbox/test_src" />
       </root>
     </projectPath>
     <sourcePath>
       <root type="composite">
-        <root type="jdk" rootType="sourcePath" name="java version &quot;1.4.1-rc&quot;" />
+        <root type="jdk" rootType="sourcePath" name="java version &quot;1.4.1_01&quot;" />
         <root type="simple" url="file://$PROJECT_DIR$/src/java" />
         <root type="simple" url="file://$PROJECT_DIR$/src/testcases" />
+        <root type="library" rootType="sourcePath" name="Log4J" />
+        <root type="library" rootType="sourcePath" name="JUnit" />
+        <root type="library" rootType="sourcePath" name="ANT" />
       </root>
     </sourcePath>
     <classPath>
       <root type="composite">
-        <root type="jdk" rootType="classPath" name="java version &quot;1.4.1-rc&quot;" />
+        <root type="jdk" rootType="classPath" name="java version &quot;1.4.1_01&quot;" />
         <root type="output" />
-        <root type="simple" url="jar://$PROJECT_DIR$/tools/cents/junit.cent/lib/ant-junit.jar!/" />
-        <root type="simple" url="jar://$PROJECT_DIR$/tools/cents/junit.cent/lib/junit-3.7.jar!/" />
-        <root type="simple" url="jar://$PROJECT_DIR$/lib/core/log4j-1.2.7.jar!/" />
+        <root type="library" rootType="classPath" name="Log4J" />
+        <root type="library" rootType="classPath" name="JUnit" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/log4j-1.2.7.jar!/" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/junit.jar!/" />
+        <root type="library" rootType="classPath" name="ANT" />
+        <root type="simple" url="jar://$PROJECT_DIR$/lib/hsqldb.jar!/" />
       </root>
     </classPath>
     <excludePath>
       <root type="composite">
-        <root type="jdk" rootType="excludePath" name="java version &quot;1.4.0_02&quot;" />
         <root type="excludedOutput" />
+        <root type="simple" url="file://$PROJECT_DIR$/build" />
       </root>
     </excludePath>
     <javadocPath>
       <root type="composite">
-        <root type="jdk" rootType="javadocPath" name="java version &quot;1.4.1-rc&quot;" />
+        <root type="jdk" rootType="javadocPath" name="java version &quot;1.4.1_01&quot;" />
+        <root type="library" rootType="javadocPath" name="Log4J" />
+        <root type="library" rootType="javadocPath" name="JUnit" />
+        <root type="library" rootType="javadocPath" name="ANT" />
       </root>
     </javadocPath>
     <assert_keyword enabled="no" />
@@ -64,7 +74,7 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="AntConfiguration">
-    <buildFile url="file://$PROJECT_DIR$/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/../josh-sandbox/build.xml">
       <useEmacsModeOutput value="true" />
       <useCustomJdk value="false" />
       <treeView value="true" />
@@ -100,7 +110,7 @@
   <component name="WebRootContainer" />
   <component name="EjbManager" enabled="false" />
   <component name="JUnitProjectSettings">
-    <option name="TEST_RUNNER" value="UI" />
+    <option name="TEST_RUNNER" value="Text" />
   </component>
   <component name="EntryPointsManager">
     <entry_points />
@@ -112,7 +122,7 @@
   </component>
   <component name="CodeStyleManager">
     <option name="USE_DEFAULT_CODE_STYLE_SCHEME" value="true" />
-    <option name="CODE_STYLE_SCHEME" value="Default (1)" />
+    <option name="CODE_STYLE_SCHEME" value="" />
   </component>
   <component name="ExportToHTMLSettings">
     <option name="PRINT_LINE_NUMBERS" value="false" />
