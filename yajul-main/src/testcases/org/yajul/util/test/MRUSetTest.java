@@ -140,12 +140,12 @@ public class MRUSetTest extends TestCase
         // Iterator
         for (Iterator iterator = list.iterator(); iterator.hasNext();)
         {
-            Object o = (Object) iterator.next();
+            Object o = iterator.next();
             assertEquals(true,set.contains(o));
         }
         for (Iterator iterator = set.iterator(); iterator.hasNext();)
         {
-            Object o = (Object) iterator.next();
+            Object o = iterator.next();
             assertEquals(true,list.contains(o));
         }
     }
