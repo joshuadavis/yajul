@@ -82,4 +82,17 @@ public class ArrayUtil
         return set;
     }
 
+    /**
+     * Adds values from the array into the set.
+     * @param values The array of values.
+     * @param set The set to add the values to.
+     * @return Set - The set.
+     */
+    public static Set addToSet(Object[] values,Set set)
+    {
+        for (int i = 0; i < values.length; i++)
+            set.add(values[i]);
+        return set;
+    }
+
 }

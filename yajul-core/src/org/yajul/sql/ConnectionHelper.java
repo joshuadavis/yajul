@@ -5,6 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.yajul.log.LogUtil;
 import org.apache.log4j.Logger;
@@ -29,6 +33,7 @@ public class ConnectionHelper
 
     private Connection con;
     private Statement stmt;
+    private Map preparedStatements;     // A map of prepared statements.
     private DatabaseMetaData meta;
     private int rowsAffected;
 
@@ -43,6 +48,7 @@ public class ConnectionHelper
 
         this.con = con;
         this.rowsAffected = 0;
+        this.preparedStatements = new HashMap();
     }
 
     /**
@@ -73,6 +79,30 @@ public class ConnectionHelper
             }
         }
         return stmt;
+    }
+
+    /**
+     * Returns the cached prepared statement based on the SQL string.
+     * @param sql The SQL for the prepared statement.
+     * @return PreparedStatement - The prepared statement.
+     */
+    public PreparedStatement getPreparedStatement(String sql)
+    {
+        PreparedStatement ps = (PreparedStatement)preparedStatements.get(sql);
+        if (ps == null)
+        {
+            try
+            {
+                ps = con.prepareStatement(sql);
+                preparedStatements.put(sql,ps);
+            }
+            catch (SQLException e)
+            {
+                LogUtil.unexpected(log,e);
+                ps = null;
+            }
+        }
+        return ps;
     }
 
     /**
@@ -289,8 +319,42 @@ public class ConnectionHelper
                 LogUtil.unexpected(log,e);
             }
         }
+        int closed = 0;
+        for (Iterator iterator = preparedStatements.entrySet().iterator(); iterator.hasNext();)
+        {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            PreparedStatement ps = (PreparedStatement)entry.getValue();
+            try
+            {
+                ps.close();
+                closed++;
+            }
+            catch (SQLException e)
+            {
+                LogUtil.unexpected(log,e);
+            }
+        }
+        if (closed > 0)
+        {
+            if (log.isDebugEnabled())
+                log.debug("close() : " + closed + " prepared statement(s) closed.");
+        }
+        preparedStatements.clear();
         stmt = null;
         meta = null;
         con = null;
+    }
+
+    /**
+     * Called by the garbage collector on an object when garbage collection
+     * determines that there are no more references to the object.
+     * A subclass overrides the <code>finalize</code> method to dispose of
+     * system resources or to perform other cleanup.
+     * @throws Throwable the <code>Exception</code> raised by this method
+     */
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        close();
     }
 }

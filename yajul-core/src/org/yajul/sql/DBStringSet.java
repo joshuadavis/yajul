@@ -19,27 +19,24 @@ import java.util.Set;
  * Time: 5:14:45 PM
  * @author jdavis
  */
-public class DBIntegerSet extends DatabaseSet
+public class DBStringSet extends DatabaseSet
 {
     /**
      * The logger for this class.
      */
-    private static Logger log = LogUtil.getLogger(DBIntegerSet.class.getName());
-
-    // Assumes the target table has primary key that contains the
-    // foreign key of the container object, and the value itself.
+    private static Logger log = LogUtil.getLogger(DBStringSet.class.getName());
 
     /**
-     * Creates a new DBInteger set
+     * Creates a new DBStringSet
      * @param targetTableName The name of the table that will contain the
-     * sets of integers.
+     * sets of strings.
      * @param keyColumnName The key column, which identifies a particular set
      * of integers.
      * @param valueColumnName The value column, which contains the integer
      * values in the sets.
      * @param con The database connection.
      */
-    public DBIntegerSet(
+    public DBStringSet(
             String targetTableName,
             String keyColumnName,
             String valueColumnName,
@@ -47,29 +44,31 @@ public class DBIntegerSet extends DatabaseSet
     {
         super(targetTableName, keyColumnName, valueColumnName, con);
         // Ensure that the value column type is compatible with 'int'.
+/* TODO: Implement 'isStringType'
         ColumnMetaData md = getColumnMetadata(valueColumnName);
-        if (!md.isIntType())
+        if (!md.isStringType())
             throw new IllegalArgumentException(
                     "The type of column '" + valueColumnName
                     + "' in table '"
                     + targetTableName
-                    + "' is not compatible with the 'int' data type!");
+                    + "' is not compatible with the 'String' data type!");
+*/
     }
 
     /**
      * Reads all of the members of the set specified by the key.
      * @param key The key (id) of the set.
-     * @return int[] - The integers in the set.
+     * @return String[] - The strings in the set.
      */
-    public int[] select(Object key)
+    public String[] select(Object key)
     {
         ArrayList list = selectArrayList(key);
-        return ArrayUtil.toIntArray(list);
+        return (String[])list.toArray(new String[list.size()]);
     }
 
     protected void addElement(ArrayList list, ResultSet rs) throws SQLException
     {
-        list.add(new Integer(rs.getInt(1)));
+        list.add(rs.getString(1));
     }
 
     /**
@@ -79,11 +78,10 @@ public class DBIntegerSet extends DatabaseSet
      * @param values The new values for the set.
      * @throws SQLException If something went wrong.
      */
-    public void update(Object key, int[] values) throws SQLException
+    public void update(Object key, String[] values) throws SQLException
     {
         // Put the input values in a set.
         Set input = ArrayUtil.addToSet(values, new HashSet());
-
         if (input.size() != values.length)
         {
             // Issue a warning.
@@ -115,6 +113,6 @@ public class DBIntegerSet extends DatabaseSet
     protected void setValue(PreparedStatement preparedStatement, int paramIndex, Object value)
             throws SQLException
     {
-        preparedStatement.setInt(paramIndex, ((Integer) value).intValue());
+        preparedStatement.setString(paramIndex,(String) value);
     }
 }
