@@ -49,10 +49,6 @@
   </fileset>      
 </path>
 
-<taskdef name="quilt"
-         classname="junit.quilt.ant.AntQuiltRunner"
-         classpathref="quilt.classpath" />
-
 <target name="init" description="Initializes the build directories, etc.">
 <!--    <taskdef name="torque-sql"
       classname="org.apache.turbine.torque.TorqueSQLTask">
@@ -93,6 +89,12 @@
   </javac>
 </target>
 
+<target name="antlr" depends="init" description="Compiles ANTLR grammars.">
+      <antlr target="src/org/yajul/javaparser/java.g" />
+      <antlr target="src/org/yajul/javaparser/java.tree.g"/>
+</target>
+
+
 <target name="javadoc" depends="init" description="Generate javadoc">
   <mkdir dir="${javadoc.dir}"/>
   <javadoc packagenames="org.yajul.*"
@@ -103,7 +105,7 @@
            author="true"
            version="true"
            use="true"
-           windowtitle="WebCM API">
+           windowtitle="Java API Documentation">
     <!-- <doctitle><![CDATA[<h1>WebCM API</h1>]]></doctitle> -->
     <!-- <bottom><![CDATA[<i>Copyright &#169; 2001 PGMJSD, Inc. All Rights Reserved.</i>]]></bottom> -->
     <!--
@@ -149,26 +151,5 @@
   </zip>
 </target>
 
-
-<target name="quilt" description="Runs the 'quilt' coverage analyzer.">
-	<quilt reportdir="${reports.dir}"
-	       reporter="junit.quilt.reports.XMLSummary"
-	       packages="${package.prefix}"
-	       register="junit.quilt.cover.state.StateMachineRegistry"
-	       >
-	  <!--     register="junit.quilt.cover.ball94.B94Registry" -->
-	  <classpath>
-	  	<path refid="test.classpath"/>
-		  <fileset dir="${lib}">
-		    <include name="**/*.jar" />
-		  </fileset>    	  	
-	  </classpath>
-	
-	  <fileset dir="${test.classes}">
-	    <include name="**/PackageTests.class"/>
-	  </fileset>
-	</quilt>
-
-</target>
 
 </project>
