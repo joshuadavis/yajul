@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile"> 
+
+<!--
+*********************************
+                                *
+ENVIRONMENT AND PROPERTY SETUP  *
+                                *
+*********************************
+-->
+
+   <!-- Creates the directories necessary to the build -->
+   <target name="init">
+      <mkdir dir="build/classes"/>
+      <mkdir dir="doc/api"/>
+   </target>
+
+   <!-- create a path reference for the compilation class path -->
+   <path id="compile.class.path">
+        <fileset dir="lib">
+           <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+   <!-- create a path reference for the test class path -->
+   <path id="test.class.path">
+        <path refid="compile.class.path"/>
+        <pathelement location="build/classes"/>
+        <fileset dir="test/lib">
+           <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+<!--
+*********************************
+                                *
+ADMIN                           *
+                                *
+*********************************
+-->
+
+    <!-- Removes all the generated files -->
+    <target name="clean">
+        <delete dir="build"/>
+        <delete dir="doc/api"/>
+   </target>
+
+<!--
+*********************************
+                                *
+BUILD                           *
+                                *
+*********************************
+-->
+
+    <!-- Makes the classes and Javadoc-->
+    <target name="all" depends="compile,doc"/>
+   
+   <!-- Compiles the Java source -->
+   <target name="compile" depends="init"> 
+       <javac debug="true" destdir="build/classes" deprecation="on">
+           <src path="src"/>
+           <classpath refid="compile.class.path"/>
+      </javac>
+   </target>
+
+   <target name="doc" depends="init">
+       <javadoc destDir="doc/api"
+                packagenames="org.yajul.*"
+                sourcepath="src">
+          <classpath refid="compile.class.path"/>
+
+          <link href="http://java.sun.com/j2se/1.4/docs/api/"/>
+          <link href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api/"/>
+
+          <doctitle><![CDATA[<h1>Yajul</h1>]]></doctitle>
+          <bottom><![CDATA[<i>Copyright &#169; 2002 Yajul Developers</i>]]></bottom>
+
+          <group title="Util" packages="org.yajul.util*"/>
+
+        </javadoc>
+   </target>
+
+
+<!--
+****************************
+                           *
+TESTING                    *
+                           *
+****************************
+-->
+
+    <target name="makeTest">
+        <ant dir="test" target="compile"/>
+    </target>
+
+   <target name="test" depends="makeTest">
+        <ant dir="test" target="run"/>
+   </target>
+
+   <target name="cleanTestReport">
+        <ant dir="test" target="cleanReport"/>
+   </target>
+
+</project>
