@@ -1,4 +1,4 @@
-<project name="yajul" default="default">
+<project name="test-taskdefs" default="default">
 
 <!-- Global properties - Mostly absolute paths and other settings -->
 
@@ -16,7 +16,6 @@
 <property name="reports.dir" value="./report"/>         <!-- Build report directory -->
 <property name="package.prefix" value="org.yajul"/>	<!-- The base package for the project. -->
 <property name="tools.lib" value="./tools/lib"/>	<!-- Jars for ANT -->
-<property name="javadoc.dir" value="./docs/api"/>       <!-- Javadoc output -->
 
 <!-- The classpath for compilation -->
 <path id="compile.classpath">
@@ -30,7 +29,7 @@
   <pathelement location="${classes}" />
   <fileset dir="${lib}">
     <include name="**/*.jar" />
-  </fileset>    
+  </fileset>
 </path>
 
 <path id="test.classpath">
@@ -38,20 +37,13 @@
   <pathelement location="${test.classes}"/>
 </path>
 
-<path id="quilt.classpath">
-  <pathelement location="${tools.lib}/colt.jar" />
-  <pathelement location="${tools.lib}/quilt.jar" />
-  <pathelement location="${tools.lib}/bcel.jar" />
-  <pathelement location="${tools.lib}/graph.jar" />
-  <pathelement location="${tools.lib}/commons-collections.jar" />
-  <fileset dir="${lib}">
-    <include name="**/*.jar" />
-  </fileset>      
+<path id="yajul.classpath">
+  <path refid="runtime.classpath"/>
 </path>
 
-<taskdef name="quilt"
-         classname="junit.quilt.ant.AntQuiltRunner"
-         classpathref="quilt.classpath" />
+<taskdef name="coverage"
+         classname="org.yajul.ant.CoverageTask"
+         classpathref="yajul.classpath" />
 
 <target name="init" description="Initializes the build directories, etc.">
 <!--    <taskdef name="torque-sql"
@@ -94,12 +86,12 @@
 </target>
 
 <target name="javadoc" depends="init" description="Generate javadoc">
-  <mkdir dir="${javadoc.dir}"/>
-  <javadoc packagenames="org.yajul.*"
+  <mkdir dir="docs/api"/>
+  <javadoc packagenames="org.webcm.*"
            sourcepath="src"
            excludepackagenames="**.test.*"
            defaultexcludes="yes"
-           destdir="${javadoc.dir}"
+           destdir="docs/api"
            author="true"
            version="true"
            use="true"
@@ -110,7 +102,7 @@
     <group title="Group 1 Packages" packages="com.dummy.test.a*"/>
     <group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
     -->
-    <link offline="${javadoc.offline}" href="http://java.sun.com/products/jdk/1.4/docs/api/" packagelistLoc="${javadoc.package-lists}/jdk1.3-package-list"/>
+    <link offline="${javadoc.offline}" href="http://java.sun.com/products/jdk/1.3/docs/api/" packagelistLoc="${javadoc.package-lists}/jdk1.3-package-list"/>
     <link offline="${javadoc.offline}" href="http://java.sun.com/xml/jaxp/dist/1.1/docs/api/" packagelistLoc="${javadoc.package-lists}/jaxp1.1-package-list"/>
   </javadoc>
 </target>
@@ -126,10 +118,10 @@
       <formatter type="plain" />
 	  <batchtest todir="${reports.dir}">
 	    <fileset dir="${test.src}">
-	      <include name="**/PackageTests.java"/>
+	      <include name="**/*Test.java"/>
 	      <exclude name="**/AllTests.java"/>
 	    </fileset>
-	  </batchtest>      
+	  </batchtest>
     </junit>
 </target>
 
@@ -150,24 +142,24 @@
 </target>
 
 
-<target name="quilt" description="Runs the 'quilt' coverage analyzer.">
-	<quilt reportdir="${reports.dir}"
-	       reporter="junit.quilt.reports.XMLSummary"
-	       packages="${package.prefix}"
-	       register="junit.quilt.cover.state.StateMachineRegistry"
-	       >
-	  <!--     register="junit.quilt.cover.ball94.B94Registry" -->
+<target name="coverage">
+	<coverage>
 	  <classpath>
 	  	<path refid="test.classpath"/>
 		  <fileset dir="${lib}">
 		    <include name="**/*.jar" />
-		  </fileset>    	  	
+		  </fileset>
 	  </classpath>
-	
-	  <fileset dir="${test.classes}">
-	    <include name="**/PackageTests.class"/>
-	  </fileset>
-	</quilt>
+      <test dir="test_src">
+        <include name="**/PackageTests.java"/>
+      </test>
+      <test dir="src">
+        <include name="**/PackageTests.java"/>
+      </test>
+      <target dir="src">
+        <include name="**/*.java"/>
+      </target>
+	</coverage>
 
 </target>
 
