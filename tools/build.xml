@@ -1,0 +1,34 @@
+<project name="yajul">
+
+	<property environment="env"/>
+	<property name="cvs.compression" value="9"/>
+	<property name="cvs.root" value="${env.CVSROOT}"/>
+	<property name="cvs.rsh" value="${env.CVS_RSH}"/>
+	<property name="yajul.dir" value="${basedir}/.."/>
+
+	<target name="-init">
+	</target>
+
+        <target name="boot" description="Update the /tools directory from CVS">
+		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}"
+			dest="${yajul.dir}" package="tools"/>
+	</target>
+
+	<target name="checkout" description="Update all of the source code from CVS">
+		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}"
+			dest="${yajul.dir}" package="yajul-main"/>
+                
+		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}"
+			dest="${yajul.dir}" package="yajul-core"/>
+	</target>
+
+	<target name="build">
+		<ant antfile="${yajul.dir}/yajul-core/build.xml" inheritall="false" target="full"/>
+	</target>
+
+	<target name="clean" description="Removes all source code and builds.">
+		<delete dir="${yajul.dir}/yajul-core" failonerror="false"/>
+		<delete dir="${yajul.dir}/yajul-main" failonerror="false"/>
+	</target>
+
+</project>
