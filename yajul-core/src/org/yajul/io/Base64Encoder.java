@@ -111,6 +111,16 @@ public class Base64Encoder
     }
 
     /**
+     * A static utility method that encodes an array of bytes.
+     * @param bytes    The input to be encoded.
+     */
+    public static final String encode(byte[] bytes)
+    {
+        Base64Encoder enc = new Base64Encoder(bytes);
+        return enc.processString();
+    }
+
+    /**
      * Create a new Base64 encoder, to encode the given string.
      * @param input The String to be encoded.
      */
@@ -127,9 +137,16 @@ public class Base64Encoder
                     "[Constructor] Unable to convert" +
                     "properly char to bytes");
         }
-        this.stringp = true;
-        this.in = new ByteArrayInputStream(bytes);
-        this.out = new ByteArrayOutputStream();
+        init(bytes);
+    }
+
+    /**
+     * Create a new Base64 encoder, to encode the given array of bytes.
+     * @param bytes The String to be encoded.
+     */
+    public Base64Encoder(byte[] bytes)
+    {
+        init(bytes);
     }
 
     /**
@@ -143,4 +160,12 @@ public class Base64Encoder
         this.out = out;
         this.stringp = false;
     }
+
+    private void init(byte[] bytes)
+    {
+        this.stringp = true;
+        this.in = new ByteArrayInputStream(bytes);
+        this.out = new ByteArrayOutputStream();
+    }
+
 }
