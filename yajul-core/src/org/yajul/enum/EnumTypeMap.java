@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.io.InputStream;
 
 import org.yajul.xml.DOMUtil;
-import org.yajul.log.LogUtil;
 import org.yajul.util.InitializationError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
