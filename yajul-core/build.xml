@@ -17,27 +17,29 @@
     <property name="test.class.dir" value="${build.dir}/test_classes"/>
     <property name="test.log.dir" value="${build.dir}/test/log"/>
     <property name="junit.dir" value="${test.log.dir}"/>
-
+    <property name="lib.dir" value="${basedir}/lib"/>
+    
     <path id="compile.classpath">
-        <pathelement path="${basedir}/lib/xml-apis.jar:${basedir}/lib/xercesImpl.jar:${basedir}/lib/xalan.jar"/>
-        <pathelement path="${basedir}/lib/log4j-1.2.7.jar"/>
-        <pathelement path="${basedir}/lib/jdbc2_0-stdext.jar"/>
-        <pathelement path="${basedir}/lib/spring.jar"/>
+        <pathelement path="${lib.dir}/xml-apis.jar:${lib.dir}/xercesImpl.jar:${lib.dir}/xalan.jar"/>
+        <pathelement path="${lib.dir}/log4j-1.2.7.jar"/>
+        <pathelement path="${lib.dir}/jdbc2_0-stdext.jar"/>
+        <pathelement path="${lib.dir}/spring.jar"/>
     </path>
 
     <path id="test.classpath">
         <path refid="compile.classpath"/>
-        <pathelement path="${basedir}/lib/junit.jar"/>
+        <pathelement path="${lib.dir}/junit.jar"/>
         <pathelement location="${main.class.dir}"/>
-        <pathelement path="${basedir}/lib/jdepend.jar"/>
+        <pathelement path="${lib.dir}/jdepend.jar"/>
     </path>
 
     <path id="test.runtime.classpath">
         <path refid="test.classpath"/>
         <pathelement location="${test.class.dir}"/>
         <!-- Required for testing -->
-        <pathelement path="${basedir}/lib/hsqldb.jar"/>
+        <pathelement path="${lib.dir}/hsqldb.jar"/>
         <pathelement path="${basedir}/test_data/resources"/>
+        <pathelement path="${lib.dir}/commons-logging.jar"/>
     </path>
 
     <patternset id="test.files">
