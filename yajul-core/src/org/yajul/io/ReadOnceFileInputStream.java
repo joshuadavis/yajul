@@ -8,7 +8,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * A FileInputStream that erases the underlying file when the stream is closed.
+ * A FileInputStream that erases the underlying file when the stream is closed.  Useful when the application
+ * needs a temporary file that is erased after it is fully read.
  * <hr>
  * User: jdavis<br>
  * Date: May 17, 2004<br>
