@@ -137,7 +137,7 @@
             basedir="${main.class.dir}"/>
     </target>
 
-    <target name="dist.source" depends="init">
+    <target name="dist.source" depends="init" description="Builds the source distribution file.">
         <!-- Zip up all of the source files -->
         <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
             <fileset dir=".">
