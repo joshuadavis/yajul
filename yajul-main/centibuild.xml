@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="stylesheets/build.xsl"?>
+
 <project default="interactive" basedir="." name="project build file">
 	
 	
@@ -93,11 +95,11 @@
 
     </target>
     
-    <target name="all" depends="clean, code, metrics, docs, dist"/>
+    <target name="all" depends="clean, code, docs, dist"/>
     	
     <target name="code" depends="compile,test,package"/>
     <target name="metrics" depends="checkstyle,report,jdepend-xdoc"/>
-    <target name="docs" depends="javasrc,javadocs,umljavadocs,xjavadocs,descriptor-docs,forrest.docs"/>
+    <target name="docs" depends="metrics,javasrc,javadocs,umljavadocs,xjavadocs,descriptor-docs,site"/>
 
     <!-- ================================== -->
     <!--        Target used by Gump         -->

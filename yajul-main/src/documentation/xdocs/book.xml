@@ -20,13 +20,13 @@
   </menu>
 
   <menu label="Code">
-    <menu-item label="Javadocs"               href="javadocs/"/>   
-    <menu-item label="UML+Javadocs"           href="umldoclet/"/>   
-    <menu-item label="Java Source Ref"        href="javasrc/"/>
+    <menu-item label="Build System"           href="centipede/index.html"/>
+    <menu-item label="Javadocs"               href="javadocs/index.html"/>   
+    <menu-item label="UML+Javadocs"           href="umldoclet/index.html"/>   
+    <menu-item label="Java Source Ref"        href="javasrc/index.html"/>
     <menu-item label="Code Style Checks"      href="checkstyle/index.html"/> 
     <menu-item label="Dependencies"           href="jdepend/index.html"/> 
-    <menu-item label="Unit tests"             href="junit/"/>
-    <menu-item label="Cents"                  href="centipede/index.html"/>    
+    <menu-item label="Unit tests"             href="junit/index.html"/>
     <menu-item label="Browse CVS"     	      href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/yajul/yajul-main/"/> 
   </menu>
 
