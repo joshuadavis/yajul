@@ -83,22 +83,61 @@ public class ReflectionUtil
      */
     public static boolean isPropertyGetter(Method method)
     {
+        return getterPropertyName(method) != null;
+    }
+
+    /**
+     * Returns the name of the property IFF the method is a property getter, or null if the
+     * method is not a getter.
+     * @param method The method.
+     * @return the name of the property IFF the method is a property getter, or null if the
+     * method is not a getter.
+     */
+    public static String getterPropertyName(Method method)
+    {
         // It can't be a getter if it has a void return type.
         Class returnType = method.getReturnType();
         if (returnType.equals(Void.TYPE))
-            return false;
+            return null;
         // It can't be a getter if it has parameters.
         if (method.getParameterTypes().length != 0)
-            return false;
+            return null;
         // It can't be a getter if it's static.
         if (Modifier.isStatic(method.getModifiers()))
-            return false;
+            return null;
         String name = method.getName();
-        if (name.startsWith("get"))
-            return true;
+        if (name.startsWith("get") && (!name.equals("getClass")))
+            return methodNameAsPropertyName(name,3);
         else if (name.startsWith("is") && (returnType.equals(Boolean.TYPE) || returnType.equals(Boolean.class)))
-            return true;
+            return methodNameAsPropertyName(name,2);
         else
-            return false;
+            return null;
+    }
+
+    /**
+     * Returns the name of the property IFF the method is a property setter, or null if the
+     * method is not a setter.
+     * @param method The method.
+     * @return the name of the property IFF the method is a property setter, or null if the
+     * method is not a setter.
+     */
+    public static String setterPropertyName(Method method)
+    {
+        // It can't be a setter if it has no parameters.
+        if (method.getParameterTypes().length == 0)
+            return null;
+        // It can't be a setter if it's static.
+        if (Modifier.isStatic(method.getModifiers()))
+            return null;
+        String name = method.getName();
+        if (name.startsWith("set"))
+            return methodNameAsPropertyName(name,3);
+        else
+            return null;
+    }
+
+    private static String methodNameAsPropertyName(String name,int prefixLength)
+    {
+        return Character.toLowerCase(name.charAt(prefixLength)) + name.substring(prefixLength+1);
     }
 }
