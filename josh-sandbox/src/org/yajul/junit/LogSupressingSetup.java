@@ -12,6 +12,7 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import org.apache.log4j.Category;
 import org.apache.log4j.Priority;
+import org.yajul.log.Logger;
 
 public class LogSupressingSetup extends TestSetup
 {
@@ -23,6 +24,7 @@ public class LogSupressingSetup extends TestSetup
     protected void setUp() throws Exception
     {
         super.setUp();
-        Category.getRoot().setPriority(Priority.ERROR);
+        // Logger.getLogger(LogSupressingSetup.class).debug("Setting logging level to 'ERROR'...");
+        Logger.getRootLogger().setLevel(Logger.LEVEL_ERROR);
     }
 }

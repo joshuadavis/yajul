@@ -69,7 +69,7 @@ public class Logger extends Writer
      */
     private Logger(String categoryName)
     {
-        log = Category.getInstance(categoryName);
+        log = (categoryName == null || categoryName.length() == 0) ? Category.getRoot() : Category.getInstance(categoryName);
         printWriter = new PrintWriter(this);
         lineBuffer = new StringBuffer();
     }
@@ -278,6 +278,7 @@ public class Logger extends Writer
                     ConsoleAppender console = new ConsoleAppender(layout);
                     BasicConfigurator.configure(console);
                     configured = true;
+//                    Category.getInstance(Logger.class).debug("Default Logger configuration.");
 //                  UNUSED:  loglogger.setPriority(Priority.INFO);
                 } // if
             } // synchronized
