@@ -9,9 +9,12 @@ import java.sql.PreparedStatement;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 import org.yajul.log.LogUtil;
 import org.apache.log4j.Logger;
+
+import javax.sql.DataSource;
 
 /**
  * Provides helper methods that make using JDBC connections simpler.
@@ -84,17 +87,46 @@ public class ConnectionHelper
     }
 
     /**
+     * Create a connection helper without setting a connection.  Before the helper can be used,
+     * setConnection(Connection) must be called.
+     */
+    public ConnectionHelper()
+    {
+    }
+
+    /**
      * Creates a connection helper for the given connection.
      * @param con The connection.
      */
     public ConnectionHelper(Connection con)
     {
+        setConnection(con);
+    }
+
+    /**
+     * Sets the underlying connection for this helper.
+     * @param con The underlying JDBC connection.
+     */
+    public void setConnection(Connection con)
+    {
         if (con == null)
             throw new IllegalArgumentException("Connection cannot be null!");
-
+        close();
         this.con = con;
         this.rowsAffected = 0;
-        this.preparedStatements = new HashMap();
+        if (this.preparedStatements == null)
+            this.preparedStatements = new HashMap();
+    }
+
+    /**
+     * Sets the connection for the helper from the given data source.
+     * @param ds The data source.
+     * @throws SQLException if a connection could not be obtained.
+     */
+    public void setConnection(DataSource ds) throws SQLException
+    {
+        Connection connection = ds.getConnection();
+        setConnection(connection);
     }
 
     /**
@@ -182,6 +214,51 @@ public class ConnectionHelper
     }
 
     /**
+     * Returns an array of all table names in the database.
+     */
+    public String[] getTableNames() throws SQLException
+    {
+        DatabaseMetaData md = getMetaData();
+        ResultSet rs = null;
+        ArrayList list = new ArrayList();
+        try
+        {
+            rs = md.getTables(null,null,null,null);
+            while (rs.next())
+            {
+                String name = rs.getString(TABLE_NAME_INDEX);
+                list.add(name);
+            } // while
+            return (String[]) list.toArray(new String[list.size()]);
+        }
+        finally
+        {
+            close(null,null,rs);
+        }
+    }
+
+    public String[] getColumnNames(String tableName) throws SQLException
+    {
+        DatabaseMetaData md = getMetaData();
+        ResultSet rs = null;
+        ArrayList list = new ArrayList();
+        try
+        {
+            rs = md.getColumns(null,null,tableName,null);
+            while (rs.next())
+            {
+                String name = rs.getString(COLUMN_NAME_INDEX);
+                list.add(name);
+            } // while
+            return (String[]) list.toArray(new String[list.size()]);
+        }
+        finally
+        {
+            close(null,null,rs);
+        }
+    }
+
+    /**
      * Returns the column meta data for the given column in the given table.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
@@ -221,17 +298,7 @@ public class ConnectionHelper
         }
         finally
         {
-            if (rs != null)
-            {
-                try
-                {
-                    rs.close();
-                }
-                catch (SQLException e)
-                {
-                    LogUtil.unexpected(log,e);
-                }
-            }
+            close(null,null,rs);
         }
         return null;
     }
@@ -265,17 +332,7 @@ public class ConnectionHelper
         }
         finally
         {
-            if (rs != null)
-            {
-                try
-                {
-                    rs.close();
-                }
-                catch (SQLException e)
-                {
-                    LogUtil.unexpected(log,e);
-                }
-            }
+            close(null,null,rs);
         }
         return false;
     }
@@ -366,26 +423,29 @@ public class ConnectionHelper
             }
         }
         int closed = 0;
-        for (Iterator iterator = preparedStatements.entrySet().iterator(); iterator.hasNext();)
+        if (preparedStatements != null)
         {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            PreparedStatement ps = (PreparedStatement)entry.getValue();
-            try
+            for (Iterator iterator = preparedStatements.entrySet().iterator(); iterator.hasNext();)
             {
-                ps.close();
-                closed++;
+                Map.Entry entry = (Map.Entry) iterator.next();
+                PreparedStatement ps = (PreparedStatement)entry.getValue();
+                try
+                {
+                    ps.close();
+                    closed++;
+                }
+                catch (SQLException e)
+                {
+                    LogUtil.unexpected(log,e);
+                }
             }
-            catch (SQLException e)
-            {
-                LogUtil.unexpected(log,e);
-            }
+            preparedStatements.clear();
         }
         if (closed > 0)
         {
             if (log.isDebugEnabled())
                 log.debug("close() : " + closed + " prepared statement(s) closed.");
         }
-        preparedStatements.clear();
         stmt = null;
         meta = null;
         con = null;
@@ -403,4 +463,5 @@ public class ConnectionHelper
         super.finalize();
         close();
     }
+
 }
