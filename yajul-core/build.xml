@@ -69,11 +69,16 @@
         <mkdir dir="${dist.dir}"/>
     </target>
 
-    <target name="clean" depends="init">
+    <target name="clean.classes">
         <delete includeEmptyDirs="true" failonerror="false">
             <fileset dir="${main.class.dir}"/>
-            <fileset dir="${main.jar.dir}"/>
             <fileset dir="${test.class.dir}"/>
+        </delete>
+    </target>
+
+    <target name="clean" depends="init,clean.classes">
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="${main.jar.dir}"/>
             <fileset dir="${test.log.dir}"/>
             <fileset dir="${build.dir}"/>
         </delete>
@@ -226,15 +231,21 @@
 
     <target name="report.html" depends="with.clover">
        <clover-report>
-          <current outfile="clover_html" title="YAJUL core test coverage">
+          <current outfile="${build.dir}/clover_html" title="YAJUL core test coverage">
              <format type="html"/> 
           </current>	 
        </clover-report>
     </target>
     
     <target name="docs" depends="junit.report,javadoc,jdepend"/>
-    
+        
+    <target name="recompile" depends="clean.classes,compile,compile.tests"/>
+        
     <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs">
+        <antcall target="with.clover"/>
+        <antcall target="recompile"/>
+        <antcall target="test"/>
+        <antcall target="report.html"/>
     </target>
 
     <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests,test"
