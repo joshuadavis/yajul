@@ -39,6 +39,15 @@ package org.yajul.util;
 public interface DateFormatConstants
 {
     /**
+     * ISO 8601 date format yyyy-MM-dd.
+     * A formatting string for java.text.SimpleDateFormat that
+     * will allow parsing and formatting of ISO 8601 date strings
+     * with year, month, and day specified.
+     */
+    public final static String ISO8601_DATE_FORMAT =
+            "yyyy-MM-dd";
+
+    /**
      * Complete date plus hours, minutes, seconds and a decimal fraction of a
      * second.
      */
@@ -46,8 +55,10 @@ public interface DateFormatConstants
             "yyyy-MM-dd'T'HH:mm:ss.S";
 
     /**
-     * ISO 8601 date format yyyy-MM-dd.
-     */
-    public final static String ISO8601_DATE_FORMAT =
-            "yyyy-MM-dd";
+     * A formatting string for java.text.SimpleDateFormat that
+     * will allow parsing and formatting of ISO 8601 date strings
+     * with all UTC fields specified.
+     **/
+    public static final String ISO8601_UTC_FORMAT =
+            "yyyy-MM-dd'T'hh:mm:ss,SSS'Z'";
 }

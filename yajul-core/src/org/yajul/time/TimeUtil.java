@@ -30,6 +30,16 @@ public class TimeUtil
     }
 
     /**
+     * Returns the current date, at midnight (GMT time zone).
+     * @return A java.util.Date, with the hours, minutes, seconds, and milliseconds
+     * set to zero.
+     */
+    public static final Date todayGMT()
+    {
+        return new Date(startOfDayGMT(System.currentTimeMillis()));
+    }
+
+    /**
      * Similar to the <code>Math.floor</code> method, but for
      * <code>java.util.Calendar</code> objects.
      * Precision is specified with a <code>Calendar</code> field.  For example,
@@ -98,18 +108,47 @@ public class TimeUtil
     }
 
     /**
-     * Calculates the number of 24 hour days between two timestamps.
+     * Calculates the number of 24 hour days between two timestamps, rounded up.
      * @param start The start time.
      * @param end The end time.
      * @return the number of 24 hour days between two timestamps.
      */
     public static final int daysBetween(long start, long end)
     {
-        long d = end - start;
-        int days = (int)(d / MILLIS_PER_DAY);
-        if (d % MILLIS_PER_DAY != 0)
-            days += (d >= 0) ? 1 : -1;
-        return days;
+        return numberOfUnits(end - start, MILLIS_PER_DAY);
+    }
+
+    /**
+     * Calculates the number of minutes between two timestamps, rounded up.
+     * @param start The start time.
+     * @param end The end time.
+     * @return the number of hours between two timestamps.
+     */
+    public static final int hoursBetween(long start, long end)
+    {
+        return numberOfUnits(end - start, MILLIS_PER_HOUR);
+    }
+
+    /**
+     * Calculates the number of minutes between two timestamps, rounded up.
+     * @param start The start time.
+     * @param end The end time.
+     * @return the number of minutes between two timestamps.
+     */
+    public static final int minutesBetween(long start, long end)
+    {
+        return numberOfUnits(end - start, MILLIS_PER_MINUTE);
+    }
+
+    /**
+     * Calculates the number of seconds between two timestamps, rounded up.
+     * @param start The start time.
+     * @param end The end time.
+     * @return the number of seconds between two timestamps.
+     */
+    public static final int secondsBetween(long start, long end)
+    {
+        return numberOfUnits(end - start, MILLIS_PER_SECOND);
     }
 
     /**
@@ -122,5 +161,13 @@ public class TimeUtil
     public static final long elapsedMillis(Date time)
     {
         return System.currentTimeMillis() - (time == null ? 0 : time.getTime());
+    }
+
+    private static int numberOfUnits(long d, long millisPerUnit)
+    {
+        int units = (int)(d / millisPerUnit);
+        if (d % millisPerUnit != 0)
+            units += (d >= 0) ? 1 : -1;
+        return units;
     }
 }

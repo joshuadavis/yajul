@@ -80,8 +80,16 @@ public class TimeUtilTest extends TestCase
         cal.add(Calendar.DAY_OF_YEAR,-1);
         long days = TimeUtil.daysBetween(cal.getTime().getTime(),dateMillis);
         assertEquals(1,days);
+    }
 
-        System.out.println("days = " + days);
-
+    public void testStartGMT()
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT"));
+        long now = c.getTimeInMillis();
+        TimeUtil.floorCalendar(c,Calendar.DAY_OF_YEAR);
+        long startOfDay = c.getTimeInMillis();
+        long s = TimeUtil.startOfDayGMT(now);
+        assertEquals(startOfDay,s);
     }
 }
