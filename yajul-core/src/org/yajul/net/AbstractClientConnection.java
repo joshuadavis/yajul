@@ -94,7 +94,6 @@ public abstract class AbstractClientConnection
             }
             socket = null;
         }
-        socket = null;
         onClose();
     }
 
