@@ -7,7 +7,9 @@ package org.yajul.util;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.framework.Test;
 import org.yajul.log.Logger;
+import org.yajul.junit.LogSupressingSetup;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -147,11 +149,11 @@ public class PoolTest extends TestCase
         }
     }
 
-    public static TestSuite suite()
+    public static Test suite()
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new PoolTest("allocate"));
-        return suite;
+        return new LogSupressingSetup(suite);
     }
 
 }

@@ -13,6 +13,7 @@
 <property name="dist.home" value="./dist"/>
 <property name="dist.temp" value="${dist.home}/temp"/>
 <property name="www" value="./www"/>
+<property name="build.report" value="./report"/>
 
 <!-- The classpath for compilation -->
 <path id="compile.classpath">
@@ -46,6 +47,7 @@
     <mkdir dir="${dist.home}"/>
     <mkdir dir="${classes}"/>
     <mkdir dir="${dist.temp}"/>
+    <mkdir dir="${build.report}"/>
     <tstamp/>
     <echo>Build project initialized: ${DSTAMP} ${TSTAMP}</echo>
 </target>
@@ -107,7 +109,12 @@
     <junit printsummary="yes" fork="yes" haltonfailure="yes">
       <classpath refid="test.classpath"/>
       <formatter type="plain" />
-      <test name="org.pgmjsd.cache.CacheTest" />
+	  <batchtest todir="${build.report}">
+	    <fileset dir="${test.src}">
+	      <include name="**/*Test.java"/>
+	      <exclude name="**/AllTests.java"/>
+	    </fileset>
+	  </batchtest>      
     </junit>
 </target>
 
