@@ -165,8 +165,7 @@
 	  </classpath>
 	
 	  <fileset dir="${test.classes}">
-	    <include name="**/*Test.class"/>
-	    <include name="**/AllTests.class" />
+	    <include name="**/PackageTests.class"/>
 	  </fileset>
 	</quilt>
 
