@@ -67,34 +67,34 @@ public class SchedulerTest extends TestCase
                 when.getTime(), Calendar.SECOND, 3,
                 new TestJobRunnable());
         System.out.println("---> Add JobEntry1");
-        ts.addJob(t1);
+        ts.add(t1);
 
         when.add(Calendar.SECOND, 1);
         ScheduleEntry t2 = new ScheduleEntry(ts, null,
                 when.getTime(), Calendar.SECOND, 2,
                 new TestJobRunnable());
         System.out.println("---> Add JobEntry2");
-        ts.addJob(t2);
+        ts.add(t2);
 
         System.out.println("---> Sleeping (1) ...");
         Thread.sleep(15000);
         System.out.println("---> Remove JobEntry1");
-        ts.removeJob(t1);
+        ts.remove(t1);
         System.out.println("---> Sleeping (2) ...");
         Thread.sleep(5000);
         System.out.println("---> Remove JobEntry2");
-        ts.removeJob(t2);
+        ts.remove(t2);
 
         System.out.println("---> Sleeping (3) ...");
         Thread.sleep(5000);
         System.out.println("---> Add JobEntry2 (no overlap)");
-        t2.setOverlap(false);
-        ts.addJob(t2);
+        t2.getAttributes().setOverlap(false);
+        ts.add(t2);
         System.out.println("---> Sleeping (4) ...");
         Thread.sleep(5000);
         System.out.println("---> Shutdown");
         ts.shutdown();
-        t2.setOverlap(true);
+        t2.getAttributes().setOverlap(true);
 
         System.out.println("---> Restart");
         ts.start();

@@ -33,7 +33,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 
 /**
- * Internal class that ScheduleEntry uses to launch runnable jobs.
+ * Internal class that ScheduleEntry uses to launch runnable iterator.
  */
 class Monitor extends Thread
 {
@@ -65,13 +65,13 @@ class Monitor extends Thread
     }
 
     /**
-     * Starts any jobs that need to be run.  Returns the minimum delay until the next
+     * Starts any iterator that need to be run.  Returns the minimum delay until the next
      * job needs to run.
      */
     private long startJobs()
     {
         // Look for the next ScheduleEntry execution in the list.
-        Iterator iter = scheduler.jobs();
+        Iterator iter = scheduler.iterator();
         long now = System.currentTimeMillis();
         long minimum = MAXIMUM_WAIT;     // The minimum wait time.
 
@@ -79,20 +79,23 @@ class Monitor extends Thread
         while (iter.hasNext())              // Iterate through all schedule entries...
         {
             ScheduleEntry entry = (ScheduleEntry) iter.next();
+            String name = entry.getAttributes().getName();
 
-            if (!entry.isEnabled())                 // Skip disabled jobs.
+            boolean enabled = entry.getAttributes().isEnabled();
+            if (!enabled)                   // Skip disabled iterator.
                 continue;
 
             // Calculate the wait time for the entry.
-            long waitTime = entry.getNextTime().getTime() - now;
+            long waitTime = entry.getAttributes().getNextTime().getTime() - now;
             // If the job should be running now, then try to start it...
-            if (waitTime <= 0)                      // Should job be executing now?
+            if (waitTime <= 0)              // Should job be executing now?
             {
-                if (!entry.allowsOverlap() && // If the job does not allow overlap,
-                        entry.isRunning())              // and the job is running....
+                boolean overlap = entry.getAttributes().allowsOverlap();
+                if (!overlap &&             // If the job does not allow overlap,
+                        entry.isRunning())  // and the job is running....
                 {
                     // Re-schedule this job at the next interval.
-                    // m_log.log(Log.WARNING,"Overlap detected, re-scheduling " + entry.getName(),this.getClass().getName(),"run()");
+                    log.info("Overlap detected, re-scheduling " + name);
                     entry.overlap();
                 }
                 else
@@ -105,7 +108,7 @@ class Monitor extends Thread
                         entry.reschedule();
                 }
                 // Re calculate the wait time based on the new schedule.
-                waitTime = entry.getNextTime().getTime() - now;
+                waitTime = entry.getAttributes().getNextTime().getTime() - now;
             }
 
             if (minimum > waitTime)                 // New minimum?
@@ -128,7 +131,7 @@ class Monitor extends Thread
             boolean loop = true;
             while (loop)
             {
-                // Start any pending jobs and get the minimum wait time.
+                // Start any pending iterator and get the minimum wait time.
                 long waitTime = startJobs();
 
                 // If the wait time is very small, go back to the top of the loop.
@@ -138,7 +141,7 @@ class Monitor extends Thread
                 synchronized (this)
                 {
                     //m_log.println("Waiting for "+waitTime+"ms ...");
-                    // Wait for the specified minimum wait time, or for any new jobs.
+                    // Wait for the specified minimum wait time, or for any new iterator.
                     notified = false;
                     // Give derived classes a chance to do something before waiting.
                     scheduler.idle(waitTime);
@@ -180,16 +183,16 @@ class Monitor extends Thread
             // Notify all entries that a shutdown is happening.
             try
             {
-                Iterator iter = scheduler.jobs();
+                Iterator iter = scheduler.iterator();
                 while (iter.hasNext())
                 {
                     ScheduleEntry entry = (ScheduleEntry) iter.next();
-                    entry.getJobRunnable().shutdown(entry);
+                    entry.getScheduledTask().shutdown(entry);
                 }
             }
             catch (Exception ex)
             {
-                log.error("Unexpected exception thrown while shutting down jobs!",ex);
+                log.error("Unexpected exception thrown while shutting down iterator!",ex);
             }
             log.info("Job scheduler stopped.");
         }

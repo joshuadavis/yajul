@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 /**
- * This class executes a set of jobs on muliple threads according to a
+ * This class executes a set of iterator on muliple threads according to a
  * time table.  Each entry in the time table is specified as an instance
  * of ScheduleEntry.
  * <ul>
@@ -61,7 +61,7 @@ import java.util.Iterator;
  *       ScheduleEntry e = new ScheduleEntry(aScheduler,null,
  *           when.getTime(),Calendar.SECOND,3,      // Execute every 3 seconds after 5 seconds from now.
  *           someTask);
- *       aScheduler.addJob(e);
+ *       aScheduler.add(e);
  * </pre>
  */
 public class Scheduler
@@ -77,6 +77,8 @@ public class Scheduler
     private Monitor monitor;
     /** Format for displaying timestamps. **/
     private DateFormat timeFormat;
+    /** Entry id generation. **/
+    private long nextId;
 
     /**
      * Creates a new Scheduler using the specified log file.
@@ -122,31 +124,32 @@ public class Scheduler
     }
 
     /**
-     * Adds a new schedule entry to the schedulers list of jobs.  If the
+     * Adds a new schedule entry to the schedulers list of iterator.  If the
      * scheduler is starting.
-     * @param jobEntry New job entry for the scheduler.
+     * @param entry New job entry for the scheduler.
      * @exception java.lang.Exception An exception is thrown when a duplicate job entry is added.
      */
-    public void addJob(ScheduleEntry jobEntry) throws Exception
+    public void add(ScheduleEntry entry) throws Exception
     {
         synchronized (this)
         {
-            log.info("Adding " + jobEntry.getName() + " at "
-                    + timeFormat.format(jobEntry.getNextTime()));
-            schedule.add(jobEntry);
+            log.info("Adding " + entry.getAttributes().getName() + " at "
+                    + timeFormat.format(entry.getAttributes().getNextTime()));
+            schedule.add(entry);
         }
     }
 
     /**
      * Removes a scheduled job entry from the list.
-     * @param jobEntry
+     * @param entry
      */
-    public void removeJob(ScheduleEntry jobEntry)
+    public void remove(ScheduleEntry entry)
     {
         synchronized (this)
         {
-            log.info("Removing " + jobEntry.getName() + " at " + timeFormat.format(jobEntry.getNextTime()));
-            schedule.remove(jobEntry);
+            log.info("Removing " + entry.getAttributes().getName() + " at "
+                    + timeFormat.format(entry.getAttributes().getNextTime()));
+            schedule.remove(entry);
         }
     }
 
@@ -180,7 +183,7 @@ public class Scheduler
      * @return The enumeration of schedule entries currently known to the
      * scheduler.
      */
-    public Iterator jobs()
+    public Iterator iterator()
     {
         if (schedule != null)
             return schedule.iterator();
@@ -197,7 +200,7 @@ public class Scheduler
     }
 
     /**
-     * Sets the list of jobs for the scheduler.
+     * Sets the list of iterator for the scheduler.
      */
     public void setSchedule(Schedule list)
     {
@@ -205,5 +208,15 @@ public class Scheduler
             schedule.stop(this);
         schedule = list;
         refresh();
+    }
+
+    public long nextId()
+    {
+        synchronized (this)
+        {
+            long rv = nextId;
+            nextId++;
+            return rv;
+        }
     }
 }
