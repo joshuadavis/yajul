@@ -85,6 +85,8 @@ public class DocumentArchiver
      */
     public void setStoreageDirectory(File storeageDirectory)
     {
+        if (storeageDirectory == null)
+            throw new IllegalArgumentException("Storeage directory cannot be null!");
         if (storeageDirectory.exists() && !storeageDirectory.isDirectory())
             throw new IllegalArgumentException(storeageDirectory.toString() + " is not a directory!");
         this.storeageDirectory = storeageDirectory;
@@ -105,6 +107,8 @@ public class DocumentArchiver
      */
     public void setExtension(String extension)
     {
+        if (extension == null)
+            throw new IllegalArgumentException("Extension cannot be null!");
         this.extension = extension;
     }
 
@@ -116,6 +120,15 @@ public class DocumentArchiver
     public List getRetrieveDirectories()
     {
         return retrieveDirectories;
+    }
+
+    /**
+     * Returns the number of retrieval directories.
+     * @return the number of retrieval directories.
+     */
+    public int getRetrieveDirectoryCount()
+    {
+        return (retrieveDirectories == null) ? 0 : retrieveDirectories.size();
     }
 
     /**
@@ -167,17 +180,17 @@ public class DocumentArchiver
         this.buffered = buffered;
     }
 
-
     /**
      * Initializes the bean.
      * @throws IOException if something goes wrong.
      */
     public void init() throws IOException
-
     {
         log.info("init() : ENTER");
         try
         {
+            if (storeageDirectory == null)
+                throw new IllegalStateException("Storeage directory has not been set!");
             if (storeageDirectory.exists())
             {
                 if (!storeageDirectory.isDirectory())
@@ -264,7 +277,8 @@ public class DocumentArchiver
         try
         {
             Source source = getSource(subDirectory, fileName);
-            log.info("retrieveObject() : " + source.getFilename());
+            if (log.isDebugEnabled())
+                log.debug("retrieveObject() : " + source.getFilename());
             ObjectInputStream ois = new ObjectInputStream(source.getStream());
             Object o = ois.readObject();
             if (log.isDebugEnabled())
@@ -303,6 +317,8 @@ public class DocumentArchiver
     public Sink getSink(String subDirectory, Object id, Date date)
             throws IOException
     {
+        if (storeageDirectory == null)
+            throw new IOException("Storeage directory cannot be null!  (Did you forget to invoke setStoreageDirectory()?)");
         String fileName = generateFileName(id, date);
         // If a storeage sub-directory was specified, use it.
         File dir = getSubDirectory(storeageDirectory, subDirectory);
@@ -389,6 +405,9 @@ public class DocumentArchiver
      */
     public Source getSource(String subDirectory, String fileName) throws IOException
     {
+        if (storeageDirectory == null)
+            throw new IOException("Storeage directory cannot be null!  (Did you forget to invoke setStoreageDirectory()?)");
+
         // If a storeage sub-directory was specified, use it.
         File dir = getSubDirectory(storeageDirectory, subDirectory);
         File f = new File(dir, fileName);
@@ -399,6 +418,10 @@ public class DocumentArchiver
         {
             if (log.isDebugEnabled())
                 log.debug("getSource() : " + f.getAbsolutePath() + " doesn't exist.");
+
+            if (retrieveDirectories == null || getRetrieveDirectoryCount() == 0)
+                throw new FileNotFoundException("Unable to find " + fileName + " in the storeage directory.");
+
             for (Iterator iterator = retrieveDirectories.iterator(); iterator.hasNext();)
             {
                 String baseString = (String) iterator.next();
@@ -414,7 +437,8 @@ public class DocumentArchiver
                 if (f.exists())
                     return getSource(f);   // Return the source.
             } // for
-            throw new FileNotFoundException("Unable to find " + fileName + " in any archiver directory.");
+            throw new FileNotFoundException("Unable to find " + fileName + " in the any directories ("
+                    + (getRetrieveDirectoryCount() + 1) + " directories searched).");
         } // if !f.exists()
         else
             return getSource(f);   // Return the object.

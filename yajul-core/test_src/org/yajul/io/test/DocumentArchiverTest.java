@@ -1,20 +1,20 @@
 package org.yajul.io.test;
 
-import junit.framework.TestCase;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.w3c.dom.Document;
 import org.yajul.io.DocumentArchiver;
+import org.yajul.xml.DOMPrinter;
 import org.yajul.xml.DOMUtil;
 import org.yajul.xml.XMLDocumentArchiver;
-import org.yajul.xml.DOMPrinter;
-import org.w3c.dom.Document;
 
 import java.io.File;
-import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.util.Date;
 
 /**
- * TODO: Add javadoc
+ * Tests the DocumentArchiver classes.
  * <hr>
  * User: jdavis<br>
  * Date: May 14, 2004<br>
@@ -27,6 +27,7 @@ public class DocumentArchiverTest extends TestCase
     private XMLDocumentArchiver xmlarchiver;
     private Date date;
     private Long id;
+    private static final String SUB_DIRECTORY = "objects";
 
     public DocumentArchiverTest(String name)
     {
@@ -62,10 +63,33 @@ public class DocumentArchiverTest extends TestCase
     public void testObject() throws Exception
     {
         String thing = "this is a test.";
-        String fileName = archiver.storeObject("objects",id,date,thing);
+        archiver.init();
+        String fileName = archiver.storeObject(SUB_DIRECTORY,id,date,thing);
         assertNotNull(fileName);
-        String retrieved = (String) archiver.retrieveObject("objects",id,date);
+        String retrieved = (String) archiver.retrieveObject(SUB_DIRECTORY,id,date);
         assertEquals(thing,retrieved);
+        DocumentArchiver.Source source = archiver.getSource(SUB_DIRECTORY,id,date);
+        assertNotNull(source);
+        assertNotNull(archiver.getStoreageDirectory());
+        assertNull(archiver.getRetrieveDirectories());
+        assertEquals(0,archiver.getRetrieveDirectoryCount());
+    }
+
+    /**
+     * Test file not found.
+     */
+    public void testFileNotFound() throws Exception
+    {
+        FileNotFoundException fnfe = null;
+        try
+        {
+            String retrieved = (String) archiver.retrieveObject(SUB_DIRECTORY,new Long(999),date);
+        }
+        catch (FileNotFoundException e)
+        {
+            fnfe = e;
+        }
+        assertNotNull(fnfe);
     }
 
     public void testDocument() throws Exception

@@ -5,7 +5,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.yajul.xml.CSVReader;
 import org.yajul.xml.DOMUtil;
 import org.yajul.xml.FixedFormatReader;
 import org.yajul.xml.DOMPrinter;
@@ -17,7 +16,7 @@ import java.io.StringReader;
 import java.io.IOException;
 
 /**
- * TODO: Add javadoc
+ * Tests the FixedFormatReader.
  * User: jdavis
  * Date: Mar 11, 2004
  * Time: 7:56:27 PM
