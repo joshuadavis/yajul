@@ -89,6 +89,6 @@
 			</fileset>
 		</sync>
 	</target>
-	<target name="all" depends="checkout,build,site,mail">
+	<target name="all" depends="checkout,build,checkstyle,site,publish">
     	</target>
 </project>
