@@ -39,8 +39,12 @@ class SimpleTask implements ScheduledTask
     /** A logger for this class. **/
     private static Logger log = Logger.getLogger(SimpleTask.class);
 
-    public SimpleTask()
+    /** The amount of time to 'run', in milliseconds. **/
+    private long sleepTime;
+
+    public SimpleTask(long sleepTime)
     {
+        this.sleepTime = sleepTime;
     }
 
     public boolean before(ScheduleEntry entry)
@@ -55,7 +59,7 @@ class SimpleTask implements ScheduledTask
         log.info("<" + name + "> running");
         try
         {
-            Thread.sleep(3000);
+            Thread.sleep(sleepTime);
         }
         catch (Exception e)
         {

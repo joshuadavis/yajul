@@ -28,6 +28,7 @@
     <path id="test.classpath">
         <path refid="compile.classpath"/>
         <pathelement location="${main.class.dir}"/>
+        <pathelement path="${basedir}/lib/jdepend.jar"/>
     </path>
 
     <path id="test.runtime.classpath">
@@ -39,123 +40,124 @@
     </path>
 
     <patternset id="test.files">
-        <include name="org/yajul/**/*Test*.java" />
+        <include name="org/yajul/**/*Test*.java"/>
     </patternset>
 
     <patternset id="java.files">
-        <include name="org/yajul/**/*.java" />
+        <include name="org/yajul/**/*.java"/>
     </patternset>
 
-<target name="init">
-    <tstamp>
-        <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
-    </tstamp>
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${main.class.dir}"/>
-    <mkdir dir="${main.jar.dir}"/>
-    <mkdir dir="${test.class.dir}"/>
-    <mkdir dir="${test.log.dir}"/>
-    <mkdir dir="${dist.dir}"/>
-</target>
+    <target name="init">
+        <tstamp>
+            <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
+        </tstamp>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
 
-<target name="clean">
-    <delete includeEmptyDirs="true">
-        <fileset dir="${main.class.dir}"/>
-        <fileset dir="${main.jar.dir}"/>
-        <fileset dir="${test.class.dir}"/>
-        <fileset dir="${test.log.dir}"/>
-        <fileset dir="${build.dir}"/>
-    </delete>
-</target>
+    <target name="clean" depends="init">
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="${main.class.dir}"/>
+            <fileset dir="${main.jar.dir}"/>
+            <fileset dir="${test.class.dir}"/>
+            <fileset dir="${test.log.dir}"/>
+            <fileset dir="${build.dir}"/>
+        </delete>
+    </target>
 
-<target name="compile" depends="init">
-    <echo message="${ant.project.name} Compiling main classes to ${main.class.dir}"/>
-    <javac srcdir="${main.src.dir}" destdir="${main.class.dir}"
-       classpathref="compile.classpath" debug="${javac.debug}"
-       optimize="${javac.optimize}" deprecation="${javac.deprecation}"
-       verbose="${javac.verbose}"/>
-</target>
+    <target name="compile" depends="init">
+        <mkdir dir="${main.class.dir}"/>
+        <echo message="${ant.project.name} Compiling main classes to ${main.class.dir}"/>
+        <javac srcdir="${main.src.dir}" destdir="${main.class.dir}"
+            classpathref="compile.classpath" debug="${javac.debug}"
+            optimize="${javac.optimize}" deprecation="${javac.deprecation}"
+            verbose="${javac.verbose}"/>
+    </target>
 
-<target name="compile.tests" depends="init">
-    <echo message="${ant.project.name} Compiling test classes to ${test.class.dir}"/>
-    <javac srcdir="${test.src.dir}" destdir="${test.class.dir}"
-       classpathref="test.classpath" debug="${javac.debug}"
-       optimize="${javac.optimize}" deprecation="${javac.deprecation}"
-       verbose="${javac.verbose}"/>
-</target>
+    <target name="compile.tests" depends="init">
+        <mkdir dir="${test.class.dir}"/>
+        <echo message="${ant.project.name} Compiling test classes to ${test.class.dir}"/>
+        <javac srcdir="${test.src.dir}" destdir="${test.class.dir}"
+            classpathref="test.classpath" debug="${javac.debug}"
+            optimize="${javac.optimize}" deprecation="${javac.deprecation}"
+            verbose="${javac.verbose}"/>
+    </target>
 
-<target name="test" depends="init">
-    <junit fork="yes" printsummary="yes" haltonfailure="yes"  dir="${basedir}">
-      <classpath>
-        <path refid="test.runtime.classpath"/>
-      </classpath>
-      <formatter type="plain"/>
-      <batchtest todir="${test.log.dir}">
-        <fileset dir="${test.src.dir}">
-          <patternset refid="test.files"/>
-        </fileset>
-      </batchtest>
-    </junit>
-</target>
-
-<target name="test.xmlreport" depends="init" description="Performs unit tests, generating an XML report.">
-        <junit fork="yes"
-            printsummary="yes" haltonfailure="yes" showoutput="no"  dir="${basedir}">
+    <target name="test" depends="init">
+        <mkdir dir="${test.log.dir}"/>
+        <junit fork="yes" printsummary="yes" haltonfailure="yes" dir="${basedir}">
             <classpath>
-              <path refid="test.runtime.classpath"/>
+                <path refid="test.runtime.classpath"/>
+            </classpath>
+            <formatter type="plain"/>
+            <batchtest todir="${test.log.dir}">
+                <fileset dir="${test.src.dir}">
+                    <patternset refid="test.files"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="test.xmlreport" depends="init" description="Performs unit tests, generating an XML report.">
+        <mkdir dir="${junit.dir}"/>
+        <junit fork="yes"
+            printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
+            <classpath>
+                <path refid="test.runtime.classpath"/>
             </classpath>
 
-          <formatter type="xml"/>
-          <batchtest todir="${junit.dir}">
-            <fileset dir="${test.src.dir}">
-              <patternset refid="test.files"/>
-            </fileset>
-          </batchtest>
+            <formatter type="xml"/>
+            <batchtest todir="${junit.dir}">
+                <fileset dir="${test.src.dir}">
+                    <patternset refid="test.files"/>
+                </fileset>
+            </batchtest>
         </junit>
-</target>
+    </target>
 
-<target name="test.textreport" depends="init" description="Performs unit tests, generating a text report.">
+    <target name="test.textreport" depends="init" description="Performs unit tests, generating a text report.">
         <junit fork="yes"
-            printsummary="yes" haltonfailure="yes" showoutput="no"  dir="${basedir}">
+            printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
             <classpath>
-              <path refid="test.runtime.classpath"/>
+                <path refid="test.runtime.classpath"/>
             </classpath>
 
-          <formatter type="plain"/>
-          <batchtest todir="${junit.dir}">
-            <fileset dir="${test.src.dir}">
-              <patternset refid="test.files"/>
-            </fileset>
-          </batchtest>
+            <formatter type="plain"/>
+            <batchtest todir="${junit.dir}">
+                <fileset dir="${test.src.dir}">
+                    <patternset refid="test.files"/>
+                </fileset>
+            </batchtest>
         </junit>
-</target>
+    </target>
 
-<target name="jar" depends="init">
-  <jar jarfile="${main.jar.dir}/${ant.project.name}.jar"
-       basedir="${main.class.dir}"/>
-</target>
+    <target name="jar" depends="init">
+        <mkdir dir="${main.jar.dir}"/>
+        <jar jarfile="${main.jar.dir}/${ant.project.name}.jar"
+            basedir="${main.class.dir}"/>
+    </target>
 
-<target name="dist.source" depends="init">
-    <!-- Zip up all of the source files -->
-    <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
-        <fileset dir=".">
-            <include name="src/**"/>
-            <include name="test_src/**"/>
-            <include name="test_data/**"/>
-            <include name="build.xml"/>
-        </fileset>
-    </zip>
-</target>
+    <target name="dist.source" depends="init">
+        <!-- Zip up all of the source files -->
+        <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
+            <fileset dir=".">
+                <include name="src/**"/>
+                <include name="test_src/**"/>
+                <include name="test_data/**"/>
+                <include name="build.xml"/>
+            </fileset>
+        </zip>
+    </target>
 
-<target name="jar.src" depends="init">
-  <jar jarfile="${main.jar.dir}/${ant.project.name}-src.jar"
-       basedir="${main.src.dir}"/>
-</target>
+    <target name="jar.src" depends="init">
+        <jar jarfile="${main.jar.dir}/${ant.project.name}-src.jar"
+            basedir="${main.src.dir}"/>
+    </target>
 
-<target name="default" depends="compile,jar,compile.tests"/>
+    <target name="default" depends="compile,jar,compile.tests"/>
 
-<target name="full" depends="clean,compile,jar,jar.src,compile.tests,test">
-</target>
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test">
+    </target>
 
 </project>
 
