@@ -12,4 +12,6 @@ fi
 ANT_HOME=`dirname "$0"`/ant
 echo ANT_HOME=$ANT_HOME
 # Launch ANT from the tools/ant/lib directory.
-java -classpath $ANT_HOME/lib/ant-launcher.jar -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $@
+ANT_CLASSPATH="-classpath $ANT_HOME/lib/ant-launcher.jar"
+ANT_OPTS="-Dant.home=$ANT_HOME -Djava.awt.headless=true"
+java $ANT_CLASSPATH $ANT_OPTS org.apache.tools.ant.launch.Launcher $@

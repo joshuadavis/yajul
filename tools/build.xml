@@ -1,16 +1,33 @@
 <project name="yajul" default="all">
 
-	<property environment="env"/>
-	<property name="cvs.compression" value="9"/>
-	<property name="cvs.root" value="${env.CVSROOT}"/>
-	<property name="cvs.rsh" value="${env.CVS_RSH}"/>
+        <!-- 
+        Get all the relevant properties from the user's home directory
+        This file should be secure (chmod 600) because it will contain some sensitive information.
+	-->
+	<property file="${user.home}/yajul-build.properties"/>
+
+        <!-- Property defaults -->
 	<property name="yajul.dir" value="${basedir}/.."/>
-	<property name="web.dir" value="/var/www/html/yajul"/>
+        <property name="forrest.name" value="apache-forrest-0.5.1-bin"/>
+        <property name="forrest.tarball" value="${forrest.name}.tar.gz"/>
+        <property name="unpack.dir" value="${basedir}/unpack"/>
+        <property name="forrest.home" value="${unpack.dir}/${forrest.name}"/>
+        <property name="site.dir" value="${yajul.dir}/yajul-site"/>
 
 	<target name="-init">
+           <tstamp/>
+           <fail unless="cvs.root">The property 'cvs.root' is not specified, please define it in ${user.home}/yajul-build.properties.</fail>
+           <fail unless="cvs.rsh">The property 'cvs.rsh' is not specified, please define it in ${user.home}/yajul-build.properties.</fail>
+            <property name="build.timestamp" value="${DSTAMP}_${TSTAMP}"/>
+            <property name="build.tag" value="BUILD_${build.timestamp}"/>
 	</target>
 
-        <target name="boot" description="Update the /tools directory from CVS">
+        <target name="unpack" description="Unpack tool archive files.">
+		<mkdir dir="${unpack.dir}"/>
+                <untar compression="gzip" src="${forrest.name}.tar.gz" dest="${unpack.dir}"/>
+        </target>
+
+        <target name="boot" depends="unpack" description="Update the /tools directory from CVS">
 		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}"
 			dest="${yajul.dir}" package="tools"/>
 	</target>
@@ -23,6 +40,8 @@
                 
 		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}"
 			dest="${yajul.dir}" package="yajul-core"/>
+		<cvs command="checkout" compression="${cvs.compression}" cvsRoot="${cvs.root}" cvsRsh="${cvs.rsh}"
+			dest="${yajul.dir}" package="yajul-site"/>
 	</target>
 
 	<target name="build">
@@ -43,7 +62,34 @@
            style="checkstyle-noframes-sorted.xsl"/>
   </target>
 
-    <target name="publish" description="Publish the build results on the local machine's web server.">
+    <target name="mail" depends="-init">
+	<mail from="${smtp.fromuser}"
+              mailhost="${smtp.host}"
+	      user="${smtp.user}"
+              password="${smtp.password}"
+	      tolist="${smtp.touser}"
+	      subject="Results of nightly build : ${build.timestamp}"
+	      >
+            <message>This is a test</message>
+         </mail>
+    </target>
+
+  <path id="forrest-classpath">
+    <fileset dir="${forrest.home}">
+      <include name="ant/lib/*.jar"/>
+      <include name="lib/endorsed/*.jar"/>
+    </fileset>
+    <pathelement location="${java.home}/../lib/tools.jar"/>
+  </path>
+
+    <target name="site" description="Build the forrest website.">
+      <fail unless="forrest.home">The property 'forrest.home' is not defined.</fail>
+      <ant antfile="${forrest.home}/forrest.antproxy.xml" target="site" dir="${site.dir}"/> 
+    </target>
+
+    <target name="publish" depends="site" description="Publish the build results on the local machine's web server.">
+  	    <fail unless="web.dir">The property 'web.dir' is not specified, please defined it in ${user.home}/yajul-build.properties.</fail>
+            <!-- Publish locally -->
             <sync todir="${web.dir}/yajul-core" overwrite="true" failonerror="false">
         	<fileset dir="${yajul.dir}/yajul-core/build">
     		        <include name="docs/**"/>
@@ -58,7 +104,7 @@
             </sync>
     </target>
 
-    <target name="all" depends="checkout,build">
-	</target>
+    <target name="all" depends="checkout,build,site,mail">
+    </target>
 
 </project>
