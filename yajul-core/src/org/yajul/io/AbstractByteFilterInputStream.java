@@ -32,6 +32,7 @@ package org.yajul.io;
 import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.PushbackInputStream;
 
 /**
  * Implements the array based read method to simplify writing 'byte at a time'
@@ -45,6 +46,20 @@ import java.io.IOException;
  */
 public abstract class AbstractByteFilterInputStream extends FilterInputStream
 {
+    private PushbackInputStream pushback;
+
+    /**
+     * Creates a new AbstractByteFilterInputStream with a built in 'pushback buffer' which
+     * enables the 'unread' methods.
+     * @param in The underlying input stream being filtered.
+     * @param pushbackBufferSize The size of the pushback buffer.
+     */
+    public AbstractByteFilterInputStream(InputStream in,int pushbackBufferSize)
+    {
+        super((in instanceof PushbackInputStream) ? in : new PushbackInputStream(in,pushbackBufferSize));
+        pushback = (PushbackInputStream)this.in;
+    }
+
     /**
      * Creates a new AbstractByteFilterInputStream.
      * @param in The underlying input stream being filtered.
@@ -122,6 +137,20 @@ public abstract class AbstractByteFilterInputStream extends FilterInputStream
             b[off + i] = (byte) ch;
         }
         return i;
+    }
+
+    /**
+     * Pushes all of the bytes after the first one into the pushback buffer and returns the first byte, effectively
+     * inserting the bytes into the stream.
+     * @param bytes The bytes to insert into the stream.
+     * @return the first byte
+     * @throws IOException if something goes wrong.
+     */
+    protected int insert(byte[] bytes)
+            throws IOException
+    {
+        pushback.unread(bytes,1, bytes.length - 1);
+        return bytes[0];
     }
 
 }
