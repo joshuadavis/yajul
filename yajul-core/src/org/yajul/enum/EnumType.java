@@ -34,6 +34,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.WeakHashMap;
+import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
@@ -41,6 +45,7 @@ import org.yajul.util.ArrayIterator;
 import org.yajul.util.StringUtil;
 import org.yajul.util.ReflectionUtil;
 import org.yajul.xml.DOMUtil;
+import org.yajul.bean.BeanProperties;
 
 /**
  * Provides a collection of enumerated values, otherwise known as an enumerated
@@ -53,6 +58,7 @@ public class EnumType
     public static final String TAG_ENUM_VALUE = "enum-value";
     public static final String ATTR_ID = "id";
     public static final String ATTR_VALUE_CLASS = "valueClass";
+    public static final String ATTR_SET_PROPERTIES = "setValueProperties";
     public static final String ATTR_CONSTANT_CLASS = "constantClass";
     public static final String ATTR_DEFAULT_VALUE_ID = "defaultValueId";
 
@@ -66,6 +72,8 @@ public class EnumType
 
     /** The class of the values for this enumerated type. **/
     private Class enumValueClass;
+    /** The cached property accessor for the value class. **/
+    private BeanProperties valueClassPropertyAccessor;
     /** The class or interface that defines Java constants for this enum. **/
     private Class constantClass;
     /** The id of this enumerated type. **/
@@ -89,6 +97,9 @@ public class EnumType
     private Map valueByText;
     /** Map of values by text string (case insensitive). **/
     private Map valuesByLowerCaseText;
+    /** Map of property maps, by property name. **/
+    private Map propertyMaps;
+    private Map groupMaps;
     /** The values of the enumerated type, in array form. */
     private EnumValue[] valueArray;
     /** Array of all ids, in order. **/
@@ -108,6 +119,7 @@ public class EnumType
 
     /** The default value id for the enum type.  UNDEFINED if it wasn't specified. **/
     private int defaultValueId = UNDEFINED;
+    private boolean setValueProperties = false;
 
     /**
      * Creates a new EnumType object.
@@ -163,6 +175,17 @@ public class EnumType
             }
         }
         return valueArray;
+    }
+
+    /**
+     * Converts the enum type into an array which can be an array of any EnumValue sub-class.
+     * @param array The input array.
+     * @return an array of any EnumValue sub-class.
+     */
+    public EnumValue[] toArray(EnumValue[] array)
+    {
+        List list = Arrays.asList(getValueArray());
+        return (EnumValue[])list.toArray(array);
     }
 
     /**
@@ -493,6 +516,111 @@ public class EnumType
         return defaultValueId;
     }
 
+    /**
+     * Returns the enum propertyValue with the specified property having the specified property value.
+     * @param propertyName The EnumValue property name.
+     * @param propertyValue The value the EnumValue property should have.
+     * @return the enum propertyValue with the specified property having the specified property value.
+     */
+    public EnumValue findValueByProperty(String propertyName, Object propertyValue)
+    {
+        return (EnumValue) getUniquePropertyMap(propertyName).get(propertyValue);
+    }
+
+    /**
+     * Returns a subset EnumType containing all the EnumValues where the specified property has the specified property value.
+     * @param propertyName The enum propertyValue property name.
+     * @param propertyValue The value the EnumValue property should have.
+     * @return a subset EnumType containing all the values  where the specified property has the specified property value.
+     */
+    public EnumType findGroupByProperty(String propertyName, Object propertyValue)
+    {
+        return (EnumType) getGroupPropertyMap(propertyName).get(propertyValue);
+    }
+
+    /**
+     * Returns a map of enum values where the keys are the values of the specified property name.  This map
+     * is an index of the enum values, by the values of the specified property.
+     * @param propertyName The property name.
+     * @return a map of enum values where the keys are the values of the specified property name.
+     */
+    public Map getUniquePropertyMap(String propertyName)
+    {
+        synchronized (this)
+        {
+            // Create the map of maps if it doesn't exist.  Use a weak map so that these
+            // alternate indexes are GC'd if they are not used.
+            if (propertyMaps == null)
+                propertyMaps = new WeakHashMap(getValueClassPropertyAccessor().size());
+            Map valuesByProperty = (Map)propertyMaps.get(propertyName);
+            if (valuesByProperty == null)
+            {
+                valuesByProperty = new HashMap(size());
+                // Iterate through all values and put them in the map indexed by the property value.
+                Iterator iter = iterator();
+                BeanProperties accessor = getValueClassPropertyAccessor();
+                while (iter.hasNext())
+                {
+                    EnumValue enumValue = (EnumValue) iter.next();
+                    valuesByProperty.put(accessor.getProperty(enumValue,propertyName),enumValue);
+                }
+                // Put the index into the map of maps as an unmodifiable map.
+                propertyMaps.put(propertyName,Collections.unmodifiableMap(valuesByProperty));
+            } // if property map == null
+            return valuesByProperty;
+        }
+    }
+
+    /**
+     * Returns a Map of EnumTypes where the keys are the unique values of a the specified property, and
+     * the values are EnumTypes that contain all the EnumValues that have the same property value.
+     * @param propertyName The property name.
+     * @return a Map of EnumTypes where the keys are the unique values of a the specified property, and
+     * the values are EnumTypes that contain all the EnumValues that have the same property value.
+     */
+    public Map getGroupPropertyMap(String propertyName)
+    {
+        synchronized (this)
+        {
+            // Create the map of maps if it doesn't exist.  Use a weak map so that these
+            // alternate indexes are GC'd if they are not used.
+            if (groupMaps == null)
+                groupMaps = new WeakHashMap(getValueClassPropertyAccessor().size());
+            Map groupsByProperty = (Map)groupMaps.get(propertyName);
+            if (groupsByProperty == null)
+            {
+                // Collect the enum values for each unique value of the property into a separate EnumType.
+                groupsByProperty = new HashMap(size());
+                Iterator iter = iterator();
+                BeanProperties accessor = getValueClassPropertyAccessor();
+                while (iter.hasNext())
+                {
+                    EnumValue enumValue = (EnumValue) iter.next();
+                    Object key = accessor.getProperty(enumValue,propertyName);
+                    EnumType group = (EnumType) groupsByProperty.get(key);
+                    if (group == null)
+                    {
+                        group = new EnumType();
+                        group.setId(key.toString());    // Use the key as the enum-type id.
+                        group.beforeAddingValues();     // Prepare to add values.
+                        groupsByProperty.put(key,group);
+                    }
+                    group.addValue(enumValue);  // Add the value to the group.
+                } // while
+
+                // Tell each group EnumType that we are done adding values.
+                iter = groupsByProperty.values().iterator();
+                while (iter.hasNext())
+                {
+                    EnumType group = (EnumType) iter.next();
+                    group.afterAddingValues();
+                }
+                groupMaps.put(propertyName,Collections.unmodifiableMap(groupsByProperty));
+            } // if property map == null
+            return groupsByProperty;
+        }
+    }
+
     // --- java.lang.Object methods --
 
     /**
@@ -508,6 +636,7 @@ public class EnumType
         StringBuffer buf = new StringBuffer();
         buf.append("[ EnumType id=").append(id);
         buf.append(" isContiguous=").append(isContiguous());
+        buf.append(" valueClass=").append(getEnumValueClass());
         Iterator iter = iterator();
         while (iter.hasNext())
         {
@@ -569,6 +698,24 @@ public class EnumType
                             + defaultValueId);
             }
         } // synchronized
+    }
+
+    /**
+     * Returns true if this enumerated type is supposed to set the value properties automatically from
+     * the XML attributes.
+     * @return true if this enumerated type is supposed to set the value properties automatically from
+     * the XML attributes.
+     */
+    boolean isSetValueProperties()
+    {
+        return setValueProperties;
+    }
+
+    BeanProperties getValueClassPropertyAccessor()
+    {
+        if (valueClassPropertyAccessor == null)
+            valueClassPropertyAccessor = new BeanProperties(getEnumValueClass());
+        return valueClassPropertyAccessor;
     }
 
     private void loadValuesFromElements(Element[] valueElements,
@@ -639,10 +786,10 @@ public class EnumType
                 EnumValue value = findValueById(id.intValue());
                 if (value == null)
                 {
-                    if (log.isDebugEnabled())
-                        log.debug(
-                            "afterAddingValues() : No EnumValue found for "
-                            + id + " in class " + constantClass.getName());
+//                    if (log.isDebugEnabled())
+//                        log.debug(
+//                            "afterAddingValues() : No EnumValue found for "
+//                            + id + " in class " + constantClass.getName());
                     continue;
                 }
                 value.setConstantName((String)entry.getValue());
@@ -659,8 +806,8 @@ public class EnumType
         // for the main element index.
         if (contiguous)
         {
-            if (log.isDebugEnabled())
-                log.debug("afterAddingValues() : Using an array for the id map");
+//            if (log.isDebugEnabled())
+//                log.debug("afterAddingValues() : Using an array for the id map");
             Set entries = valueById.entrySet();
             ArrayList list = new ArrayList(valueById.size());
             for (Iterator iterator = entries.iterator(); iterator.hasNext();)
@@ -742,6 +889,11 @@ public class EnumType
             throw new EnumInitializationException(
                     "Unable to find value class! " + e.getMessage(), e);
         }
+
+        String setValuePropertiesString = elem.getAttribute(ATTR_SET_PROPERTIES);
+        if (!StringUtil.isEmpty(setValuePropertiesString))
+            setValueProperties = (setValuePropertiesString.equalsIgnoreCase("true") ||
+                    setValuePropertiesString.equalsIgnoreCase("yes"));
 
         try
         {

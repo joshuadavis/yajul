@@ -40,7 +40,7 @@ import java.util.Iterator;
 
 /**
  * Provides a map of enumerated types (EnumType and associated EnumValues),
- * loaded from an XML file.
+ * loaded from an XML file or resource.
  * User: jdavis
  * Date: Jul 3, 2003
  * Time: 2:18:23 PM
@@ -255,6 +255,18 @@ public class EnumTypeMap
     public EnumType findEnumTypeById(String enumTypeId)
     {
         return (EnumType) types.get(enumTypeId);
+    }
+
+
+    /**
+     * Returns the EnumType given an enum type id string, or null if there is
+     * no type with the specified id.
+     * @param key The id to look for.
+     * @return EnumType - The enum type with the ID, or null.
+     */
+    public EnumType getEnumType(Object key)
+    {
+        return (EnumType) types.get(key);
     }
 
     // --- Implementation methods ---
