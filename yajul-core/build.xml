@@ -3,6 +3,7 @@
 
     <property name="main.src.dir" value="src"/>
     <property name="build.dir" value="build"/>
+    <property name="dist.dir" value="${build.dir}/dist"/>
     <property name="main.class.dir" value="${build.dir}/classes"/>
     <property name="main.jar.dir" value="${build.dir}/lib"/>
     <property name="javac.debug" value="false"/>
@@ -35,8 +36,11 @@
     </path>
 
     <patternset id="test.files">
-        <!-- Add new tests here (or just make sure the test is name xxxTest.java!) -->
-        <include name="**/*Test*.java" />
+        <include name="org/yajul/**/*Test*.java" />
+    </patternset>
+
+    <patternset id="java.files">
+        <include name="org/yajul/**/*.java" />
     </patternset>
 
 <target name="init">
@@ -48,6 +52,7 @@
     <mkdir dir="${main.jar.dir}"/>
     <mkdir dir="${test.class.dir}"/>
     <mkdir dir="${test.log.dir}"/>
+    <mkdir dir="${dist.dir}"/>
 </target>
 
 <target name="clean">
@@ -56,6 +61,7 @@
         <fileset dir="${main.jar.dir}"/>
         <fileset dir="${test.class.dir}"/>
         <fileset dir="${test.log.dir}"/>
+        <fileset dir="${build.dir}"/>
     </delete>
 </target>
 
@@ -88,8 +94,20 @@
 </target>
 
 <target name="jar">
-  <jar jarfile="${main.jar.dir}/yajul-core.jar"
+  <jar jarfile="${main.jar.dir}/${ant.project.name}.jar"
        basedir="${main.class.dir}"/>
+</target>
+
+<target name="dist.source" depends="init">
+    <!-- Zip up all of the source files -->
+    <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
+        <fileset dir=".">
+            <include name="src/**"/>
+            <include name="test_src/**"/>
+            <include name="test_data/**"/>            
+            <include name="build.xml"/>
+        </fileset>
+    </zip>
 </target>
 
 <target name="default" depends="compile,jar"/>
