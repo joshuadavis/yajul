@@ -10,7 +10,7 @@ import org.yajul.log.LogUtil;
 import org.apache.log4j.Logger;
 
 /**
- * TODO: Add javadoc
+ * Provides helper methods that make using JDBC connections simpler.
  * User: jdavis
  * Date: Aug 4, 2003
  * Time: 1:16:01 PM
@@ -30,6 +30,10 @@ public class ConnectionHelper
     private DatabaseMetaData meta;
     private int rowsAffected;
 
+    /**
+     * Creates a connection helper for the given connection.
+     * @param con The connection.
+     */
     public ConnectionHelper(Connection con)
     {
         if (con == null)
@@ -39,11 +43,19 @@ public class ConnectionHelper
         this.rowsAffected = 0;
     }
 
-    public Connection getCon()
+    /**
+     * Returns the underlying JDBC connection.
+     * @return Connection - The underlying JDBC connection.
+     */
+    public Connection getConnection()
     {
         return con;
     }
 
+    /**
+     * Returns a generic statement, creating it if needed.
+     * @return Statement - The generic statement.
+     */
     public Statement getStatement()
     {
         if (stmt == null)
@@ -61,6 +73,10 @@ public class ConnectionHelper
         return stmt;
     }
 
+    /**
+     * Returns the database meta-data for the connection.
+     * @return DatabaseMetaData - The database meta-data.
+     */
     public DatabaseMetaData getMetaData()
     {
         if (meta == null)
@@ -78,11 +94,21 @@ public class ConnectionHelper
         return meta;
     }
 
+    /**
+     * Returns the total number of rows updated by the executeUpdate() method.
+     * @return int - The number of rows updated, inserted, or deleted.
+     */
     public int getRowsAffected()
     {
         return rowsAffected;
     }
 
+    /**
+     * Returns true if the specified table exists.
+     * @param tableName The name of the table to look for.
+     * @return boolean - True if the table exists, false if not or if there
+     * was a problem.
+     */
     public boolean tableExists(String tableName)
     {
         if (con == null)
@@ -123,6 +149,11 @@ public class ConnectionHelper
     }
 
 
+    /**
+     * Executes the given SQL as a query, returning a result set.
+     * @param sql The SQL to execute.
+     * @return ResultSet The result set for the query.
+     */
     public ResultSet executeQuery(String sql)
     {
         Statement s = getStatement();
@@ -139,6 +170,12 @@ public class ConnectionHelper
         }
     }
 
+    /**
+     * Executes the given SQL as an update and returns the number of rows
+     * affected by the update.
+     * @param sql The SQL statement
+     * @return int - Negative values indicate an error.
+     */
     public int executeUpdate(String sql)
     {
         Statement s = getStatement();
@@ -160,6 +197,11 @@ public class ConnectionHelper
         return rc;
     }
 
+    /**
+     * Drops the specified table if it exists.
+     * @param tableName The name of the table.
+     * @return boolean - True if the table was dropped, false if not.
+     */
     public boolean dropTableIfExists(String tableName)
     {
         if (tableExists(tableName))
@@ -175,6 +217,9 @@ public class ConnectionHelper
         }
     }
 
+    /**
+     * Releases any resources being held by this ConnectionHelper.
+     */
     public void close()
     {
         if (stmt != null)

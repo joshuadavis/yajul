@@ -1,20 +1,19 @@
 package org.yajul.sql;
 
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.yajul.log.LogUtil;
 import org.yajul.util.ArrayUtil;
 
 /**
- * TODO: Add javadoc
+ * Manages a set of sets of integers stored in a relational database.
  * User: jdavis
  * Date: Aug 1, 2003
  * Time: 5:14:45 PM
@@ -35,6 +34,16 @@ public class DBIntegerSet
     private String valueColumnName;
     private ConnectionHelper helper;
 
+    /**
+     * Creates a new DBInteger set
+     * @param targetTableName The name of the table that will contain the
+     * sets of integers.
+     * @param keyColumnName The key column, which identifies a particular set
+     * of integers.
+     * @param valueColumnName The value column, which contains the integer
+     * values in the sets.
+     * @param con The database connection.
+     */
     public DBIntegerSet(
             String targetTableName,
             String keyColumnName,
@@ -49,6 +58,11 @@ public class DBIntegerSet
         // TODO: Determine the type of the key column.
     }
 
+    /**
+     * Reads all of the members of the set specified by the key.
+     * @param key The key (id) of the set.
+     * @return int[] - The integers in the set.
+     */
     public int[] select(Object key)
     {
         ArrayList list = selectArrayList(key);
@@ -106,6 +120,12 @@ public class DBIntegerSet
         return list;
     }
 
+    /**
+     * Updates the set at the specified key to be the values specified in the
+     * array.
+     * @param key The key (a.k.a. set id).
+     * @param values The new values for the set.
+     */
     public void update(Object key, int[] values)
     {
         // Put the input values in a set.
@@ -165,6 +185,10 @@ public class DBIntegerSet
             log.debug("update() : " + updates + " rows updated.");
     }
 
+    /**
+     * Deletes all values for the specified set.
+     * @param key The key (the id of the set).
+     */
     public void delete(Object key)
     {
         int rc = 0;
@@ -174,6 +198,9 @@ public class DBIntegerSet
         rc = helper.executeUpdate(sql);
     }
 
+    /**
+     * Releases all resources held by this object.
+     */
     public void close()
     {
         helper.close();
