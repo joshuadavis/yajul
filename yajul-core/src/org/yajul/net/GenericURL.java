@@ -1,8 +1,10 @@
 package org.yajul.net;
 
-import java.net.MalformedURLException;
-
 import org.yajul.util.StringUtil;
+
+import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents the components of a URL without all of the 'fancy' capabilities of
@@ -14,13 +16,33 @@ public class GenericURL implements java.io.Serializable
     private int port;
     private String host;
     private String file;
-    /** The url in string form.  Lazily created. **/
+    /**
+     * The url in string form.  Lazily created. *
+     */
     private String url;
+
+    private static Map DEFAULT_PORT_BY_PROTOCOL = new HashMap();
+
+    static
+    {
+        DEFAULT_PORT_BY_PROTOCOL.put("http", new Integer(80));
+        DEFAULT_PORT_BY_PROTOCOL.put("https", new Integer(443));
+        DEFAULT_PORT_BY_PROTOCOL.put("ftp", new Integer(21));
+    }
 
     public GenericURL(String stringURL)
             throws MalformedURLException
     {
-        URLParser.parse(stringURL, this);
+        this(stringURL,true);
+    }
+
+    public GenericURL(String stringURL, boolean protocolRequired)
+            throws MalformedURLException
+    {
+        if (protocolRequired)
+            URLParser.parse(stringURL, this);
+        else
+            URLParser.parseRelative(stringURL, this);
     }
 
     public GenericURL(String host, int port, String protocol, String file)
@@ -59,6 +81,39 @@ public class GenericURL implements java.io.Serializable
         return port;
     }
 
+    /**
+     * Returns true if the port was specified in the url.
+     *
+     * @return true if the port was specified in the url.
+     */
+    public boolean isPortSpecified()
+    {
+        return !(port == URLParser.NO_PORT);
+    }
+
+    /**
+     * Returns the default port for the protocol, if the port was not specified
+     * in the url (e.g. port 80 for http).
+     *
+     * @return the default port for the protocol, if the port was not specified
+     *         in the url.
+     */
+    public int getDefaultPort()
+    {
+        if (isPortSpecified())
+        {
+            return port;
+        }
+        else
+        {
+            Integer p = (Integer) DEFAULT_PORT_BY_PROTOCOL.get(protocol);
+            if (p != null)
+                return p.intValue();
+            else
+                return port;
+        }
+    }
+
     public void setPort(int port)
     {
         this.port = port;
@@ -81,11 +136,14 @@ public class GenericURL implements java.io.Serializable
         if (url == null)
         {
             StringBuffer buf = new StringBuffer();
-            StringUtil.appendIfNotEmpty(protocol, buf);
-            buf.append(URLParser.PROTOCOL_SEPARATOR);
-            StringUtil.appendIfNotEmpty(host, buf);
-            if (port >= 0)
-                buf.append(":").append(Integer.toString(port));
+            if (!StringUtil.isEmpty(protocol))
+            {
+                buf.append(protocol);
+                buf.append(URLParser.PROTOCOL_SEPARATOR);
+                StringUtil.appendIfNotEmpty(host, buf);
+                if (isPortSpecified())
+                    buf.append(":").append(Integer.toString(port));
+            }
             StringUtil.appendIfNotEmpty(file, buf);
             url = buf.toString();
         }
