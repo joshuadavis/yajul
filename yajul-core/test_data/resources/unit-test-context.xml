@@ -12,4 +12,6 @@
         <property name="userName"><value>${user.name}</value></property>
     </bean>
 
+    <bean id="testEnumTypeMap" class="org.yajul.enum.EnumTypeMap">
+    </bean>
 </beans>
