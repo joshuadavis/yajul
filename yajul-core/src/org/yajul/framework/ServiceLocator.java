@@ -173,7 +173,7 @@ public class ServiceLocator extends BeanFactoryProxy implements BeanFactory
         Properties props = getProperties();
         if (props != null)
         {
-            log.info("Using properties provided by sub-class.");
+            log.info("Using properties provided by sub-class (" + props.size() + " properties).");
             cfg.setProperties(props);
         }
         else if (!StringUtil.isEmpty(propertiesResource))
