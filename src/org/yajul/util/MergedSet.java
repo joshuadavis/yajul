@@ -56,12 +56,14 @@ public class MergedSet
         while(iter.hasNext())
         {
             obj = iter.next();
-            // If the object exists in b, then add it to the intersection.
+            // If the object exists in a, then add it to the intersection.
             if (a.contains(obj))
             {
                 intersection.add(obj);
-                // Since all objects in a have already been added to the
-                // merged set, nothing needs to happen here.
+                // Since this object is in the a set as well, and
+                // all objects in the a set have already been added to the
+                // union set by the previous loop.  They don't need to be added
+                // here.
             }
             else
             {
