@@ -208,17 +208,17 @@ public class CacheTest extends TestCase
         assertEquals(cache.getTimeoutRate(), 1.0, 0.01);
     }
 
-    public void small()
+    public void testSmall()
     {
         readElements(SET_SIZE / 10);
     }
 
-    public void medium()
+    public void testMedium()
     {
         readElements(SET_SIZE / 2);
     }
 
-    public void large()
+    public void testLarge()
     {
         readElements(SET_SIZE);
     }
@@ -239,9 +239,9 @@ public class CacheTest extends TestCase
         activator.clearStatistics();
     }
 
-    public void timeoutTest()
+    public void testTimeout()
     {
-        log.info("timeoutTest() : ENTER");
+        log.info("testTimeout() : ENTER");
         try
         {
             // Set up a cache that has a timeout of 10ms
@@ -267,17 +267,6 @@ public class CacheTest extends TestCase
             log.unexpected(ex);
             fail("Unexpected exception: " + ex.getMessage());
         }
-        log.info("timeoutTest() : LEAVE");
+        log.info("testTimeout() : LEAVE");
     }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new CacheTest("small"));
-        suite.addTest(new CacheTest("medium"));
-        suite.addTest(new CacheTest("large"));
-        suite.addTest(new CacheTest("timeoutTest"));
-        return new LogSupressingSetup(suite);
-    }
-
 }
