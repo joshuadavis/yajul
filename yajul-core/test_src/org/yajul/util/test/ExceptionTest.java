@@ -27,19 +27,13 @@
 package org.yajul.util.test;
 
 import junit.framework.TestCase;
-import org.yajul.util.DetailedError;
-import org.yajul.util.DetailedException;
-import org.yajul.util.DetailedRuntimeException;
-import org.yajul.util.InitializationException;
-import org.yajul.util.InitializationError;
-import org.yajul.util.ExceptionList;
 import org.yajul.io.StreamCopier;
+import org.yajul.util.*;
 
-import java.io.StringWriter;
-import java.io.PrintWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 
 /**
@@ -76,6 +70,7 @@ public class ExceptionTest extends TestCase
         byte[] bytes = StreamCopier.serializeObject(e);
         DetailedError e2 = (DetailedError)StreamCopier.unserializeObject(bytes);
         assertEquals(e.getMessage(),e2.getMessage());
+
     }
 
     private void throwDetailedError()
@@ -94,6 +89,17 @@ public class ExceptionTest extends TestCase
     public void testDetailedError()
     {
         DetailedError de = null;
+        try
+        {
+            throw new DetailedError();
+        }
+        catch (DetailedError e)
+        {
+            de = e;
+        }
+        checkEmptyException(de);
+
+        de = null;
         try
         {
             throw new DetailedError("test");
@@ -117,9 +123,28 @@ public class ExceptionTest extends TestCase
         printStackTrace(de);
     }
 
+    private void checkEmptyException(Throwable t)
+    {
+        assertNotNull(t);
+        assertNull(t.getMessage());
+        assertNotNull(t.toString());
+        printStackTrace(t);
+    }
+
     public void testDetailedException()
     {
         DetailedException de = null;
+        try
+        {
+            throw new DetailedException();
+        }
+        catch (DetailedException e)
+        {
+            de = e;
+        }
+        checkEmptyException(de);
+
+        de = null;
         try
         {
             throw new DetailedException("test");
@@ -157,6 +182,17 @@ public class ExceptionTest extends TestCase
     public void testDetailedRuntimeException()
     {
         DetailedRuntimeException de = null;
+        try
+        {
+            throw new DetailedRuntimeException();
+        }
+        catch (DetailedRuntimeException e)
+        {
+            de = e;
+        }
+        checkEmptyException(de);
+
+        de = null;
         try
         {
             throw new DetailedRuntimeException("test");
@@ -267,7 +303,80 @@ public class ExceptionTest extends TestCase
 
     public void testExceptionList()
     {
+        // Empty exception list.
         ExceptionList de = null;
+        try
+        {
+            throw new ExceptionList();
+        }
+        catch (ExceptionList e)
+        {
+            de = e;
+        }
+        checkEmptyException(de);
+
+        // Exception list with one exception.
+        de = null;
+        try
+        {
+            ExceptionList exceptionList = new ExceptionList();
+            exceptionList.add(new Exception("test"));
+            throw exceptionList;
+        }
+        catch (ExceptionList e)
+        {
+            de = e;
+        }
+        assertNotNull(de);
+        assertEquals("test",de.getMessage());
+        assertEquals("test",de.getLocalizedMessage());
+
+        // Throw the exception if the exception list has exactly one exception.
+        Exception ex = null;
+        try
+        {
+            ExceptionList exceptionList = new ExceptionList();
+            exceptionList.add(new Exception("test"));
+            exceptionList.throwIfException();
+        }
+        catch (Exception e)
+        {
+            ex = e;
+        }
+        assertNotNull(ex);
+        assertEquals("test",ex.getMessage());
+
+        // Throw the exception list if the exception list has exactly one non-exception
+        ex = null;
+        try
+        {
+            ExceptionList exceptionList = new ExceptionList();
+            exceptionList.add(new Error("test"));
+            exceptionList.throwIfException();
+        }
+        catch (Exception e)
+        {
+            ex = e;
+        }
+        assertNotNull(ex);
+        assertTrue(ex instanceof ExceptionList);
+
+        // Throw the exception list if the exception list has more than one exception.
+        ex = null;
+        try
+        {
+            ExceptionList exceptionList = new ExceptionList();
+            exceptionList.add(new Exception("test a"));
+            exceptionList.add(new Exception("test b"));
+            exceptionList.throwIfException();
+        }
+        catch (Exception e)
+        {
+            ex = e;
+        }
+        assertTrue(ex instanceof ExceptionList);
+
+        de = null;
         try
         {
             throw new ExceptionList("test");
@@ -288,6 +397,7 @@ public class ExceptionTest extends TestCase
         {
             de = e;
         }
+        assertNotNull(de);
         assertEquals("test 2",de.getCause().getMessage());
         de = null;
         try
@@ -342,9 +452,6 @@ public class ExceptionTest extends TestCase
             th = tt;
         }
         assertSame(de,th);
-
-
-
     }
 
     private void printStackTrace(Throwable t)

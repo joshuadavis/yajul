@@ -1,7 +1,7 @@
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.yajul.util.CompoundKey;
 

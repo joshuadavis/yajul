@@ -42,6 +42,8 @@ public class BytesTest extends TestCase
         Bytes.hexBytes(Bytes.HEX_BYTES_UPPER,0xfe,b);
         byte[] val = "FE".getBytes();
         assertTrue(Arrays.equals(val,b));
+        bytes = Bytes.parseHex("");
+        assertEquals(0,bytes.length);
     }
 
     public void testException()

@@ -29,9 +29,10 @@ package org.yajul.util;
 
 import org.apache.log4j.Logger;
 
-import java.util.Properties;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 /**
  * Provides utility methods for instantiating objects with
@@ -126,7 +127,7 @@ public class ObjectFactory
                                                               String propertyName,
                                                               String defaultClassName,
                                                               boolean resourceAndPropertyRequired)
-        throws InitializationException
+            throws InitializationException, IOException
     {
         Properties properties = ResourceUtil.loadProperties(resourceName);
         String className = defaultClassName;

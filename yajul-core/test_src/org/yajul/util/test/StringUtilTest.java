@@ -68,6 +68,8 @@ public class StringUtilTest extends TestCase
         Object o = new Object();
         String s = StringUtil.defaultToString(o);
         assertEquals(o.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(o)),s);
+        s = StringUtil.defaultToString(null);
+        assertEquals("null",s);
     }
 
     public void testEmpty()

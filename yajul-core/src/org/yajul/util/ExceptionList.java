@@ -26,10 +26,10 @@
  ******************************************************************************/
 package org.yajul.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A checked exception that contains a list of other exceptions.
@@ -274,7 +274,7 @@ public class ExceptionList extends Exception
         if (list.size() == 1)
             throw getFirst();
         // Otherwise, throw the whole list.
-        else if (list.size() > 1)
+        else
             throw this;
     }
 
@@ -297,7 +297,7 @@ public class ExceptionList extends Exception
             }
             throw this;
         }
-        else if (list.size() > 1)
+        else
         {
             throw this;
         }

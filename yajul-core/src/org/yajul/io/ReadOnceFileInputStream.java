@@ -2,9 +2,9 @@ package org.yajul.io;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -103,7 +103,8 @@ public class ReadOnceFileInputStream extends FileInputStream
         if (file != null && file.exists())
         {
             file.delete();
-            log.info("close() : " + file.getAbsolutePath() + " deleted.");
+            if (log.isDebugEnabled())
+                log.debug("close() : " + file.getAbsolutePath() + " deleted.");
         }
         file = null;
     }

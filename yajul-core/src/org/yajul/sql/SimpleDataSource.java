@@ -1,13 +1,13 @@
 package org.yajul.sql;
 
 import org.yajul.util.ResourceUtil;
-import org.yajul.util.InitializationException;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -32,7 +32,7 @@ public class SimpleDataSource implements DataSource
         initialize(driverClass, jdbcURL, defaultUsername, defaultPassword);
     }
 
-    public SimpleDataSource() throws InitializationException
+    public SimpleDataSource() throws IOException
     {
         Properties properties = ResourceUtil.loadProperties(RESOURCE_NAME);
         initialize(properties);

@@ -11,11 +11,10 @@ public class ResourceUtil
 {
     /**
      * Loads a properties resource.  Returns null if the resource was not found.
-     *
      * @param resourceName The name of the resource.
      * @return Properties - The loaded properties, or <i>null</i> if the resource was not found.
      */
-    public static Properties loadProperties(String resourceName) throws InitializationException
+    public static Properties loadProperties(String resourceName) throws IOException
     {
         InputStream is = getResourceAsStream(resourceName);
         if (is == null)     // If the resource was not found,
@@ -24,17 +23,7 @@ public class ResourceUtil
         // Load the properties file from the current class loader, if it isn't already
         // loaded.
         Properties properties = new Properties();
-        try
-        {
-            properties.load(is);
-        }
-        catch (IOException e)
-        {
-            // There was a problem loading the resource into a 'properties' object,
-            // so throw an exception.
-            throw new InitializationException("Unable to load resource '"
-                    + resourceName + "' due to : " + e.getMessage(), e);
-        }
+        properties.load(is);
         return properties;
     }
 

@@ -14,9 +14,9 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
     /** The component objects in the key. **/
     private Object[] components;
     /** The pre-computed hash code. **/
-    private int hash = 0;
+    private transient int hash = 0;
     /** Flag indicating the status of the precomputed hash. **/
-    private boolean isHashComputed = false;
+    private transient boolean isHashComputed = false;
 
     /**
      * Computes the hash code for an array of objects.
@@ -101,6 +101,7 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
         if (!isHashComputed)
         {
             hash = computeHash(components);
+            isHashComputed = true;
         }
         return hash;
     }

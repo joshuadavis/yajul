@@ -1,12 +1,9 @@
 package org.yajul.util.test;
 
 import junit.framework.TestCase;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.yajul.util.FieldPrinter;
 
 import java.util.Date;
-
-import org.yajul.util.FieldPrinter;
 
 /**
  * Test the field printer class.
@@ -30,29 +27,49 @@ public class FieldPrinterTest extends TestCase
     {
         Foo o = new Foo();
         String s = FieldPrinter.toString(o);
-        System.out.println("\n" + s);
         FieldPrinter fp = new FieldPrinter();
         fp.append(o);
-        System.out.println("\n" + fp.toString());
-
+        fp.append(null);
+        s = fp.toString();
+        System.out.println(s);
+        Foo.getSomfin(); // Just to exercise the method.
+        fp.append(new Nope());
+        fp.append(new Kaboom());
     }
 
     public static class Foo
     {
-        public int i = 42;
-        public double d = 3.1415;
-        public Date theDate = new Date(0);
-        public String s = "test";
-        public Bar bar = new Bar();
+        private int i = 42;
+        private double d = 3.1415;
+        private Date theDate = new Date(0);
+        private String s = "test";
+        private Bar bar = new Bar();
+        private Bar other = null;
+        private Baz baz = new Baz();
+
+        public static int getSomfin()
+        {
+            return 999;
+        }
+
+        public Baz getBaz()
+        {
+            return baz;
+        }
+
+        public boolean isFoo()
+        {
+            return true;
+        }
+
+        public Bar getOther()
+        {
+            return other;
+        }
 
         public int getI()
         {
             return i;
-        }
-
-        public void setI(int i)
-        {
-            this.i = i;
         }
 
         public double getD()
@@ -60,19 +77,9 @@ public class FieldPrinterTest extends TestCase
             return d;
         }
 
-        public void setD(double d)
-        {
-            this.d = d;
-        }
-
         public Date getTheDate()
         {
             return theDate;
-        }
-
-        public void setTheDate(Date theDate)
-        {
-            this.theDate = theDate;
         }
 
         public String getS()
@@ -80,24 +87,42 @@ public class FieldPrinterTest extends TestCase
             return s;
         }
 
-        public void setS(String s)
-        {
-            this.s = s;
-        }
-
         public Bar getBar()
         {
             return bar;
-        }
-
-        public void setBar(Bar bar)
-        {
-            this.bar = bar;
         }
     }
 
     public static class Bar
     {
         public int[] quimby = new int[] { 1, 2, 3 };
+        public boolean bart = false;
     }
+
+    private static class Nope
+    {
+        public int[] quimby = new int[] { 1, 2, 3 };
+        public boolean bart = false;
+    }
+
+    public static class Baz
+    {
+        private int duh = 444;
+
+        public String toString()
+        {
+            return "duh = " + duh;
+        }
+    }
+
+    public static class Kaboom
+    {
+
+        public String toString()
+        {
+            throw new RuntimeException("boom!");
+        }
+    }
+
+
 }

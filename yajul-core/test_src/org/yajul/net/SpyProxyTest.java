@@ -27,15 +27,13 @@
 package org.yajul.net;
 
 import junit.framework.TestCase;
-
-import java.net.URL;
-import java.net.HttpURLConnection;
-import java.io.InputStream;
-import java.io.IOException;
-import java.util.Random;
-
-import org.yajul.io.StreamCopier;
 import org.apache.log4j.Logger;
+import org.yajul.io.StreamCopier;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Tests the SpyProxy class.
@@ -71,18 +69,18 @@ public class SpyProxyTest extends TestCase
     public void testSpyProxy() throws Exception
     {
 
-        webProxy("www.w3.org", "http://localhost:8888/Protocols/HTTP/",CLIENT_COUNT);
-        webProxy("www.microsoft.com", "http://localhost:8888",1);
+        webProxy("www.w3.org", "http://localhost:8889/Protocols/HTTP/",CLIENT_COUNT);
+        webProxy("www.microsoft.com", "http://localhost:8889",1);
     }
 
     private void webProxy(String host, String spec,int clientCount) throws IOException, InterruptedException
     {
         // TODO: Let the proxy pick an available port.
-        SpyProxy proxy = new SpyProxy(host,80,8888);
+        SpyProxy proxy = new SpyProxy(host,80,8889);
         // proxy.setDebugText(true);
         proxy.setShowConnections(true);
         proxy.setMaxConnections(CLIENT_LIMIT);
-        Thread proxyThread = new Thread(proxy,"SpyProxy-8888");
+        Thread proxyThread = new Thread(proxy,"SpyProxy-8889");
         log.info("\nStarting proxy server on port " + proxy.getProxyPort() + "...");
         proxyThread.start();
 
