@@ -80,7 +80,7 @@ public class Logger extends Writer
 
     /** An array of Log4J priorities to make decoding
      * the LEVEL_xxx values easier. */
-    private static Priority[] priorities =
+    private static final Priority[] priorities =
             {
                 Priority.FATAL,
                 Priority.ERROR,

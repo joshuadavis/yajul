@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.WeakHashMap;
 
 /**
  * Tests the org.yajul.util.Cache class
@@ -212,7 +213,7 @@ public class CacheTest extends TestCase
             assertEquals(active + passive, SET_SIZE);
              if (cacheSize < SET_SIZE)
                 assertEquals((float) cacheSize / (float) SET_SIZE, cache.getHitRate(), 0.09);
-            printStatistics(cache);
+//            printStatistics(cache);
         }
         catch (Exception e)
         {
@@ -277,17 +278,18 @@ public class CacheTest extends TestCase
 
     private void printStatistics(Cache cache)
     {
-//        log.info("--- cache ---");
-//        log.info("requests     = " + cache.getRequests());
-//        log.info("activations  = " + cache.getActivations());
-//        log.info("time outs    = " + cache.getTimeouts());
-//        log.info("hit rate     = " + cache.getHitRate());
-//        log.info("timeout rate = " + cache.getTimeoutRate());
-//        log.info("--- activator ---");
-//        log.info("activations  = " + activator.getActivations());
-//        log.info("passivations = " + activator.getPassivations());
-//        log.info("finalizations= " + activator.getFinalizations());
-//        log.info("stale        = " + activator.getStale());
+        log.debug("--- cache ---");
+        log.debug("size         = " + cache.getCurrentSize());
+        log.debug("requests     = " + cache.getRequests());
+        log.debug("activations  = " + cache.getActivations());
+        log.debug("time outs    = " + cache.getTimeouts());
+        log.debug("hit rate     = " + cache.getHitRate());
+        log.debug("timeout rate = " + cache.getTimeoutRate());
+        log.debug("--- activator ---");
+        log.debug("activations  = " + activator.getActivations());
+        log.debug("passivations = " + activator.getPassivations());
+        log.debug("finalizations= " + activator.getFinalizations());
+        log.debug("stale        = " + activator.getStale());
         activator.clearStatistics();
     }
 
@@ -317,7 +319,7 @@ public class CacheTest extends TestCase
                 {
                 }
             }
-            printStatistics(cache);
+//            printStatistics(cache);
             assertTrue(cache.getTimeoutRate() < 0.99);
             assertTrue(cache.getHitRate() < 0.99);
         }
@@ -327,6 +329,46 @@ public class CacheTest extends TestCase
             fail("Unexpected exception: " + ex.getMessage());
         }
         log.info("testTimeout() : LEAVE");
+    }
+
+    public void testWeakMap()
+    {
+        log.info("testWeakMap() : ENTER");
+        try
+        {
+            // Set up a cache that has a timeout of 10ms
+            Cache cache = new Cache(activator, SET_SIZE, 10, false, false, new WeakHashMap());
+            // Poll the cache for 110ms, and see that one activation has occurred.
+            TestElement elem;
+            Integer num;
+            long start = System.currentTimeMillis();
+            long duration = 1000;
+            for (int i = 0; System.currentTimeMillis() - start < duration; i++)
+            {
+                num = new Integer(random.nextInt(SET_SIZE));
+                elem = (TestElement) cache.get(num);
+                assertEquals(elem.id, num.intValue());
+                assertSame(elem, map.get(num));
+            }
+            log.debug("Before GC...");
+            printStatistics(cache);
+            System.gc();
+            try
+            {
+                Thread.sleep(500);
+            }
+            catch (InterruptedException e)
+            {
+            }
+            log.debug("After GC...");
+            printStatistics(cache);
+        }
+        catch (Exception ex)
+        {
+            log.unexpected(ex);
+            fail("Unexpected exception: " + ex.getMessage());
+        }
+        log.info("testWeakMap() : LEAVE");
     }
 
     public static Test suite()

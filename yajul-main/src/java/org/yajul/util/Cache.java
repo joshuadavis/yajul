@@ -570,7 +570,6 @@ public class Cache
     public synchronized void clearStats()
     {
         allRequests.clear();
-
         doClearStats();
     }
 
