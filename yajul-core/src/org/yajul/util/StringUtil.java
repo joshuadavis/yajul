@@ -111,7 +111,7 @@ public class StringUtil
      * @param lowerCase True for lower case hex (e.g. 34f0), false for upper
      * case hex (e.g. 34F0).
      */
-    public static void hexString(StringBuffer buf,
+    public static final void hexString(StringBuffer buf,
                                  byte[] bytes, String separator,
                                  boolean lowerCase)
     {
@@ -134,22 +134,22 @@ public class StringUtil
      * @param inByte The input byte.
      * @param out The output array of characters.  Length must be >= 2.
      */
-    public static void hexChars(final char[] chars, int inByte, char[] out)
+    public static final void hexChars(final char[] chars, int inByte, char[] out)
     {
         out[1] = chars[MASK & inByte];   // Get the lower nybble and set the second char.
         inByte >>= 4;                    // Shift off the lower nybble.
         out[0] = chars[MASK & inByte];   // Get the upper nybble and set the first char.
     }
-    
+
     /**
-     * Appends the string to the string buffer IFF it is not null and not empty.
+     * Appends the string to the string buffer IFF it is not 'empty' (null or zero length).
      * @param string The string to append.
      * @param buf The string buffer.
+     * @see #isEmpty(String)
      */
-    public static final void appendIfNotEmpty(String string,StringBuffer buf)
+    public static final void appendIfNotEmpty(String string, StringBuffer buf)
     {
         if (!isEmpty(string))
             buf.append(string);
     }
-    
 }
