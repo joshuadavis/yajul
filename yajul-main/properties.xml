@@ -54,11 +54,9 @@
                   </navlinks>
 
                   <logo>
-<!--
                      <group
-                      src="images/group-logo.gif"
-                      href="http://www.krysalis.org" />
--->
+                      src="http://sourceforge.net/sflogo.php?group_id=56167&amp;amp;type=5"
+                      href="http://www.sourceforge.net" />
                      <project
                       src="images/project-logo.gif"
                       href="https://sourceforge.net/projects/yajul/" />
