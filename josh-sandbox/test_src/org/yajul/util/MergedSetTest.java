@@ -40,6 +40,17 @@ public class MergedSetTest  extends TestCase
         assertEquals(3,bOnly.size());
         assertEquals(0,intersection.size());
         assertEquals(6,union.size());
+        
+        MergedSet merged = new MergedSet(a,b);
+        aOnly = merged.getAOnly();
+        bOnly = merged.getBOnly();
+        intersection = merged.getIntersection();
+        union = merged.getUnion();
+
+        assertEquals(3,aOnly.size());
+        assertEquals(3,bOnly.size());
+        assertEquals(0,intersection.size());
+        assertEquals(6,union.size());
 
     }
 
@@ -66,6 +77,16 @@ public class MergedSetTest  extends TestCase
         assertEquals(1,intersection.size());
         assertEquals(6,union.size());
 
+        MergedSet merged = new MergedSet(a,b);
+        aOnly = merged.getAOnly();
+        bOnly = merged.getBOnly();
+        intersection = merged.getIntersection();
+        union = merged.getUnion();
+
+        assertEquals(3,aOnly.size());
+        assertEquals(2,bOnly.size());
+        assertEquals(1,intersection.size());
+        assertEquals(6,union.size());
     }
 
     public void testAllIntersection()
@@ -86,6 +107,17 @@ public class MergedSetTest  extends TestCase
         Set union = new HashSet();
 
         MergedSet.merge(a,b,aOnly,bOnly,intersection,union);
+        assertEquals(0,aOnly.size());
+        assertEquals(0,bOnly.size());
+        assertEquals(3,intersection.size());
+        assertEquals(3,union.size());
+
+        MergedSet merged = new MergedSet(a,b);
+        aOnly = merged.getAOnly();
+        bOnly = merged.getBOnly();
+        intersection = merged.getIntersection();
+        union = merged.getUnion();
+
         assertEquals(0,aOnly.size());
         assertEquals(0,bOnly.size());
         assertEquals(3,intersection.size());
