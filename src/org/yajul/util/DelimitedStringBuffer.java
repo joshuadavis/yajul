@@ -50,9 +50,7 @@ public class DelimitedStringBuffer {
     }
 
     /*
-     * inserts 'str' if it is not null.
-     * If a string is inserted in the middle of other data, 2 surrounding delimiters are added
-     * if a string is inserted at the point of another delimtier, 1 surroinding delimiter is added.
+     * inserts 'str'.
      */
     protected DelimitedStringBuffer insert(int position, String str, String delim) {
 		if (str != null || m_insertOnNull) {
