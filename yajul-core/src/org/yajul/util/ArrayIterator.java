@@ -99,7 +99,7 @@ public class ArrayIterator implements Iterator
      * Returns the next element in the iteration.
      *
      * @return the next element in the iteration.
-     * @exception java.util.NoSuchElementException iteration
+     * <br>throws java.util.NoSuchElementException iteration
      * has no more elements.
      */
     public Object next()
@@ -128,8 +128,6 @@ public class ArrayIterator implements Iterator
      * <p>Note: Since this class iterates an array, and the size of the array
      * cannot be changed, this method always throws an
      * UnsupportedOperationException.</p>
-     * @exception java.lang.UnsupportedOperationException if the <tt>remove</tt>
-     *		  operation is not supported by this Iterator.
      */
     public void remove()
     {

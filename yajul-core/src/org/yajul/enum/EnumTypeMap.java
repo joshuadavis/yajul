@@ -59,6 +59,9 @@ public class EnumTypeMap
      */
     private Map types;
 
+    /**
+     * Creates a new map of enumerated types.
+     */
     public EnumTypeMap()
     {
         this.types = new HashMap();
@@ -125,7 +128,7 @@ public class EnumTypeMap
      * Returns the EnumType given an enum type id string, or null if there is
      * no type with the specified id.
      * @param enumTypeId The id to look for.
-     * @return
+     * @return EnumType - The enum type with the ID, or null.
      */
     public EnumType findEnumTypeById(String enumTypeId)
     {

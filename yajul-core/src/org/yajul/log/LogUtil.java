@@ -71,7 +71,7 @@ public class LogUtil
     /** A logger for this class
      *  NOTE: To avoid infinite recursion, LogUtil is not used to do this.
      */
-    private static final Logger log = Logger.getLogger(LogUtil.class);
+    private static final Logger LOG = Logger.getLogger(LogUtil.class);
 
     /**
      * Configure the log4J system to log to the console.  The system property
@@ -117,7 +117,7 @@ public class LogUtil
             String levelString = System.getProperty(SYSPROPERTY_LEVEL);
             setRootLevel(levelString);
             configured = true;
-            log.info("Log4J rolling log file configuration.");
+            LOG.info("Log4J rolling log file configuration.");
         }
     }
 
@@ -149,7 +149,7 @@ public class LogUtil
         else if ("DEBUG".equalsIgnoreCase(levelString))
             level = Level.DEBUG;
         else
-            log.warn("setRootLevel() - Unknown level string: '" + levelString + "'");
+            LOG.warn("setRootLevel() - Unknown level string: '" + levelString + "'");
 
         Logger.getRootLogger().setLevel(level);
     }

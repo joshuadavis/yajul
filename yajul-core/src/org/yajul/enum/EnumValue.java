@@ -28,10 +28,9 @@
 package org.yajul.enum;
 
 import java.io.Serializable;
-import java.util.Hashtable;
 
-import org.w3c.dom.Element;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Element;
 import org.yajul.log.LogUtil;
 
 /**
@@ -104,7 +103,6 @@ public class EnumValue implements Serializable, Comparable
      * <code>java.util.Hashtable</code>.
      * @return  a hash code value for this object.
      * @see     Object#equals(Object)
-     * @see     Hashtable
      */
     public int hashCode()
     {
@@ -118,7 +116,6 @@ public class EnumValue implements Serializable, Comparable
      * @return  <code>true</code> if this object is the same as the obj
      *          argument; <code>false</code> otherwise.
      * @see     Boolean#hashCode()
-     * @see     Hashtable
      */
     public boolean equals(Object obj)
     {
@@ -151,8 +148,8 @@ public class EnumValue implements Serializable, Comparable
      * @param   o the Object to be compared.
      * @return  a negative integer, zero, or a positive integer as this object
      *		is less than, equal to, or greater than the specified object.
-     * @throws ClassCastException if the specified object's type prevents it
-     *         from being compared to this Object.
+     * <br>throws ClassCastException if the specified object's type prevents it
+     * from being compared to this Object.
      */
     public int compareTo(Object o)
     {
