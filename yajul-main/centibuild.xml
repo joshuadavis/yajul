@@ -32,15 +32,20 @@
     <import file="${ant.home}/src/core/xbuild.xml"/>
     <taskdef file="${ant.home}/src/core/tasks.properties"/>
     <importcent name="java" />
-     
+    
     <importcent name="antidote"/> 
     <importcent name="checkstyle"/> 
     <importcent name="forrest"/> 
- 
     <importcent name="gump"/>
+    <importcent name="izpress"/>
     <importcent name="javasrc"/> 
+    <importcent name="jdepend"/>
+    <importcent name="jdiff"/> 
+    <importcent name="jtidy"/>  
     <importcent name="junit"/>
-
+    <importcent name="umldoclet"/>  
+    <importcent name="xmldoclet"/> 
+    
     <!-- =================================================================== -->
     <!-- Basic build targets for the project                                 -->
     <!-- =================================================================== -->
@@ -91,8 +96,8 @@
     <target name="all" depends="clean, code, metrics, docs, dist"/>
     	
     <target name="code" depends="compile,test,package"/>
-    <target name="metrics" depends="checkstyle, report"/>
-    <target name="docs" depends="javasrc, javadocs, forrest.docs"/>
+    <target name="metrics" depends="checkstyle,report,jdepend-xdoc"/>
+    <target name="docs" depends="javasrc,javadocs,umljavadocs,xjavadocs,descriptor-docs,forrest.docs"/>
 
     <!-- ================================== -->
     <!--        Target used by Gump         -->

@@ -19,4 +19,4 @@ else
   S=':'
 fi
 
-$CENTIPEDE_HOME/bin/cent
+$CENTIPEDE_HOME/bin/cent $@

@@ -23,17 +23,9 @@
    <centipede>
       <tools>
          <cents>
-            <antidote />  
-            <junit />
             <checkstyle >
               <properties>conf/checkstyle.properties</properties>
             </checkstyle>
-            <javasrc />
-
-            <!-- not currently used but working
-                 <antidote/>   
-                 <xmldoclet/>
-            -->      
             <forrest loglevel="WARN">
               <!-- Custom site skin -->
                <skin name="simple-site">
