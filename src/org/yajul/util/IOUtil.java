@@ -12,6 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.CharArrayReader;
+import java.io.Writer;
+import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.CharArrayWriter;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
 /**
@@ -32,12 +39,13 @@ public class IOUtil
 
     /**
      * Copies the input stream into the output stream in a thread safe and efficient manner.
-     * @param in - The input stream.
-     * @param out - The output stream.
-     * @param bufsz - The size of the buffer to use.
-     * @throws IOException - When the stream could not be copied.
+     * @param in The input stream.
+     * @param out The output stream.
+     * @param bufsz The size of the buffer to use.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
      **/
-    public static final void copy(InputStream in, OutputStream out, int bufsz)
+    public static final int copy(InputStream in, OutputStream out, int bufsz)
             throws IOException
     {
         // From Java I/O, page 43
@@ -49,34 +57,85 @@ public class IOUtil
             {
                 byte[] buf = new byte[bufsz];
                 int bytesRead = 0;
+                int total = 0;
                 while (true)
                 {
                     bytesRead = in.read(buf);
                     if (bytesRead == -1)
                         break;
+                    total += bytesRead;
                     out.write(buf, 0, bytesRead);
                 } // while
+                return total;
+            } // synchronized (out)
+        } // synchronized (in)
+    }
+
+    /**
+     * Copies the input reader into the output writer in a thread safe and efficient manner.
+     * @param in The input reader.
+     * @param out The output writer.
+     * @param bufsz The size of the buffer to use.
+     * @return int The number of bytes copied.
+     * @throws IOException  When the stream could not be copied.
+     **/
+    public static final int copy(Reader in, Writer out, int bufsz)
+            throws IOException
+    {
+        // From Java I/O, page 43
+        // Do not allow other threads to read from the input or write to the
+        // output while the copying is taking place.
+        synchronized (in)
+        {
+            synchronized (out)
+            {
+                char[] buf = new char[bufsz];
+                int bytesRead = 0;
+                int total = 0;
+                while (true)
+                {
+                    bytesRead = in.read(buf);
+                    if (bytesRead == -1)
+                        break;
+                    total += bytesRead;
+                    out.write(buf, 0, bytesRead);
+                } // while
+                return total;
             } // synchronized (out)
         } // synchronized (in)
     }
 
     /**
      * Copies the input stream into the output stream in a thread safe and efficient manner.
-     * @param in - The input stream.
-     * @param out - The output stream.
-     * @throws IOException - When the stream could not be copied.
+     * @param in The input stream.
+     * @param out The output stream.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
      **/
-    public static final void copy(InputStream in, OutputStream out)
+    public static final int copy(InputStream in, OutputStream out)
             throws IOException
     {
-        copy(in, out, DEFAULT_BUFFER_SIZE);
+        return copy(in, out, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Copies the input reader into the output writer in a thread safe and efficient manner.
+     * @param in The input reader.
+     * @param out The output writer.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     **/
+    public static final int copy(Reader in, Writer out)
+            throws IOException
+    {
+        return copy(in, out, DEFAULT_BUFFER_SIZE);
     }
 
     /**
      * Reads the input stream into an array of bytes.
-     * @param in - The input stream.
-     * @return byte[] - The array of bytes copied from the stream.
-     * @throws IOException - When the stream could not be copied.
+     * @param in The input stream.
+     * @return byte[] The array of bytes copied from the stream.
+     * @throws IOException When the stream could not be copied.
      */
     public static final byte[] toByteArray(InputStream in) throws IOException
     {
@@ -86,12 +145,78 @@ public class IOUtil
     }
 
     /**
+     * Copies the input byte array into the output (writer).  Returns the number of
+     * bytes.
+     * @param in The input byte array.
+     * @param out The output writer.
+     * @return The number of bytes copied.
+     */
+    public static int copy(byte[] in,Writer out)
+        throws IOException
+    {
+        return copy(new InputStreamReader(new ByteArrayInputStream(in)),out);
+    }
+
+    /**
+     * Reads the entire input stream into a char array.
+     * @param in The input reader
+     * @return char[] The array of characters.
+     */
+    public static char[] readCharArray(Reader in)
+        throws IOException
+    {
+        CharArrayWriter caw = new CharArrayWriter();
+        copy(in,caw);
+        return caw.toCharArray();
+    }
+
+    /**
+     * Reads the entire input stream into a byte array.
+     * @param in The input reader
+     * @return byte[] The array of bytes.
+     */
+    public static byte[] readByteArray(Reader in)
+        throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        copy(in,new OutputStreamWriter(baos));
+        return baos.toByteArray();
+    }
+
+    /**
+     * Copies the stream into the output and returns a new stream.
+     */
+    public static Reader duplicate(Reader in,Writer out)
+        throws IOException
+    {
+        char [] buf = readCharArray(in);
+        out.write(buf);
+        out.flush();
+        return new CharArrayReader(buf);
+    }
+
+    /**
+     * Copies the stream into both output streams.
+     * and returns a new stream.
+     */
+    public static Reader duplicate(Reader in,Writer out,Writer out2)
+        throws IOException
+    {
+        char [] buf = readCharArray(in);
+        out.write(buf);
+        out.flush();
+        out2.write(buf);
+        out2.flush();
+        return new CharArrayReader(buf);
+    }
+
+    /**
      * Make directory, making sure that the whole path is created
      * @param path The path to be created
      */
-    public static final void makeDir(String path)
+    public static final void makeDir(File path)
     {
-        StringTokenizer tok = new StringTokenizer(path, FILESEP);
+        StringTokenizer tok = new StringTokenizer(path.getAbsolutePath(), FILESEP);
         String dir = FILESEP;
 
         while (tok.hasMoreTokens())
@@ -110,15 +235,13 @@ public class IOUtil
      * all the files in the given directory.
      * @param path the path to the directory
      */
-    public static final void clearDir(String path)
+    public static final void clearDir(File dir)
     {
-        File dir = new File(path);
-
         if (dir.exists())
         {
             // empty it out
             if (log.isDebugEnabled())
-                log.debug("Deleting files from directory " + path);
+                log.debug("Deleting files from directory " + dir);
             File[] files = dir.listFiles();
             for (int i = 0; i < files.length; i++)
                 files[i].delete();
@@ -126,7 +249,7 @@ public class IOUtil
         else
         {
             //make it
-            makeDir(path);
+            makeDir(dir);
         }
     }
 
@@ -134,12 +257,11 @@ public class IOUtil
      * @param d the directory
      * @return the list of the subdirectories
      */
-    public static final String[] listSubDirectories(String d)
+    public static final String[] listSubDirectories(File dir)
     {
-        File dir = new File(d);
         if (!dir.isDirectory())
         {
-            log.error(d + " is not a directory");
+            log.error(dir + " is not a directory");
             return new String[0];
         }
         // return the filtered entries
@@ -152,55 +274,6 @@ public class IOUtil
                     }
                 } // anonymous inner class
         );
-    }
-
-    /**
-     * Perfom preliminary opeation for writing to a file
-     * @param path Directory name.
-     * @param name File name (without directory)
-     * @param append if true, the file will be open for appending,
-     *        else, if false, the existing file will be deleted
-     * @return the PrintStream object ready for printing
-     */
-    public static final PrintStream getPrintStream(String path, String name, boolean append)
-    {
-        if (!path.endsWith(FILESEP))
-            path = path + FILESEP;
-        File fpath = new File(path);
-        // create the path if it doesn't exist
-        if (!fpath.exists())
-            makeDir(path);
-        return getPrintStream(path + name.trim(), append);
-    }
-
-    /**
-     * Perfom preliminary opeation for writing to a file
-     * @param fullName File name (including path)
-     * @param append if true, the file will be open for appending,
-     *        else, if false, the existing file will be deleted
-     *
-     * @return the PrintStream object ready for printing
-     */
-    public static final PrintStream getPrintStream(String fullName, boolean append)
-    {
-        File file = new File(fullName.trim());
-        if (!append && file.exists())
-        {
-            log.warn("Erasing existing file: " + fullName);
-            file.delete();
-        }
-
-        PrintStream output = null;
-        try
-        {
-            output = new PrintStream(new FileOutputStream(fullName, append));
-        }
-        catch (IOException e1)
-        {
-            log.error("Problem writing to file: " + fullName, e1);
-            return null;
-        }
-        return output;
     }
 
     /**
