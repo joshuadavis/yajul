@@ -3,31 +3,51 @@
  * Copyright 2002 pgmjsd, inc.
  **********************************************************************************/
 
-package org.yajul.jndi;
-
-import javax.naming.*;
-import java.util.*;
+package org.yajul.jndi.simple;
 
 import org.yajul.log.Logger;
 
+import javax.naming.CompositeName;
+import javax.naming.Context;
+import javax.naming.InvalidNameException;
+import javax.naming.Name;
+import javax.naming.NameAlreadyBoundException;
+import javax.naming.NameNotFoundException;
+import javax.naming.NameParser;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.NotContextException;
+import javax.naming.OperationNotSupportedException;
+import java.util.Hashtable;
+
 /**
  * A sample service provider that implements a flat namespace in memory.
+ * <ul>
+ * <li>All instances should be created by SimpleCtxFactory.</li>
+ * </ul>
+ * @see SimpleCtxFactory
  */
 class SimpleCtx implements Context
 {
     // A logger for this class.
     private static Logger log = Logger.getLogger(SimpleCtx.class);
-    
-    Hashtable myEnv;                                    // The initial environment.
-    private Hashtable bindings = new Hashtable(11);     // The bindings, the names are the key.
-    static NameParser myParser = new SimpleNameParser();
+
+    private static NameParser myParser = new SimpleNameParser();    // The name parser.
+    private Hashtable myEnv;                                        // The initial environment.
+    private Hashtable bindings = new Hashtable(11);                 // The bindings, the names are the key.
 
     SimpleCtx(Hashtable environment)
     {
         // Store the initial environment as a clone.
         myEnv = (environment != null)
-            ? (Hashtable)(environment.clone()) 
-            : null;
+                ? (Hashtable) (environment.clone())
+                : null;
+
+        // If the caller gave a PROVIDER_URL, issue a warning: it will be ignored.
+        if (myEnv.get(Context.PROVIDER_URL) != null)
+        {
+            log.warn("Context.PROVIDER_URL is not supported by this implementation, it will be ignored.");
+        }
     }
 
     public Object lookup(String name) throws NamingException
@@ -52,7 +72,7 @@ class SimpleCtx implements Context
     public Object lookup(Name name) throws NamingException
     {
         // Flat namespace; no federation; just call string version
-        return lookup(name.toString()); 
+        return lookup(name.toString());
     }
 
     public void bind(String name, Object obj) throws NamingException
@@ -69,19 +89,23 @@ class SimpleCtx implements Context
         bindings.put(name, obj);
     }
 
-    public void bind(Name name, Object obj) throws NamingException {
+    public void bind(Name name, Object obj) throws NamingException
+    {
         // Flat namespace; no federation; just call string version
         bind(name.toString(), obj);
     }
 
-    public void rebind(String name, Object obj) throws NamingException {
-        if (name.equals("")) {
+    public void rebind(String name, Object obj) throws NamingException
+    {
+        if (name.equals(""))
+        {
             throw new InvalidNameException("Cannot bind empty name");
         }
         bindings.put(name, obj);
     }
 
-    public void rebind(Name name, Object obj) throws NamingException {
+    public void rebind(Name name, Object obj) throws NamingException
+    {
         // Flat namespace; no federation; just call string version
         rebind(name.toString(), obj);
     }
@@ -102,7 +126,8 @@ class SimpleCtx implements Context
     }
 
     public void rename(String oldname, String newname)
-            throws NamingException {
+            throws NamingException
+    {
         if (oldname.equals("") || newname.equals(""))
         {
             throw new InvalidNameException("Cannot rename empty name");
@@ -112,7 +137,7 @@ class SimpleCtx implements Context
         if (bindings.get(newname) != null)
         {
             throw new NameAlreadyBoundException(newname +
-                                                " is already bound");
+                    " is already bound");
         }
 
         // Check if old name is bound
@@ -138,14 +163,14 @@ class SimpleCtx implements Context
         if (name.equals(""))
         {
             // listing this context
-            return new FlatNames(bindings.keys());
-        } 
+            return new FlatNames(this, bindings.keys());
+        }
 
         // Perhaps 'name' names a context
         Object target = lookup(name);
         if (target instanceof Context)
         {
-            return ((Context)target).list("");
+            return ((Context) target).list("");
         }
         throw new NotContextException(name + " cannot be listed");
     }
@@ -163,14 +188,14 @@ class SimpleCtx implements Context
         if (name.equals(""))
         {
             // listing this context
-            return new FlatBindings(bindings.keys());
-        } 
+            return new FlatBindings(this, bindings.keys());
+        }
 
         // Perhaps 'name' names a context
         Object target = lookup(name);
         if (target instanceof Context)
         {
-            return ((Context)target).listBindings("");
+            return ((Context) target).listBindings("");
         }
         throw new NotContextException(name + " cannot be listed");
     }
@@ -235,14 +260,14 @@ class SimpleCtx implements Context
             throws NamingException
     {
         Name result = composeName(new CompositeName(name),
-                                  new CompositeName(prefix));
+                new CompositeName(prefix));
         return result.toString();
     }
 
     public Name composeName(Name name, Name prefix)
             throws NamingException
     {
-        Name result = (Name)(prefix.clone());
+        Name result = (Name) (prefix.clone());
         result.addAll(name);
         return result;
     }
@@ -253,11 +278,11 @@ class SimpleCtx implements Context
         if (myEnv == null)
         {
             myEnv = new Hashtable(5, 0.75f);
-        } 
+        }
         return myEnv.put(propName, propVal);
     }
 
-    public Object removeFromEnvironment(String propName) 
+    public Object removeFromEnvironment(String propName)
             throws NamingException
     {
         if (myEnv == null)
@@ -275,13 +300,13 @@ class SimpleCtx implements Context
         }
         else
         {
-            return (Hashtable)myEnv.clone();
+            return (Hashtable) myEnv.clone();
         }
     }
 
     public String getNameInNamespace() throws NamingException
     {
-        return ""; 
+        return "";
     }
 
     public void close() throws NamingException
@@ -290,88 +315,9 @@ class SimpleCtx implements Context
         bindings = null;
     }
 
-    static class SimpleNameParser implements NameParser
+    Hashtable getBindingsInternal()
     {
-        static Properties syntax = new Properties();
-        static 
-        {
-            syntax.put("jndi.syntax.direction", "flat");
-            syntax.put("jndi.syntax.ignorecase", "false");
-        }
-        
-        public Name parse(String name) throws NamingException
-        {
-            return new CompoundName(name, syntax);
-        }
+        return bindings;
     }
 
-    // Class for enumerating name/class pairs
-    class FlatNames implements NamingEnumeration
-    {
-        Enumeration names;
-
-        FlatNames (Enumeration names)
-        {
-            this.names = names;
-        }
-
-        public boolean hasMoreElements()
-        {
-            return names.hasMoreElements();
-        }
-
-        public boolean hasMore() throws NamingException
-        {
-            return hasMoreElements();
-        }
-
-        public Object nextElement()
-        {
-            String name = (String)names.nextElement();
-            String className = bindings.get(name).getClass().getName();
-            return new NameClassPair(name, className);
-        }
-
-        public Object next() throws NamingException
-        {
-            return nextElement();
-        }
-        public void close() {
-        }
-    }
-
-    // Class for enumerating bindings
-    class FlatBindings implements NamingEnumeration
-    {
-        Enumeration names;
-
-        FlatBindings (Enumeration names)
-        {
-            this.names = names;
-        }
-
-        public boolean hasMoreElements()
-        {
-            return names.hasMoreElements();
-        }
-
-        public boolean hasMore() throws NamingException
-        {
-            return hasMoreElements();
-        }
-
-        public Object nextElement()
-        {
-            String name = (String)names.nextElement();
-            return new Binding(name, bindings.get(name));
-        }
-
-        public Object next() throws NamingException
-        {
-            return nextElement();
-        }
-        public void close()
-        {
-        }
-    }
 } // class SimpleCtx
