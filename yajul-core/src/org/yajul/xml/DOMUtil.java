@@ -118,7 +118,8 @@ public class DOMUtil
      * @param document The document that contains the parent.
      * @param parent The parent element.
      * @param childTag The tag name for the new child.
-     * @param text The text that will be inside the new child.
+     * @param text The text that will be inside the new child.  Note: If 'text' is null, a
+     * zero length string will be used in order to avoid NPE's (in XALAN2) later on.
      * @return Element - The new child element.
      */
     public static final Element addChildWithText(Document document,
@@ -127,7 +128,7 @@ public class DOMUtil
                                                  String text)
     {
         Element child = addChild(document, parent, childTag);
-        Text t = document.createTextNode(text);
+        Text t = document.createTextNode(text == null ? "" : text);
         child.appendChild(t);
         return child;
     }
