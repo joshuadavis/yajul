@@ -35,8 +35,10 @@ import java.io.OutputStream;
 
 /**
  * Provides stream copying capability in a Runnable class.  This can be used to
- * redirect streams from a spawned JVM, or to 'pump' a one side of PipedInputStream /
- * PipedOutputStream pair.
+ * redirect streams from a spawned JVM, or to 'pump' a one side of
+ * PipedInputStream / PipedOutputStream pair.<br>
+ * Also provides a static method that copies an entire input stream into
+ * an output stream.
  * @author Joshua Davis
  */
 public class StreamCopier implements Runnable
@@ -47,11 +49,63 @@ public class StreamCopier implements Runnable
     public static final int DEFAULT_BUFFER_SIZE = 256;
     private InputStream in;
     private OutputStream out;
+    /** The buffer size to use while copying. **/
     private int bufsz = DEFAULT_BUFFER_SIZE;
+    /** If an exception was thrown in the run() method, this will be set. **/
+    private IOException exception;
+    private boolean complete = false;
 
     /**
-     * Creates a new stream copier, that will copy the input stream into the output
-     * stream when the run() method is caled.
+     * Copies the input stream into the output stream in a thread safe and efficient manner.
+     * @param in The input stream.
+     * @param out The output stream.
+     * @param bufsz The size of the buffer to use.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     **/
+    public static final int copy(InputStream in, OutputStream out, int bufsz)
+            throws IOException
+    {
+        // From Java I/O, page 43
+        // Do not allow other threads to read from the input or write to the
+        // output while the copying is taking place.
+        synchronized (in)
+        {
+            synchronized (out)
+            {
+                byte[] buf = new byte[bufsz];
+                int bytesRead = 0;
+                int total = 0;
+                while (true)
+                {
+                    bytesRead = in.read(buf);
+                    if (bytesRead == -1)
+                        break;
+                    total += bytesRead;
+                    out.write(buf, 0, bytesRead);
+                } // while
+                return total;
+            } // synchronized (out)
+        } // synchronized (in)
+    }
+
+
+    /**
+     * Copies the input stream into the output stream in a thread safe and efficient manner.
+     * @param in The input stream.
+     * @param out The output stream.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     **/
+    public static final int copy(InputStream in, OutputStream out)
+            throws IOException
+    {
+        return copy(in, out, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Creates a new stream copier, that will copy the input stream into the
+     * output stream when the run() method is caled.
      * @param    in     The input stream to read from.
      * @param    out    The output stream to write to.
      */
@@ -62,7 +116,10 @@ public class StreamCopier implements Runnable
     }
 
     /**
-     * This method will copy the input into the output until there is no more input.
+     * This method will copy the input into the output until there is no more
+     * input.  Since this method is typically run by a thread, exceptions
+     * are not thrown from it.  Instead, the exception can be read using
+     * the getException() method.
      *
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's
@@ -88,10 +145,45 @@ public class StreamCopier implements Runnable
                 out.write(buf, 0, bytesRead);
             } // while
             out.flush();
+            synchronized (this)
+            {
+                complete = true;
+            }
         }
         catch (IOException e)
         {
+            // Log the exception!
             log.unexpected(e);
+            // Remember the exception, just in case anyone cares.
+            synchronized(this)
+            {
+                exception = e;
+            }
         }
     }
+
+    /**
+     * Returns the exception thrown in the run() method, if any.
+     * @returns IOException The exception thrown during the run() method,
+     * or null if there were no errors.
+     */
+    public IOException getException()
+    {
+        synchronized(this)
+        {
+            return exception;
+        }
+    }
+
+    /**
+     * Returns true if the copying is complete.
+     * @return boolean true if the copying is complete.  Returns false if
+     * the copying is in progress, not started, or encountered an error.
+     */
+    public boolean isComplete()
+    {
+        return complete;
+    }
+
+
 }
