@@ -28,6 +28,7 @@
 package org.yajul.util;
 
 // JDK
+
 import java.util.TimeZone;
 import java.util.Date;
 import java.util.Locale;
@@ -95,9 +96,9 @@ public class DateFormatter
      * @param timeZone - The time zone symbol for the format.
      * @param loc - The locale of the format.
      **/
-    public DateFormatter(String simpleFormat,String timeZone,Locale loc)
+    public DateFormatter(String simpleFormat, String timeZone, Locale loc)
     {
-        this(new SimpleDateFormat(simpleFormat,loc));
+        this(new SimpleDateFormat(simpleFormat, loc));
         setTimeZone(timeZone);
     }
 
@@ -105,7 +106,7 @@ public class DateFormatter
      * @param simpleFormat - The simple date format string.
      * @param timeZone - The time zone symbol for the format.
      **/
-    public DateFormatter(String simpleFormat,String timeZone)
+    public DateFormatter(String simpleFormat, String timeZone)
     {
         this(new SimpleDateFormat(simpleFormat));
         setTimeZone(timeZone);
@@ -140,7 +141,7 @@ public class DateFormatter
             f.setTimeZone(tz);
         }
     }
-    
+
     /** Format a date and return the result as a string.  Synchronized
      * for thread-safety.
      * @param d - The date to format.
@@ -160,14 +161,14 @@ public class DateFormatter
      * @return Date - The parsed date.
      * @throws ParseException - When the 's' fails to parse.
      **/
-    public Date parse (String s) throws ParseException
+    public Date parse(String s) throws ParseException
     {
         synchronized (this)
         {
             return f.parse(s);
         }
-    }    
-    
+    }
+
     /**
      * Parse a date/time string according to the given parse position.
      * @param text - The date/time string to be parsed
@@ -175,8 +176,7 @@ public class DateFormatter
      * the position at which parsing terminated, or the start position if the
      * parse failed.
      * @return A Date, or null if the input could not be parsed
-     * @see setLenient(boolean)
-     * @see java.text.DateFormat.parse(java.lang.String,java.text.ParsePosition)
+     * @see java.text.DateFormat#parse(java.lang.String,java.text.ParsePosition)
      **/
     public Date parse(String text, ParsePosition pos)
     {
