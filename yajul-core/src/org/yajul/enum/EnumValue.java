@@ -53,6 +53,13 @@ public class EnumValue implements Serializable, Comparable
     private String typeId;
 
     /**
+     * Creates an uninitialized EnumValue.
+     */
+    public EnumValue()
+    {
+    }
+
+    /**
      * Returns the id of the enumerated value.
      * @return int - The id of the enumerated value.
      */
