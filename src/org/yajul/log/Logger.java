@@ -7,6 +7,9 @@ package org.yajul.log;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.io.IOException;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
@@ -45,8 +48,14 @@ public class Logger extends Writer
     /** A print writer that is piped to this log. */
     private PrintWriter printWriter;
 
+    /** A string buffer for the Writer implementation. **/
+    private StringBuffer lineBuffer;
+
     /** Flag that indicates whether Log4J has been initialized or not. */
     private static boolean configured = false;
+
+    /** A map of existing logger instances. **/
+    private static Map loggerMap = new WeakHashMap();
 
     /** An array of Log4J priorities to make decoding the LEVEL_xxx values easier. */
     private static Priority[] priorities =
@@ -62,6 +71,7 @@ public class Logger extends Writer
     {
         log = Category.getInstance(categoryName);
         printWriter = new PrintWriter(this);
+        lineBuffer = new StringBuffer();
     }
 
     // --- java.io.Writer implementation ---
@@ -75,8 +85,14 @@ public class Logger extends Writer
     public void write(char[] buf,int off,int len)
     {
         // TODO: Find newlines and only write when there is a newline.
-        String str = new String(buf,off,len);
-        log.info(str);
+        int start = off;
+        for(int i = off; i < len ; i++)
+        {
+            if (buf[i] == '\n')
+                flush();
+            else
+                lineBuffer.append(buf[i]);
+        }
     }
 
     /**
@@ -84,6 +100,10 @@ public class Logger extends Writer
      */
     public void flush()
     {
+        if (lineBuffer.length() <= 0)
+            return;
+        log.info(lineBuffer.toString());
+        lineBuffer.setLength(0);
     }
 
     /**
@@ -262,6 +282,17 @@ public class Logger extends Writer
                 } // if
             } // synchronized
         } // if
-        return new Logger(categoryName);
+
+        // Before making a new logger, look for an existing one.
+        synchronized (loggerMap)
+        {
+            Logger logger = (Logger)loggerMap.get(categoryName);
+            if (logger == null)
+            {
+                logger = new Logger(categoryName);
+                loggerMap.put(categoryName,logger);
+            }
+            return logger;
+        }
     }
 }
