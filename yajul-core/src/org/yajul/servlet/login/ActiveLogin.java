@@ -30,6 +30,11 @@ public class ActiveLogin extends HttpServlet
     /** The deployment URI of this servlet. **/
     private static String deployedURI = null;
 
+    public ActiveLogin()
+    {
+        log.info("<ctor>");
+    }
+
     /**
      * Returns the URI where the ActiveLogin Servlet is deployed.
      * @return String - The URI for the ActiveLogin servlet.
@@ -58,6 +63,7 @@ public class ActiveLogin extends HttpServlet
         synchronized (ActiveLogin.class)
         {
             deployedURI = servletConfig.getInitParameter("deployedURI");
+            log.info("init() : deployedURI = " + deployedURI);
         }
         if (log.isDebugEnabled())
             log.debug("init() : LEAVE");
