@@ -47,7 +47,7 @@ public class ExceptionList extends Exception
     /**
      * Constructs a new exception with <code>null</code> as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
-     * call to {@link #initCause}.
+     * call to initCause.
      */
     public ExceptionList()
     {
@@ -56,7 +56,7 @@ public class ExceptionList extends Exception
     /**
      * Constructs a new exception with the specified detail message.  The
      * cause is not initialized, and may subsequently be initialized by
-     * a call to {@link #initCause}.
+     * a call to initCause.
      *
      * @param   message   the detail message. The detail message is saved for
      *          later retrieval by the {@link #getMessage()} method.
@@ -112,7 +112,7 @@ public class ExceptionList extends Exception
      *
      * <p>This implementation returns the cause that was supplied via one of
      * the constructors requiring a <tt>Throwable</tt>, or that was set after
-     * creation with the {@link #initCause(Throwable)} method.  While it is
+     * creation with the initCause(Throwable) method.  While it is
      * typically unnecessary to override this method, a subclass can override
      * it to return a cause set by some other means.  This is appropriate for
      * a "legacy chained throwable" that predates the addition of chained

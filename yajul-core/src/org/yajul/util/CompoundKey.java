@@ -25,13 +25,7 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
      */
     public static final int computeHash(Object[] components)
     {
-        // Sum all of the hash codes of the components, using an algorithm similar to that used by
-        // java.lang.String.
-        int rv = 0;
-        int limit = components.length;
-        for (int i = 0; i < limit; i++)
-            rv += components[i].hashCode() * (31 ^ (limit - i));
-        return rv;
+        return ArrayUtil.computeHashCode(components);
     }
 
     /**
@@ -105,7 +99,9 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
     public int hashCode()
     {
         if (!isHashComputed)
+        {
             hash = computeHash(components);
+        }
         return hash;
     }
 

@@ -72,7 +72,6 @@ public class ArrayIteratorTest extends TestCase
         while (iter.hasNext())
         {
             n = iter.next();
-//            System.out.println("counter = " + counter + " n = " + n)     ;
             assertNotNull(n);
             counter++;
         }
@@ -90,4 +89,20 @@ public class ArrayIteratorTest extends TestCase
         assertNotNull(nsee);
     }
 
+
+    public void testException()
+    {
+        Object[] array = new Object[] { "one", "two", "three" };
+        Iterator iter = new ArrayIterator(array,true);
+        UnsupportedOperationException uoe = null;
+        try
+        {
+            iter.remove();
+        }
+        catch(UnsupportedOperationException e)
+        {
+            uoe = e;
+        }
+        assertNotNull(uoe);
+    }
 }

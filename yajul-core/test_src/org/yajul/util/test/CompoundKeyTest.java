@@ -60,6 +60,13 @@ public class CompoundKeyTest extends TestCase
         assertTrue(s.length() > 0);
 
         assertCompoundKeyEquals(a, b);
+        assertEquals(a.hashCode(),b.hashCode());
+
+        a.setComponents(new Object[] { "bar",new Integer(55),new Date(1) });
+        b.setComponents(new Object[] { "bar",new Integer(55),new Date(1) });
+        assertEquals(a.hashCode(),b.hashCode());
+        assertEquals(a.hashCode(),b.hashCode());
+        assertCompoundKeyEquals(a, b);
     }
 
     public void testEquality2()
@@ -144,7 +151,7 @@ public class CompoundKeyTest extends TestCase
         IllegalArgumentException iae = null;
         try
         {
-            CompoundKey a = new CompoundKey(new Object[] { "foo",new Integer(33),new Date(0) , null });
+            new CompoundKey(new Object[] { "foo",new Integer(33),new Date(0) , null });
         }
         catch (IllegalArgumentException e)
         {

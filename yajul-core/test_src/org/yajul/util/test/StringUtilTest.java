@@ -55,6 +55,31 @@ public class StringUtilTest extends TestCase
 
         String hex = StringUtil.hexString(bytes,",");
         assertEquals("00,0a,10,3f,7f,80,81,fe,ff,00",hex);
+        hex = StringUtil.hexString(bytes);
+        assertEquals("000a103f7f8081feff00",hex);
+        StringBuffer buf = new StringBuffer();
+        StringUtil.hexString(buf,bytes,",",false);
+        hex = buf.toString();
+        assertEquals("00,0A,10,3F,7F,80,81,FE,FF,00",hex);
     }
 
+    public void testDefaultToString()
+    {
+        Object o = new Object();
+        String s = StringUtil.defaultToString(o);
+        assertEquals(o.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(o)),s);
+    }
+
+    public void testEmpty()
+    {
+        assertTrue(StringUtil.isEmpty(null));
+        assertTrue(StringUtil.isEmpty(""));
+        assertFalse(StringUtil.isEmpty("abc"));
+        StringBuffer buf = new StringBuffer();
+        StringUtil.appendIfNotEmpty("abc",buf);
+        StringUtil.appendIfNotEmpty("",buf);
+        StringUtil.appendIfNotEmpty(null,buf);
+        StringUtil.appendIfNotEmpty("def",buf);
+        assertEquals("abcdef",buf.toString());
+    }
 }
