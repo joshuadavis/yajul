@@ -24,6 +24,7 @@ import com.sun.jdi.request.MethodExitRequest;
 import com.sun.jdi.request.ThreadDeathRequest;
 import org.yajul.log.Logger;
 import org.yajul.util.StreamCopier;
+import org.yajul.util.WriterOutputStream;
 import org.apache.log4j.Category;
 import org.apache.log4j.Priority;
 
@@ -58,6 +59,9 @@ public class CoverageRunner
 
     private String testClass;       // The test class (invokes target package methods).
     private String targetPackage;   // The test target package
+    private Thread eventThread;     // Thread that receives events from the JDI VM and dispatches them.
+    private Thread outThread;       // Thread that reads stdout from the JDI VM and pumps it out.
+    private Thread errThread;       // Thread that reads stderr from the JDI VM and pumps it out.
     /**
      * Creates a CoverageRunner.
      */
@@ -97,27 +101,7 @@ public class CoverageRunner
         eventThread.start();
         log.info("JDIEventDispatcher started.");
 
-        Process process = vm.process();
-        log.info("JVM process obtained.");
-
-        // Copy target's output and error to our output and error.
-        Runnable r = new StreamCopier(process.getErrorStream(), System.err);
-
-        Thread errThread = new Thread(
-                new StreamCopier(
-                        process.getErrorStream(),
-                        System.err),
-                "error reader"
-        );
-        Thread outThread = new Thread(
-                new StreamCopier(
-                        process.getInputStream(),
-                        System.out),
-                "output reader"
-        );
-        errThread.start();
-        outThread.start();
-        log.info("Output and error stream threads started.");
+        redirectOutput(vm);
 
         log.info("Resuming JVM...");
         vm.resume();
@@ -145,6 +129,31 @@ public class CoverageRunner
             node = (CallGraph.MethodNode)iter.next();
             log.debug(node.toString());
         }
+    }
+
+    private void redirectOutput(VirtualMachine vm)
+    {
+        Process process = vm.process();
+        log.info("JVM process obtained.");
+
+        // Copy target's output and error to our output and error.
+        Runnable r = new StreamCopier(process.getErrorStream(), System.err);
+
+        errThread = new Thread(
+                new StreamCopier(
+                        process.getErrorStream(),
+                        new WriterOutputStream(log)),
+                "error reader"
+        );
+        outThread = new Thread(
+                new StreamCopier(
+                        process.getInputStream(),
+                        new WriterOutputStream(log)),
+                "output reader"
+        );
+        errThread.start();
+        outThread.start();
+        log.info("Output and error stream threads started.");
     }
 
     private VirtualMachine launchJVM(VirtualMachineManager vmm, String commandLine, String classpath) throws IOException, IllegalConnectorArgumentsException, VMStartException
@@ -231,15 +240,15 @@ public class CoverageRunner
 //        tdr.enable();
 //        log.info("Thread death request enabled (SUSPEND_ALL)");
 //
-//        ClassPrepareRequest cpr = mgr.createClassPrepareRequest();
-//        for (int i = 0; i < excludes.length; ++i)
-//        {
-//            cpr.addClassExclusionFilter(excludes[i]);
-//        }
-//        cpr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
-//        cpr.enable();
-//
-//        log.info("Class prepare request enabled (SUSPEND_ALL)");
+        ClassPrepareRequest cpr = mgr.createClassPrepareRequest();
+        for (int i = 0; i < excludes.length; ++i)
+        {
+            cpr.addClassExclusionFilter(excludes[i]);
+        }
+        cpr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
+        cpr.enable();
+
+        log.info("Class prepare request enabled (SUSPEND_ALL)");
     }
 
     public static void main(String[] args)

@@ -13,6 +13,7 @@ import com.sun.jdi.ThreadReference;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.event.MethodEntryEvent;
 import com.sun.jdi.event.MethodExitEvent;
+import com.sun.jdi.event.ClassPrepareEvent;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -44,8 +45,6 @@ public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIE
         public void push(Method method)
         {
             Method caller = (active.size() > 0) ? (Method)active.getFirst() : null;
-            if (caller == null && log.isDebugEnabled())
-                log.debug("New root caller: " + method.declaringType().name() + "." + method.name());
 
             active.addFirst(method);
             // If there is a call graph, tell it about the new call.
@@ -164,4 +163,14 @@ public class ThreadStatusMonitor extends DefaultJDIEventListener implements JDIE
         return callGraph;
     }
 
+    /** Invoked when a class is loaded.
+     * @param event The event
+     */
+    public void classPrepareEvent(ClassPrepareEvent event)
+    {
+        // This method expects that the VM has been told to halt all threads when a new class is loaded.
+        // This way, the ThreadStatusMonitor can tell the JDI layer to *ignore* events from methods of this
+        // class if it is not 'interesting'.
+        log.debug("classPrepareEvent(" + event.referenceType().name() + ")");
+    }
 }
