@@ -2,8 +2,7 @@
 # yajul-build.sh - This script runs the nightly build using the following arguments:
 # $1 - The build directory
 # $2 - The CVS username
-function usage()
-{
+function usage {
    echo "usage: $0 builddir cvsusername"
    echo "    builddir    - The name of the directory to use for the build."
    echo "    cvsusername - The CVS username"     
@@ -12,11 +11,11 @@ function usage()
 
 if [ -z $1 ]; then
     echo "Required argument 'builddir' was not specified."
-    useage()
+    usage
 fi
 if [ -z $2 ]; then
     echo "Required argument 'cvsusername' was not specified."
-    useage()
+    usage
 fi
 export BUILD_DIR=$1
 export CVSROOT=:ext:$2@cvs.sourceforge.net:/cvsroot/yajul
