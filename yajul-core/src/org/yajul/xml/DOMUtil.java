@@ -38,6 +38,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.yajul.util.NameValuePair;
+import org.yajul.util.StringUtil;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -271,6 +272,39 @@ public class DOMUtil
             map.put(attr.getName(),attr.getValue());
         }
         return map;
+    }
+
+    /**
+     * Returns the value of the specified attribute as a boolean primitive.
+     * @param elem The element.
+     * @param attributeName The attribute name in the element.
+     * @param defaultValue The default value.
+     * @return the value of the specified attribute as a boolean primitive.
+     */
+    public static final boolean getBooleanAttribute(Element elem, String attributeName,boolean defaultValue)
+    {
+        String str = elem.getAttribute(attributeName);
+        boolean val = defaultValue;
+        if (!StringUtil.isEmpty(str))
+            val = "true".equals(str);
+        return val;
+    }
+
+
+    /**
+     * Returns the value of the specified attribute as an int primitive.
+     * @param elem The element.
+     * @param attributeName The attribute name in the element.
+     * @param defaultValue The default value.
+     * @return the value of the specified attribute as an int primitive.
+     */
+    public static final int getIntAttribute(Element elem, String attributeName,int defaultValue)
+    {
+        String str = elem.getAttribute(attributeName);
+        int val = defaultValue;
+        if (!StringUtil.isEmpty(str))
+            val = Integer.parseInt(str);
+        return val;
     }
 
     // --- Parsing methods ---
