@@ -1,0 +1,100 @@
+<project name="yajul-core" default="default">
+
+
+    <property name="main.src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="main.class.dir" value="${build.dir}/classes"/>
+    <property name="main.jar.dir" value="${build.dir}/lib"/>
+    <property name="javac.debug" value="false"/>
+    <property name="javac.optimize" value="true"/>
+    <property name="javac.deprecation" value="true"/>
+    <property name="javac.verbose" value="false"/>
+
+    <property name="test.src.dir" value="test_src"/>
+    <property name="test.class.dir" value="${build.dir}/test_classes"/>
+    <property name="test.log.dir" value="${build.dir}/test/log"/>
+
+    <property name="jaxp.classpath" value="lib/xml-apis.jar:lib/xercesImpl.jar:lib/xalan.jar"/>
+    <property name="log4j.classpath" value="lib/log4j-1.2.7.jar"/>
+    <property name="junit.classpath" value="lib/junit.jar"/>
+
+    <path id="main.classpath">
+        <pathelement path="${jaxp.classpath}"/>
+        <pathelement path="${log4j.classpath}"/>
+        <pathelement path="${junit.classpath}"/>
+    </path>
+
+    <path id="test.classpath">
+        <path refid="main.classpath"/>
+        <pathelement location="${main.class.dir}"/>
+    </path>
+
+    <path id="test.runtime.classpath">
+        <path refid="test.classpath"/>
+        <pathelement location="${test.class.dir}"/>
+    </path>
+
+    <patternset id="test.files">
+        <!-- Add new tests here (or just make sure the test is name xxxTest.java!) -->
+        <include name="**/*Test*.java" />
+    </patternset>
+
+<target name="init">
+    <tstamp>
+        <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
+    </tstamp>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${main.class.dir}"/>
+    <mkdir dir="${main.jar.dir}"/>
+    <mkdir dir="${test.class.dir}"/>
+    <mkdir dir="${test.log.dir}"/>
+</target>
+
+<target name="clean">
+    <delete includeEmptyDirs="true">
+        <fileset dir="${main.class.dir}"/>
+        <fileset dir="${main.jar.dir}"/>
+        <fileset dir="${test.class.dir}"/>
+        <fileset dir="${test.log.dir}"/>
+    </delete>
+</target>
+
+<target name="compile" depends="init">
+    <javac srcdir="${main.src.dir}" destdir="${main.class.dir}"
+       classpathref="main.classpath" debug="${javac.debug}"
+       optimize="${javac.optimize}" deprecation="${javac.deprecation}"
+       verbose="${javac.verbose}"/>
+</target>
+
+<target name="compile.tests" depends="init">
+    <javac srcdir="${test.src.dir}" destdir="${test.class.dir}"
+       classpathref="test.classpath" debug="${javac.debug}"
+       optimize="${javac.optimize}" deprecation="${javac.deprecation}"
+       verbose="${javac.verbose}"/>
+</target>
+
+<target name="test" depends="init">
+    <junit fork="yes" printsummary="yes" haltonfailure="yes">
+      <classpath>
+        <path refid="test.runtime.classpath"/>
+      </classpath>
+      <formatter type="plain"/>
+      <batchtest todir="${test.log.dir}">
+        <fileset dir="${test.src.dir}">
+          <patternset refid="test.files"/>
+        </fileset>
+      </batchtest>
+    </junit>
+</target>
+
+<target name="jar">
+  <jar jarfile="${main.jar.dir}/yajul-core.jar"
+       basedir="${main.class.dir}"/>
+</target>
+
+<target name="default" depends="compile,jar"/>
+
+<target name="full" depends="clean,compile,jar,compile.tests,test">
+</target>
+
+</project>
