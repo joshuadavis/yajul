@@ -70,11 +70,8 @@ public class HTTPClient implements HTTPConstants
         HTTPConnection con = new HTTPConnection(this,req.getProtocol(),req.getHost(),req.getPort());
 
         // Send the request, wait for the response, and then parse the headers.
-        Message res = con.send(req,content);
-
         // The content can now be read from the response.
-
-        return res;
+        return con.send(req,content);
     }
 
     public Message get(String url)

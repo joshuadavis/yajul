@@ -99,7 +99,6 @@ public abstract class AbstractServerSocketListener implements Runnable
 
     /**
      * Returns the maximum number of connections allowed by this server.
-     * @return
      */
     public int getMaxConnections()
     {

@@ -860,7 +860,7 @@ public class EnumType
                                            Element valueElement)
             throws EnumInitializationException
     {
-        EnumValue value = null;
+        EnumValue value;
         try
         {
             value = (EnumValue) enumValueClass.newInstance();
@@ -950,9 +950,9 @@ public class EnumType
     {
         // Create a map using the lower case text.
         valuesByLowerCaseText = new HashMap();
-        Map.Entry entry = null;
-        String key = null;
-        EnumValue value = null;
+        Map.Entry entry;
+        String key;
+        EnumValue value;
         for (Iterator iterator = valuesByLowerCaseText.entrySet().iterator();
              iterator.hasNext();)
         {

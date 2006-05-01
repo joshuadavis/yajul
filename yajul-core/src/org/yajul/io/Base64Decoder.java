@@ -33,15 +33,7 @@
 
 package org.yajul.io;
 
-import org.yajul.io.Base64InputStream;
-import org.yajul.io.StreamCopier;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 /**
  * Decode a BASE64 encoded input stream to some output stream.
@@ -58,7 +50,7 @@ public class Base64Decoder
      * @return String - the decoded string.
      * @throws org.yajul.io.Base64FormatException if the input is not valid.
      */
-    public static final String decode(String input) throws Base64FormatException
+    public static String decode(String input) throws Base64FormatException
     {
         Base64Decoder dec = new Base64Decoder(input);
         return dec.processString();
@@ -70,7 +62,7 @@ public class Base64Decoder
      * @return String - the decoded byte array.
      * @throws org.yajul.io.Base64FormatException if the input is not valid.
      */
-    public static final byte[] decode(byte[] input)
+    public static byte[] decode(byte[] input)
             throws Base64FormatException
     {
         return decode(input,0,input.length);
@@ -84,7 +76,7 @@ public class Base64Decoder
      * @return String - the decoded byte array.
      * @throws org.yajul.io.Base64FormatException if the input is not valid.
      */
-    public static final byte[] decode(byte[] input,int offset,int length)
+    public static byte[] decode(byte[] input,int offset,int length)
             throws Base64FormatException
     {
         Base64Decoder dec = new Base64Decoder(input,offset,length);

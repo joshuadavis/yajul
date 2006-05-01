@@ -65,7 +65,7 @@ public class SocketFactory
     public Socket createSocket(boolean ssl,String host,int port)
         throws java.io.IOException, java.net.UnknownHostException, NoSuchAlgorithmException
     {
-        Socket socket = null;
+        Socket socket;
 
         // Create the socket object differently based on the protocol.
         if (ssl)    // Create an SSL socket.
@@ -81,7 +81,7 @@ public class SocketFactory
         return socket;  // Return the socket as the more general class.
     }
 
-    private SSLSocketFactory getSecureSocketFactory() throws NoSuchAlgorithmException
+    private SSLSocketFactory getSecureSocketFactory()
     {
         synchronized (this)
         {

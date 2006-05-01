@@ -18,7 +18,7 @@ public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderCo
     private String valueLower;
 
     /** Returns the header entry for basic HTTP authorization. */
-    public static final String getAuthorizationValue(String username,String password)
+    public static String getAuthorizationValue(String username,String password)
     {
         String encoded = Base64Encoder.encode(username+BASIC_SEPARATOR+password);
         return BASIC_PREFIX+encoded;

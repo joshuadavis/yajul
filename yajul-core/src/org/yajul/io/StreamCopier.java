@@ -83,7 +83,7 @@ public class StreamCopier implements Runnable
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
      **/
-    public static final int copy(InputStream in, OutputStream out, int bufsz)
+    public static int copy(InputStream in, OutputStream out, int bufsz)
             throws IOException
     {
         // From Java I/O, page 43
@@ -116,7 +116,7 @@ public class StreamCopier implements Runnable
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
      **/
-    public final static int unsyncCopy(InputStream in, OutputStream out,
+    public static int unsyncCopy(InputStream in, OutputStream out,
                                        int bufsz) throws IOException
     {
         return unsyncCopy(in, out, bufsz, UNLIMITED);
@@ -167,7 +167,7 @@ public class StreamCopier implements Runnable
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
      **/
-    public static final int copy(InputStream in, OutputStream out)
+    public static int copy(InputStream in, OutputStream out)
             throws IOException
     {
         return copy(in, out, DEFAULT_BUFFER_SIZE);
@@ -183,13 +183,13 @@ public class StreamCopier implements Runnable
      * @return ArrayList - An array list of byte arrays.
      * @throws IOException When something happens while reading the stream.
      */
-    public static final ArrayList readBlocks(InputStream in, int blocksz)
+    public static ArrayList readBlocks(InputStream in, int blocksz)
             throws IOException
     {
         ArrayList list = new ArrayList();
-        byte[] chunk = null;
+        byte[] chunk;
         byte[] buf = new byte[blocksz];
-        int bytesRead = 0;
+        int bytesRead;
         while (true)
         {
             bytesRead = in.read(buf);
@@ -208,7 +208,7 @@ public class StreamCopier implements Runnable
      * @param in The input stream.
      * @throws IOException When something happens while reading the stream.
      */
-    public static final byte[] readByteArray(InputStream in)
+    public static byte[] readByteArray(InputStream in)
             throws IOException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -261,7 +261,7 @@ public class StreamCopier implements Runnable
      * @param file The file to read.
      * @throws IOException When something happens while reading the stream.
      */
-    public static final byte[] readByteArray(File file)
+    public static byte[] readByteArray(File file)
             throws IOException
     {
         return readByteArray(new BufferedInputStream(
@@ -273,7 +273,7 @@ public class StreamCopier implements Runnable
      * @param fileName The file name to read.
      * @throws IOException When something happens while reading the stream.
      */
-    public static final byte[] readFileIntoByteArray(String fileName)
+    public static byte[] readFileIntoByteArray(String fileName)
             throws IOException
     {
         return readByteArray(new File(fileName));
@@ -284,7 +284,7 @@ public class StreamCopier implements Runnable
      * @param o The object to serialize.
      * @return An array of bytes that contiains the serialized object.
      */
-    public static final byte[] serializeObject(Object o) throws IOException
+    public static byte[] serializeObject(Object o) throws IOException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -300,7 +300,7 @@ public class StreamCopier implements Runnable
      * @throws IOException if there was a problem reading the input.
      * @throws ClassNotFoundException if the class of the object in the input was not found.
      */
-    public static final Object unserializeObject(byte[] bytes) throws IOException, ClassNotFoundException
+    public static Object unserializeObject(byte[] bytes) throws IOException, ClassNotFoundException
     {
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);

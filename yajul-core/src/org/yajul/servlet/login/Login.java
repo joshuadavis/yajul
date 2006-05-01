@@ -62,7 +62,6 @@ public class Login extends HttpServlet
 
         // Forward to the login page.
         forward("login".equals(command) ? "/webui" : "/", request, response);
-        return;
     }
 
     private void forward(String uri, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException

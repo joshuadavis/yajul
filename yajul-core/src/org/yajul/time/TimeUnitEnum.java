@@ -19,7 +19,7 @@ public class TimeUnitEnum implements TimeUnit
 
     static
     {
-        EnumTypeMap map = null;
+        EnumTypeMap map;
         try
         {
             map = EnumTypeMap.createTypeMapFromResource("org/yajul/time/time-enums.xml", TimeUnitEnum.class.getClassLoader());

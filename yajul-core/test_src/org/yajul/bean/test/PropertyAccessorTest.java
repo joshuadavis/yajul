@@ -117,9 +117,8 @@ public class PropertyAccessorTest extends TestCase
 
             if (doubleProp != testBean.doubleProp) return false;
             if (intProp != testBean.intProp) return false;
-            if (stringProp != null ? !stringProp.equals(testBean.stringProp) : testBean.stringProp != null) return false;
+            return !(stringProp != null ? !stringProp.equals(testBean.stringProp) : testBean.stringProp != null);
 
-            return true;
         }
 
         public int hashCode()

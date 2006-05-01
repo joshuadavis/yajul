@@ -36,7 +36,7 @@ public class XMLWriter extends FilterWriter
      * @param enc The Java encoding name.
      * @return The XML encoding name.
      */
-    public final static String getEncoding(String enc)
+    public static String getEncoding(String enc)
     {
         String rv = (String) XML_ENCODINGS.get(enc);
         return rv == null ? enc : rv;

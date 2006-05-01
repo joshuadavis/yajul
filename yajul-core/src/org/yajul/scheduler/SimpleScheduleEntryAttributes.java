@@ -66,7 +66,6 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
 
     /**
      * Returns the name of the schedule entry.
-     * @return
      */
     public String getName()
     {
@@ -75,7 +74,6 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
 
     /**
      * Returns the start time of the schedule entry.
-     * @return
      */
     public Date getStartTime()
     {
@@ -84,7 +82,6 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
 
     /**
      * Returns the last time the schedule entry was executed.
-     * @return
      */
     public Date getLastTime()
     {
@@ -93,7 +90,6 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
 
     /**
      * Returns the next time the schedule entry will be executed.
-     * @return
      */
     public Date getNextTime()
     {
@@ -107,7 +103,6 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
 
     /**
      * Returns true if overlapping threads for the same task are allowed.
-     * @return
      */
     public boolean allowsOverlap()
     {
@@ -147,7 +142,7 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
 
     public boolean isRepeating()
     {
-        return getInterval() == NON_REPEATING ? false : true;
+        return getInterval() != NON_REPEATING;
     }
 
     public void incrementRunCount(int i)

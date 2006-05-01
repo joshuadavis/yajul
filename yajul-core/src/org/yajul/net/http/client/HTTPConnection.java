@@ -71,10 +71,8 @@ public class HTTPConnection extends HTTPSocketWrapper
      * @param protocol Protocol string (i.e. 'http' or 'https')
      * @param host The host name or IP address.
      * @param port The port number.
-     * @exception java.net.SocketException Thrown if the socket parameters cannot be set.
      */
     public HTTPConnection(HTTPClient client, String protocol, String host, int port)
-            throws java.net.SocketException
     {
         initialize(client, protocol, host, port);
     }
@@ -261,6 +259,7 @@ public class HTTPConnection extends HTTPSocketWrapper
 
     /**
      * Closes the connection to the server.
+     * @noinspection EmptyCatchBlock
      */
     public void close()
     {
@@ -328,7 +327,6 @@ public class HTTPConnection extends HTTPSocketWrapper
 
     /**
      * Returns the number of bytes sent so far in the connection.
-     * @return
      */
     public int getBytesSent()
     {
@@ -337,7 +335,6 @@ public class HTTPConnection extends HTTPSocketWrapper
 
     /**
      * Returns the number of bytes received so far for the connection.
-     * @return
      */
     public int getBytesReceived()
     {
@@ -346,7 +343,6 @@ public class HTTPConnection extends HTTPSocketWrapper
 
     /**
      * Returns the HTTPClient that is using the connecion.
-     * @return
      */
     public HTTPClient getClient()
     {
