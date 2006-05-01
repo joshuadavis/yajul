@@ -1,14 +1,12 @@
 package org.yajul.net;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.yajul.thread.ThreadPool;
 
 /**
  * Manages a set of client connections accepted via a server socket.  Provides
@@ -56,9 +54,6 @@ public abstract class AbstractServerSocketListener implements Runnable
 
     /** The thread that is being used for the listener. **/
     private Thread thread;
-
-    /** The thread pool to use for incoming connections. **/
-    private ThreadPool threadPool;
 
     /** Active connections to clients. **/
     private ArrayList clientConnections = new ArrayList();
@@ -125,11 +120,6 @@ public abstract class AbstractServerSocketListener implements Runnable
         {
             this.maxConnections = maxConnections;
         }
-    }
-
-    public void setThreadPool(ThreadPool pool)
-    {
-        this.threadPool = pool;
     }
 
     /**

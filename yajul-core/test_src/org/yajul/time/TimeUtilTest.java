@@ -26,11 +26,11 @@
  ******************************************************************************/
 package org.yajul.time;
 
-import junit.framework.TestCase;
-
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
+
+import junit.framework.TestCase;
 
 /**
  * Tests TimeUtil and other low-level time and calendar functions.

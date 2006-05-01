@@ -1,20 +1,19 @@
 // $Id$
 package org.yajul.text;
 
-import org.yajul.util.DateFormatConstants;
-
-import java.text.NumberFormat;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.text.Format;
-import java.text.ParsePosition;
-import java.util.TimeZone;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
+
+import org.yajul.util.DateFormatConstants;
 
 /**
  * Default formats for non-string bean values.
- * 
+ *
  * @author josh Apr 4, 2004 12:16:43 PM
  */
 public class DefaultFormats

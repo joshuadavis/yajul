@@ -27,15 +27,12 @@
 
 package org.yajul.enumtype;
 
-import org.apache.log4j.Logger;
-import org.w3c.dom.Element;
-import org.yajul.bean.XmlBeanReader;
-import org.yajul.enumtype.EnumType;
-import org.yajul.enumtype.EnumTypeMap;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.w3c.dom.Element;
+import org.yajul.bean.XmlBeanReader;
 
 /**
  * Provides basic value behavior for an enumerated type, including an id
@@ -48,11 +45,6 @@ public class EnumValue implements Serializable, Comparable
     public static final String ATTR_TEXT_VALUE = "textValue";
     public static final String ATTR_XML_VALUE = "xmlValue";
     public static final String ATTR_ID = "id";
-
-    /**
-     * The logger for this class.
-     */
-    private static Logger log = Logger.getLogger(EnumValue.class.getName());
 
     private static final Set IGNORE_ATTRIBUTES;
     static

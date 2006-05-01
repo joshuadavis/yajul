@@ -208,12 +208,12 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
     {
         CompoundKey other = (CompoundKey) o;
 
-        Comparable a;
-        Comparable b;
         // First, check if the length of the arrays is different.
         int rc = components.length - other.components.length;
         if (rc == 0)
         {
+            Comparable a;
+            Comparable b;
             for (int i = 0; i < components.length; i++)
             {
                 a = (Comparable) components[i];

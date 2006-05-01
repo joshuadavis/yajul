@@ -1,11 +1,12 @@
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.ArrayUtil;
-
 import java.util.Arrays;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.ArrayUtil;
 
 /**
  * Tests ArrayUtil

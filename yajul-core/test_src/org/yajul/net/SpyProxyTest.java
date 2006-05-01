@@ -26,14 +26,15 @@
  ******************************************************************************/
 package org.yajul.net;
 
-import junit.framework.TestCase;
-import org.apache.log4j.Logger;
-import org.yajul.io.StreamCopier;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import junit.framework.TestCase;
+
+import org.apache.log4j.Logger;
+import org.yajul.io.StreamCopier;
 
 /**
  * Tests the SpyProxy class.

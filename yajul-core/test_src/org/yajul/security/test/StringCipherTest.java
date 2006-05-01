@@ -2,17 +2,19 @@
 
 package org.yajul.security.test;
 
-import junit.framework.TestCase;
-import org.yajul.security.StringCipher;
-import org.yajul.io.Base64FormatException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidKeyException;
-import java.security.spec.InvalidKeySpecException;
+
+import junit.framework.TestCase;
+
+import org.yajul.io.Base64FormatException;
+import org.yajul.security.StringCipher;
 
 /**
  * Tests StringCipher

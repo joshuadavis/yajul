@@ -63,8 +63,6 @@ public class SimpleScheduleEntryAttributes implements ScheduleEntryAttributes
     private int count;
     /** Number of times this ScheduleEntry has been re-scheduled. **/
     private int rescheduleCount;
-    /** Id number for the job entry. **/
-    private int id;
 
     /**
      * Returns the name of the schedule entry.

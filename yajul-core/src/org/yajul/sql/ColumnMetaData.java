@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.apache.log4j.Logger;
-import org.yajul.log.LogUtil;
 
 /**
  * Encapsulates database column metadata access.

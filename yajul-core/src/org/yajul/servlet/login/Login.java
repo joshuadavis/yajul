@@ -1,16 +1,14 @@
 package org.yajul.servlet.login;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
-import java.security.Principal;
+
+import org.apache.log4j.Logger;
 
 /**
  * Unprotected servlet that processes login commands.
@@ -47,11 +45,11 @@ public class Login extends HttpServlet
             return;
         }
 
+        // TODO: Is this comment valid?
         // NOTE: The principal will not be set in the request if the web application descriptor does not
         // declare a security role for the URI that accesses this servlet.
         // So, we must rely on LoginFilter to put the current principal into the session.
         // Get the principal from the session before the session gets invalidated.
-        Principal userPrincipal = (Principal) session.getAttribute("userPrincipal");
 
         if (log.isDebugEnabled())
             log.debug("Invalidating session " + session.getId() + " ...");
@@ -63,7 +61,6 @@ public class Login extends HttpServlet
             log.debug("Session " + session.getId() + " invalidated.");
 
         // Forward to the login page.
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         forward("login".equals(command) ? "/webui" : "/", request, response);
         return;
     }

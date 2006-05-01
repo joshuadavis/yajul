@@ -26,13 +26,14 @@
  ******************************************************************************/
 package org.yajul.scheduler.test;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
+
 import junit.framework.TestCase;
-import org.yajul.scheduler.Scheduler;
+
 import org.yajul.scheduler.ScheduleEntry;
 import org.yajul.scheduler.ScheduledShellTask;
-
-import java.util.Calendar;
-import java.io.ByteArrayOutputStream;
+import org.yajul.scheduler.Scheduler;
 
 /**
  * Tests the Scheduler.

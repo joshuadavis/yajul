@@ -6,7 +6,7 @@
 <!-- enum-type - This element defines the values in an EnumType.
 Attributes:
 id : The unique id of the EnumType in the EnumTypeMap.
-valueClass : [optional] The class of the values in the enum type, defaults to org.yajul.enum.EnumTypeValue.
+valueClass : [optional] The class of the values in the enum type, defaults to org.yajul.enumtype.EnumTypeValue.
 setValueProperties : [optional] If set to true, the properties of the EnumValue (or subclass) will be automatically set from the XML attributes.  If false, subclasses must
 override loadFromElement().
 constantClass : [optional] An interface or class that contains equivalent Java constants that map to the enumerated values.

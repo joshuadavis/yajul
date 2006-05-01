@@ -61,7 +61,6 @@ public class ThreadPool
          * Subclasses of <code>Thread</code> should override this method.
          *
          * @see java.lang.Thread#start()
-         * @see java.lang.Thread#stop()
          * @see java.lang.Thread#Thread(java.lang.ThreadGroup,
                 *      java.lang.Runnable, java.lang.String)
          * @see java.lang.Runnable#run()

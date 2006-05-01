@@ -151,10 +151,4 @@ public class ScheduledShellTask implements ScheduledTask
     public void shutdown(ScheduleEntry entry)
     {
     }
-
-    // --- Implementation methods --
-    private void copyStdout() throws java.io.IOException
-    {
-    }
-
 }

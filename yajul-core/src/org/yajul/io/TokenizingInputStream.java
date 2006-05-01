@@ -26,11 +26,8 @@
  ******************************************************************************/
 package org.yajul.io;
 
-import org.yajul.io.AbstractByteFilterInputStream;
-
-import java.io.FilterInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Reads from the underlying input stream until the delimiter is reached.  The

@@ -352,4 +352,10 @@ public class HTTPConnection extends HTTPSocketWrapper
     {
         return client;
     }
+
+
+    public int getState()
+    {
+        return state;
+    }
 }

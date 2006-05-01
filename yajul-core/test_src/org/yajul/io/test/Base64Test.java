@@ -8,17 +8,18 @@
  */
 package org.yajul.io.test;
 
-import junit.framework.TestCase;
-import org.yajul.io.Base64InputStream;
-import org.yajul.io.StreamCopier;
-import org.yajul.io.Base64Decoder;
-import org.yajul.io.Base64Encoder;
-import org.yajul.io.Base64FormatException;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+
+import junit.framework.TestCase;
+
+import org.yajul.io.Base64Decoder;
+import org.yajul.io.Base64Encoder;
+import org.yajul.io.Base64FormatException;
+import org.yajul.io.Base64InputStream;
+import org.yajul.io.StreamCopier;
 
 public class Base64Test extends TestCase
 {

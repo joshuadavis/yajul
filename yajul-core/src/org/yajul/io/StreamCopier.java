@@ -72,7 +72,6 @@ public class StreamCopier implements Runnable
     private boolean complete = false;
     private static final int DEFAULT_BYTE_ARRAY_BUFSZ = 128;
     private static final int UNLIMITED = -1;
-    private static final int EOS = -1;
 
     /**
      * Copies the input stream into the output stream in a thread safe and

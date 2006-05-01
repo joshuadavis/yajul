@@ -27,12 +27,11 @@
 
 package org.yajul.io;
 
-import org.apache.log4j.Logger;
-import org.yajul.log.LogUtil;
-
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import org.apache.log4j.Logger;
 
 /**
  * An output stream filter that writes to multiple underlying output streams.

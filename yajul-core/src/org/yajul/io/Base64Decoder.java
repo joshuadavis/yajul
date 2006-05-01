@@ -52,8 +52,6 @@ import java.io.UnsupportedEncodingException;
  */
 public class Base64Decoder
 {
-    private static final int BUFFER_SIZE = 1024;
-
     /**
      * Convenience method that will decode the given string.
      * @param input The input string

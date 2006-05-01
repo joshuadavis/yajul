@@ -1,17 +1,18 @@
 package org.yajul.io.test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Date;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.w3c.dom.Document;
 import org.yajul.io.DocumentArchiver;
 import org.yajul.xml.DOMPrinter;
 import org.yajul.xml.DOMUtil;
 import org.yajul.xml.XMLDocumentArchiver;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Date;
 
 /**
  * Tests DocumentArchiver and XMLDocumentArchiver
@@ -83,7 +84,7 @@ public class DocumentArchiverTest extends TestCase
         FileNotFoundException fnfe = null;
         try
         {
-            String retrieved = (String) archiver.retrieveObject(SUB_DIRECTORY,new Long(999),date);
+            archiver.retrieveObject(SUB_DIRECTORY,new Long(999),date);
         }
         catch (FileNotFoundException e)
         {

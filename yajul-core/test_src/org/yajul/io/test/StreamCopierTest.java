@@ -1,21 +1,21 @@
 
 package org.yajul.io.test;
 
-import junit.framework.TestCase;
-
-import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import org.yajul.io.StreamCopier;
-import org.yajul.io.EchoInputStream;
-import org.yajul.io.TeeOutputStream;
+import junit.framework.TestCase;
+
 import org.yajul.io.ByteCountingInputStream;
 import org.yajul.io.ByteCountingOutputStream;
+import org.yajul.io.EchoInputStream;
 import org.yajul.io.HexDumpOutputStream;
+import org.yajul.io.StreamCopier;
+import org.yajul.io.TeeOutputStream;
 
 /**
  * Tests org.yajul.io classes:

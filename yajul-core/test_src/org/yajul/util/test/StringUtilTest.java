@@ -26,11 +26,11 @@
  ******************************************************************************/
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.StringUtil;
-
-import java.nio.charset.Charset;
 import java.util.Arrays;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.StringUtil;
 
 /**
  * TODO: Document this test case here.

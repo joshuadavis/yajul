@@ -2,11 +2,12 @@
 
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.NameValuePair;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.NameValuePair;
 
 /**
  * Tests NameValuePair

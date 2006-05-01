@@ -47,7 +47,7 @@ public class ArrayUtil
      * @param integerArray The array of Integers.
      * @return int[] - An array of ints.
      */
-    public static int[] toIntArray(Integer[] integerArray)
+    public static final int[] toIntArray(Integer[] integerArray)
     {
         int[] rv = new int[integerArray.length];
         for (int i = 0; i < integerArray.length; i++)
@@ -61,7 +61,7 @@ public class ArrayUtil
      * @param integerCollection The collection of Integers.
      * @return int[] - An array of ints.
      */
-    public static int[] toIntArray(Collection integerCollection)
+    public static final int[] toIntArray(Collection integerCollection)
     {
         int[] rv = new int[integerCollection.size()];
         Iterator iterator = integerCollection.iterator();
@@ -76,7 +76,7 @@ public class ArrayUtil
      * @param set The set to add the values to.
      * @return Set - The set.
      */
-    public static Set addToSet(int[] values,Set set)
+    public static final Set addToSet(int[] values,Set set)
     {
         for (int i = 0; i < values.length; i++)
             set.add(new Integer(values[i]));
@@ -89,7 +89,7 @@ public class ArrayUtil
      * @param set The set to add the values to.
      * @return Set - The set.
      */
-    public static Set addToSet(Object[] values,Set set)
+    public static final Set addToSet(Object[] values,Set set)
     {
         for (int i = 0; i < values.length; i++)
             set.add(values[i]);
@@ -104,7 +104,7 @@ public class ArrayUtil
      * @param blockSize The number of elements in a block.
      * @return int - The number of blocks needed for 'elements' elements.
      */
-    public static int calculateBlockCount(int elements,int blockSize)
+    public static final int calculateBlockCount(int elements,int blockSize)
     {
         int blocks = elements / blockSize;
         if (elements % blockSize != 0)
@@ -119,7 +119,7 @@ public class ArrayUtil
      * new hash code.
      * @return int - A new hash code, based on the components.
      */
-    public static int computeHashCode(int[] components)
+    public static final int computeHashCode(int[] components)
     {
         // Sum all of the hash codes of the components, using an algorithm similar to that used by
         // java.lang.String.
@@ -137,7 +137,7 @@ public class ArrayUtil
      * components.
      * @return int - The new, compound hash value.
      */
-    public static int computeHashCode(Object[] components)
+    public static final int computeHashCode(Object[] components)
     {
         // Sum all of the hash codes of the components, using an algorithm similar to that used by
         // java.lang.String.
@@ -151,7 +151,7 @@ public class ArrayUtil
     /**
      * Converts a double[] to a Double[].
      */
-    public static Double[] toDoubleArray(double input[])
+    public static final Double[] toDoubleArray(double input[])
     {
         if (input == null)
             return null;
@@ -169,7 +169,7 @@ public class ArrayUtil
      * Checks the contents of the two passed in arrays for equality.
      * @return true if the array contents are equal or both are null.
      */
-    public static boolean areContentsEqual(double[] array1, double[] array2)
+    public static final boolean areContentsEqual(double[] array1, double[] array2)
     {
         if ((array1 == null) && (array2 == null))
             return true;
@@ -192,7 +192,7 @@ public class ArrayUtil
      *
      * @return the result array if a new one in not allocated, else the new array is returned.
      */
-    public static double[] appendToArray(double[] result, double[] addFrom)
+    public static final double[] appendToArray(double[] result, double[] addFrom)
     {
         if ((result == null) && (addFrom == null)) return null;
         if (result == null) return addFrom;
@@ -223,7 +223,7 @@ public class ArrayUtil
      *
      * @return null if both inputs are null, if one is null, it will return the other.
      */
-    public static double[] addArrays(double[] array1, double[] array2)
+    public static final double[] addArrays(double[] array1, double[] array2)
     {
         if ((array1 == null) && (array2 == null)) return null;
         if (array1 == null) return array2;

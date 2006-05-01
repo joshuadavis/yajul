@@ -1,12 +1,11 @@
 // $Id$
 package org.yajul.xml;
 
-import java.util.Properties;
-import java.util.Map;
-import java.util.HashMap;
+import java.io.FilterWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.FilterWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A FileWriter extension that writes XML fragments and XML documents.
@@ -30,7 +29,7 @@ public class XMLWriter extends FilterWriter
 
     /** The character encoding being used. */
     private String encoding;
-    
+
     /**
      * Returns an XML prologue encoding name, given either a Java encoding
      * name, or an XML prologue encoding name.

@@ -1,9 +1,10 @@
 package org.yajul.test;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
-import junit.framework.Test;
 import junit.extensions.TestSetup;
+import junit.framework.Test;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * Setup that sets the logging level to 'ERROR'.

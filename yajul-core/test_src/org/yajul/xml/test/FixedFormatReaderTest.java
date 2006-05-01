@@ -1,19 +1,20 @@
 package org.yajul.xml.test;
 
-import junit.framework.TestCase;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.yajul.xml.DOMUtil;
-import org.yajul.xml.FixedFormatReader;
-import org.yajul.xml.DOMPrinter;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.StringReader;
 
 import javax.xml.transform.TransformerException;
-import java.io.StringReader;
-import java.io.IOException;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.yajul.xml.DOMPrinter;
+import org.yajul.xml.DOMUtil;
+import org.yajul.xml.FixedFormatReader;
 
 /**
  * Tests the FixedFormatReader.
@@ -77,7 +78,6 @@ public class FixedFormatReaderTest extends TestCase
     {
         InputSource input = new InputSource(new StringReader(inputString));
         Document doc = DOMUtil.parse(reader,input);
-        Element elem = doc.getDocumentElement();
         DOMPrinter.printNode(doc,System.out);
 /*
         assertEquals(reader.getFileElement(),elem.getTagName());

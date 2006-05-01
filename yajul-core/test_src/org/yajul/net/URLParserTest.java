@@ -1,9 +1,9 @@
 // $Id$
 package org.yajul.net;
 
-import junit.framework.TestCase;
-
 import java.net.MalformedURLException;
+
+import junit.framework.TestCase;
 
 /**
  * TODO: Add class javadoc

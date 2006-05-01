@@ -26,15 +26,21 @@
  ******************************************************************************/
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.io.StreamCopier;
-import org.yajul.util.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
+
+import junit.framework.TestCase;
+
+import org.yajul.io.StreamCopier;
+import org.yajul.util.DetailedError;
+import org.yajul.util.DetailedException;
+import org.yajul.util.DetailedRuntimeException;
+import org.yajul.util.ExceptionList;
+import org.yajul.util.InitializationError;
+import org.yajul.util.InitializationException;
 
 /**
  * Test exception serialization, etc.

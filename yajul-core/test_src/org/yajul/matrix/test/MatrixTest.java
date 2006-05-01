@@ -2,15 +2,16 @@
 
 package org.yajul.matrix.test;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 import junit.framework.TestCase;
+
 import org.yajul.matrix.ArrayListMatrix;
 import org.yajul.matrix.ArrayMatrix;
 import org.yajul.matrix.Matrix;
 import org.yajul.matrix.MatrixIterator;
 import org.yajul.matrix.MatrixUtil;
-
-import java.util.Arrays;
-import java.util.NoSuchElementException;
 
 /**
  * Tests the ArrayListMatrix class.

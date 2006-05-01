@@ -2,10 +2,8 @@ package org.yajul.time;
 
 import java.util.Calendar;
 
+import org.yajul.enumtype.EnumInitializationException;
 import org.yajul.enumtype.EnumType;
-import org.yajul.enumtype.EnumTypeMap;
-import org.yajul.enumtype.EnumInitializationException;
-import org.yajul.enumtype.EnumInitializationException;
 import org.yajul.enumtype.EnumTypeMap;
 
 /**

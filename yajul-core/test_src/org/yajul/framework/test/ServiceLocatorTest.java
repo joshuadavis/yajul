@@ -3,6 +3,7 @@ package org.yajul.framework.test;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;

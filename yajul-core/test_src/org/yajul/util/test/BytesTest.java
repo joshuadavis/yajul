@@ -1,9 +1,10 @@
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.Bytes;
-
 import java.util.Arrays;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.Bytes;
 
 /**
  * Test the Bytes class.

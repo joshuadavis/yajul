@@ -1,9 +1,10 @@
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.FieldPrinter;
-
 import java.util.Date;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.FieldPrinter;
 
 /**
  * Test the field printer class.

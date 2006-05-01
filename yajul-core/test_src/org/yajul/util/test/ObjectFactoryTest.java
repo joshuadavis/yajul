@@ -2,14 +2,15 @@
 
 package org.yajul.util.test;
 
+import java.net.URL;
+import java.util.Properties;
+
 import junit.framework.TestCase;
-import org.yajul.util.ObjectFactory;
+
 import org.yajul.util.InitializationError;
 import org.yajul.util.InitializationException;
 import org.yajul.util.Initializeable;
-
-import java.net.URL;
-import java.util.Properties;
+import org.yajul.util.ObjectFactory;
 
 /**
  * TODO: Document this test case here.
@@ -20,7 +21,7 @@ public class ObjectFactoryTest extends TestCase
 
     /**
      * Standard JUnit test case constructor.
-     * 
+     *
      * @param name The name of the test case.
      */
     public ObjectFactoryTest(String name)
@@ -33,7 +34,7 @@ public class ObjectFactoryTest extends TestCase
         Thing t = new Thing();
         t.setValue(128);
         t.getValue();
-        NoConstructor n = new NoConstructor(129);
+        new NoConstructor(129);
     }
 
     public void testObjectFactory() throws Exception
@@ -68,7 +69,7 @@ public class ObjectFactoryTest extends TestCase
         InitializeableThing it = (InitializeableThing)ObjectFactory.createInstanceFromProperties(properties,"classname",
                 null,true);
         assertTrue(it.isInitialized());
-        
+
         InitializationException iex = null;
         try
         {

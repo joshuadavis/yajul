@@ -1,11 +1,12 @@
 package org.yajul.util.test;
 
+import java.util.Date;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.yajul.util.CompoundKey;
 
-import java.util.Date;
+import org.yajul.util.CompoundKey;
 
 /**
  * Tests CompoundKey.

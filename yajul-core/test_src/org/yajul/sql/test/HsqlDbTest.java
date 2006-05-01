@@ -1,13 +1,13 @@
 package org.yajul.sql.test;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.io.File;
 
 import junit.framework.TestCase;
+
 import org.apache.log4j.Logger;
-import org.yajul.log.LogUtil;
 
 /**
  * Tests the embedded HSQL database that the other JDBC facilities will use.

@@ -28,6 +28,7 @@ package org.yajul;
 
 import jdepend.framework.JDepend;
 import junit.framework.TestCase;
+
 import org.apache.log4j.Logger;
 import org.yajul.util.ObjectFactory;
 

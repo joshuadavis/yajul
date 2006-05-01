@@ -3,9 +3,10 @@ package org.yajul.sql.test;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import junit.framework.TestCase;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.apache.log4j.Logger;
 import org.yajul.log.LogUtil;
 import org.yajul.sql.ConnectionHelper;

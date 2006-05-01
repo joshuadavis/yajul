@@ -1,13 +1,14 @@
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.Copier;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayReader;
 import java.io.CharArrayWriter;
 import java.util.Arrays;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.Copier;
 
 /**
  * Test the Copier class

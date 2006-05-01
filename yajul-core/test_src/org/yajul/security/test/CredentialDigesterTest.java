@@ -2,10 +2,11 @@
 
 package org.yajul.security.test;
 
-import junit.framework.TestCase;
-import org.yajul.security.CredentialDigester;
-
 import java.security.NoSuchAlgorithmException;
+
+import junit.framework.TestCase;
+
+import org.yajul.security.CredentialDigester;
 
 /**
  * Tests the CredentialDigester

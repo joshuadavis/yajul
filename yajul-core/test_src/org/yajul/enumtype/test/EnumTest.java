@@ -1,18 +1,19 @@
 package org.yajul.enumtype.test;
 
-import junit.framework.TestCase;
-import org.yajul.enumtype.EnumType;
-import org.yajul.enumtype.EnumTypeMap;
-import org.yajul.enumtype.*;
-import org.yajul.enumtype.EnumValue;
-import org.yajul.enumtype.EnumValueFilter;
-import org.yajul.framework.ServiceLocator;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import junit.framework.TestCase;
+
+import org.yajul.enumtype.EnumInitializationException;
+import org.yajul.enumtype.EnumType;
+import org.yajul.enumtype.EnumTypeMap;
+import org.yajul.enumtype.EnumValue;
+import org.yajul.enumtype.EnumValueFilter;
+import org.yajul.framework.ServiceLocator;
 
 /**
  * Test case for the EnumType, EnumTypeMap, and EnumValue objects.

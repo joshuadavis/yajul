@@ -8,12 +8,11 @@
 package org.yajul.util.test;
 
 import junit.framework.TestCase;
-import org.apache.log4j.Logger;
+
 import org.yajul.util.SimpleQueue;
 
 public class SimpleQueueTest extends TestCase
 {
-    private static Logger log = Logger.getLogger(SimpleQueueTest.class);
     private Object[] object = new Object[5];
 
     public SimpleQueueTest(String name)

@@ -2,12 +2,13 @@
 
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.ReflectionUtil;
-
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.ReflectionUtil;
 
 /**
  * Tests ReflectionUtil

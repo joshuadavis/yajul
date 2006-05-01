@@ -2,13 +2,14 @@ package org.yajul.spi;
 
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.yajul.spi.test.ExampleSPI;
 import org.yajul.util.ObjectFactory;
-
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Tests finding the default implementation.

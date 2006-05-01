@@ -26,24 +26,17 @@
  ******************************************************************************/
 package org.yajul.net.http.server;
 
-import org.yajul.net.AbstractClientConnection;
-import org.yajul.net.AbstractServerSocketListener;
-import org.yajul.net.http.server.HTTPServerAttributes;
-import org.yajul.net.http.RequestHeaders;
-import org.yajul.net.http.RequestHeader;
-import org.yajul.net.http.Message;
-import org.yajul.net.http.HTTPInputStream;
-import org.yajul.io.LimitedInputStream;
-import org.yajul.io.TokenizingInputStream;
-import org.yajul.io.StreamCopier;
-import org.apache.log4j.Logger;
-
-import java.io.OutputStream;
 import java.io.IOException;
-import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+import org.yajul.io.StreamCopier;
+import org.yajul.net.AbstractClientConnection;
+import org.yajul.net.AbstractServerSocketListener;
+import org.yajul.net.http.HTTPInputStream;
+import org.yajul.net.http.RequestHeader;
 
 /**
  * A server side connection that handles incoming HTTPConstants requests.
@@ -69,9 +62,6 @@ public class HTTPClientConnection extends AbstractClientConnection implements Ru
 
     /** A logger for this class. **/
     private static Logger log = Logger.getLogger(HTTPClientConnection.class);
-
-    /** The time of the last request. */
-    private long requestTime;
     /** True if this connection is in 'keep-alive' mode. **/
     private boolean keepalive;
     /** True if this connection is currently waiting for a request from
@@ -178,8 +168,8 @@ public class HTTPClientConnection extends AbstractClientConnection implements Ru
         setKeepalive(serverAttributes.getKeepAlive() && request.isKeepAlive());
 //                if (lineLower.startsWith("authorization: basic "))
 //                    parseBasicAuthorization(line);
-        int contentLength = request.getContentLength();
-        LimitedInputStream in = new LimitedInputStream(getInputStream(), contentLength);
+//        int contentLength = request.getContentLength();
+//        LimitedInputStream in = new LimitedInputStream(getInputStream(), contentLength);
         HTTPResponse response = createResponse(request);
         writeHTTPResponse(response, request);
     }

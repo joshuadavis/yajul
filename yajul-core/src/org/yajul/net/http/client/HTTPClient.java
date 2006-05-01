@@ -2,15 +2,14 @@
 package org.yajul.net.http.client;
 
 
-import org.apache.log4j.Logger;
-import org.yajul.net.http.RequestHeader;
-import org.yajul.net.http.Message;
-import org.yajul.net.http.ProxyInfo;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.yajul.net.http.HTTPConstants;
 import org.yajul.net.http.HeaderConstants;
-
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
+import org.yajul.net.http.Message;
+import org.yajul.net.http.ProxyInfo;
+import org.yajul.net.http.RequestHeader;
 
 /**
  * This class allows the creation of HTTP connections and contains overall
@@ -18,21 +17,18 @@ import java.io.ByteArrayInputStream;
  */
 public class HTTPClient implements HTTPConstants
 {
-    /** A logger for this class. **/
-    private static Logger log = Logger.getLogger(HTTPClient.class);
-
     /** Proxy information to be used by the client for all connections. **/
     private ProxyInfo proxyInfo;
     /** Number of milliseconds to wait on any connection created by this client. **/
     private int       socketTimeout;
-    
+
     /**
      * Create a new HTTP Client.
      */
     public HTTPClient()
     {
     }
-    
+
 	/**
 	 * Initialize proxy support.  If this is set, the proxy will be used for all subsequent
 	 * HTTP/HTTPS communication.
@@ -56,12 +52,12 @@ public class HTTPClient implements HTTPConstants
      * Sets the socket timeout for the client.
      */
     public void setSocketTimeout(int ms) { socketTimeout = ms; }
-    
+
     /**
      * Returns the socket timeout for the client.
      */
     public int getSocketTimeout() { return socketTimeout; }
-    
+
     /**
      * Issue and HTTP request on a new connection and receive the response.
      */
@@ -72,18 +68,18 @@ public class HTTPClient implements HTTPConstants
         // TODO: If we are allowing keepalive, find the connection based on the protocol/host/port string.
 
         HTTPConnection con = new HTTPConnection(this,req.getProtocol(),req.getHost(),req.getPort());
-        
+
         // Send the request, wait for the response, and then parse the headers.
         Message res = con.send(req,content);
-        
+
         // The content can now be read from the response.
-        
+
         return res;
     }
-    
+
     public Message get(String url)
         throws Exception
-    {        
+    {
         // Create the GET request.
         RequestHeader req = new RequestHeader(METHOD_GET,url);
         req.setHeaderValue(HeaderConstants.CONNECTION,"close");

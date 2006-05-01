@@ -2,10 +2,11 @@
 
 package org.yajul.util.test;
 
-import junit.framework.TestCase;
-import org.yajul.util.ResourceUtil;
-
 import java.util.Properties;
+
+import junit.framework.TestCase;
+
+import org.yajul.util.ResourceUtil;
 
 /**
  * Tests ResourceUtil

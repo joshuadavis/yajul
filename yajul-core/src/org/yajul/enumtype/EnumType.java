@@ -28,26 +28,24 @@
 package org.yajul.enumtype;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Arrays;
-import java.util.List;
 import java.util.WeakHashMap;
-import java.util.Collections;
-import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
-import org.yajul.util.ArrayIterator;
-import org.yajul.util.StringUtil;
-import org.yajul.util.ReflectionUtil;
-import org.yajul.xml.DOMUtil;
 import org.yajul.bean.BeanProperties;
-import org.yajul.enumtype.EnumInitializationException;
+import org.yajul.util.ArrayIterator;
+import org.yajul.util.ReflectionUtil;
+import org.yajul.util.StringUtil;
+import org.yajul.xml.DOMUtil;
 
 /**
  * Provides a collection of enumerated values, otherwise known as an enumerated

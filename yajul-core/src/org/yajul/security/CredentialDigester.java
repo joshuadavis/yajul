@@ -1,12 +1,10 @@
 // $Id$
 package org.yajul.security;
 
-import org.apache.log4j.Logger;
-import org.yajul.io.Base64Encoder;
-import org.yajul.util.StringUtil;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import org.yajul.util.StringUtil;
 
 /**
  * One way hash for passwords that produces results compatible with the JBoss UsernamePasswordLoginModule and sub-classes

@@ -1,15 +1,16 @@
 // $Id$
 package org.yajul.bean.test;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
+
+import org.w3c.dom.Document;
 import org.yajul.bean.BeanProperties;
 import org.yajul.bean.PropertyMap;
 import org.yajul.bean.XmlBeanReader;
-import org.yajul.xml.DOMUtil;
 import org.yajul.io.StringInputStream;
-import org.w3c.dom.Document;
-
-import java.util.Map;
+import org.yajul.xml.DOMUtil;
 
 /**
  * TODO: Add class javadoc

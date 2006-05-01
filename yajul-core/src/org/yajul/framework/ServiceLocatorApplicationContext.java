@@ -1,15 +1,14 @@
 // $Id$
 package org.yajul.framework;
 
-import org.springframework.context.support.AbstractXmlApplicationContext;
-import org.springframework.context.ApplicationContext;
-import org.yajul.util.DetailedRuntimeException;
-import org.apache.log4j.Logger;
-
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.net.URL;
-import java.io.IOException;
+
+import org.apache.log4j.Logger;
+import org.springframework.context.support.AbstractXmlApplicationContext;
+import org.yajul.util.DetailedRuntimeException;
 
 /**
  * A specialized XmlApplicationContext that ServiceLocator uses to get the multi
@@ -37,10 +36,10 @@ public class ServiceLocatorApplicationContext extends AbstractXmlApplicationCont
         try
         {
             // If there are multiple resources, load 'em!
-            Enumeration enum = loader.getResources(resource);
-            while (enum.hasMoreElements())
+            Enumeration en = loader.getResources(resource);
+            while (en.hasMoreElements())
             {
-                URL url = (URL) enum.nextElement();
+                URL url = (URL) en.nextElement();
                 String path = url.toExternalForm();
                 resourceList.add(path);
             }

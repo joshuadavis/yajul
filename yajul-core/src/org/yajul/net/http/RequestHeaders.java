@@ -26,8 +26,6 @@
  ******************************************************************************/
 package org.yajul.net.http;
 
-import org.apache.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -40,13 +38,10 @@ import java.util.StringTokenizer;
  */
 public class RequestHeaders
 {
-    /** A logger for this class. **/
-    private static Logger log = Logger.getLogger(RequestHeaders.class);
     private String command;
     private String[] commandTokens;
     private String[] headers;
     private Map valueByLowerCaseName = new HashMap();
-    private boolean commandParsed;
 
     public RequestHeaders(String command, String[] headers)
     {
@@ -127,24 +122,6 @@ public class RequestHeaders
         // TODO: Implement this
         // serverAttributes.getKeepAlive() && lineLower.indexOf("keep-alive") > -1;
         return false;
-    }
-
-    private void parseBasicAuthorization(String line)
-    {
-/*
-        try
-        {
-            byte[] c = Base64Decoder.decode(buffer,21,buffer.length - 21);
-            String str = new String(c);
-            int col = str.indexOf(":");
-            username = str.substring(0, col);
-            password = str.substring(col + 1);
-        }
-        catch (Throwable e)
-        {
-            log.warn(e,e);
-        }
-*/
     }
 
     /**

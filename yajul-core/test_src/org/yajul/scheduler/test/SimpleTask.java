@@ -27,9 +27,8 @@
 package org.yajul.scheduler.test;
 
 import org.apache.log4j.Logger;
-import org.yajul.scheduler.ScheduledTask;
-import org.yajul.scheduler.ScheduleEntryAttributes;
 import org.yajul.scheduler.ScheduleEntry;
+import org.yajul.scheduler.ScheduledTask;
 
 /**
  * Internal class for the test harness.

@@ -1,15 +1,12 @@
 
 package org.yajul.net.http;
 
-import java.util.Map;
-import java.util.ArrayList;
-
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
-import org.yajul.util.NameValuePair;
 import org.yajul.io.Base64Encoder;
-import org.apache.log4j.Logger;
+import org.yajul.util.NameValuePair;
 
 /**
  * HTTPHeader represents a single HTTP header element, and can parse
@@ -17,9 +14,6 @@ import org.apache.log4j.Logger;
  */
 public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderConstants
 {
-    /** A logger for this class. **/
-    private static Logger log = Logger.getLogger(HTTPHeader.class);
-
     private String[] valueTokens;
     private String valueLower;
 
@@ -33,8 +27,8 @@ public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderCo
     /**
      * Returns true if the header is a 'standard' HTTP header.  The comparison
      * is case-insensitive.
-     * @param name 
-     * @return 
+     * @param name
+     * @return
      */
     public static boolean isStandardHeader(String name)
     {
@@ -60,7 +54,7 @@ public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderCo
     {
         super(e);
     }
-    
+
     /**
      * Create an HTTP header from the specified name value pair.
 	 * @param name The name
@@ -70,7 +64,7 @@ public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderCo
     {
         super(name,value);
     }
-   
+
     public String setValue(String v)
     {
         super.setValue(v);
@@ -95,11 +89,11 @@ public class HTTPHeader extends NameValuePair implements HTTPConstants, HeaderCo
     {
         return getName() + ": " + getValue();
     }
-    
+
     /**
 	 * Writes the HTTP header to the output in HTTP form.
-	 * @param out 
-	 * @exception java.io.IOException 
+	 * @param out
+	 * @exception java.io.IOException
 	 */
 	public void write(PrintWriter out)
         throws IOException

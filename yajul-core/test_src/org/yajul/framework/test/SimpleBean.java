@@ -1,7 +1,7 @@
 package org.yajul.framework.test;
 
-import org.yajul.util.FieldPrinter;
 import org.springframework.core.io.Resource;
+import org.yajul.util.FieldPrinter;
 
 /**
  * A Java Bean used to test the ServiceLocator class.

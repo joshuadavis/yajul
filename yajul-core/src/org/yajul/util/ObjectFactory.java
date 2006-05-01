@@ -123,7 +123,6 @@ public class ObjectFactory
             throws InitializationException, IOException
     {
         Properties properties = ResourceUtil.loadProperties(resourceName);
-        String className = defaultClassName;
         if (properties == null)
         {
             String message = "Properties resource " + resourceName
