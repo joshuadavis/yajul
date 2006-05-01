@@ -179,7 +179,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/yajul-core.iml" filepath="$PROJECT_DIR$/yajul-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/yajul-core/yajul-core.iml" filepath="$PROJECT_DIR$/yajul-core/yajul-core.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.4" />
