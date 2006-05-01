@@ -10,6 +10,5 @@ public class WeblogicJtaTransactionManager extends ContainerSpecificJtaTransacti
     public WeblogicJtaTransactionManager()
     {
         super("javax.transaction.TransactionManager", "javax.transaction.UserTransaction");
-        
     }
 }

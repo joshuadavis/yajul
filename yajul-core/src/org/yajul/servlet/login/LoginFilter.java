@@ -16,8 +16,7 @@ import java.security.Principal;
 /**
  * Adds the logged in Principal to the HttpSession, if it is available.  This way, unsecured URIs can
  * have access to the logged in user.
- * Created by IntelliJ IDEA.
- * User: josh
+ * <br>User: josh
  * Date: Jun 28, 2003
  * Time: 12:21:03 PM
  */

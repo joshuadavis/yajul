@@ -18,7 +18,7 @@ import java.io.IOException;
  * NOTE: This servlet must be deployed to a URI that is protected by security
  * constraints, the ActiveLoginBean will be redirecting to it in order to
  * force the login form to be displayed.
- * User: josh
+ * <br>User: josh
  * Date: Jun 7, 2003
  * Time: 5:42:02 PM
  */

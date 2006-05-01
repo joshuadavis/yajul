@@ -14,7 +14,7 @@ import java.security.Principal;
 
 /**
  * Unprotected servlet that processes login commands.
- * Created by IntelliJ IDEA.
+ * <br>
  * User: josh
  * Date: Sep 23, 2003
  * Time: 7:32:44 AM
