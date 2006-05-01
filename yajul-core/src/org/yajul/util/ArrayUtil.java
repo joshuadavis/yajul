@@ -37,6 +37,7 @@ import java.util.Set;
  * Date: Aug 1, 2003
  * Time: 4:26:20 PM
  * @author jdavis
+ * @author agautam
  */
 public class ArrayUtil
 {
@@ -145,6 +146,95 @@ public class ArrayUtil
         for (int i = 0; i < limit; i++)
             rv += components[i].hashCode() * (31 ^ (limit - i));
         return rv;
+    }
+
+    /**
+     * Converts a double[] to a Double[].
+     */
+    public static Double[] toDoubleArray(double input[])
+    {
+        if (input == null)
+            return null;
+
+        Double[] output = new Double[input.length];
+        for (int i = 0; i < output.length; i++)
+        {
+            output[i] = new Double(input[i]);
+        }
+
+        return output;
+    }
+
+    /**
+     * Checks the contents of the two passed in arrays for equality.
+     * @return true if the array contents are equal or both are null.
+     */
+    public static boolean areContentsEqual(double[] array1, double[] array2)
+    {
+        if ((array1 == null) && (array2 == null))
+            return true;
+        if ((array1 == null) || (array2 == null))
+            return false;
+        if (array1.length != array2.length)
+            return false;
+        for (int i = 0; i < array2.length; i++)
+        {
+            if (array1[i] != array2[i])
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Add the contents of the addFrom array to the result array. The results will be stored in the result array.
+     *
+     * A new array will be allocated if the addFrom array is longer than result[]
+     *
+     * @return the result array if a new one in not allocated, else the new array is returned.
+     */
+    public static double[] appendToArray(double[] result, double[] addFrom)
+    {
+        if ((result == null) && (addFrom == null)) return null;
+        if (result == null) return addFrom;
+        if (addFrom == null) return result;
+
+        double[] output;
+        if (addFrom.length > result.length)
+        {
+            output = new double[addFrom.length];
+            System.arraycopy(result, 0, output, 0, result.length);
+        }
+        else
+            output = result;
+
+        for (int i = 0; i < output.length; i++)
+        {
+            if (i < addFrom.length)
+                output[i] += addFrom[i];
+        }
+
+        return output;
+    }
+
+    /**
+     * Adds the contents of 2 arrays.
+     * The item count of the returned array would be the longer of the inputs.
+     * Entries in the shorter array will be considered 0 for addition purposes, once its length has been exhausted.
+     *
+     * @return null if both inputs are null, if one is null, it will return the other.
+     */
+    public static double[] addArrays(double[] array1, double[] array2)
+    {
+        if ((array1 == null) && (array2 == null)) return null;
+        if (array1 == null) return array2;
+        if (array2 == null) return array1;
+
+        double[] output = new double[array1.length > array2.length ? array1.length : array2.length];
+        for (int i = 0; i < output.length; i++)
+        {
+            output[i] = (i < array1.length ? array1[i] : 0) + (i < array2.length ? array2[i] : 0);
+        }
+        return output;
     }
 
 }

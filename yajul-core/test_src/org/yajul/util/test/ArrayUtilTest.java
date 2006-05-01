@@ -59,4 +59,107 @@ public class ArrayUtilTest extends TestCase
         int hc2 = ArrayUtil.computeHashCode(new int[] { 3, 2, 1 });
         assertTrue(hc1 != hc2);
     }
+
+    public void testConvertToDoubleArray()
+    {
+        assertNull(ArrayUtil.toDoubleArray(null));
+        double[] input = new double[] {10, 30, 12, 12.4, 14};
+        Double[] expected = new Double[input.length];
+        for (int i = 0; i < input.length; i++)
+        {
+            expected[i] = new Double(input[i]);
+        }
+        Double[] actual = ArrayUtil.toDoubleArray(input);
+        assertArraysEqual(expected, actual);
+    }
+
+    private void assertArraysEqual(Double[] expected, Double[] actual)
+    {
+        assertNotNull(expected);
+        assertNotNull(actual);
+        assertTrue(expected.length == actual.length);
+        for (int i = 0; i < actual.length; i++)
+        {
+            assertEquals("i=" + i, expected[i].doubleValue(), actual[i].doubleValue(), 0.0000001);
+        }
+    }
+
+    public void testAreContentsEqual()
+    {
+        assertTrue(ArrayUtil.areContentsEqual(null, null));
+
+        double[] a1 = new double[] {10, 30, 12, 12.4, 14}; // input 1
+        double[] a2 = new double[] {14, 32, 54.5, -19, 0.5}; // input 2
+        assertFalse(ArrayUtil.areContentsEqual(a1, a2));
+
+        a2 = new double[] {10, 30, 12, 12.4, 14};
+        assertTrue(ArrayUtil.areContentsEqual(a1, a2));
+        assertFalse(ArrayUtil.areContentsEqual(a1, null));
+        assertFalse(ArrayUtil.areContentsEqual(null, a2));
+
+        a1 = new double[] {10, 30, 12, 12.4, 14};
+        a2 = new double[] {10, 30, 12};
+        assertFalse(ArrayUtil.areContentsEqual(a1, a2));
+
+        a1 = new double[] {10, 30, 12};
+        a2 = new double[] {10, 30, 12, 12.4, 14};
+        assertFalse(ArrayUtil.areContentsEqual(a1, a2));
+    }
+
+    public void testAppendToArray()
+    {
+        assertNull(ArrayUtil.appendToArray(null, null));
+
+        double[] a1 = new double[] {10, 30, 12, 12.4, 14}; // input 1
+        double[] a2 = new double[] {14, 32, 54.5, -19, 0.5}; // input 2
+        double[] re = new double[] {24, 62, 66.5, -6.6, 14.5}; // result expected
+        assertArraysEqual(re, ArrayUtil.appendToArray(a1, a2));
+        assertArraysEqual(re, a1);
+        assertArraysEqual(a1, ArrayUtil.appendToArray(a1, null));
+        assertArraysEqual(a2, ArrayUtil.appendToArray(null, a2));
+
+        a1 = new double[] {10, 30, 11}; // input 1
+        a2 = new double[] {14, 32, 51.5, -19, 0.5}; // input 2
+        re = new double[] {24, 62, 62.5, -19, 0.5}; // result expected
+        assertArraysEqual(re, ArrayUtil.appendToArray(a1, a2));
+
+        a1 = new double[] {10, 30, 11, 12.4, 14}; // input 1
+        a2 = new double[] {14, 32, 51.5}; // input 2
+        re = new double[] {24, 62, 62.5, 12.4, 14}; // result expected
+        assertArraysEqual(re, ArrayUtil.appendToArray(a1, a2));
+        assertArraysEqual(re, a1);
+    }
+
+    public void testAddArrays()
+    {
+        assertNull(ArrayUtil.addArrays(null, null));
+
+        double[] a1 = new double[] {10, 30, 12, 12.4, 14}; // input 1
+        double[] a2 = new double[] {14, 32, 54.5, -19, 0.5}; // input 2
+        double[] re = new double[] {24, 62, 66.5, -6.6, 14.5}; // result expected
+        assertArraysEqual(re, ArrayUtil.addArrays(a1, a2));
+        assertArraysEqual(a1, ArrayUtil.addArrays(a1, null));
+        assertArraysEqual(a2, ArrayUtil.addArrays(null, a2));
+
+        a1 = new double[] {10, 30, 11}; // input 1
+        a2 = new double[] {14, 32, 51.5, -19, 0.5}; // input 2
+        re = new double[] {24, 62, 62.5, -19, 0.5}; // result expected
+        assertArraysEqual(re, ArrayUtil.addArrays(a1, a2));
+
+        a1 = new double[] {10, 30, 11, 12.4, 14}; // input 1
+        a2 = new double[] {14, 32, 51.5}; // input 2
+        re = new double[] {24, 62, 62.5, 12.4, 14}; // result expected
+        assertArraysEqual(re, ArrayUtil.addArrays(a1, a2));
+    }
+
+    private void assertArraysEqual(double[] expected, double[] actual)
+    {
+        assertNotNull(expected);
+        assertNotNull(actual);
+        assertTrue(expected.length == actual.length);
+        for (int i = 0; i < actual.length; i++)
+        {
+            assertEquals("i=" + i, expected[i], actual[i], 0.0000001);
+        }
+    }
 }
