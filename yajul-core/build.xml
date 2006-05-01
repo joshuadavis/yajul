@@ -30,7 +30,6 @@
     </path>
 
     <path id="test.classpath">
-        <pathelement path="${ant.home}/lib/clover.jar"/>
         <path refid="compile.classpath"/>
         <pathelement path="${lib.dir}/junit.jar"/>
         <pathelement location="${main.class.dir}"/>
@@ -54,12 +53,6 @@
     <patternset id="java.files">
         <include name="org/yajul/**/*.java"/>
     </patternset>
-
-
-    <target name="with.clover">
-        <taskdef resource="clovertasks"/>
-        <clover-setup initString="${build.dir}/yajul_coverage.db"/>
-    </target>
 
     <target name="init">
         <tstamp>
@@ -229,27 +222,10 @@
             style="jdepend.xsl" />
     </target>
 
-    <target name="report.html" depends="with.clover">
-       <clover-report>
-          <current outfile="${build.dir}/clover_html" title="YAJUL core test coverage">
-             <format type="html"/> 
-          </current>	 
-       </clover-report>
-    </target>
     
     <target name="docs" depends="junit.report,javadoc,jdepend"/>
 
-    <target name="clover.compile" depends="with.clover"
-        description="Compile with clover support">
-    	<antcall target="clean.classes"/>
-	<antcall target="compile"/>
-	<antcall target="compile.tests"/>
-    </target>
-
-    <target name="clover" depends="clover.compile,test,report.html" description="Generate a unit test coverage report">
-    </target>
-
-    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,clover"
+    <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,emma.all"
         description="Full build and test">
     </target>
 
@@ -260,5 +236,99 @@
     <target name="build" depends="compile,jar,jar.src,compile.tests"
         description="Incremental build.">
     </target>
+
+    <!-- EMMA targets -->
+    <property name="emma.enabled" value="true"/>
+    <!-- directory that contains emma.jar and emma_ant.jar: -->
+    <property name="emma.dir" value="${basedir}/tools/lib" />
+
+    <path id="emma.lib" >
+        <pathelement location="${emma.dir}/emma.jar" />
+        <pathelement location="${emma.dir}/emma_ant.jar" />
+    </path>
+
+    <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
+    <!-- EMMA instr class output directory: -->
+    <property name="out.instr.dir" value="${build.dir}/outinstr"/>
+    <property name="coverage.dir" value="${build.dir}/coverage"/>
+
+    <target name="emma.clean">
+        <delete dir="${out.instr.dir}" failonerror="false"/>
+        <delete dir="${coverage.dir}" failonerror="false"/>
+    </target>
+
+    <target name="emma.init" description="turns on EMMA instrumentation/reporting">
+        <mkdir dir="${out.instr.dir}"/>
+        <mkdir dir="${coverage.dir}"/>
+    </target>
+
+    <target name="emma.instrument" depends="emma.init,compile">
+        <!-- Compile the main source files with debug information. -->
+        <javac destdir="${out.instr.dir}" classpathref="compile.classpath" debug="true"
+               optimize="false" deprecation="false"
+               verbose="${javac.verbose}">
+            <src path="${main.src.dir}"/>
+        </javac>
+        <!-- Instrument the compiled code. -->
+        <emma enabled="${emma.enabled}">
+            <instr verbosity="info"
+                   instrpath="${out.instr.dir}"
+                   mode="overwrite"
+                   metadatafile="${coverage.dir}/metadata.emma"
+                    >
+                <filter includes="org.yajul.*"/>
+            </instr>
+        </emma>
+    </target>
+
+    <path id="emma.test.classpath">
+        <!-- Add the insrumented classes -->
+        <pathelement location="${out.instr.dir}"/>
+        <!-- Add the rest of the classes -->
+        <path refid="test.runtime.classpath"/>
+        <!-- Add EMMA libraries -->
+        <path refid="emma.lib"/>
+    </path>
+
+    <target name="emma.test" depends="emma.init">
+        <!-- Delete the previous coverage results. -->
+        <delete file="${coverage.dir}/coverage.emma" failonerror="false"/>
+        <!--
+        Since this is intended for the nightly build, don't halt on error, and use an XML formatter.
+        Also, emma requires that the JVM is forked.
+        -->
+        <junit fork="yes"
+            printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
+            <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma"/>
+            <jvmarg value="-Demma.coverage.out.merge=true"/>
+            <classpath>
+                <path refid="emma.test.classpath"/>
+            </classpath>
+
+            <formatter type="xml"/>
+            <batchtest todir="${junit.dir}">
+                <fileset dir="${test.src.dir}">
+                    <patternset refid="test.files"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="emma.report" depends="emma.init">
+        <emma enabled="${emma.enabled}">
+            <report sourcepath="${main.src.dir}">
+                <fileset dir="${coverage.dir}">
+                    <include name="*.emma"/>
+                </fileset>
+                <txt outfile="${coverage.dir}/coverage.txt"/>
+                <html outfile="${coverage.dir}/coverage.html"/>
+            </report>
+        </emma>
+    </target>
+
+    <target name="emma.all" depends="emma.init,emma.instrument,emma.test,emma.report">
+    </target>
+
 
 </project>
