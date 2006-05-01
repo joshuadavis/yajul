@@ -45,6 +45,7 @@ public class ReflectionUtil
      * any static integer constants in the class.
      * @param c The class to get the constants from.
      * @return Map - A map of the constant integer values to their names.
+     * @noinspection EmptyCatchBlock
      */
     public static Map getConstantNameMap(Class c)
     {

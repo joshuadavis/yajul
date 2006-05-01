@@ -46,7 +46,7 @@ public class ArrayUtil
      * @param integerArray The array of Integers.
      * @return int[] - An array of ints.
      */
-    public static final int[] toIntArray(Integer[] integerArray)
+    public static int[] toIntArray(Integer[] integerArray)
     {
         int[] rv = new int[integerArray.length];
         for (int i = 0; i < integerArray.length; i++)
@@ -60,7 +60,7 @@ public class ArrayUtil
      * @param integerCollection The collection of Integers.
      * @return int[] - An array of ints.
      */
-    public static final int[] toIntArray(Collection integerCollection)
+    public static int[] toIntArray(Collection integerCollection)
     {
         int[] rv = new int[integerCollection.size()];
         Iterator iterator = integerCollection.iterator();
@@ -136,7 +136,7 @@ public class ArrayUtil
      * components.
      * @return int - The new, compound hash value.
      */
-    public static final int computeHashCode(Object[] components)
+    public static int computeHashCode(Object[] components)
     {
         // Sum all of the hash codes of the components, using an algorithm similar to that used by
         // java.lang.String.

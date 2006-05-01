@@ -36,8 +36,7 @@ public class ResourceUtil
     public static InputStream getResourceAsStream(String resourceName)
     {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        InputStream is = cl.getResourceAsStream(resourceName);
-        return is;
+        return cl.getResourceAsStream(resourceName);
     }
 
     /**

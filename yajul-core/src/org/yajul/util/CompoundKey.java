@@ -23,7 +23,7 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
      * @param components An array of objects.
      * @return int - The hash value.
      */
-    public static final int computeHash(Object[] components)
+    public static int computeHash(Object[] components)
     {
         return ArrayUtil.computeHashCode(components);
     }
@@ -208,8 +208,8 @@ public class CompoundKey implements Comparable, Serializable, Cloneable
     {
         CompoundKey other = (CompoundKey) o;
 
-        Comparable a = null;
-        Comparable b = null;
+        Comparable a;
+        Comparable b;
         // First, check if the length of the arrays is different.
         int rc = components.length - other.components.length;
         if (rc == 0)
