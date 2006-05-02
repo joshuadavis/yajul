@@ -148,6 +148,19 @@ public class ArrayUtil
         return rv;
     }
 
+    public static final double[] todoubleArray(Double input[])
+    {
+        if (input == null)
+            return null;
+
+        double[] output = new double[input.length];
+        for (int i = 0; i < output.length; i++)
+        {
+            output[i] = input[i].doubleValue();
+        }
+        return output;
+    }
+
     /**
      * Converts a double[] to a Double[].
      */
@@ -211,6 +224,37 @@ public class ArrayUtil
         {
             if (i < addFrom.length)
                 output[i] += addFrom[i];
+        }
+
+        return output;
+    }
+
+    /**
+     * Add the contents of the addFrom array to the result array. The results will be stored in the result array.
+     *
+     * A new array will be allocated if the addFrom array is longer than result[]
+     *
+     * @return the result array if a new one in not allocated, else the new array is returned.
+     */
+    public static final double[] appendToArrayD(double[] result, Double[] addFrom)
+    {
+        if ((result == null) && (addFrom == null)) return null;
+        if (result == null) return todoubleArray(addFrom);
+        if (addFrom == null) return result;
+
+        double[] output;
+        if (addFrom.length > result.length)
+        {
+            output = new double[addFrom.length];
+            System.arraycopy(result, 0, output, 0, result.length);
+        }
+        else
+            output = result;
+
+        for (int i = 0; i < output.length; i++)
+        {
+            if (i < addFrom.length && addFrom[i] != null)
+                output[i] += addFrom[i].doubleValue();
         }
 
         return output;

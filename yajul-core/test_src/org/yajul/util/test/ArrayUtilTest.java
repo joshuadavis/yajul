@@ -61,7 +61,16 @@ public class ArrayUtilTest extends TestCase
         assertTrue(hc1 != hc2);
     }
 
-    public void testConvertToDoubleArray()
+    public void testTodoubleArray()
+    {
+        assertNull(ArrayUtil.todoubleArray(null));
+        Double[] input = new Double[] {new Double(10), new Double(14.98), new Double(98.76), new Double(0), new Double(-8.5)};
+        double[] expected = new double[] {10, 14.98, 98.76, 0, -8.5};
+        double[] actual = ArrayUtil.todoubleArray(input);
+        assertArraysEqual(expected, actual);
+    }
+
+    public void testToDoubleArray()
     {
         assertNull(ArrayUtil.toDoubleArray(null));
         double[] input = new double[] {10, 30, 12, 12.4, 14};
@@ -105,6 +114,23 @@ public class ArrayUtilTest extends TestCase
         a1 = new double[] {10, 30, 12};
         a2 = new double[] {10, 30, 12, 12.4, 14};
         assertFalse(ArrayUtil.areContentsEqual(a1, a2));
+    }
+
+    public void testAppendToArray2()
+    {
+        assertNull(ArrayUtil.appendToArrayD(null, null));
+        Double[] a1 = new Double[] {new Double(10), new Double(14.98), new Double(98.76), new Double(0), new Double(-8.5)};
+        double[] a2 = new double[] {14, 32, 54.5, -19, 0.5}; // input 2
+        double[] re = new double[] {24, 46.98, (54.5+98.76), -19, -8}; // result expected
+        assertArraysEqual(re, ArrayUtil.appendToArrayD(a2, a1));
+        assertArraysEqual(re, a2);
+
+        // fail on null!
+        a1 = new Double[] {new Double(10), new Double(14.98), null, new Double(0), new Double(-8.5)};
+        a2 = new double[] {14, 32, 54.5, -19, 0.5}; // input 2
+        re = new double[] {24, 46.98, 54.5, -19, -8}; // result expected
+        assertArraysEqual(re, ArrayUtil.appendToArrayD(a2, a1));
+        assertArraysEqual(re, a2);
     }
 
     public void testAppendToArray()
