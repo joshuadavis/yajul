@@ -156,7 +156,7 @@ public class ArrayUtil
         double[] output = new double[input.length];
         for (int i = 0; i < output.length; i++)
         {
-            output[i] = input[i].doubleValue();
+            output[i] = input[i] == null ? 0 : input[i].doubleValue();
         }
         return output;
     }
@@ -208,8 +208,13 @@ public class ArrayUtil
     public static double[] appendToArray(double[] result, double[] addFrom)
     {
         if ((result == null) && (addFrom == null)) return null;
-        if (result == null) return addFrom;
         if (addFrom == null) return result;
+        if (result == null)
+        {
+            double[] clone = new double[addFrom.length];
+            System.arraycopy(addFrom, 0, clone, 0, addFrom.length);
+            return clone;
+        }
 
         double[] output;
         if (addFrom.length > result.length)
@@ -239,8 +244,8 @@ public class ArrayUtil
     public static final double[] appendToArrayD(double[] result, Double[] addFrom)
     {
         if ((result == null) && (addFrom == null)) return null;
-        if (result == null) return todoubleArray(addFrom);
         if (addFrom == null) return result;
+        if (result == null) return todoubleArray(addFrom);
 
         double[] output;
         if (addFrom.length > result.length)
