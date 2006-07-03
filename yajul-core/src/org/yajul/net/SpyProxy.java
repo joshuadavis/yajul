@@ -18,6 +18,13 @@ import java.util.Date;
  */
 public class SpyProxy extends AbstractServerSocketListener
 {
+    // parameters passed in via main
+    private static boolean argDebugBinary = false;
+    private static boolean argDebugText = false;
+    private static String argServerHost;
+    private static int argLocalPortNumber = 0;
+    private static int argServerPortNumber = 0;
+
     /**
      * java SpyProxy [-d] serverHost serverPort [localPort]
      * @param args Command line arguments.
@@ -26,60 +33,11 @@ public class SpyProxy extends AbstractServerSocketListener
     {
         try
         {
-            boolean debugBinary = false;
-            boolean debugText = false;
-            int offset = 0;
+            parseApplicationArguments(args, SpyProxy.class.getName());
 
-            if (args.length == 0)
-            {
-                usage();
-                System.exit(-1);
-            }
-
-            while (args[offset].charAt(0) == '-')
-            {
-                if (args[0].equals("-d"))
-                {
-                    debugBinary = true;
-                    offset++;
-                }
-                else if (args[0].equals("-t"))
-                {
-                    debugText = true;
-                    offset++;
-                }
-            }
-
-            if (args.length - offset < 2)
-            {
-                usage();
-                System.exit(-1);
-            }
-
-            String serverHost = args[offset++];
-            String serverPort = args[offset++];
-            String localPort = serverPort;
-
-            if (args.length > offset)
-                localPort = args[offset++];
-
-            int lPort = 0;
-            int sPort = 0;
-
-            try
-            {
-                lPort = Integer.parseInt(localPort);
-                sPort = Integer.parseInt(serverPort);
-            }
-            catch (NumberFormatException x)
-            {
-                usage();
-                System.exit(-1);
-            }
-
-            SpyProxy proxy = new SpyProxy(serverHost, sPort, lPort);
-            proxy.setDebugBinary(debugBinary);
-            proxy.setDebugText(debugText);
+            SpyProxy proxy = new SpyProxy(argServerHost, argServerPortNumber, argLocalPortNumber);
+            proxy.setDebugBinary(argDebugBinary);
+            proxy.setDebugText(argDebugText);
             Thread thread = new Thread(proxy);
             thread.start();
         }
@@ -91,18 +49,66 @@ public class SpyProxy extends AbstractServerSocketListener
 
     }
 
+    protected static void parseApplicationArguments(String[] args, String className)
+    {
+        int offset = 0;
+
+        if (args.length == 0)
+        {
+            usage(className);
+            System.exit(-1);
+        }
+
+        while (args[offset].charAt(0) == '-')
+        {
+            if (args[0].equals("-d"))
+            {
+                argDebugBinary = true;
+                offset++;
+            }
+            else if (args[0].equals("-t"))
+            {
+                argDebugText = true;
+                offset++;
+            }
+        }
+
+        if (args.length - offset < 2)
+        {
+            usage(className);
+            System.exit(-1);
+        }
+
+        argServerHost = args[offset++];
+        String argServerPort = args[offset++];
+        String argLocalPort = argServerPort;
+        if (args.length > offset)
+            argLocalPort = args[offset++];
+
+        try
+        {
+            argLocalPortNumber = Integer.parseInt(argLocalPort);
+            argServerPortNumber = Integer.parseInt(argServerPort);
+        }
+        catch (NumberFormatException x)
+        {
+            usage(className);
+            System.exit(-1);
+        }
+    }
+
     /**
      * prints out message for usage
      * @see #main(String[])
      */
-    private static void usage()
+    protected static void usage(String className)
     {
-        System.out.println("Usage: java SpyProxy [-d] [-t] serverHost serverPort [localPort]");
+        System.out.println("Usage: java " + className + " [-d] [-t] serverHost serverPort [localPort]");
         System.out.println("Where -d prints binary trace information to stdout");
         System.out.println("      -t prints text trace information to stdout (ideal for WebServices and XML over HTTPConstants)");
         System.out.println("      serverHost is the host name or IP address of the target server");
         System.out.println("      serverPort is the port on the target server");
-        System.out.println("      localPort is the service port for the proxy");
+        System.out.println("      localPort is the service port for the proxy. If local port is not specified, it would be the same as serverPort");
     }
 
     private boolean debugBinary;
@@ -568,6 +574,36 @@ public class SpyProxy extends AbstractServerSocketListener
         }
 
     } // class Channel
+
+
+    public static boolean isArgDebugBinary()
+    {
+        return argDebugBinary;
+    }
+
+
+    public static boolean isArgDebugText()
+    {
+        return argDebugText;
+    }
+
+
+    public static int getArgLocalPortNumber()
+    {
+        return argLocalPortNumber;
+    }
+
+
+    public static String getArgServerHost()
+    {
+        return argServerHost;
+    }
+
+
+    public static int getArgServerPortNumber()
+    {
+        return argServerPortNumber;
+    }
 }
 
 
