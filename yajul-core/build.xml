@@ -26,7 +26,7 @@
         <pathelement path="${lib.dir}/spring.jar"/>
         <pathelement path="${lib.dir}/servlet-2.3.jar"/>
         <pathelement path="${lib.dir}/jaas-1.0.01.jar"/>
-        <pathelement path="${lib.dir}/jta.jar"/>        
+        <pathelement path="${lib.dir}/jta.jar"/>
     </path>
 
     <path id="test.classpath">
@@ -45,6 +45,11 @@
         <!-- Required for Spring testing -->
         <pathelement path="${lib.dir}/commons-logging.jar"/>
     </path>
+
+	<path id="app.runtime.classpath">
+		<path refid="compile.classpath"/>
+        <pathelement location="${main.class.dir}"/>
+	</path>
 
     <patternset id="test.files">
         <include name="org/yajul/**/*Test*.java"/>
@@ -100,6 +105,17 @@
             optimize="${javac.optimize}" deprecation="${javac.deprecation}"
             verbose="${javac.verbose}"/>
     </target>
+
+	<target name="app.run" depends="compile"
+		description="Runs an application. Specify the java class as -Dapp.class=com.kiodex.blah.RunMe. Optional: Specify app args by -Dapp.args='arg1 arg2 arg3'">
+		<fail unless="app.class">
+			Please specify the class to run using something like -Dapp.class="com.kiodex.blah.blah.RumeMe"
+		</fail>
+		<java classname="${app.class}" classpathref="app.runtime.classpath" fork="true" failonerror="true">
+			<arg line="${app.args}"/>
+			<sysproperty key="log4j.configuration" value="log4j.properties"/>
+		</java>
+	</target>
 
     <target name="test" depends="init">
         <mkdir dir="${test.log.dir}"/>
@@ -189,7 +205,7 @@
           <report format="frames" todir="${build.dir}/junit"/>
         </junitreport>
     </target>
-    
+
     <target name="dist.source" depends="init" description="Build the source distribution file.">
         <!-- Zip up all of the source files -->
         <zip zipfile="${dist.dir}/${ant.project.name}-source.zip">
@@ -222,7 +238,7 @@
             style="jdepend.xsl" />
     </target>
 
-    
+
     <target name="docs" depends="junit.report,javadoc,jdepend"/>
 
     <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,emma.all"

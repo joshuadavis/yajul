@@ -190,4 +190,8 @@ public abstract class AbstractClientConnection
     {
         onClose();
     }
+
+    // ability to pause and resume clients
+    public abstract void pause() throws Exception;
+    public abstract void resume() throws Exception;
 }

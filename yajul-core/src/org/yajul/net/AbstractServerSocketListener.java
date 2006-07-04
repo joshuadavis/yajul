@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -441,6 +442,32 @@ public abstract class AbstractServerSocketListener implements Runnable
                 log.error(e,e);
             }
             return;
+        }
+    }
+
+    public void pauseAllClients() throws Exception
+    {
+        synchronized (clientConnections)
+        {
+            log.debug("Pausing all clients. Count=" + clientConnections.size());
+            for (Iterator iter = clientConnections.iterator(); iter.hasNext();)
+            {
+                AbstractClientConnection element = (AbstractClientConnection) iter.next();
+                element.pause();
+            }
+        }
+    }
+
+    public void resumeAllClients() throws Exception
+    {
+        log.debug("Resuming all clients. Count=" + clientConnections.size());
+        synchronized (clientConnections)
+        {
+            for (Iterator iter = clientConnections.iterator(); iter.hasNext();)
+            {
+                AbstractClientConnection element = (AbstractClientConnection) iter.next();
+                element.resume();
+            }
         }
     }
 

@@ -3,11 +3,12 @@ package org.yajul.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -19,11 +20,14 @@ import java.net.UnknownHostException;
  */
 public class ControlledProxy extends SpyProxy
 {
+    private static Logger log = Logger.getLogger(ControlledProxy.class);
+
     // remote commands
     private static final String REMOTE_CMD_RESUME = "Resume";
     private static final String REMOTE_CMD_PAUSE = "Pause";
     private static final String REMOTE_CMD_EXIT = "Exit";
     private static final String REMOTE_CMD_QUIT = "Quit";
+    private static final String REMOTE_CMD_HELP = "Help";
 
     /** try no more than 100 ports */
     private static final int MAX_PORTS_TO_TRY = 1000;
@@ -33,12 +37,13 @@ public class ControlledProxy extends SpyProxy
     private static String remoteUsage()
     {
         StringBuffer buff = new StringBuffer();
-        buff.append("Proxy command interface").append("\n");
-        buff.append("Possible commands (case does not matter): ").append("\n");
-        buff.append("\"Pause\": Pauses the proxy streams").append("\n");
-        buff.append("\"Resume\": Resumes the paused streams").append("\n");
-        buff.append("\"Exit\": closes connection").append("\n");
-        return null;
+        String newLine = "\n\r";
+        buff.append("Proxy command interface").append(newLine);
+        buff.append("Possible commands: ").append(newLine);
+        buff.append("\"Pause\": Pauses the proxy streams").append(newLine);
+        buff.append("\"Resume\": Resumes the paused streams").append(newLine);
+        buff.append("\"Exit\": closes connection").append(newLine);
+        return buff.toString();
     }
 
     public ControlledProxy(String serverHost, int serverPort, int proxyPort) throws UnknownHostException, IOException
@@ -54,20 +59,20 @@ public class ControlledProxy extends SpyProxy
             try
             {
                 serverSocket = new ServerSocket(port);
-                log("Started command server at port=" + port);
+                log.info("Started (raw TCP) command server at port=" + port);
                 break;
             }
             catch (IOException e)
             {
-                log(e.getMessage());
+                log.error(e.getMessage());
                 port++;
                 serverSocket = null;
             }
         }
         if (serverSocket == null)
         {
-            final String msg = "Unable to file a free port to open a controler";
-            log(msg);
+            final String msg = "Unable to find a free port to open a controler";
+            log.error(msg);
             throw new RuntimeException(msg);
         }
     }
@@ -76,16 +81,17 @@ public class ControlledProxy extends SpyProxy
     {
         try
         {
+            log.info("Shutting down");
             shuttingDown  = true;
             serverSocket.close();
         }
         catch (Throwable t)
         {
-            logErr("Error closing command server: " + t.getMessage());
-            t.printStackTrace(getErrStream());
+            log.error("Error closing command server: " + t.getMessage(), t);
         }
 
         super.shutdown();
+        log.info("Shutting down: done");
     }
 
     public void run()
@@ -95,15 +101,18 @@ public class ControlledProxy extends SpyProxy
         {
             public void run()
             {
+                log.debug("Starting Thread");
                 while (!shuttingDown)
                 {
                     try
                     {
+                        log.debug("Listening for client");
                         Socket client = serverSocket.accept();
                         try
                         {
                             InetAddress ip = client.getInetAddress();
-                            log("AcceptedConnection from " + ip.getCanonicalHostName() + " / " + ip.getHostAddress());
+                            log.info("AcceptedConnection from " + ip.getCanonicalHostName() + " / " + ip.getHostAddress());
+                            writeResponseToclient("Welcome to Controlled Proxy. Type \"help\" for help", client.getOutputStream());
                             InputStream is = client.getInputStream();
 
                             String cmd;
@@ -112,29 +121,37 @@ public class ControlledProxy extends SpyProxy
                                 if (shuttingDown)
                                     break;
 
-                                log("Command Recd from client \"" + cmd + "\"");
-                                String response = processCommand(cmd);
-                                if (response == null)
+                                if (cmd.equals(""))
                                 {
-                                    break;
+                                    writeResponseToclient("", client.getOutputStream());
                                 }
-                                writeResponseToclient(response, client.getOutputStream());
+                                else
+                                {
+                                    log.debug("Command Recd from client \"" + cmd + "\"");
+                                    String response = processCommand(cmd);
+                                    log.debug("Responding to the client with: " + response);
+                                    if (response == null)
+                                    {
+                                        log.debug("Client selected to exit");
+                                        break;
+                                    }
+                                    writeResponseToclient(response, client.getOutputStream());
+                                }
                             }
                         }
                         finally
                         {
-                            log("Closing client connection");
+                            log.info("Closing client connection");
                             client.close();
                         }
                     }
                     catch (Exception e)
                     {
-                        logErr("Error: " + e.getMessage());
-                        e.printStackTrace(getErrStream());
+                        log.error("Error: " + e.getMessage(), e);
                     }
                 }
             }
-        }).run();
+        }).start();
 
         // run the parent
         super.run();
@@ -142,21 +159,44 @@ public class ControlledProxy extends SpyProxy
 
     protected void writeResponseToclient(String response, OutputStream outputStream) throws IOException
     {
-        outputStream.write((response + "\n").getBytes());
+        outputStream.write((response + "\n\r> ").getBytes());
     }
 
     protected String processCommand(String cmd)
     {
         if (cmd.equalsIgnoreCase(REMOTE_CMD_PAUSE))
         {
-//            pauseStreams();
-            return "Completed\n";
+            try
+            {
+                pauseAllClients();
+                return "Success\n";
+            }
+            catch(Throwable t)
+            {
+                String msg = "Error pausing clients: " + t.getMessage();
+                log.error(msg, t);
+                return msg;
+            }
         }
 
         if (cmd.equalsIgnoreCase(REMOTE_CMD_RESUME))
         {
-//            resumeStreams();
-            return "Completed\n";
+            try
+            {
+                resumeAllClients();
+                return "Success\n";
+            }
+            catch(Throwable t)
+            {
+                String msg = "Error resuming clients: " + t.getMessage();
+                log.error(msg, t);
+                return msg;
+            }
+        }
+
+        if (cmd.equalsIgnoreCase(REMOTE_CMD_HELP))
+        {
+            return remoteUsage();
         }
 
         if (cmd.equalsIgnoreCase(REMOTE_CMD_EXIT) || cmd.equalsIgnoreCase(REMOTE_CMD_QUIT))
@@ -164,7 +204,7 @@ public class ControlledProxy extends SpyProxy
             return null;
         }
 
-        return remoteUsage();
+        return "Unrecognized command \"" + cmd + "\". Try \"help\".";
     }
 
     /**
@@ -208,31 +248,13 @@ public class ControlledProxy extends SpyProxy
         }
         catch (Exception ex)
         {
-            System.err.println("Unexpected exception: " + ex.getMessage());
-            ex.printStackTrace();
+            log.error("Unexpected exception: " + ex.getMessage(), ex);
         }
-    }
-
-    private static PrintStream getErrStream()
-    {
-        return System.err;
     }
 
     protected static void usage()
     {
         SpyProxy.usage(ControlledProxy.class.getName());
         System.out.println("This application will open a command port at the very next port available after localPort");
-    }
-
-    public static void logErr(String msg)
-    {
-        System.err.println(msg);
-        System.err.flush();
-    }
-
-    public static void log(String msg)
-    {
-        System.out.println(msg);
-        System.out.flush();
     }
 }

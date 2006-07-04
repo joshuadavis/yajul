@@ -12,12 +12,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Provides a simple proxy for TCP/IP connections.
  */
 public class SpyProxy extends AbstractServerSocketListener
 {
+    private static Logger log = Logger.getLogger(SpyProxy.class);
+
     // parameters passed in via main
     private static boolean argDebugBinary = false;
     private static boolean argDebugText = false;
@@ -261,12 +265,15 @@ public class SpyProxy extends AbstractServerSocketListener
 
     /**
      * Handles a connection from a client.
+     *
+     * This class actually connects to the server side of the proxy,
+     * while the parent class AbstractClientConnection connects to the requestor.
      */
     private class SpyClientConnection extends AbstractClientConnection
     {
         private Socket server;
-        private Channel incoming;
-        private Channel outgoing;
+        private Channel incoming; // of the server end
+        private Channel outgoing; // of the server end
         private boolean incomingStopped = false;
         private boolean outgoingStopped = false;
         private Channel currentChannel = null;
@@ -292,14 +299,28 @@ public class SpyProxy extends AbstractServerSocketListener
                         + ":" + server.getPort() + " opened");
             }
             Socket socket = getSocket();
+            // incoming channel will forward client's request to server
             incoming = new Channel(socket,
                     getInputStream(),
                     server,
                     server.getOutputStream(),
                     this);
+            // outgoing will forward servr's response back to client
             outgoing = new Channel(
                     server, server.getInputStream(),
                     socket, socket.getOutputStream(), this);
+        }
+
+        public void pause()
+        {
+            incoming.setPaused(true);
+            outgoing.setPaused(true);
+        }
+
+        public void resume()
+        {
+            incoming.setPaused(false);
+            outgoing.setPaused(false);
         }
 
         public void initialize(AbstractServerSocketListener listener)
@@ -395,6 +416,7 @@ public class SpyProxy extends AbstractServerSocketListener
         private int inPort;
         private SpyClientConnection con;
         private long bytes;
+        private boolean paused; // should this channel allow data to pass?
 
         /**
          * Constructor
@@ -451,6 +473,16 @@ public class SpyProxy extends AbstractServerSocketListener
                 while (running &&
                         (readLength = reader.read(cbuf, 0, BUFSZ)) != -1)
                 {
+                    while (isPaused())
+                    {
+                        log.debug("Channel is paused. \"wait\"ing...");
+                        synchronized (this)
+                        {
+                            try {
+                                wait();
+                            } catch (InterruptedException e) { /* ignored */ }
+                        }
+                    }
                     bytes += readLength;
                     con.setCurrentChannel(this);
                     if (debugBinary)
@@ -463,6 +495,7 @@ public class SpyProxy extends AbstractServerSocketListener
             }
             catch (IOException e)
             {
+                log.error("Unable to channel data between client and server.", e);
                 // Just assume the reading has stopped.
                 running = false;
             }
@@ -571,6 +604,17 @@ public class SpyProxy extends AbstractServerSocketListener
         public boolean isAlive()
         {
             return (thread != null) ? thread.isAlive() : false;
+        }
+
+        public final boolean isPaused()
+        {
+            return paused;
+        }
+
+        public synchronized final void setPaused(boolean paused)
+        {
+            this.paused = paused;
+            notifyAll(); // wake up waiting channels.
         }
 
     } // class Channel

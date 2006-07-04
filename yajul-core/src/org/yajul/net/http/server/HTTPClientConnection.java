@@ -231,5 +231,15 @@ public class HTTPClientConnection extends AbstractClientConnection implements Ru
     {
         this.keepalive = keepalive;
     }
+
+    public void pause() throws Exception
+    {
+        throw new Exception("Pausing HTTP streams not supported");
+    }
+
+    public void resume() throws Exception
+    {
+        throw new Exception("Pausing HTTP streams not supported");
+    }
 }
 

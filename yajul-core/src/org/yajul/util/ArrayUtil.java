@@ -148,6 +148,20 @@ public class ArrayUtil
         return rv;
     }
 
+    public static String generateToStringFromArray(Object[] arr)
+    {
+        StringBuffer buff = new StringBuffer(arr[0].getClass().getName());
+        buff.append(" [");
+        for (int i = 0; i < arr.length; i++)
+        {
+            if (i > 0)
+                buff.append(", ");
+            buff.append(arr[i].toString());
+        }
+        buff.append("]");
+        return buff.toString();
+    }
+
     public static final double[] todoubleArray(Double input[])
     {
         if (input == null)

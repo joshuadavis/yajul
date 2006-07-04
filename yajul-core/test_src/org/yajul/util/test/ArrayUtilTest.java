@@ -61,6 +61,14 @@ public class ArrayUtilTest extends TestCase
         assertTrue(hc1 != hc2);
     }
 
+    public void testArrayToString()
+    {
+        String[] arr = new String[] {"str1", "str2"};
+        String expected = "java.lang.String [str1, str2]";
+        String actual = ArrayUtil.generateToStringFromArray(arr);
+        assertEquals(expected, actual);
+    }
+
     public void testTodoubleArray()
     {
         assertNull(ArrayUtil.todoubleArray(null));
