@@ -28,6 +28,7 @@ public class SpyProxy extends AbstractServerSocketListener
     private static String argServerHost;
     private static int argLocalPortNumber = 0;
     private static int argServerPortNumber = 0;
+    private final static int SOCKET_TIMEOUT = 0; // infinite - proxy "server" shouldn't have any timeouts!
 
     /**
      * java SpyProxy [-d] serverHost serverPort [localPort]
@@ -141,6 +142,7 @@ public class SpyProxy extends AbstractServerSocketListener
         serverAddress = InetAddress.getByName(serverHost);
         this.serverPort = serverPort;
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
+        setConnectionTimeout(SOCKET_TIMEOUT);
     }
 
     /**
@@ -283,7 +285,6 @@ public class SpyProxy extends AbstractServerSocketListener
          * @param in the client socket
          * @throws IOException if failed.
          */
-
         private SpyClientConnection(Socket in)
                 throws IOException
         {
@@ -298,9 +299,9 @@ public class SpyProxy extends AbstractServerSocketListener
                         + server.getInetAddress().getHostName()
                         + ":" + server.getPort() + " opened");
             }
-            Socket socket = getSocket();
+            Socket destination = getSocket();
             // incoming channel will forward client's request to server
-            incoming = new Channel(socket,
+            incoming = new Channel(destination,
                     getInputStream(),
                     server,
                     server.getOutputStream(),
@@ -308,7 +309,7 @@ public class SpyProxy extends AbstractServerSocketListener
             // outgoing will forward servr's response back to client
             outgoing = new Channel(
                     server, server.getInputStream(),
-                    socket, socket.getOutputStream(), this, isPaused());
+                    destination, destination.getOutputStream(), this, isPaused());
         }
 
         public void pause()
@@ -472,11 +473,11 @@ public class SpyProxy extends AbstractServerSocketListener
             try
             {
                 while (running &&
-                        (readLength = reader.read(cbuf, 0, BUFSZ)) != -1)
+                        (readLength = reader.read(cbuf, 0, cbuf.length)) != -1)
                 {
                     while (isPaused())
                     {
-                        log.debug("Channel is paused. \"wait\"ing...");
+                        log.info("Channel is paused. \"wait\"ing...");
                         synchronized (this)
                         {
                             try {
@@ -484,6 +485,7 @@ public class SpyProxy extends AbstractServerSocketListener
                             } catch (InterruptedException e) { /* ignored */ }
                         }
                     }
+
                     bytes += readLength;
                     con.setCurrentChannel(this);
                     if (debugBinary)
@@ -496,8 +498,10 @@ public class SpyProxy extends AbstractServerSocketListener
             }
             catch (IOException e)
             {
-                log.error("Unable to channel data between client and server.", e);
-                // Just assume the reading has stopped.
+                final String msg = e.getMessage();
+                if (msg != null && !msg.startsWith("Socket closed")) // ignore socket closed exceptions
+                    log.error("Exception running proxy: " + msg);
+
                 running = false;
             }
 

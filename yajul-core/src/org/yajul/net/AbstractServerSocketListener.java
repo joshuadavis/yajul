@@ -251,6 +251,14 @@ public abstract class AbstractServerSocketListener implements Runnable
         }
     }
 
+    public int getActiveConnectionsCount()
+    {
+        synchronized (clientConnections)
+        {
+            return clientConnections.size();
+        }
+    }
+
     /**
      * Returns the number of connections rejected so far.
      * @return The number of connections rejected by the server.
@@ -453,7 +461,7 @@ public abstract class AbstractServerSocketListener implements Runnable
         synchronized (clientConnections)
         {
             paused = true;
-            log.debug("Pausing all clients. Count=" + clientConnections.size());
+            log.info("Pausing all clients. Count=" + clientConnections.size());
             for (Iterator iter = clientConnections.iterator(); iter.hasNext();)
             {
                 AbstractClientConnection element = (AbstractClientConnection) iter.next();
@@ -464,9 +472,9 @@ public abstract class AbstractServerSocketListener implements Runnable
 
     public void resumeAllClients() throws Exception
     {
-        log.debug("Resuming all clients. Count=" + clientConnections.size());
         synchronized (clientConnections)
         {
+            log.info("Resuming all clients. Count=" + clientConnections.size());
             for (Iterator iter = clientConnections.iterator(); iter.hasNext();)
             {
                 AbstractClientConnection element = (AbstractClientConnection) iter.next();

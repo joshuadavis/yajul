@@ -200,7 +200,7 @@ public class ControlledProxy extends SpyProxy
 
         if (cmd.equalsIgnoreCase(REMOTE_CMD_INFO))
         {
-            return "Client connections are " + (isPaused() ? "" : "not") + " paused";
+            return "Client connections are " + (isPaused() ? "" : "not") + " paused. Client count=" + getActiveConnectionsCount();
         }
 
         if (cmd.equalsIgnoreCase(REMOTE_CMD_HELP))
