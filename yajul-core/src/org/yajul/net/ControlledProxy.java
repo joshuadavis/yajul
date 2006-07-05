@@ -23,6 +23,7 @@ public class ControlledProxy extends SpyProxy
     private static Logger log = Logger.getLogger(ControlledProxy.class);
 
     // remote commands
+    private static final String REMOTE_CMD_INFO = "Info";
     private static final String REMOTE_CMD_RESUME = "Resume";
     private static final String REMOTE_CMD_PAUSE = "Pause";
     private static final String REMOTE_CMD_EXIT = "Exit";
@@ -40,6 +41,7 @@ public class ControlledProxy extends SpyProxy
         String newLine = "\n\r";
         buff.append("Proxy command interface").append(newLine);
         buff.append("Possible commands: ").append(newLine);
+        buff.append("\"Info\": Information on the paused status").append(newLine);
         buff.append("\"Pause\": Pauses the proxy streams").append(newLine);
         buff.append("\"Resume\": Resumes the paused streams").append(newLine);
         buff.append("\"Exit\": closes connection").append(newLine);
@@ -164,12 +166,14 @@ public class ControlledProxy extends SpyProxy
 
     protected String processCommand(String cmd)
     {
+        final String SUCCESS = "Success";
+
         if (cmd.equalsIgnoreCase(REMOTE_CMD_PAUSE))
         {
             try
             {
                 pauseAllClients();
-                return "Success\n";
+                return SUCCESS;
             }
             catch(Throwable t)
             {
@@ -184,7 +188,7 @@ public class ControlledProxy extends SpyProxy
             try
             {
                 resumeAllClients();
-                return "Success\n";
+                return SUCCESS;
             }
             catch(Throwable t)
             {
@@ -192,6 +196,11 @@ public class ControlledProxy extends SpyProxy
                 log.error(msg, t);
                 return msg;
             }
+        }
+
+        if (cmd.equalsIgnoreCase(REMOTE_CMD_INFO))
+        {
+            return "Client connections are " + (isPaused() ? "" : "not") + " paused";
         }
 
         if (cmd.equalsIgnoreCase(REMOTE_CMD_HELP))

@@ -304,11 +304,11 @@ public class SpyProxy extends AbstractServerSocketListener
                     getInputStream(),
                     server,
                     server.getOutputStream(),
-                    this);
+                    this, isPaused());
             // outgoing will forward servr's response back to client
             outgoing = new Channel(
                     server, server.getInputStream(),
-                    socket, socket.getOutputStream(), this);
+                    socket, socket.getOutputStream(), this, isPaused());
         }
 
         public void pause()
@@ -423,7 +423,7 @@ public class SpyProxy extends AbstractServerSocketListener
          * @param in the transmitting socket
          * @param out the receiving socket
          */
-        private Channel(Socket in,InputStream inputStream, Socket out, OutputStream outputStream, SpyClientConnection con)
+        private Channel(Socket in,InputStream inputStream, Socket out, OutputStream outputStream, SpyClientConnection con, boolean paused)
         {
             super();
             this.in = in;
@@ -434,6 +434,7 @@ public class SpyProxy extends AbstractServerSocketListener
             inAddress = this.in.getInetAddress();
             inPort = this.in.getPort();
             bytes = 0;
+            this.paused = paused;
         }
 
         private void shutdown()

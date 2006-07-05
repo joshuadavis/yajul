@@ -75,6 +75,9 @@ public abstract class AbstractServerSocketListener implements Runnable
     /** The socket timeout for client connections. **/
     private int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
 
+    // support pausing and resuming proxy connections
+    private boolean paused = false;
+
     // -- Server statistics --
     private int connectionsAccepted = 0;
     private int connectionsRejected = 0;
@@ -449,6 +452,7 @@ public abstract class AbstractServerSocketListener implements Runnable
     {
         synchronized (clientConnections)
         {
+            paused = true;
             log.debug("Pausing all clients. Count=" + clientConnections.size());
             for (Iterator iter = clientConnections.iterator(); iter.hasNext();)
             {
@@ -468,6 +472,7 @@ public abstract class AbstractServerSocketListener implements Runnable
                 AbstractClientConnection element = (AbstractClientConnection) iter.next();
                 element.resume();
             }
+            paused = false;
         }
     }
 
@@ -507,5 +512,11 @@ public abstract class AbstractServerSocketListener implements Runnable
         this.socket = socket;
         this.port = port;
         log.info("Listener on port " + this.port + " initialized.");
+    }
+
+
+    public boolean isPaused()
+    {
+        return paused;
     }
 }
