@@ -23,3 +23,4 @@ Unit test:
 Log4J  (/lib/log4j-1.2.7.jar)
 JUnit 3.7 or higher (lib/junit.jar)
 Hypersonic SQL (/lib/hsqldb.jar)
+
