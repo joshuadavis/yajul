@@ -1,12 +1,9 @@
 package org.yajul.log;
 
-import org.apache.log4j.Appender;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.AppenderAttachableImpl;
 import org.apache.log4j.spi.AppenderAttachable;
 import org.apache.log4j.spi.LoggingEvent;
-
-import java.util.Enumeration;
 
 /**
  * A log4j appender that can 'tee' log messages to a thread local appender if one exists.
@@ -27,12 +24,8 @@ import java.util.Enumeration;
  * Date: Sep 16, 2006
  * Time: 1:07:49 PM
  */
-public class ThreadLocalAppender extends AppenderSkeleton implements AppenderAttachable
+public class ThreadLocalAppender extends AppenderSkeleton
 {
-    /**
-     * The chain of other appenders that this one is attached to.
-     */
-    private final AppenderAttachableImpl aai = new AppenderAttachableImpl();
     /**
      * Stores an appender attachable impl for each thread, allocated
      * on demand.
@@ -65,10 +58,6 @@ public class ThreadLocalAppender extends AppenderSkeleton implements AppenderAtt
     {
         // If there is a thread local appender, send the event there first.
         getLocalAAI().appendLoopOnAppenders(loggingEvent);
-        synchronized (aai)
-        {
-            aai.appendLoopOnAppenders(loggingEvent);
-        }
     }
 
     public boolean requiresLayout()
@@ -78,61 +67,5 @@ public class ThreadLocalAppender extends AppenderSkeleton implements AppenderAtt
 
     public void close()
     {
-    }
-
-    public void addAppender(Appender newAppender)
-    {
-        synchronized (aai)
-        {
-            aai.addAppender(newAppender);
-        }
-    }
-
-    public Enumeration getAllAppenders()
-    {
-        synchronized (aai)
-        {
-            return aai.getAllAppenders();
-        }
-    }
-
-    public Appender getAppender(String name)
-    {
-        synchronized (aai)
-        {
-            return aai.getAppender(name);
-        }
-    }
-
-    public boolean isAttached(Appender appender)
-    {
-        synchronized (aai)
-        {
-            return aai.isAttached(appender);
-        }
-    }
-
-    public void removeAllAppenders()
-    {
-        synchronized (aai)
-        {
-            aai.removeAllAppenders();
-        }
-    }
-
-    public void removeAppender(Appender appender)
-    {
-        synchronized (aai)
-        {
-            aai.removeAppender(appender);
-        }
-    }
-
-    public void removeAppender(String name)
-    {
-        synchronized (aai)
-        {
-            aai.removeAppender(name);
-        }
     }
 }

@@ -9,6 +9,7 @@ import org.yajul.log.LogUtil;
 import org.yajul.log.ThreadLocalAppender;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
 
@@ -32,6 +33,9 @@ public class ThreadLocalAppenderTest extends TestCase
         for (int i = 0; i < threads.length; i++)
         {
             String filename = "threadlog-" + i + ".log";
+            File f = new File(filename);
+            if (f.exists())
+                f.delete();
             Appender a = LogUtil.createAsyncFileAppender(layout, filename, false);
             writers[i] = new LogWriter(i, a, ITERATIONS, filename);
             threads[i] = new Thread(writers[i]);
@@ -52,6 +56,8 @@ public class ThreadLocalAppenderTest extends TestCase
         for (int i = 0; i < threads.length; i++)
             threads[i].join();
 
+        testlog.removeAppender(localAppender);
+
         testlog.info("Reading log files...");
         for (int i = 0; i < writers.length; i++)
         {
@@ -62,7 +68,7 @@ public class ThreadLocalAppenderTest extends TestCase
             String line;
             while ((line = reader.readLine()) != null)
             {
-                assertTrue("'id=' not found!", line.indexOf("id=" + writer.getId()) >= 0);
+                assertTrue("'id=" + writer.getId() + "' not found! line='" + line + "'", line.indexOf("id=" + writer.getId()) >= 0);
             }
             int lastLine = reader.getLineNumber();
             reader.close();
@@ -102,7 +108,7 @@ public class ThreadLocalAppenderTest extends TestCase
                     //noinspection EmptyCatchBlock
                     try
                     {
-                        Thread.sleep(ITERATIONS);
+                        Thread.sleep(10);
                     }
                     catch (InterruptedException ignore)
                     {
