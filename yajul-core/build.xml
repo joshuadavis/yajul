@@ -21,12 +21,14 @@
 
     <path id="compile.classpath">
         <pathelement path="${lib.dir}/xml-apis.jar:${lib.dir}/xercesImpl.jar:${lib.dir}/xalan.jar"/>
-        <pathelement path="${lib.dir}/log4j-1.2.7.jar"/>
-        <pathelement path="${lib.dir}/jdbc2_0-stdext.jar"/>
-        <pathelement path="${lib.dir}/spring.jar"/>
-        <pathelement path="${lib.dir}/servlet-2.3.jar"/>
-        <pathelement path="${lib.dir}/jaas-1.0.01.jar"/>
-        <pathelement path="${lib.dir}/jta.jar"/>
+        <fileset dir="${lib.dir}">
+            <include name="log4j-*.jar"/>
+            <include name="jdbc2_0-*.jar"/>
+            <include name="spring.jar"/>
+            <include name="servlet-2.3.jar"/>
+            <include name="jaas-*.jar"/>
+            <include name="jta.jar"/>
+        </fileset>
     </path>
 
     <path id="test.classpath">
@@ -46,10 +48,10 @@
         <pathelement path="${lib.dir}/commons-logging.jar"/>
     </path>
 
-	<path id="app.runtime.classpath">
-		<path refid="compile.classpath"/>
+    <path id="app.runtime.classpath">
+        <path refid="compile.classpath"/>
         <pathelement location="${main.class.dir}"/>
-	</path>
+    </path>
 
     <patternset id="test.files">
         <include name="org/yajul/**/*Test*.java"/>
@@ -85,9 +87,9 @@
     <target name="compile" depends="init">
         <mkdir dir="${main.class.dir}"/>
         <javac srcdir="${main.src.dir}" destdir="${main.class.dir}"
-            classpathref="compile.classpath" debug="${javac.debug}"
-            optimize="${javac.optimize}" deprecation="${javac.deprecation}"
-            verbose="${javac.verbose}"/>
+               classpathref="compile.classpath" debug="${javac.debug}"
+               optimize="${javac.optimize}" deprecation="${javac.deprecation}"
+               verbose="${javac.verbose}"/>
         <copy todir="${main.class.dir}">    <!-- Copy resources into the class directory. -->
             <fileset dir="${main.src.dir}">
                 <include name="**/*.properties"/>
@@ -101,21 +103,21 @@
         <mkdir dir="${test.class.dir}"/>
         <echo message="${ant.project.name} Compiling test classes to ${test.class.dir}"/>
         <javac srcdir="${test.src.dir}" destdir="${test.class.dir}"
-            classpathref="test.classpath" debug="${javac.debug}"
-            optimize="${javac.optimize}" deprecation="${javac.deprecation}"
-            verbose="${javac.verbose}"/>
+               classpathref="test.classpath" debug="${javac.debug}"
+               optimize="${javac.optimize}" deprecation="${javac.deprecation}"
+               verbose="${javac.verbose}"/>
     </target>
 
-	<target name="app.run" depends="compile"
-		description="Runs an application. Specify the java class as -Dapp.class=com.kiodex.blah.RunMe. Optional: Specify app args by -Dapp.args='arg1 arg2 arg3'">
-		<fail unless="app.class">
-			Please specify the class to run using something like -Dapp.class="com.kiodex.blah.blah.RumeMe"
-		</fail>
-		<java classname="${app.class}" classpathref="app.runtime.classpath" fork="true" failonerror="true">
-			<arg line="${app.args}"/>
-			<sysproperty key="log4j.configuration" value="log4j.properties"/>
-		</java>
-	</target>
+    <target name="app.run" depends="compile"
+            description="Runs an application. Specify the java class as -Dapp.class=com.kiodex.blah.RunMe. Optional: Specify app args by -Dapp.args='arg1 arg2 arg3'">
+        <fail unless="app.class">
+            Please specify the class to run using something like -Dapp.class="com.kiodex.blah.blah.RumeMe"
+        </fail>
+        <java classname="${app.class}" classpathref="app.runtime.classpath" fork="true" failonerror="true">
+            <arg line="${app.args}"/>
+            <sysproperty key="log4j.configuration" value="log4j.properties"/>
+        </java>
+    </target>
 
     <target name="test" depends="init">
         <mkdir dir="${test.log.dir}"/>
@@ -135,7 +137,7 @@
     <target name="test.xmlreport" depends="init" description="Perform unit tests, generating an XML report.">
         <mkdir dir="${junit.dir}"/>
         <junit fork="yes"
-            printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
+               printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
             <classpath>
                 <path refid="test.runtime.classpath"/>
             </classpath>
@@ -150,8 +152,9 @@
     </target>
 
     <target name="test.textreport" depends="init" description="Perform unit tests, generating a text report.">
+        <mkdir dir="${junit.dir}"/>
         <junit fork="yes"
-            printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
+               printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
             <classpath>
                 <path refid="test.runtime.classpath"/>
             </classpath>
@@ -168,16 +171,16 @@
     <target name="jar" depends="init">
         <mkdir dir="${main.jar.dir}"/>
         <jar jarfile="${main.jar.dir}/${ant.project.name}.jar"
-            basedir="${main.class.dir}"/>
+             basedir="${main.class.dir}"/>
     </target>
 
     <target name="javadoc" depends="init" description="Build the Javadoc.">
         <javadoc
-            destdir="${build.dir}/docs/api"
-            author="true"
-            version="true"
-            use="true"
-            windowtitle="YAJUL Core API">
+                destdir="${build.dir}/docs/api"
+                author="true"
+                version="true"
+                use="true"
+                windowtitle="YAJUL Core API">
 
             <fileset dir="src" defaultexcludes="yes">
                 <include name="org/yajul/**/*.java"/>
@@ -190,7 +193,8 @@
                     <group title="Group 1 Packages" packages="com.dummy.test.a*"/>
                     <group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
             -->
-            <link offline="true" href="http://java.sun.com/products/jdk/1.3/docs/api/" packagelistLoc="${build.dir}/tmp"/>
+            <link offline="true" href="http://java.sun.com/products/jdk/1.3/docs/api/"
+                  packagelistLoc="${build.dir}/tmp"/>
             <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
         </javadoc>
     </target>
@@ -199,10 +203,10 @@
         <mkdir dir="${build.dir}/junit"/>
         <mkdir dir="${build.dir}/junit-xml"/>
         <junitreport todir="${build.dir}/junit-xml">
-          <fileset dir="${junit.dir}">
-            <include name="TEST-*.xml"/>
-          </fileset>
-          <report format="frames" todir="${build.dir}/junit"/>
+            <fileset dir="${junit.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${build.dir}/junit"/>
         </junitreport>
     </target>
 
@@ -220,7 +224,7 @@
 
     <target name="jar.src" depends="init" description="Create the source jar.">
         <jar jarfile="${main.jar.dir}/${ant.project.name}-src.jar"
-            basedir="${main.src.dir}"/>
+             basedir="${main.src.dir}"/>
     </target>
 
     <target name="default" depends="compile,jar,compile.tests"/>
@@ -229,41 +233,41 @@
         <mkdir dir="${build.dir}/jdepend-xml"/>
         <jdepend format="xml" outputfile="${build.dir}/jdepend-xml/jdepend-report.xml">
             <sourcespath>
-                <pathelement location="${build.dir}/classes" />
+                <pathelement location="${build.dir}/classes"/>
             </sourcespath>
-            <classpath location="${build.dir}/classes" />
+            <classpath location="${build.dir}/classes"/>
         </jdepend>
         <mkdir dir="${build.dir}/jdepend"/>
         <style in="${build.dir}/jdepend-xml/jdepend-report.xml" out="${build.dir}/jdepend/index.html"
-            style="jdepend.xsl" />
+               style="jdepend.xsl"/>
     </target>
 
 
     <target name="docs" depends="junit.report,javadoc,jdepend"/>
 
     <target name="full" depends="clean,compile,jar,jar.src,compile.tests,test.xmlreport,docs,emma.all"
-        description="Full build and test">
+            description="Full build and test">
     </target>
 
     <target name="clean.build" depends="clean,compile,jar,jar.src,compile.tests"
-        description="Clean and build everything but the Javadoc.">
+            description="Clean and build everything but the Javadoc.">
     </target>
 
     <target name="build" depends="compile,jar,jar.src,compile.tests"
-        description="Incremental build.">
+            description="Incremental build.">
     </target>
 
     <!-- EMMA targets -->
     <property name="emma.enabled" value="true"/>
     <!-- directory that contains emma.jar and emma_ant.jar: -->
-    <property name="emma.dir" value="${basedir}/tools/lib" />
+    <property name="emma.dir" value="${basedir}/tools/lib"/>
 
-    <path id="emma.lib" >
-        <pathelement location="${emma.dir}/emma.jar" />
-        <pathelement location="${emma.dir}/emma_ant.jar" />
+    <path id="emma.lib">
+        <pathelement location="${emma.dir}/emma.jar"/>
+        <pathelement location="${emma.dir}/emma_ant.jar"/>
     </path>
 
-    <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+    <taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
 
     <!-- EMMA instr class output directory: -->
     <property name="out.instr.dir" value="${build.dir}/outinstr"/>
@@ -315,7 +319,7 @@
         Also, emma requires that the JVM is forked.
         -->
         <junit fork="yes"
-            printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
+               printsummary="yes" haltonfailure="yes" showoutput="no" dir="${basedir}">
             <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma"/>
             <jvmarg value="-Demma.coverage.out.merge=true"/>
             <classpath>
