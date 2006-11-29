@@ -903,7 +903,7 @@ public class EnumType
         {
             String valueClassName = elem.getAttribute(ATTR_VALUE_CLASS);
             if (!StringUtil.isEmpty(valueClassName))
-                enumValueClass = Class.forName(valueClassName);
+                enumValueClass = Thread.currentThread().getContextClassLoader().loadClass(valueClassName);
             else
                 enumValueClass = EnumValue.class;
         }
