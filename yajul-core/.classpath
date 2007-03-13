@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="test_src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/spring.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
@@ -20,5 +19,6 @@
 	<classpathentry kind="lib" path="lib/xalan.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry sourcepath="lib/log4j-1.2.13-src.zip" kind="lib" path="lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="output" path="eclipse-out"/>
 </classpath>

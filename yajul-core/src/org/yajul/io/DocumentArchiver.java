@@ -79,6 +79,16 @@ public class DocumentArchiver
     }
 
     /**
+     * String version of @see {@link #setStoreageDirectory(File)}
+     */
+    public void setStoreageDirectory(String storeageDirectory)
+    {
+        if (storeageDirectory == null)
+            throw new IllegalArgumentException("Storeage directory cannot be null!");
+        setStoreageDirectory(new File(storeageDirectory));
+    }
+
+    /**
      * Sets the directory where documents will be stored.  This will also be the <i>first</i> directory where
      * documents are retrieved from. No default.
      * @param storeageDirectory The document storeage directory.
