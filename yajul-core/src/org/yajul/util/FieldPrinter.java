@@ -1,19 +1,20 @@
 package org.yajul.util;
 
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
-import org.apache.log4j.Logger;
 
 /**
  * Prints the fields of an object into a string buffer.
  * User: jdavis
  * Date: Oct 21, 2003
  * Time: 7:46:24 PM
+ *
  * @author jdavis
  */
 public class FieldPrinter
@@ -37,6 +38,7 @@ public class FieldPrinter
     /**
      * Creates a new object field printer, that will append
      * to the supplied string buffer.
+     *
      * @param buf The buffer to append to.
      */
     public FieldPrinter(StringBuffer buf)
@@ -48,6 +50,7 @@ public class FieldPrinter
 
     /**
      * Appends all of the fields of the object to the string buffer.
+     *
      * @param o - The object to print.
      */
     public void append(Object o)
@@ -80,7 +83,7 @@ public class FieldPrinter
         // tracks how many valid methods we've output so far (to help with knowing when to insert ", " between them)
         int validMethodCount = 0;
         // for methods, only drill in if it's a valid 'getter'
-        boolean validAttribute = false;
+        boolean validAttribute;
 
         // Print out each item.
         for (int i = 0; i < length; i++)
@@ -131,12 +134,12 @@ public class FieldPrinter
             }
             catch (IllegalAccessException e)
             {
-                log.warn("Unexpected: " + e.getMessage(),e);
+                log.warn("Unexpected: " + e.getMessage(), e);
                 buf.append("<error!>");
             }
             catch (InvocationTargetException e)
             {
-                log.warn("Unexpected: " + e.getMessage(),e);
+                log.warn("Unexpected: " + e.getMessage(), e);
                 buf.append("<error!>");
             }
         } // for i = 0 to length
@@ -160,19 +163,19 @@ public class FieldPrinter
         // If the value is null, just use 'null'.
         if (attributeValue == null)
             buf.append("null");
-        // If the value is a primitive or a number, just append it.
+            // If the value is a primitive or a number, just append it.
         else if (attributeType.isPrimitive() || Number.class.isAssignableFrom(attributeType))
             buf.append(attributeValue);
-        // Use UTC format for dates.
+            // Use UTC format for dates.
         else if (java.util.Date.class.isAssignableFrom(attributeType))
             buf.append(df.format((java.util.Date) attributeValue));
-        // Print strings in quotes.
+            // Print strings in quotes.
         else if (String.class.isAssignableFrom(attributeType))
             appendValue(attributeValue, "'", "'", buf);
-        // Print arrays in brackets.
+            // Print arrays in brackets.
         else if (attributeType.isArray())
             appendValue(attributeValue, "{", "}", buf);
-        // Print objects nested in vertical bars.
+            // Print objects nested in vertical bars.
         else
             appendNestedObject(attributeType, attributeValue);
     }
@@ -182,6 +185,7 @@ public class FieldPrinter
         String stringValue = null;
         // If the class defines 'toString()', then use that.
         Method m = null;
+        //noinspection EmptyCatchBlock
         try
         {
             m = attributeType.getDeclaredMethod("toString", NO_PARAMETERS);
@@ -197,13 +201,13 @@ public class FieldPrinter
             }
             catch (InvocationTargetException ite)
             {
-                log.warn("Unexpected: " + ite.getMessage(),ite);
+                log.warn("Unexpected: " + ite.getMessage(), ite);
                 stringValue = null;
             }
         }
         if (stringValue != null)
             appendValue(stringValue, "#", "#", buf);
-        // Otherwise, recurse...
+            // Otherwise, recurse...
         else
         {
             buf.append("|");

@@ -57,7 +57,10 @@ public class ThreadLocalAppender extends AppenderSkeleton
     protected void append(LoggingEvent loggingEvent)
     {
         // If there is a thread local appender, send the event there first.
-        getLocalAAI().appendLoopOnAppenders(loggingEvent);
+        synchronized (this)
+        {
+            getLocalAAI().appendLoopOnAppenders(loggingEvent);
+        }
     }
 
     public boolean requiresLayout()

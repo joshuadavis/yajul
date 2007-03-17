@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 /**
  * Provides common getters and setters for matrix implementations.
+ *
  * @author josh Sep 5, 2004 12:49:30 PM
  */
 public abstract class AbstractMatrix implements Matrix
@@ -19,15 +20,14 @@ public abstract class AbstractMatrix implements Matrix
 
     public AbstractMatrix()
     {
-        sizes = new int[] { 0 };
+        sizes = new int[]{0};
         canGrow = true;
     }
 
     public void setSize(int[] sizes)
     {
         this.sizes = new int[sizes.length];         // Copy the sizes.
-        for (int i = 0; i < sizes.length ; i++)
-            this.sizes[i] = sizes[i];
+        System.arraycopy(sizes, 0, this.sizes, 0, sizes.length);
     }
 
     public void setCanGrow(boolean canGrow)
@@ -43,19 +43,19 @@ public abstract class AbstractMatrix implements Matrix
     public void put(int x, Object o)
     {
         setTempCoords(x);
-        put(tempCoords1d,o);
+        put(tempCoords1d, o);
     }
 
-    public void put(int x, int y,Object o)
+    public void put(int x, int y, Object o)
     {
-        setTempCoords(x,y);
-        put(tempCoords2d,o);
+        setTempCoords(x, y);
+        put(tempCoords2d, o);
     }
 
-    public void put(int x, int y,int z,Object o)
+    public void put(int x, int y, int z, Object o)
     {
-        setTempCoords(x,y,z);
-        put(tempCoords3d,o);
+        setTempCoords(x, y, z);
+        put(tempCoords3d, o);
     }
 
     public Object get(int x)
@@ -64,13 +64,13 @@ public abstract class AbstractMatrix implements Matrix
         return get(tempCoords1d);
     }
 
-    public Object get(int x,int y)
+    public Object get(int x, int y)
     {
         setTempCoords(x, y);
         return get(tempCoords2d);
     }
 
-    public Object get(int x,int y,int z)
+    public Object get(int x, int y, int z)
     {
         setTempCoords(x, y, z);
         return get(tempCoords3d);
@@ -91,8 +91,7 @@ public abstract class AbstractMatrix implements Matrix
     public int[] getSizes()
     {
         int[] s = new int[sizes.length];
-        for (int i = 0; i < s.length; i++)
-            s[i] = sizes[i];
+        System.arraycopy(sizes, 0, s, 0, s.length);
         return s;
     }
 
@@ -172,7 +171,7 @@ public abstract class AbstractMatrix implements Matrix
 
     protected void checkCoords(int[] coords)
     {
-        MatrixUtil.checkCoords(coords,sizes);
+        MatrixUtil.checkCoords(coords, sizes);
     }
 
     private void setTempCoords(int x)
@@ -228,7 +227,7 @@ public abstract class AbstractMatrix implements Matrix
         int[] newsizes = new int[coords.length];
         for (int i = 0; i < sizes.length; i++)
             newsizes[i] = coords[i] >= sizes[i] ? coords[i] + 1 : sizes[i];
-        for (int i = sizes.length ; i < coords.length ; i++)
+        for (int i = sizes.length; i < coords.length; i++)
             newsizes[i] = coords[i] + 1;
         setSize(newsizes);
     }

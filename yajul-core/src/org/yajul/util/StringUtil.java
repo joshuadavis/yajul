@@ -52,12 +52,13 @@ public class StringUtil
      * named charset.   This is identical to String.getBytes(charset), except that
      * it will use the default encoding if the charset is not available.
      *
+     * @param s       the string
      * @param charset the name of a supported
      *                {@link java.nio.charset.Charset </code>charset<code>} , or null if the default
      *                charset is to be used.
      * @return The string, encoded in either the default charset or the specified charset.
      */
-    public static final byte[] getBytes(String s, String charset)
+    public static byte[] getBytes(String s, String charset)
     {
         byte[] bytes;
         try
@@ -79,7 +80,7 @@ public class StringUtil
      * @param o The object to print.
      * @return String - The object's default string representation.
      */
-    public static final String defaultToString(Object o)
+    public static String defaultToString(Object o)
     {
         StringBuffer buf = new StringBuffer();
         if (o == null)
@@ -99,7 +100,7 @@ public class StringUtil
      * @param str - The string to test.
      * @return boolean - True if the string is null or zero length.
      */
-    public static final boolean isEmpty(String str)
+    public static boolean isEmpty(String str)
     {
         return (str == null || str.length() == 0);
     }
@@ -111,7 +112,7 @@ public class StringUtil
      * @param bytes The array of bytes to turn into hex.
      * @return String - The hex string.
      */
-    public static final String hexString(byte[] bytes)
+    public static String hexString(byte[] bytes)
     {
         return hexString(bytes, null);
     }
@@ -125,7 +126,7 @@ public class StringUtil
      *                  separator will be used.
      * @return String - The hex string.
      */
-    public static final String hexString(byte[] bytes, String separator)
+    public static String hexString(byte[] bytes, String separator)
     {
         StringBuffer buf = new StringBuffer();
         hexString(buf, bytes, separator, true);
@@ -134,8 +135,9 @@ public class StringUtil
 
     /**
      * Convert a string of hexadecimal characters to a byte array.
+     *
      * @param hexString The hexadecimal string
-     * @return The string of hexadecimal characters as a byte array. 
+     * @return The string of hexadecimal characters as a byte array.
      */
     public static byte[] parseHexString(String hexString)
     {
@@ -159,7 +161,9 @@ public class StringUtil
 
     /**
      * Convert a hexadecimal character to a byte.
+     *
      * @param n The hex character
+     * @return the byte
      */
     public static byte parseHexChar(char n)
     {
@@ -195,9 +199,9 @@ public class StringUtil
      * @param lowerCase True for lower case hex (e.g. 34f0), false for upper
      *                  case hex (e.g. 34F0).
      */
-    public static final void hexString(StringBuffer buf,
-                                       byte[] bytes, String separator,
-                                       boolean lowerCase)
+    public static void hexString(StringBuffer buf,
+                                 byte[] bytes, String separator,
+                                 boolean lowerCase)
     {
         char[] out = new char[2];
         final char[] chars = (lowerCase) ? HEX_CHARS_LOWER : HEX_CHARS_UPPER;
@@ -219,7 +223,7 @@ public class StringUtil
      * @param inByte The input byte.
      * @param out    The output array of characters.  Length must be >= 2.
      */
-    public static final void hexChars(final char[] chars, int inByte, char[] out)
+    public static void hexChars(final char[] chars, int inByte, char[] out)
     {
         out[1] = chars[MASK & inByte];   // Get the lower nybble and set the second char.
         inByte >>= 4;                    // Shift off the lower nybble.
@@ -233,7 +237,7 @@ public class StringUtil
      * @param buf    The string buffer.
      * @see #isEmpty(String)
      */
-    public static final void appendIfNotEmpty(String string, StringBuffer buf)
+    public static void appendIfNotEmpty(String string, StringBuffer buf)
     {
         if (!isEmpty(string))
             buf.append(string);
@@ -241,8 +245,9 @@ public class StringUtil
 
     /**
      * Returns the substring before the delimiter string, not including the delimiter string.
+     *
      * @param string The string to look in.
-     * @param delim The delimiter string.
+     * @param delim  The delimiter string.
      * @return the substring before the delimiter string, not including the delimiter string.
      */
     public static String substringBefore(String string, String delim)
@@ -251,15 +256,16 @@ public class StringUtil
         if (pos == 0)
             return null;
         else if (pos > 0)
-            return string.substring(0,pos);
+            return string.substring(0, pos);
         else
             return string;
     }
 
     /**
      * Returns the substring after the delimiter string, not including the delimiter string.
+     *
      * @param string The string to look in.
-     * @param delim The delimiter string.
+     * @param delim  The delimiter string.
      * @return the substring after the delimiter string, not including the delimiter string.
      */
     public static String substringAfter(String string, String delim)
