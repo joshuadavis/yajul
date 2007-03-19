@@ -81,7 +81,7 @@ public class DocumentArchiver
     /**
      * String version of @see {@link #setStoreageDirectory(File)}
      */
-    public void setStoreageDirectory(String storeageDirectory)
+    public void setStoreageDirectoryStr(String storeageDirectory)
     {
         if (storeageDirectory == null)
             throw new IllegalArgumentException("Storeage directory cannot be null!");
