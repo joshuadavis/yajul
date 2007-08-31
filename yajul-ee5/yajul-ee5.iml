@@ -15,7 +15,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Documents and Settings/Joshua Davis/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+          <root url="jar:///home/josh/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///home/josh/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

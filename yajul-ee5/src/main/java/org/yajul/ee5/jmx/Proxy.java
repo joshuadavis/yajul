@@ -1,5 +1,8 @@
 package org.yajul.ee5.jmx;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * A proxy that instantiates the implementation JMX MBean when needed.
 * <br>User: Joshua Davis
@@ -7,6 +10,7 @@ package org.yajul.ee5.jmx;
 * Time: 6:17:01 AM
 */
 public class Proxy implements Lifecycle {
+    private static final Log log = LogFactory.getLog(Proxy.class);
     private String implementationClassName;
     private Lifecycle implementation;
     private boolean started;
@@ -45,14 +49,19 @@ public class Proxy implements Lifecycle {
         if (implementation != null)
             return;
         String className = getImplementationClassName();
+        log.info("initialize() : Creating implementation " + className + " ...");
         Class c = Thread.currentThread().getContextClassLoader().loadClass(className);
         Object impl = c.newInstance();
         if (!(impl instanceof Lifecycle))
             throw new ClassCastException("Class " + c.getName() + " doesn't implement " + Lifecycle.class.getName());
         implementation = (Lifecycle) impl;
         // Call the start method (delayed) if the proxy is in the started state.
+        log.info("initialize() : " + className + " created.");
         if (started)
+        {
+            log.info("initialize() : Starting " + className + " ...");
             implementation.start();
+        }
     }
 
     public Lifecycle getImplementation() {
