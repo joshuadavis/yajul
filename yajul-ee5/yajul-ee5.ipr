@@ -328,7 +328,22 @@
       </value>
     </option>
   </component>
-  <component name="libraryTable" />
+  <component name="libraryTable">
+    <library name="commons-logging-1.1">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="log4j-1.2.12">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.12.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="true" />
     <option name="COPY_FORMS_RUNTIME_TO_OUTPUT" value="true" />

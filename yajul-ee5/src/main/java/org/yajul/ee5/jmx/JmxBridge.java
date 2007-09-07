@@ -13,6 +13,46 @@ import org.apache.commons.logging.LogFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides an in-JVM bridge between a JMX service and a POJO implementation
+ * that lives inside an EAR or a WAR deployment.  The bridge is a singleton
+ * that contains a set of proxy objects associated with the implementation class
+ * name.   The proxy objects are initialized by a startup Servlet (or any
+ * object that has access to the EAR/WAR class loader).   The lifecycle calls
+ * from the JMX bean are routed through the proxy to the implementation POJO.
+ * <h2>What you need to use it:</h2>
+ * <ol><li>A JMX Management Bean, deployed as a JMX service
+ * (a '.sar' in JBoss).  The MBean code will not load the implementation class
+ * directly, but it will know the name of the class.</li>
+ * <li>An implementation POJO, deployed in a WAR or EAR.  This must implement
+ * <tt>org.yajul.ee5.jmx.Lifecycle</tt>.</li>
+ * <li>A startup Servlet, or equivalent code that gets executed when the EAR/WAR
+ * is deployed.  This is what will instantiate and register the POJO
+ * implementation with the bridge singleton.</li>
+ * </ol>
+ * <h2>Usage:</h2>
+ * <ol><li>Create the implementation POJO in your WAR/EAR module.  Implement
+ * the Lifecycle interface.  <i>NOTE: Do not package the YAJUL jars inside the
+ * EAR or WAR.</i></li>
+ * <li>Create or modify an existing startup Servlet.  Call the register() method
+ * in the JmxBridge singleton for each implementation POJO.</li>
+ * <li>Create the JMX MBean.  In the JMX MBean methods, get the proxy using
+ * the implementation class name (<i>Don't link directly with the class, that
+ * would defeat the purpose!</i>).  Delegate the start() and stop() methods to
+ * the proxy.</li>
+ * <li>Package the JMX MBean appropriately for your container.  <i>Make sure the
+ * jar with the JmxBridge code is in the 'root' classloader, and not deployed
+ * with the JMX MBean, otherwise the bridge will not function.</i>  In JBoss
+ * you can do this by simply adding the YAJUL jar to the server <tt>lib</tt>
+ * directory.</li>
+ * <li>Deploy the YAJUL jar, the JMX MBean, and the EAR or WAR.  When the
+ * server starts you should see the Proxy being registered and the POJO
+ * implementation being created when the startup Servlet runs.</li>
+ * </ol>
+ * <br>User: Joshua Davis
+ * Date: Aug 29, 2007
+ * Time: 5:58:11 AM
+ */
 public class JmxBridge {
     private static final Log log = LogFactory.getLog(JmxBridge.class);
 

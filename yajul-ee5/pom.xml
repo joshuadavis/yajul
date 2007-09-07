@@ -45,10 +45,6 @@
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>logkit</groupId>
                     <artifactId>logkit</artifactId>
                 </exclusion>
