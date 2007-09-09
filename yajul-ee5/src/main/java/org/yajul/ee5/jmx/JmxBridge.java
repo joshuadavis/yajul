@@ -7,8 +7,8 @@
  */
 package org.yajul.ee5.jmx;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +54,7 @@ import java.util.Map;
  * Time: 5:58:11 AM
  */
 public class JmxBridge {
-    private static final Log log = LogFactory.getLog(JmxBridge.class);
+    private static final Logger log = LoggerFactory.getLogger(JmxBridge.class);
 
     private static JmxBridge ourInstance;
 
@@ -91,20 +91,23 @@ public class JmxBridge {
     /**
      * Register a specific implementation class with the bridge.   Invoke this from a suitable class loading context.  For example, from
      * a startup Servlet.
+     *
      * @param implClass the implementation class.
      * @throws Exception if the proxies created by the MBeans could not be initialized.
      */
     public void register(Class implClass) throws Exception {
-        synchronized(this) {
+        synchronized (this) {
             // Get or create the proxy.
             Proxy proxy = doGetProxy(implClass.getName());
             // Initialize it now.
             proxy.initialize();
         }
     }
+
     /**
      * Initializes all the proxies.   Invoke this from a suitable class loading context.  For example, from
      * a startup Servlet.
+     *
      * @throws Exception if the proxies created by the MBeans could not be initialized.
      */
     public void initializeProxies() throws Exception {

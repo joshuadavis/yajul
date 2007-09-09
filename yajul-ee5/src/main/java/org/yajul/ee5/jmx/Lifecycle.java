@@ -10,6 +10,7 @@ public interface Lifecycle {
 
     /**
      * Called when an MBean is started
+     *
      * @throws Exception if something went wrong.
      */
     void start() throws Exception;
