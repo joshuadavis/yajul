@@ -7,12 +7,15 @@ import junit.framework.TestCase;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
+import java.net.URL;
 
 /**
  * Tests ReflectionUtil
  */
 public class ReflectionUtilTest extends TestCase
 {
+    private static final String THING_CLASS_NAME = ObjectFactoryTest.Thing.class.getName();
+    
     public ReflectionUtilTest(String name)
     {
         super(name);
@@ -62,6 +65,19 @@ public class ReflectionUtilTest extends TestCase
             }
         }
     }
+
+    public void testObjectCreation()
+    {
+        ObjectFactoryTest.Thing t = (ObjectFactoryTest.Thing) ReflectionUtil.createInstance(THING_CLASS_NAME);
+        assertEquals(42,t.getValue());
+
+        t = (ObjectFactoryTest.Thing) ReflectionUtil.createInstance(THING_CLASS_NAME,null);
+        assertEquals(42,t.getValue());
+
+        URL url = ReflectionUtil.findClassURL(ObjectFactoryTest.Thing.class);
+        assertNotNull(url);
+    }
+    
     public static interface Constants
     {
         public static final int ONE = 1;
