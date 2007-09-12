@@ -7,22 +7,42 @@ import java.util.Properties;
 /**
  * Provides utility methods for finding and loading resources. User: josh Date: Sep 20, 2003 Time: 7:06:23 PM
  */
-public class ResourceUtil
-{
+public class ResourceUtil {
     /**
      * Loads a properties resource.  Returns null if the resource was not found.
+     *
      * @param resourceName The name of the resource.
      * @return Properties - The loaded properties, or <i>null</i> if the resource was not found.
+     * @throws java.io.IOException if the resource could not be parsed
      */
-    public static Properties loadProperties(String resourceName) throws IOException
-    {
-        InputStream is = getResourceAsStream(resourceName);
+    public static Properties loadProperties(String resourceName) throws IOException {
+        return loadProperties(resourceName, null, null);
+    }
+
+    /**
+     * Loads a properties resource.  Returns null if the resource was not found.
+     *
+     * @param resourceName The name of the resource.
+     * @param defaults     A set of default properties, for 'layering' of properties files.
+     *                     See http://www.javaworld.com/javaworld/javatips/jw-javatip135.html?page=1
+     * @param aClass       optional class for loading properties inside a package.  If this is specified (not null)
+     *                     the resource name will be loaded from the same class loader and package as this class.  The package path
+     *                     will automatically be added to the resource name in this case.
+     * @return Properties - The loaded properties, or <i>null</i> if the resource was not found.
+     * @throws java.io.IOException if the resource could not be parsed
+     */
+    public static Properties loadProperties(String resourceName, Properties defaults, Class aClass) throws IOException {
+        // If a class was not specified, load the resource using it's name, assuming it's just
+        // somewhere in the current class loader.   Otherwise, load it using the class.
+        InputStream is = (aClass == null) ?
+                getResourceAsStream(resourceName) : aClass.getResourceAsStream(resourceName);
+
         if (is == null)     // If the resource was not found,
             return null;    // notify the caller by returning null.
 
-        // Load the properties file from the current class loader, if it isn't already
-        // loaded.
-        Properties properties = new Properties();
+        // Load the properties file from the current class loader.  Use the defaults if they were
+        // supplied.
+        Properties properties = (defaults == null) ? new Properties() : new Properties(defaults);
         properties.load(is);
         return properties;
     }
@@ -33,8 +53,7 @@ public class ResourceUtil
      * @param resourceName The name of the resource
      * @return InputStream - The input stream, or null if the resource was not found.
      */
-    public static InputStream getResourceAsStream(String resourceName)
-    {
+    public static InputStream getResourceAsStream(String resourceName) {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         return cl.getResourceAsStream(resourceName);
     }
@@ -46,8 +65,7 @@ public class ResourceUtil
      * @return byte[] The contents of the resource.
      * @throws IOException if anything goes wrong.
      */
-    public static byte[] resourceAsBytes(String name) throws IOException
-    {
+    public static byte[] resourceAsBytes(String name) throws IOException {
         // Read the resource input stream into a byte array.
         InputStream is = getResourceAsStream(name);
         if (is == null)
@@ -61,8 +79,7 @@ public class ResourceUtil
      * @param name The resource name
      * @return true if the specified resource exists.
      */
-    public static boolean exists(String name)
-    {
+    public static boolean exists(String name) {
         InputStream is = getResourceAsStream(name);
         return is != null;
     }

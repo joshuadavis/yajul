@@ -22,9 +22,6 @@ public class ResourceUtilTest extends TestCase
         super(name);
     }
 
-    /**
-     * Test loading properties resources.
-     */
     public void testLoadProperties() throws Exception
     {
         Properties props = ResourceUtil.loadProperties("test-properties.properties");
@@ -34,6 +31,19 @@ public class ResourceUtilTest extends TestCase
 
         props = ResourceUtil.loadProperties("this-does-not-exist.properties");
         assertNull(props);
+
+        props = ResourceUtil.loadProperties("test-package-properties.properties",null,this.getClass());
+        assertNotNull(props);
+
+        Properties defaults = ResourceUtil.loadProperties("test-properties.properties");
+        props = ResourceUtil.loadProperties("test-package-properties.properties",defaults,this.getClass());
+        assertEquals("one",props.getProperty("this"));
+        assertEquals("overridden",props.getProperty("that"));
+        assertEquals("bar",props.getProperty("foo"));
+        // Note: Even though there are three properties total, one is a default so only two
+        // are considered to be defined in 'props'.
+        assertEquals(2,props.size());
+
     }
 
     public void testExists() throws Exception
