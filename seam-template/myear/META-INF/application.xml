@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		http://java.sun.com/xml/ns/javaee/application_5.xsd"
              version="5">
-<display-name>MyApp</display-name>
+    <display-name>MyApp</display-name>
     <module id="myejbs">
         <ejb>myejbs.jar</ejb>
     </module>
@@ -14,5 +14,19 @@
             <context-root>myweb</context-root>
         </web>
     </module>
-
+    <module>
+        <java>jboss-seam.jar</java>
+    </module>
+    <module>
+        <java>jboss-seam-debug.jar</java>
+    </module>
+    <!-- Not for JBoss 4.2.x
+        <module>
+            <java>el-api.jar</java>
+        </module>
+    -->
+    <!-- This is necessary because we are using Seam 1.2.1.GA, which extends el-ri.jar -->
+    <module>
+        <java>el-ri.jar</java>
+    </module>
 </application>

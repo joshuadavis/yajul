@@ -11,15 +11,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/j2ee.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="myejbs" />
+    <orderEntry type="library" name="JBoss 4.2.1.GA" level="application_server_libraries" />
+    <orderEntry type="library" name="el-api" level="project" />
+    <orderEntry type="library" name="el-ri" level="project" />
+    <orderEntry type="library" name="jboss-seam" level="project" />
     <orderEntryProperties />
   </component>
   <component name="WebModuleBuildComponent">
@@ -33,10 +29,21 @@
     <setting name="RUN_JASPER_VALIDATION" value="true" />
   </component>
   <component name="WebModuleProperties">
-    <containerElement type="library" level="module">
+    <containerElement type="library" name="el-api" level="project">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib" />
+    </containerElement>
+    <containerElement type="library" name="el-ri" level="project">
+      <attribute name="method" value="1" />
+      <attribute name="URI" value="/WEB-INF/lib" />
+    </containerElement>
+    <containerElement type="library" name="JBoss 4.2.1.GA" level="application_server_libraries">
       <attribute name="method" value="0" />
       <attribute name="URI" value="&lt;N/A&gt;" />
-      <url>jar://$APPLICATION_HOME_DIR$/lib/j2ee.jar!/</url>
+    </containerElement>
+    <containerElement type="library" name="jboss-seam" level="project">
+      <attribute name="method" value="1" />
+      <attribute name="URI" value="/WEB-INF/lib" />
     </containerElement>
     <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/WEB-INF/web.xml" optional="false" version="2.3" />
     <webroots>

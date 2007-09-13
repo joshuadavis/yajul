@@ -12,10 +12,21 @@
     <setting name="RUN_EJB_VALIDATION" value="true" />
   </component>
   <component name="EjbModuleProperties">
-    <containerElement type="library" level="module">
+    <containerElement type="library" name="el-api" level="project">
+      <attribute name="method" value="2" />
+      <attribute name="URI" value="/" />
+    </containerElement>
+    <containerElement type="library" name="el-ri" level="project">
+      <attribute name="method" value="2" />
+      <attribute name="URI" value="/" />
+    </containerElement>
+    <containerElement type="library" name="JBoss 4.2.1.GA" level="application_server_libraries">
       <attribute name="method" value="0" />
       <attribute name="URI" value="&lt;N/A&gt;" />
-      <url>jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/</url>
+    </containerElement>
+    <containerElement type="library" name="jboss-seam" level="project">
+      <attribute name="method" value="2" />
+      <attribute name="URI" value="/" />
     </containerElement>
     <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/META-INF/ejb-jar.xml" optional="false" version="3.0" />
     <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/META-INF/persistence.xml" optional="false" version="1.0" />
@@ -28,15 +39,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="JBoss 4.2.1.GA" level="application_server_libraries" />
+    <orderEntry type="library" name="el-api" level="project" />
+    <orderEntry type="library" name="el-ri" level="project" />
+    <orderEntry type="library" name="jboss-seam" level="project" />
     <orderEntryProperties />
   </component>
   <component name="WLEjbModuleProperties" />

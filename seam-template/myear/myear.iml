@@ -4,8 +4,8 @@
   <component name="ApplicationModuleBuildComponent">
     <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../idea-build/myear/exploded" />
     <setting name="EXPLODED_ENABLED" value="true" />
-    <setting name="JAR_URL" value="file://" />
-    <setting name="JAR_ENABLED" value="false" />
+    <setting name="JAR_URL" value="file://$MODULE_DIR$/myear.ear" />
+    <setting name="JAR_ENABLED" value="true" />
     <setting name="SYNC_EXPLODED_DIR" value="true" />
     <setting name="BUILD_MODULE_ON_FRAME_DEACTIVATION" value="false" />
     <setting name="BUILD_EXTERNAL_DEPENDENCIES" value="false" />
@@ -22,6 +22,7 @@
       <attribute name="contextRoot" value="myweb" />
     </containerElement>
     <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/META-INF/application.xml" optional="false" version="5" />
+    <deploymentDescriptor name="jboss-app.xml" url="file://$MODULE_DIR$/META-INF/jboss-app.xml" optional="false" version="4.0" />
   </component>
   <component name="ModuleRootManager" />
   <component name="NewModuleRootManager" inherit-compiler-output="true">
