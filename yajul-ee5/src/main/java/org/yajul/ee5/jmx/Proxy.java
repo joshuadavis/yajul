@@ -14,10 +14,13 @@ public class Proxy implements Lifecycle {
     private String implementationClassName;
     private Lifecycle implementation;
     private boolean started;
+    private boolean implementationStarted;
+    private Exception exception;
 
     Proxy(String implementationClassName) {
         this.implementationClassName = implementationClassName;
         started = false;
+        implementationStarted = false;
     }
 
     public String getImplementationClassName() {
@@ -27,16 +30,43 @@ public class Proxy implements Lifecycle {
     public void start() throws Exception {
         synchronized (this) {
             started = true;
-            if (implementation != null)
-                implementation.start();
+            startImplementation();
         }
     }
 
     public void stop() {
         synchronized (this) {
             started = false;
-            if (implementation != null)
-                implementation.stop();
+            stopImplementation();
+        }
+    }
+
+    /**
+     * Returns the implementation.
+     * @return the implementation
+     */
+    public Lifecycle getImplementation() {
+        return implementation;
+    }
+
+    /**
+     * Returns true if the implementation has been started.
+     * @return true if the implementation has been started
+     */
+    public boolean isImplementationStarted() {
+        synchronized (this) {
+            return implementationStarted;
+        }
+    }
+
+    /**
+     * Returns any exception thrown while starting the implementation.
+     *
+     * @return an exception, or null
+     */
+    public Exception getException() {
+        synchronized (this) {
+            return exception;
         }
     }
 
@@ -46,24 +76,41 @@ public class Proxy implements Lifecycle {
      * @throws Exception if something goes wrong.
      */
     void initialize() throws Exception {
-        if (implementation != null)
-            return;
-        String className = getImplementationClassName();
-        log.info("initialize() : Creating implementation " + className + " ...");
-        Class c = Thread.currentThread().getContextClassLoader().loadClass(className);
-        Object impl = c.newInstance();
-        if (!(impl instanceof Lifecycle))
-            throw new ClassCastException("Class " + c.getName() + " doesn't implement " + Lifecycle.class.getName());
-        implementation = (Lifecycle) impl;
-        // Call the start method (delayed) if the proxy is in the started state.
-        log.info("initialize() : " + className + " created.");
-        if (started) {
-            log.info("initialize() : Starting " + className + " ...");
-            implementation.start();
+        synchronized (this) {
+            if (implementation != null)
+                return;
+            String className = getImplementationClassName();
+            log.info("initialize() : Creating implementation " + className + " ...");
+            Class c = Thread.currentThread().getContextClassLoader().loadClass(className);
+            Object impl = c.newInstance();
+            if (!(impl instanceof Lifecycle))
+                throw new ClassCastException("Class " + c.getName() + " doesn't implement " + Lifecycle.class.getName());
+            implementation = (Lifecycle) impl;
+            // Call the start method (delayed) if the proxy is in the started state.
+            log.info("initialize() : " + className + " created.");
+            if (started) {
+                log.info("initialize() : Starting " + className + " ...");
+            }
         }
     }
 
-    public Lifecycle getImplementation() {
-        return implementation;
+    private void startImplementation() throws Exception {
+        if (implementation != null) {
+            try {
+                implementation.start();
+            } catch (Exception e) {
+                implementationStarted = false;
+                exception = e;
+                throw e;
+            }
+            // No need to catch the exception here.
+            implementationStarted = true;
+        }
+    }
+
+    private void stopImplementation() {
+        implementationStarted = false;
+        if (implementation != null)
+            implementation.stop();
     }
 }
