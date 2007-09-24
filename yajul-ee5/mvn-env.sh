@@ -2,7 +2,7 @@
 
 UNAME=`uname`
 JDK_BASENAME='jdk1.5'
-MAVEN_BASNAME='maven-2'
+MAVEN_BASENAME='maven-2'
 
 function findJavaHome
 {
