@@ -76,7 +76,7 @@ public class JmxBridge {
     public void reset() {
         synchronized (this) {
             for (Proxy proxy : proxiesByImplementationClassName.values()) {
-                proxy.stop();
+                proxy.reset();
             }
             proxiesByImplementationClassName.clear();
         }

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class Proxy implements Lifecycle {
     private static final Logger log = LoggerFactory.getLogger(Proxy.class);
     private String implementationClassName;
+    private Class implementationClass;
     private Lifecycle implementation;
     private boolean started;
     private boolean implementationStarted;
@@ -43,6 +44,7 @@ public class Proxy implements Lifecycle {
 
     /**
      * Returns the implementation.
+     *
      * @return the implementation
      */
     public Lifecycle getImplementation() {
@@ -51,6 +53,7 @@ public class Proxy implements Lifecycle {
 
     /**
      * Returns true if the implementation has been started.
+     *
      * @return true if the implementation has been started
      */
     public boolean isImplementationStarted() {
@@ -80,21 +83,25 @@ public class Proxy implements Lifecycle {
             if (implementation != null)
                 return;
             String className = getImplementationClassName();
-            log.info("initialize() : Creating implementation " + className + " ...");
-            Class c = Thread.currentThread().getContextClassLoader().loadClass(className);
-            Object impl = c.newInstance();
-            if (!(impl instanceof Lifecycle))
-                throw new ClassCastException("Class " + c.getName() + " doesn't implement " + Lifecycle.class.getName());
-            implementation = (Lifecycle) impl;
+            log.info("initialize() : Looking up implementation class " + className + " ...");
+            implementationClass = Thread.currentThread().getContextClassLoader().loadClass(className);
             // Call the start method (delayed) if the proxy is in the started state.
             log.info("initialize() : " + className + " created.");
             if (started) {
-                log.info("initialize() : Starting " + className + " ...");
+                startImplementation();
             }
         }
     }
 
     private void startImplementation() throws Exception {
+        if (implementationClass != null && implementation == null) {
+            log.info("Instantiating " + implementationClass.getName() + " ...");
+            Object impl = implementationClass.newInstance();
+            if (!(impl instanceof Lifecycle))
+                throw new ClassCastException("Class " + implementationClass.getName() + " doesn't implement " + Lifecycle.class.getName());
+            implementation = (Lifecycle) impl;
+        }
+        
         if (implementation != null) {
             try {
                 implementation.start();
@@ -110,7 +117,10 @@ public class Proxy implements Lifecycle {
 
     private void stopImplementation() {
         implementationStarted = false;
-        if (implementation != null)
+        if (implementation != null) {
+            log.info("Stopping and releasing implementation " + implementation + " ...");
             implementation.stop();
+            implementation = null;
+        }
     }
 }

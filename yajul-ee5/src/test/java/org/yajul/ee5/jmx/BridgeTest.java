@@ -37,6 +37,7 @@ public class BridgeTest extends TestCase {
         p.stop();
         assertFalse(impl.isStarted());
         p.start();
+        impl = (MyTestImpl) p.getImplementation();
         assertTrue(impl.isStarted());
         bridge.reset();
         assertFalse(impl.isStarted());
