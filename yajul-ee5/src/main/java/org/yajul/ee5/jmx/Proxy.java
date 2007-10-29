@@ -83,12 +83,17 @@ public class Proxy implements Lifecycle {
             if (implementation != null)
                 return;
             String className = getImplementationClassName();
-            log.info("initialize() : Looking up implementation class " + className + " ...");
-            implementationClass = Thread.currentThread().getContextClassLoader().loadClass(className);
-            // Call the start method (delayed) if the proxy is in the started state.
-            log.info("initialize() : " + className + " created.");
-            if (started) {
-                startImplementation();
+            try {
+                log.info("initialize() : Looking up implementation class " + className + " ...");
+                implementationClass = Thread.currentThread().getContextClassLoader().loadClass(className);
+                // Call the start method (delayed) if the proxy is in the started state.
+                log.info("initialize() : " + className + " created.");
+                if (started) {
+                    startImplementation();
+                }
+            } catch (Exception e) {
+                log.error("** Unable to initialize " + className + " due to " + e,e);
+                throw e;
             }
         }
     }
@@ -101,11 +106,16 @@ public class Proxy implements Lifecycle {
                 throw new ClassCastException("Class " + implementationClass.getName() + " doesn't implement " + Lifecycle.class.getName());
             implementation = (Lifecycle) impl;
         }
-        
-        if (implementation != null) {
+
+        if (implementation == null) {
+            log.info("No implementation for " + getImplementationClassName() + " yet, deferring start.");
+        }
+        else {
             try {
+                log.info("Starting instance ...");
                 implementation.start();
             } catch (Exception e) {
+                log.error("Unable to start " + implementation.getClass().getName() + " due to " + e,e);
                 implementationStarted = false;
                 exception = e;
                 throw e;

@@ -1,11 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 UNAME=`uname`
 JDK_BASENAME='jdk1.5'
 MAVEN_BASENAME='maven-2'
 
-function findJavaHome
-{
+function findJavaHome {
     for javadir in $@
     do
 	echo "Looking for java in $javadir ..."
@@ -20,8 +19,7 @@ function findJavaHome
     javadir=""
 }    
 
-function findJava
-{
+function findJava {
     case "$UNAME" in
         CYGWIN*)
             if [ "${JAVA_HOME:-}" == "" ]; then
@@ -61,8 +59,7 @@ function findJava
 }
 
 
-function findMavenHome
-{
+function findMavenHome {
     for mavendir in $@
     do
 	echo "Looking for maven in $mavendir ..."
@@ -76,8 +73,7 @@ function findMavenHome
     mavendir=""
 }    
 
-function findMaven
-{
+function findMaven {
     case "$UNAME" in
         CYGWIN*)
             if [ "${M2_HOME:-}" == "" ]; then

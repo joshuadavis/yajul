@@ -101,6 +101,7 @@ public class JmxBridge {
             Proxy proxy = doGetProxy(implClass.getName());
             // Initialize it now.
             proxy.initialize();
+            log.info(implClass.getName() + " registered.");
         }
     }
 
