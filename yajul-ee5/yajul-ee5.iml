@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4" relativePaths="false" type="JAVA_MODULE">
-  <component name="ModuleRootManager" />
+<module relativePaths="false" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <exclude-output />
@@ -16,7 +15,7 @@
     <orderEntry type="library" name="slf4j" level="project" />
     <orderEntry type="library" name="log4j-1.2.12" level="project" />
     <orderEntry type="library" name="javax.jms" level="project" />
-    <orderEntry type="library" name="picocontainer-1.3" level="project" />
+    <orderEntry type="library" name="picocontainer" level="project" />
     <orderEntry type="library" name="junit-3.8.1" level="project" />
     <orderEntryProperties />
   </component>

@@ -1,14 +1,12 @@
 package org.yajul.micro;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Wrapper around PicoContainer.
@@ -20,8 +18,6 @@ public class MicroContainer
     private static Logger log = LoggerFactory.getLogger(MicroContainer.class);
 
     private MutablePicoContainer pico;
-    private ComponentMonitor monitor;
-    private LifecycleStrategy lifecycleStrategy;
 
     public MicroContainer()
     {
@@ -32,21 +28,19 @@ public class MicroContainer
     {
         log.info("Initializing...");
         MutablePicoContainer parentPico = (parent == null) ? null : parent.pico;
-        monitor = new Slf4jComponentMonitor();
-        lifecycleStrategy = new SimpleLifecycleStrategy();
-        ComponentAdapterFactory adapterFactory = new DefaultComponentAdapterFactory(monitor, lifecycleStrategy);
-        pico = new DefaultPicoContainer(adapterFactory, lifecycleStrategy, parentPico);
+        pico = new DefaultPicoContainer(parentPico);
+        pico.change(Characteristics.SINGLE);
         log.info("Initialized.");
     }
 
     public Object getComponentInstance(Object key)
     {
-        return pico.getComponentInstance(key);
+        return pico.getComponent(key);
     }
 
     public List instances()
     {
-        return pico.getComponentInstances();
+        return pico.getComponents();
     }
 
     public Class loadImplementation(String className) throws ClassNotFoundException
@@ -56,50 +50,13 @@ public class MicroContainer
 
     public void registerSingleton(Object key, Class implementation)
     {
-        registerSingleton(key, implementation, null);
-    }
-
-    public void registerSingleton(Object key, Class implementation, Map properties)
-    {
-        // No properties? Just do the normal registration.
-        if (properties == null || properties.size() == 0)
-        {
-            // Use the default component adapter factory to create an adapter for this implementation.
-            pico.registerComponentImplementation(key, implementation);
-        }
-        else
-        {
-            // Otherwise, add the Bean adapter to inject all the properties
-            // into the object using setters after it is constructed.
-            ConstructorInjectionComponentAdapter componentAdapter =
-                    new ConstructorInjectionComponentAdapter(
-                            key, implementation, null, false, monitor, lifecycleStrategy);
-            // The bean property component adapter needs to wrap the CI component adapter
-            // because the bean properties should be injected after the component is created.
-            BeanPropertyComponentAdapter beanAdaptor =
-                    new BeanPropertyComponentAdapter(componentAdapter);
-            beanAdaptor.setProperties(properties);
-            pico.registerComponent(
-                    new CachingComponentAdapter(
-                            beanAdaptor));
-        }
-    }
-
-    public void registerComponentInstance(Object object)
-    {
-        // Regsisters an instance where it's class is the key.
-        pico.registerComponentInstance(object);
+        pico.addComponent(key,implementation);
     }
 
     public void registerSingleton(Object key, String implementationName) throws ClassNotFoundException
     {
         Class implementationClass = loadImplementation(implementationName);
         registerSingleton(key, implementationClass);
-    }
-
-    public void registerEmptySingleton(Object key)
-    {
-        pico.registerComponent(new EmptyComponentAdapter(key));
     }
 
     public static void initializeComponent(Object component)
@@ -133,19 +90,5 @@ public class MicroContainer
     public void stop()
     {
         pico.stop();
-    }
-
-    private class EmptyComponentAdapter extends InstanceComponentAdapter
-    {
-
-        public EmptyComponentAdapter(Object componentKey) throws AssignabilityRegistrationException, NotConcreteRegistrationException
-        {
-            super(componentKey, "");
-        }
-
-        public Object getComponentInstance(PicoContainer container)
-        {
-            return null;
-        }
     }
 }
