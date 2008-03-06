@@ -9,6 +9,8 @@ package org.yajul.ee5.jmx;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.picocontainer.MutablePicoContainer;
+import org.yajul.micro.SingletonManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,19 +58,13 @@ import java.util.Map;
 public class JmxBridge {
     private static final Logger log = LoggerFactory.getLogger(JmxBridge.class);
 
-    private static JmxBridge ourInstance;
-
     private Map<String, Proxy> proxiesByImplementationClassName;
 
     public static JmxBridge getInstance() {
-        synchronized (JmxBridge.class) {
-            if (ourInstance == null)
-                ourInstance = new JmxBridge();
-            return ourInstance;
-        }
+        return SingletonManager.getDefaultSingleton(JmxBridge.class);
     }
 
-    private JmxBridge() {
+    public JmxBridge() {
         proxiesByImplementationClassName = new HashMap<String, Proxy>();
         log.info("created.");
     }
