@@ -12,7 +12,7 @@ import org.picocontainer.*;
 public class SingletonManager {
 
     private static SingletonManager ourInstance;
-    private MutablePicoContainer parent;
+    private MicroContainer parent;
     private static final String DEFAULT = "_DEFAULT";
 
     public static SingletonManager getInstance() {
@@ -49,6 +49,10 @@ public class SingletonManager {
     private MutablePicoContainer getContainer(String context) {
         synchronized (this)
         {
+            if (parent == null) {
+                parent = new MicroContainer();
+                parent.bootstrapFromSystemProperties();
+            }
             Object component = parent.getComponent(context);
             if (component == null)
             {
@@ -63,8 +67,6 @@ public class SingletonManager {
     }
 
     private SingletonManager() {
-        parent = new DefaultPicoContainer();
-        parent.change(Characteristics.SINGLE);
     }
 
     public MutablePicoContainer getDefaultContainer() {

@@ -209,6 +209,16 @@ public class ReflectionUtil {
     }
 
     /**
+     * Type checked version of create instance using the default class loader.
+     * @param className the class name
+     * @param componentType the type of the instance (e.g. an interface)
+     * @return an instance of the object cast to 'componentType'
+     */
+    public static <T> T createInstance(String className,Class<T> componentType) {
+        return componentType.cast(createInstance(className));
+    }
+
+    /**
      * Returns the resource name for the specified class.
      *
      * @param c The class.

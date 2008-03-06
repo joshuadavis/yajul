@@ -1,94 +1,83 @@
 package org.yajul.micro;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.picocontainer.Characteristics;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.yajul.util.ReflectionUtil;
 
-import java.util.List;
+import java.lang.annotation.Annotation;
 
 /**
- * Wrapper around PicoContainer.
- * <br>User: Joshua Davis
- * <br>Date: Oct 9, 2005 Time: 8:56:44 AM
+ * A picocontainer that does cacheing and auto registration of components specified as classes.
+ * <br>
+ * User: josh
+ * Date: Mar 5, 2008
+ * Time: 12:10:39 PM
  */
-public class MicroContainer
-{
-    private static Logger log = LoggerFactory.getLogger(MicroContainer.class);
+public class MicroContainer extends DefaultPicoContainer {
 
-    private MutablePicoContainer pico;
-
-    public MicroContainer()
-    {
-        this(null);
+    public MicroContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy, PicoContainer parent, ComponentMonitor componentMonitor) {
+        super(componentFactory, lifecycleStrategy, parent, componentMonitor);
+        change(Characteristics.SINGLE);
     }
 
-    public MicroContainer(MicroContainer parent)
-    {
-        log.info("Initializing...");
-        MutablePicoContainer parentPico = (parent == null) ? null : parent.pico;
-        pico = new DefaultPicoContainer(parentPico);
-        pico.change(Characteristics.SINGLE);
-        log.info("Initialized.");
+    public MicroContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(componentFactory, lifecycleStrategy, parent, new NullComponentMonitor() );
     }
 
-    public Object getComponentInstance(Object key)
-    {
-        return pico.getComponent(key);
+    public MicroContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(new AdaptingBehavior(), lifecycleStrategy, parent, monitor);
     }
 
-    public List instances()
-    {
-        return pico.getComponents();
+    public MicroContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(new NullComponentMonitor(), lifecycleStrategy, parent);
+    }
+    
+    public MicroContainer(ComponentFactory componentFactory, PicoContainer parent) {
+        this(componentFactory, new StartableLifecycleStrategy(new NullComponentMonitor()), parent, new NullComponentMonitor());
     }
 
-    public Class loadImplementation(String className) throws ClassNotFoundException
-    {
-        return Thread.currentThread().getContextClassLoader().loadClass(className);
+    public MicroContainer(ComponentMonitor monitor, PicoContainer parent) {
+        this(new AdaptingBehavior(), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
-    public void registerSingleton(Object key, Class implementation)
-    {
-        pico.addComponent(key,implementation);
+    public MicroContainer(ComponentFactory componentFactory) {
+        this(componentFactory, null);
     }
 
-    public void registerSingleton(Object key, String implementationName) throws ClassNotFoundException
-    {
-        Class implementationClass = loadImplementation(implementationName);
-        registerSingleton(key, implementationClass);
+    public MicroContainer(ComponentMonitor monitor) {
+        this(monitor, new StartableLifecycleStrategy(monitor), null);
     }
 
-    public static void initializeComponent(Object component)
-    {
-        if (component instanceof LifecycleAware)
-        {
-            LifecycleAware lifecycleAware = (LifecycleAware) component;
-            lifecycleAware.initialize();
+    public MicroContainer(PicoContainer parent) {
+        this(new AdaptingBehavior(), parent);
+    }
+
+    public MicroContainer() {
+        this(new AdaptingBehavior(), null);
+    }
+
+    @Override
+    public Object getComponent(Object componentKeyOrType, Class<? extends Annotation> annotation) {
+        // Automatically add the component it the key is the implementation class and the
+        // annotation isn't present, and there is no existing component adapter for the component.
+        synchronized (this) {
+            if (componentKeyOrType instanceof Class &&
+                    annotation == null &&
+                    getComponentAdapter(componentKeyOrType) == null) {
+                addComponent(componentKeyOrType);
+            }
         }
+        return super.getComponent(componentKeyOrType, annotation);
     }
 
-    public static void destroyComponent(Object component)
-    {
-        if (component instanceof LifecycleAware)
-        {
-            LifecycleAware lifecycleAware = (LifecycleAware) component;
-            lifecycleAware.terminate();
-        }
+    public void bootstrap(String className) {
+        Bootstrap boot = ReflectionUtil.createInstance(className,Bootstrap.class);
+        boot.addComponentsTo(this);
     }
 
-    public void dispose()
-    {
-        pico.dispose();
-    }
-
-    public void start()
-    {
-        pico.start();
-    }
-
-    public void stop()
-    {
-        pico.stop();
+    public void bootstrapFromSystemProperties() {
+        String className = System.getProperty("org.yajul.microcontainer.bootstrap",DefaultBootstrap.class.getName());
     }
 }

@@ -71,7 +71,7 @@ public class ReflectionUtilTest extends TestCase
         ObjectFactoryTest.Thing t = (ObjectFactoryTest.Thing) ReflectionUtil.createInstance(THING_CLASS_NAME);
         assertEquals(42,t.getValue());
 
-        t = (ObjectFactoryTest.Thing) ReflectionUtil.createInstance(THING_CLASS_NAME,null);
+        t = (ObjectFactoryTest.Thing) ReflectionUtil.createInstance(THING_CLASS_NAME);
         assertEquals(42,t.getValue());
 
         URL url = ReflectionUtil.findClassURL(ObjectFactoryTest.Thing.class);
