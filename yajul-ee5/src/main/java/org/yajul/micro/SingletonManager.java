@@ -4,11 +4,14 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 /**
- * One singleton to rule them all.
+ * One singleton to rule them all.  This is actually a single level hierarchy of micro-containers.
+ * The parent contains all the YAJUL singletons.   The
  * <br>
  * User: josh
  * Date: Mar 5, 2008
@@ -16,9 +19,17 @@ import java.io.IOException;
  */
 public class SingletonManager {
 
+    private Logger log = LoggerFactory.getLogger(SingletonManager.class);
+
+    /**
+     * The resource that the bootstrapper looks for.
+     */
+    public static final String BOOTSTRAP_RESOURCE_NAME = "singleton-bootstrap.properties";
+
+    private static final String DEFAULT = "_DEFAULT";
+
     private static SingletonManager ourInstance;
     private MicroContainer parent;
-    private static final String DEFAULT = "_DEFAULT";
 
     public static SingletonManager getInstance() {
         synchronized (SingletonManager.class) {
@@ -55,9 +66,12 @@ public class SingletonManager {
         synchronized (this)
         {
             if (parent == null) {
+                log.info("Creating parent container...");
                 parent = new MicroContainer();
                 try {
-                    parent.bootstrap("singleton-bootstrap.properties",Thread.currentThread().getContextClassLoader());
+                    log.info("Bootstrapping...");
+                    parent.addComponent(this);
+                    parent.bootstrap(BOOTSTRAP_RESOURCE_NAME,Thread.currentThread().getContextClassLoader());
                 } catch (IOException e) {
                     throw new IllegalStateException("Unable to bootstrap due to " + e,e);
                 }
@@ -65,6 +79,7 @@ public class SingletonManager {
             Object component = parent.getComponent(context);
             if (component == null)
             {
+                log.info("Creating context container " + context + " ...");
                 MutablePicoContainer child = new DefaultPicoContainer(parent);
                 child.change(Characteristics.SINGLE);
                 parent.addComponent(context,child);

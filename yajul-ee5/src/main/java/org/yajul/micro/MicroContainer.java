@@ -91,12 +91,15 @@ public class MicroContainer extends DefaultPicoContainer {
         // Look for the resource in the class loader.   Load each properties file and register all
         // of the components.
         Enumeration<URL> resources = classLoader.getResources(resourceName);
+        int componentCount = 0;
+        int resourceCount = 0;
         while (resources.hasMoreElements()) {
             URL url = resources.nextElement();
             log.debug("Loading " + url + " ...");
             InputStream stream = url.openStream();
             Properties props = new Properties();
             props.load(stream);
+            resourceCount++;
             Enumeration keyNames = props.propertyNames();
             while (keyNames.hasMoreElements()) {
                 String keyName = (String) keyNames.nextElement();
@@ -106,8 +109,10 @@ public class MicroContainer extends DefaultPicoContainer {
                 Object component = processName(valueName,classLoader);
                 log.debug("Adding " + key + " : " + component + " ...");
                 addComponent(key,component);
+                componentCount++;
             }            
         }
+        log.info("Added " + componentCount + " components from " + resourceCount + " resources.");
     }
 
     private Object processName(String name, ClassLoader classLoader) {
