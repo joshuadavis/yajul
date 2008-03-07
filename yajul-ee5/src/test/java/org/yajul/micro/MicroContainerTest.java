@@ -1,13 +1,12 @@
 package org.yajul.micro;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.Test;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import org.yajul.util.ReflectionUtil;
+import java.util.List;
 
 /**
  * Test microcontainer behavior.
@@ -42,9 +41,10 @@ public class MicroContainerTest extends TestCase {
         assertSame(one,two);
     }
 
-    public void testBootstrap()
-    {
-        // MicroContainer can bootstrap itself from a class.
+    public void testBootstrap() throws IOException {
+        // MicroContainer can bootstrap itself from properties files.
+        MicroContainer mc = new MicroContainer();
+        mc.bootstrap("test-bootstrap.properties",Thread.currentThread().getContextClassLoader());
     }
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);

@@ -1,6 +1,11 @@
 package org.yajul.micro;
 
-import org.picocontainer.*;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+
+import java.io.IOException;
 
 /**
  * One singleton to rule them all.
@@ -51,7 +56,11 @@ public class SingletonManager {
         {
             if (parent == null) {
                 parent = new MicroContainer();
-                parent.bootstrapFromSystemProperties();
+                try {
+                    parent.bootstrap("singleton-bootstrap.properties",Thread.currentThread().getContextClassLoader());
+                } catch (IOException e) {
+                    throw new IllegalStateException("Unable to bootstrap due to " + e,e);
+                }
             }
             Object component = parent.getComponent(context);
             if (component == null)

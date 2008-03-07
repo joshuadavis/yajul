@@ -2,11 +2,17 @@ package org.yajul.micro;
 
 import org.picocontainer.*;
 import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.yajul.util.ReflectionUtil;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * A picocontainer that does cacheing and auto registration of components specified as classes.
@@ -16,6 +22,8 @@ import java.lang.annotation.Annotation;
  * Time: 12:10:39 PM
  */
 public class MicroContainer extends DefaultPicoContainer {
+
+    private Logger log = LoggerFactory.getLogger(MicroContainer.class);
 
     public MicroContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(componentFactory, lifecycleStrategy, parent, componentMonitor);
@@ -72,12 +80,43 @@ public class MicroContainer extends DefaultPicoContainer {
         return super.getComponent(componentKeyOrType, annotation);
     }
 
-    public void bootstrap(String className) {
-        Bootstrap boot = ReflectionUtil.createInstance(className,Bootstrap.class);
-        boot.addComponentsTo(this);
+    /**
+     * Set up component definitions from properties resources in the classpath.  The properties file will
+     * have a class name (interface name) as the key, and the implementation class as the value.
+     * @param resourceName properties resource name
+     * @param classLoader the class loader to use
+     * @throws IOException if something goes wrong.
+     */
+    public void bootstrap(String resourceName,ClassLoader classLoader) throws IOException {
+        // Look for the resource in the class loader.   Load each properties file and register all
+        // of the components.
+        Enumeration<URL> resources = classLoader.getResources(resourceName);
+        while (resources.hasMoreElements()) {
+            URL url = resources.nextElement();
+            log.debug("Loading " + url + " ...");
+            InputStream stream = url.openStream();
+            Properties props = new Properties();
+            props.load(stream);
+            Enumeration keyNames = props.propertyNames();
+            while (keyNames.hasMoreElements()) {
+                String keyName = (String) keyNames.nextElement();
+                String valueName = props.getProperty(keyName);
+                // If the key is a class (interface), then use it.
+                Object key = processName(keyName,classLoader);
+                Object component = processName(valueName,classLoader);
+                log.debug("Adding " + key + " : " + component + " ...");
+                addComponent(key,component);
+            }            
+        }
     }
 
-    public void bootstrapFromSystemProperties() {
-        String className = System.getProperty("org.yajul.microcontainer.bootstrap",DefaultBootstrap.class.getName());
+    private Object processName(String name, ClassLoader classLoader) {
+
+        try {
+            return classLoader.loadClass(name);
+        } catch (ClassNotFoundException e) {
+            log.info(name + " is not a class");
+            return name;
+        }
     }
 }
