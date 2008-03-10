@@ -31,7 +31,12 @@ public abstract class AbstractScanner {
 
     protected String resourceName;
     protected ClassLoader classLoader;
+    private boolean scanned = false;
 
+    /**
+     * Scans everything in the classpath where the specified resource is located.
+     * @param resourceName resource name used to find a directory or archive to scan
+     */
     public AbstractScanner(String resourceName) {
         this(resourceName, Thread.currentThread().getContextClassLoader());
     }
@@ -52,6 +57,8 @@ public abstract class AbstractScanner {
     }
 
     protected void scan() {
+        if (scanned)
+            return;
         Set<String> paths = new HashSet<String>();
         if (resourceName == null) {
             for (URL url : getURLsFromClassLoader()) {
@@ -105,6 +112,7 @@ public abstract class AbstractScanner {
                 log.warn("could not read entries", ioe);
             }
         }
+        scanned = true;
     }
 
     protected URL[] getURLsFromClassLoader() {

@@ -240,4 +240,15 @@ public class ReflectionUtil {
         ClassLoader loader = getCurrentClassLoader();
         return loader.getResource(resourceName);
     }
+
+    /**
+     * Turns a class file name into a class name.
+     * @param filename the file name
+     * @return the class name.
+     */
+    public static String filenameToClassname(String filename)
+    {
+       return filename.substring( 0, filename.lastIndexOf(".class") )
+             .replace('/', '.').replace('\\', '.');
+    }
 }
