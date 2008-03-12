@@ -5,8 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Test microcontainer behavior.
@@ -45,6 +44,12 @@ public class MicroContainerTest extends TestCase {
         // MicroContainer can bootstrap itself from properties files.
         MicroContainer mc = new MicroContainer();
         mc.bootstrap("test-bootstrap.properties",Thread.currentThread().getContextClassLoader());
+        System.out.println(mc);
+        assertEquals(mc.getComponent("magicNumber"),42L);
+        assertSame(mc.getComponentAdapter(Set.class).getComponentImplementation(), TreeSet.class);
+        assertSame(mc.getComponentAdapter(Collection.class).getComponentImplementation(),HashSet.class);
+        assertSame(mc.getComponentAdapter("testconfig").getComponentImplementation(),TestConfig.class);
+
     }
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);

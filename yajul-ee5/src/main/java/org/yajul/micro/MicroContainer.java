@@ -11,11 +11,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * A picocontainer that does cacheing and auto registration of components specified as classes.
+ * A picocontainer that does cacheing and auto registration of components specified as classes.  It can also bootstrap
+ * itself from properties files found in the classpath.   The names in the properties files are used as keys, and the
+ * values are assumed to be implementation classes.   If the names are not interface names, they will be simple
+ * string keys.   If the implementation class implements Configuration, then it will be immediately instantiated and
+ * the addComponents() method will be called to add more components to the container.  This way you can have
+ * one class in the properties file that bootstraps all of your component definitions in a typesafe manner.
  * <br>
  * User: josh
  * Date: Mar 5, 2008
@@ -109,10 +115,48 @@ public class MicroContainer extends DefaultPicoContainer {
                 Object component = processName(valueName,classLoader);
                 log.debug("Adding " + key + " : " + component + " ...");
                 addComponent(key,component);
+
+                Configuration config = null;
+                // If the component is an implementation class and that class implements the Configuration interface
+                // then we get an instance of it now and run it.
+                if (component instanceof Class) {
+                    Class aClass = (Class) component;
+                    if (Configuration.class.isAssignableFrom(aClass))
+                    {
+                        //noinspection UnusedAssignment
+                        config = (Configuration) getComponent(key);
+                    }
+                }
+                else if (component instanceof Configuration)
+                {
+                    //noinspection UnusedAssignment
+                    config = (Configuration) component;
+                }
+                if (config != null)
+                {
+                    log.info("Configuring with " + config);
+                    int before = getComponentAdapters().size();
+                    config.addComponents(this);
+                    int added = getComponentAdapters().size() - before;
+                    log.info("Added " + added + " components from " + config);
+                    componentCount += added;
+                }
                 componentCount++;
-            }            
+            }
         }
         log.info("Added " + componentCount + " components from " + resourceCount + " resources.");
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(this.getClass().getSimpleName()).append("{");
+        Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
+        for (ComponentAdapter<?> adapter : adapters) {
+            sb.append("\n ").append(adapter.getComponentKey().toString()).append(" : ")
+                    .append(adapter.getComponentImplementation().getName());
+        }
+        sb.append("\n}");
+        return sb.toString();
     }
 
     private Object processName(String name, ClassLoader classLoader) {
@@ -120,7 +164,7 @@ public class MicroContainer extends DefaultPicoContainer {
         try {
             return classLoader.loadClass(name);
         } catch (ClassNotFoundException e) {
-            log.info(name + " is not a class");
+            log.debug(name + " is not a class, leaving it as a string");
             return name;
         }
     }

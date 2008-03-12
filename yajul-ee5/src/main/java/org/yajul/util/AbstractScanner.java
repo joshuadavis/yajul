@@ -15,7 +15,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * Classpath scanner adapted from Seam.
+ * Classpath scanner adapted from Seam.  Finds a 'tag' resource in the classpath and then scans through
+ * all the directories and files inside the JAR or directory where the tag resource was found.  This can be used to
+ * iterate through all the classes in a particular class path element to find all classes that implement a particular
+ * interface, for example.
  * <br>
  * User: josh
  * Date: Mar 6, 2008
