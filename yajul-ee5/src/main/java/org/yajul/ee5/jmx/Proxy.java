@@ -2,6 +2,7 @@ package org.yajul.ee5.jmx;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.micro.MicroContainer;
 
 /**
  * A proxy that instantiates the implementation JMX MBean when needed.
@@ -17,11 +18,13 @@ public class Proxy implements Lifecycle {
     private boolean started;
     private boolean implementationStarted;
     private Exception exception;
+    private MicroContainer container;
 
-    Proxy(String implementationClassName) {
+    Proxy(String implementationClassName, MicroContainer implementationContainer) {
         this.implementationClassName = implementationClassName;
         started = false;
         implementationStarted = false;
+        this.container = implementationContainer;
     }
 
     public String getImplementationClassName() {
@@ -101,7 +104,7 @@ public class Proxy implements Lifecycle {
     private void startImplementation() throws Exception {
         if (implementationClass != null && implementation == null) {
             log.info("Instantiating " + implementationClass.getName() + " ...");
-            Object impl = implementationClass.newInstance();
+            Object impl = container.getComponent(implementationClass);
             if (!(impl instanceof Lifecycle))
                 throw new ClassCastException("Class " + implementationClass.getName() + " doesn't implement " + Lifecycle.class.getName());
             implementation = (Lifecycle) impl;

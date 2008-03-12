@@ -1,7 +1,6 @@
 package org.yajul.micro;
 
 import org.picocontainer.Characteristics;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.slf4j.Logger;
@@ -47,7 +46,7 @@ public class SingletonManager {
         return getInstance().findOrCreateComponent(componentType);
     }
 
-    public static PicoContainer defaultContainer() {
+    public static MicroContainer defaultContainer() {
         return getInstance().getDefaultContainer();
     }
 
@@ -62,7 +61,7 @@ public class SingletonManager {
     }
 
 
-    private MutablePicoContainer getContainer(String context) {
+    private MicroContainer getContainer(String context) {
         synchronized (this)
         {
             if (parent == null) {
@@ -80,20 +79,20 @@ public class SingletonManager {
             if (component == null)
             {
                 log.info("Creating context container " + context + " ...");
-                MutablePicoContainer child = new DefaultPicoContainer(parent);
+                MicroContainer child = new MicroContainer(parent);
                 child.change(Characteristics.SINGLE);
                 parent.addComponent(context,child);
                 return child;
             }
             else
-                return (MutablePicoContainer) component;
+                return (MicroContainer) component;
         }
     }
 
     private SingletonManager() {
     }
 
-    public MutablePicoContainer getDefaultContainer() {
+    public MicroContainer getDefaultContainer() {
         return getContainer(DEFAULT);
     }
 

@@ -80,6 +80,8 @@ public class MicroContainer extends DefaultPicoContainer {
             if (componentKeyOrType instanceof Class &&
                     annotation == null &&
                     getComponentAdapter(componentKeyOrType) == null) {
+                if (log.isDebugEnabled())
+                    log.debug("Adding " + componentKeyOrType );
                 addComponent(componentKeyOrType);
             }
         }

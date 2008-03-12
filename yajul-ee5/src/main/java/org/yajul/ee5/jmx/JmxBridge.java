@@ -9,7 +9,7 @@ package org.yajul.ee5.jmx;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.picocontainer.MutablePicoContainer;
+import org.yajul.micro.MicroContainer;
 import org.yajul.micro.SingletonManager;
 
 import java.util.HashMap;
@@ -59,6 +59,7 @@ public class JmxBridge {
     private static final Logger log = LoggerFactory.getLogger(JmxBridge.class);
 
     private Map<String, Proxy> proxiesByImplementationClassName;
+    private MicroContainer implementationContainer;
 
     public static JmxBridge getInstance() {
         return SingletonManager.getDefaultSingleton(JmxBridge.class);
@@ -66,6 +67,7 @@ public class JmxBridge {
 
     public JmxBridge() {
         proxiesByImplementationClassName = new HashMap<String, Proxy>();
+        implementationContainer = SingletonManager.defaultContainer();
         log.info("created.");
     }
 
@@ -119,7 +121,7 @@ public class JmxBridge {
     private Proxy doGetProxy(String implementationClassName) {
         Proxy proxy = proxiesByImplementationClassName.get(implementationClassName);
         if (proxy == null) {
-            proxy = new Proxy(implementationClassName);
+            proxy = new Proxy(implementationClassName,implementationContainer);
             proxiesByImplementationClassName.put(implementationClassName, proxy);
         }
         return proxy;
