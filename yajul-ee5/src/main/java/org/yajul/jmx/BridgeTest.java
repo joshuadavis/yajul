@@ -1,4 +1,4 @@
-package org.yajul.ee5.jmx;
+package org.yajul.jmx;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,7 +16,7 @@ public class BridgeTest extends TestCase {
     }
 
     public void testCreate() throws Exception {
-        String className = "org.yajul.ee5.jmx.ThisIsBogus";
+        String className = "org.yajul.jmx.ThisIsBogus";
         JmxBridge bridge = JmxBridge.getInstance();
         bridge.getProxy(className).start();
         ClassNotFoundException ex = null;

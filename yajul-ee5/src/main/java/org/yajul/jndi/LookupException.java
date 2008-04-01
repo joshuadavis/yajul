@@ -1,4 +1,4 @@
-package org.yajul.ee5.jndi;
+package org.yajul.jndi;
 
 /**
  * Thrown when a JNDI lookup fails.

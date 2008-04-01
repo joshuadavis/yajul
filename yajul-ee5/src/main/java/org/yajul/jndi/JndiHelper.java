@@ -1,4 +1,4 @@
-package org.yajul.ee5.jndi;
+package org.yajul.jndi;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

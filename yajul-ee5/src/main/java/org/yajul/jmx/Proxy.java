@@ -1,4 +1,4 @@
-package org.yajul.ee5.jmx;
+package org.yajul.jmx;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

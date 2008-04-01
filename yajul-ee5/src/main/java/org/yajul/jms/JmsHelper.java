@@ -1,9 +1,7 @@
-package org.yajul.ee5.jms;
+package org.yajul.jms;
 
-import javax.jms.Connection;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
+import javax.jms.*;
+import java.util.Enumeration;
 
 /**
  * Utility methods for JMS.
@@ -81,4 +79,57 @@ public class JmsHelper {
             }
         }
     }
+
+    /**
+     * Returns the object in the JMS message if it's an object message.
+     *
+     * @param message the JMS message
+     * @return the object in the JMS message if it's an object message, null otherwise.
+     */
+    public static Object getObject(Message message) {
+        if (message == null)
+            return null;
+        if (message instanceof ObjectMessage) {
+            ObjectMessage objectMessage = (ObjectMessage) message;
+            try {
+                return objectMessage.getObject();
+            }
+            catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        } else
+            return null;
+    }
+
+
+    public static Long getNullableLongProperty(Message m, String property) throws JMSException {
+        return (Long) (m == null ? null : m.getObjectProperty(property));
+    }
+
+    public static String getStringProperty(Message m, String property) throws JMSException {
+        return m == null ? null : m.getStringProperty(property);
+    }
+
+    public static Message peek(Session session, Destination destination) throws JMSException {
+        QueueSession ses = (QueueSession) session;
+        Queue queue = (Queue) destination;
+        QueueBrowser browser = ses.createBrowser(queue);
+        Enumeration enumeration = browser.getEnumeration();
+        return enumeration.hasMoreElements() ? (Message) enumeration.nextElement() : null;
+    }
+
+    public static boolean messagePropertyNullOrEqualTo(Message message, String propertyName, Long aLong) {
+        try {
+            boolean exists = message.propertyExists(propertyName);
+            if (exists) {
+                long val = message.getLongProperty(propertyName);
+                return val == aLong;
+            } else
+                return true;
+        }
+        catch (JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

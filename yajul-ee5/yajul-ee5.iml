@@ -18,6 +18,7 @@
     <orderEntry type="library" name="javax.jms" level="project" />
     <orderEntry type="library" name="picocontainer" level="project" />
     <orderEntry type="library" name="junit-3.8.1" level="project" />
+    <orderEntry type="library" name="jta" level="project" />
     <orderEntryProperties />
   </component>
 </module>

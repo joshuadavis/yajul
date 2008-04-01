@@ -1,4 +1,4 @@
-package org.yajul.ee5.jmx;
+package org.yajul.jmx;
 
 /**
  * Standard JMX MBean lifecycle methods.
