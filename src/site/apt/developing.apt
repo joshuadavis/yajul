@@ -4,18 +4,48 @@
 
 Building YAJUL from sources
 
-  {build-from-source} YAJUL uses {{{http://maven.apache.org}Maven2}} as a build tool.   There are a few API Jars that are not
-  currently available in the Maven repositories, so these need to be installed in the developers local respository
-  before YAJUL will compile successfully with Maven2.
+  {build-from-source} YAJUL uses {{{http://maven.apache.org}Maven2}} as a build tool, so the first step is to 
+  {{{http://maven.apache.org/download.html}Download and install Maven2}}.  For Maven2 to work properly from the
+  command line, the shell environment needs the following:
 
-  To install these JARs into the local Maven repository:
+  * JAVA_HOME should point to a valid JDK.
+  * M2_HOME should point to your Maven2 install.
+  * PATH should include M2_HOME/bin and JAVA_HOME/bin
+
+  There are a few Java Enterprise API jars that are not
+  currently available in the Maven repositories, so these need to be installed in the developers local respository
+  before YAJUL will compile successfully with Maven2.  The jars are located in the 'lib' directory, and you can install them
+  into the local Maven repository using the 'install:install-file' goal:
 
 +-------------------------------+
 mvn install:install-file -DgroupId=javax.jms -DartifactId=jms -Dversion=1.1 /
  -Dpackaging=jar -Dfile=./lib/javax.jms.jar
+mvn install:install-file -DgroupId=javax.transaction -DartifactId=jta -Dversion=1.0.1B /
+ -Dpackaging=jar -Dfile=./lib/jta.jar
++-------------------------------+
+
+
+  These are some of the more frequently used Maven goals:
+  * compile
+  * test
+  * package
+  * clean
+  * sources:jar
+  * site
+
+  To build everything from scratch, run:
++-------------------------------+
+mvn clean package sources:jar site
 +-------------------------------+
 
 Using IDEA to develop YAJUL
 
   YAJUL comes with a .ipr project that will have everything set up for building and testing the YAJUL code.  Simply
-  check out the codebase with SVN and open up the .ipr file with IDEA 6 or 7.
+  check out the codebase with SVN and open up the .ipr file with IDEA 7.
+
+Editing the YAJUL site
+
+  Maven generates a project website from files in the 'src/site' directory.  The files in the 'src/site/apt' directory
+  are in {{{http://maven.apache.org/doxia/references/apt-format.html}the APT format}}, which is a bit like wiki text.
+  These can be edited with any text editor.
+

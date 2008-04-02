@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="YAJUL">
   <bannerLeft>
-    <name>Yajul - EE5</name>
+    <name>Yajul</name>
     <src>http://yajul.sourceforge.net/images/project-logo.gif</src>
     <href>http://yajul.sourceforge.net</href>
   </bannerLeft>
@@ -15,8 +15,8 @@
       <item name="Yajul" href="http://yajul.sourceforge.net" />
 <!--
       <item name="Maven 1.0" href="http://maven.apache.org/"/>
-      <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
 -->
+      <item name="Maven" href="http://maven.apache.org"/>
     </links>
 
       <menu name="Documentation">
