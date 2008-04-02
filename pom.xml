@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.yajul.ee5</groupId>
+    <artifactId>yajul-ee5</artifactId>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.build.finalName}</finalName>
+                    <attach>false</attach>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <locales>en,fr</locales>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <version>0.1-SNAPSHOT</version>
+    <name>YAJUL - EE5</name>
+    <url>http://yajul.sourceforge.net</url>
+    <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
+    <developers>
+        <developer>
+            <id>pgmjsd</id>
+            <name>Joshua Davis</name>
+            <email>pgmjsd _at_ sourceforge _dot_ net</email>
+            <roles>
+                <role>Project Lead</role>
+            </roles>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/</url>
+    </scm>
+    <distributionManagement>
+        <site>
+            <id>website</id>
+            <url>scp://shell.sourceforge.net/home/groups/y/ya/yajul/htdocs</url>
+        </site>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>maven2-repository.maven</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
+        <repository>
+            <id>maven2-repository.jboss</id>
+            <name>Maven2 repository at JBoss.org</name>
+            <url>http://repository.jboss.org/maven2</url>
+        </repository>
+        <!--
+        Pico is already in the global repositories.
+        <repository>
+            <id>maven2-repository.picocontainer</id>
+            <name>Maven2 picocontainer repository.</name>
+            <url>http://repository.codehaus.org/org/picocontainer</url>
+            <layout>default</layout>
+        </repository>
+        -->
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <!-- SLF4J has much simpler dependencies than commons-logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <!-- At test time we'll use log4j as the SLF4J implementation. -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.4.3</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Java APIs - These must be installed in the local
+      repository because they are not yet in the global
+      Maven repositories -->
+        <dependency>
+            <groupId>jms</groupId>
+            <artifactId>jms</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jxr-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <targetjdk>1.5</targetjdk>
+                    <rulesets>
+                        <ruleset>/rulesets/basic.xml</ruleset>
+                        <ruleset>/rulesets/controversial.xml</ruleset>
+                    </rulesets>
+                    <format>xml</format>
+                    <linkXref>true</linkXref>
+                    <sourceEncoding>utf-8</sourceEncoding>
+                    <minimumTokens>100</minimumTokens>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

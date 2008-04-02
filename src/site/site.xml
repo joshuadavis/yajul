@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="YAJUL">
+  <bannerLeft>
+    <name>Yajul - EE5</name>
+    <src>http://yajul.sourceforge.net/images/project-logo.gif</src>
+    <href>http://yajul.sourceforge.net</href>
+  </bannerLeft>
+<!--
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>
+-->
+  <body>
+    <links>
+      <item name="Yajul" href="http://yajul.sourceforge.net" />
+<!--
+      <item name="Maven 1.0" href="http://maven.apache.org/"/>
+      <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
+-->
+    </links>
+
+      <menu name="Documentation">
+          <item name="Using YAJUL" href="using.html"/>
+          <item name="Developing YAJUL" href="developing.html"/>
+      </menu>
+
+      ${reports}
+
+  </body>
+</project>
