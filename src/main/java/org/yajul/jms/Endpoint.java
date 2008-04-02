@@ -32,19 +32,12 @@ public class Endpoint
     private boolean queueEndpoint;
     private String messageSelector;
 
-    public Endpoint(String factoryJndiName, String destinationName)
-    {
-        this(factoryJndiName, destinationName, null);
-    }
-
-    public Endpoint(String factoryJndiName, String destinationName, String messageSelector)
+    public Endpoint(InitialContext ic, String factoryJndiName, String destinationName, String messageSelector)
     {
         try
         {
-            ic = new InitialContext();
-            this.connectionFactory = (ConnectionFactory) ic.lookup(factoryJndiName);
+            initialize(ic, factoryJndiName,messageSelector);
             this.destination = (Destination) ic.lookup(destinationName);
-            this.messageSelector = messageSelector;
         }
         catch (NamingException e)
         {
@@ -53,11 +46,21 @@ public class Endpoint
         }
     }
 
-    public Endpoint(String factoryJndiName, Destination destination)
+    private void initialize(InitialContext ic, String factoryJndiName, String messageSelector) throws NamingException {
+        if (ic == null)
+            this.ic = new InitialContext();
+        else
+            this.ic = ic;
+
+        this.connectionFactory = (ConnectionFactory) this.ic.lookup(factoryJndiName);
+        this.messageSelector = messageSelector;
+    }
+
+    public Endpoint(InitialContext ic,String factoryJndiName, Destination destination, String messageSelector)
     {
         try
         {
-            this.connectionFactory = (ConnectionFactory) ic.lookup(factoryJndiName);
+            initialize(ic, factoryJndiName,messageSelector);
             this.destination = destination;
         }
         catch (NamingException e)

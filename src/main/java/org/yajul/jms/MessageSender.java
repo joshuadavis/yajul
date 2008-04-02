@@ -1,11 +1,9 @@
 package org.yajul.jms;
 
 
-import com.pep.util.TransactionHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.jta.TransactionHelper;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -18,6 +16,7 @@ import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.Topic;
 import javax.transaction.UserTransaction;
+import javax.naming.InitialContext;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,16 +33,15 @@ public class MessageSender extends Endpoint {
     private int mode = DeliveryMode.PERSISTENT;
     private int priority = 4;
     private long ttl = 30000L;
-    private static final boolean COMPRESS = true;
     private static final long REPLY_TIMEOUT = 5000;
     private long replyTimeout = REPLY_TIMEOUT;
 
-    public MessageSender(String factoryJndiName, String destinationName) {
-        super(factoryJndiName, destinationName);
+    public MessageSender(InitialContext ic, String factoryJndiName, String destinationName, String messageSelector) {
+        super(ic, factoryJndiName, destinationName, messageSelector);
     }
 
-    public MessageSender(String factoryJndiName, Destination destination) {
-        super(factoryJndiName, destination);
+    public MessageSender(InitialContext ic, String factoryJndiName, Destination destination, String messageSelector) {
+        super(ic, factoryJndiName, destination, messageSelector);
     }
 
     @Override
@@ -135,11 +133,12 @@ public class MessageSender extends Endpoint {
     public void sendObjectMessage(Serializable object, Map<String, Object> properties) {
         try {
             Session session = getSession();
-            ObjectMessage objectMessage = null;
+            ObjectMessage objectMessage;
             objectMessage = session.createObjectMessage(object);
 
             if (properties != null) {
                 Iterator<String> keys = properties.keySet().iterator();
+                //noinspection WhileLoopReplaceableByForEach
                 while (keys.hasNext()) {
                     String key = keys.next();
                     Object value = properties.get(key);
@@ -162,17 +161,17 @@ public class MessageSender extends Endpoint {
         }
     }
 
-    public static void sendReply(String factoryJndiName, Message message, Serializable replyObject) {
-        sendReply(factoryJndiName, message, replyObject, null);
+    public static void sendReply(InitialContext ic, String factoryJndiName, Message message, Serializable replyObject) {
+        sendReply(ic, factoryJndiName, message, replyObject, null);
     }
 
-    public static void sendReply(final String factoryJndiName, Message message, Serializable replyObject, Map<String, Object> properties) {
+    public static void sendReply(final InitialContext ic, final String factoryJndiName, Message message, Serializable replyObject, Map<String, Object> properties) {
         try {
             final Destination jmsReplyTo = message.getJMSReplyTo();
             if (jmsReplyTo != null) {
                 sendObject(new SenderFactory() {
                     public MessageSender createSender() {
-                        return new MessageSender(factoryJndiName, jmsReplyTo);
+                        return new MessageSender(ic, factoryJndiName, jmsReplyTo, null);
                     }
                 }, replyObject, properties);
             }
@@ -211,19 +210,22 @@ public class MessageSender extends Endpoint {
         }
     }
 
-    public static void sendObject(final String factoryJndiName,
-                                  final String destinationName,
-                                  Serializable messageObject) {
-        sendObject(factoryJndiName, destinationName, messageObject, null);
+    public static void sendObject(
+            final InitialContext ic, final String factoryJndiName,
+            final String destinationName,
+            Serializable messageObject) {
+        sendObject(ic, factoryJndiName, destinationName, messageObject, null);
     }
 
-    public static void sendObject(final String factoryJndiName,
-                                  final String destinationName,
-                                  Serializable messageObject,
-                                  Map<String, Object> properties) {
+    public static void sendObject(
+            final InitialContext ic,
+            final String factoryJndiName,
+            final String destinationName,
+            Serializable messageObject,
+            Map<String, Object> properties) {
         sendObject(new SenderFactory() {
             public MessageSender createSender() {
-                return new MessageSender(factoryJndiName, destinationName);
+                return new MessageSender(ic, factoryJndiName, destinationName, null);
             }
         }, messageObject, properties);
     }

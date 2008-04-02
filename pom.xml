@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.yajul.ee5</groupId>
-    <artifactId>yajul-ee5</artifactId>
+    <groupId>org.yajul</groupId>
+    <artifactId>yajul</artifactId>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -35,7 +35,7 @@
         </plugins>
     </build>
     <version>0.1-SNAPSHOT</version>
-    <name>YAJUL - EE5</name>
+    <name>YAJUL</name>
     <url>http://yajul.sourceforge.net</url>
     <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
     <developers>
@@ -109,9 +109,14 @@
       repository because they are not yet in the global
       Maven repositories -->
         <dependency>
-            <groupId>jms</groupId>
+            <groupId>javax.jms</groupId>
             <artifactId>jms</artifactId>
             <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.0.1B</version>
         </dependency>
     </dependencies>
     <reporting>

@@ -7,6 +7,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
+import javax.naming.InitialContext;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,14 +27,9 @@ public class MessageReceiver extends Endpoint implements Runnable
     private Thread thread;
 
 
-    public MessageReceiver(String factoryJndiName, String destinationName, MessageListener listener)
+    public MessageReceiver(InitialContext ic,String factoryJndiName, String destinationName, MessageListener listener, String messageSelector)
     {
-        this(factoryJndiName, destinationName, listener, null);
-    }
-
-    public MessageReceiver(String factoryJndiName, String destinationName, MessageListener listener, String messageSelector)
-    {
-        super(factoryJndiName, destinationName, messageSelector);
+        super(ic,factoryJndiName, destinationName, messageSelector);
         this.listener = listener;
     }
 
