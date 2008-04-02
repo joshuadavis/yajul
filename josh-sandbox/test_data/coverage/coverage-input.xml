@@ -1,7 +1,0 @@
-<coverage-input>
-    <test>org.yajul.util.CacheTest</test>
-    <test>org.yajul.util.SimpleQueueTest</test>
-    <test>org.yajul.util.SimpleTopicTest</test>
-    <test>org.yajul.util.PoolTest</test>
-    <test>org.yajul.util.DateFormatterTest</test>
-</coverage-input>

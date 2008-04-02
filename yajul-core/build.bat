@@ -1,1 +1,0 @@
-java -cp "../tools/ant/lib/ant-launcher.jar;%JAVA_HOME%/lib/tools.jar" -Dant.home=../tools/ant org.apache.tools.ant.launch.Launcher %1 %2 %3 %4 %5 %6 %7 %8 %9
