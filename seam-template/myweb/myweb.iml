@@ -29,6 +29,11 @@
     <setting name="RUN_JASPER_VALIDATION" value="true" />
   </component>
   <component name="WebModuleProperties">
+    <containerElement type="library" level="module">
+      <attribute name="method" value="0" />
+      <attribute name="URI" value="/WEB-INF/lib/jboss-j2ee.jar" />
+      <url>jar://$MODULE_DIR$/../../../../../java/jboss-4.2.1.GA/server/all/lib/jboss-j2ee.jar!/</url>
+    </containerElement>
     <containerElement type="library" name="el-api" level="project">
       <attribute name="method" value="0" />
       <attribute name="URI" value="/WEB-INF/lib" />
