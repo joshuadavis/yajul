@@ -14,10 +14,13 @@ import java.util.ArrayList;
  *   &lt;!-- Redirect java.util.logging to Log4J. -->
  *   &lt;mbean code="org.yajul.log.JuliToLog4JService"
  *           name="org.yajul:service=JuliToLog4J">
- *       &lt;attribute name="handlerLevel">DEBUG&lt;/attribute>
+ *       &lt;attribute name="HandlerLevel">DEBUG&lt;/attribute>
  *       &lt;depends>jboss.system:type=Log4jService,service=Logging&lt;/depends>
  *   &lt;/mbean>
  * </pre>
+ * Note that because of a small glitch in the JMX specification, the attribute name
+ * is 'HandlerLevel', and not 'handlerLevel' as you might expect.
+ * See http://madplanet.com/jboss-docu-wiki/Wiki.jsp?page=40.JMX.MBean
  * <br>
  * User: josh
  * Date: Jun 4, 2008
@@ -67,6 +70,10 @@ public class JuliToLog4JService implements JuliToLog4JServiceMBean {
     }
 
     public void setHandlerLevel(String level) {
-        handlerLevel = Level.parse(level.toUpperCase());
+        final String parseThis = level.toUpperCase();
+        if ("DEBUG".equalsIgnoreCase(parseThis))
+            handlerLevel = Level.FINE;
+        else
+            handlerLevel = Level.parse(parseThis);
     }
 }
