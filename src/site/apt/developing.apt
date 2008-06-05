@@ -30,12 +30,12 @@ mvn install:install-file -DgroupId=javax.transaction -DartifactId=jta -Dversion=
   * test
   * package
   * clean
-  * sources:jar
+  * source:jar
   * site
 
   To build everything from scratch, run:
 +-------------------------------+
-mvn clean package sources:jar site
+mvn clean package source:jar site
 +-------------------------------+
 
 Using IDEA to develop YAJUL
