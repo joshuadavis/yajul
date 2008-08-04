@@ -9,7 +9,9 @@ Building YAJUL from sources
   command line, the shell environment needs the following:
 
   * JAVA_HOME should point to a valid JDK.
+
   * M2_HOME should point to your Maven2 install.
+
   * PATH should include M2_HOME/bin and JAVA_HOME/bin
 
   There are a few Java Enterprise API jars that are not
@@ -26,14 +28,21 @@ mvn install:install-file -DgroupId=javax.transaction -DartifactId=jta -Dversion=
 
 
   These are some of the more frequently used Maven goals:
+
   * compile
+
   * test
+
   * package
+
   * clean
+
   * source:jar
+
   * site
 
   To build everything from scratch, run:
+
 +-------------------------------+
 mvn clean package source:jar site
 +-------------------------------+
@@ -48,4 +57,3 @@ Editing the YAJUL site
   Maven generates a project website from files in the 'src/site' directory.  The files in the 'src/site/apt' directory
   are in {{{http://maven.apache.org/doxia/references/apt-format.html}the APT format}}, which is a bit like wiki text.
   These can be edited with any text editor.
-
