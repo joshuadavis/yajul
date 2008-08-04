@@ -4,6 +4,18 @@
 
 Downloading YAJUL binaries
 
+  Currently there are no release builds available.   It's best to build Yajul from source.
+
 Building YAJUL from sources
 
   See {{{./developing.html#build-from-source}this section of the 'Developing YAJUL' guide}}.
+
+YAJUL Features
+
+  Here are some shortcuts to the Javadoc for the various YAJUL features:
+  
+  * {{{./apidocs/index.html?org/yajul/log/package-summary.html}java.util.logging -> Log4j adapter}}
+
+  * {{{./apidocs/index.html?org/yajul/log/package-summary.html}JMX -> EJB bridge, other JMX helpers}}
+
+  * {{{./apidocs/index.html?org/yajul/log/package-summary.html}IO helper classes, streams.}}
