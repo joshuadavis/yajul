@@ -20,6 +20,7 @@ function findJavaHome {
 }    
 
 function findJava {
+    TOOLS_JAR_REQUIRED=1
     case "$UNAME" in
         CYGWIN*)
             if [ "${JAVA_HOME:-}" == "" ]; then
@@ -31,11 +32,20 @@ function findJava {
             ;;
         Linux*)
             if [ "${JAVA_HOME:-}" == "" ] ; then
-                findJavaHome '/usr/java'
+                findJavaHome '/usr/java' '/opt'
                 JAVA_HOME="$javadir/$javaname"
             else
                 JAVA_HOME=$JAVA_HOME
             fi
+            ;;
+        Darwin*)
+            if [ "${JAVA_HOME:-}" == "" ] ; then
+                findJavaHome '/usr/java' '/opt'
+                JAVA_HOME="$javadir/$javaname"
+            else
+                JAVA_HOME=$JAVA_HOME
+            fi
+            TOOLS_JAR_REQUIRED=0
             ;;
         *)
             echo "Unknown shell: $UNAME"
@@ -51,7 +61,7 @@ function findJava {
         exit -1
     fi
 
-    if [[ ! -f $JAVA_HOME/lib/tools.jar ]] ; then
+    if [[ $TOOLS_JAR_REQUIRED -eq 1 && ! -f $JAVA_HOME/lib/tools.jar ]] ; then
         echo "ERROR: tools.jar was not found in $JAVA_HOME/lib !"
         exit -1
     fi
@@ -81,6 +91,14 @@ function findMaven {
                 M2_HOME="$mavendir/$mavenname"
             else
                 M2_HOME=`cygpath --mixed $M2_HOME`
+            fi
+            ;;
+        Darwin*)
+            if [ "${M2_HOME:-}" == "" ] ; then
+                findMavenHome '/opt'
+                M2_HOME="$mavendir/$mavenname"
+            else
+                M2_HOME=$M2_HOME
             fi
             ;;
         Linux*)

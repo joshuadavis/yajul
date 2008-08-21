@@ -29,7 +29,7 @@ import java.util.Properties;
  */
 public class MicroContainer extends DefaultPicoContainer {
 
-    private Logger log = LoggerFactory.getLogger(MicroContainer.class);
+    private static Logger log = LoggerFactory.getLogger(MicroContainer.class);
 
     public MicroContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(componentFactory, lifecycleStrategy, parent, componentMonitor);
@@ -37,7 +37,7 @@ public class MicroContainer extends DefaultPicoContainer {
     }
 
     public MicroContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(componentFactory, lifecycleStrategy, parent, new NullComponentMonitor() );
+        this(componentFactory, lifecycleStrategy, parent, new NullComponentMonitor());
     }
 
     public MicroContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
@@ -47,7 +47,7 @@ public class MicroContainer extends DefaultPicoContainer {
     public MicroContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
         this(new NullComponentMonitor(), lifecycleStrategy, parent);
     }
-    
+
     public MicroContainer(ComponentFactory componentFactory, PicoContainer parent) {
         this(componentFactory, new StartableLifecycleStrategy(new NullComponentMonitor()), parent, new NullComponentMonitor());
     }
@@ -79,9 +79,9 @@ public class MicroContainer extends DefaultPicoContainer {
         synchronized (this) {
             if (componentKeyOrType instanceof Class &&
                     annotation == null &&
-                    getComponentAdapter(componentKeyOrType) == null) {
+                    exists(componentKeyOrType)) {
                 if (log.isDebugEnabled())
-                    log.debug("Adding " + componentKeyOrType );
+                    log.debug("Adding " + componentKeyOrType);
                 addComponent(componentKeyOrType);
             }
         }
@@ -91,11 +91,12 @@ public class MicroContainer extends DefaultPicoContainer {
     /**
      * Set up component definitions from properties resources in the classpath.  The properties file will
      * have a class name (interface name) as the key, and the implementation class as the value.
+     *
      * @param resourceName properties resource name
-     * @param classLoader the class loader to use
+     * @param classLoader  the class loader to use
      * @throws IOException if something goes wrong.
      */
-    public void bootstrap(String resourceName,ClassLoader classLoader) throws IOException {
+    public void bootstrap(String resourceName, ClassLoader classLoader) throws IOException {
         // Look for the resource in the class loader.   Load each properties file and register all
         // of the components.
         Enumeration<URL> resources = classLoader.getResources(resourceName);
@@ -111,57 +112,88 @@ public class MicroContainer extends DefaultPicoContainer {
             Enumeration keyNames = props.propertyNames();
             while (keyNames.hasMoreElements()) {
                 String keyName = (String) keyNames.nextElement();
-                String valueName = props.getProperty(keyName);
                 // If the key is a class (interface), then use it.
-                Object key = processName(keyName,classLoader);
-                Object component = processName(valueName,classLoader);
-                log.debug("Adding " + key + " : " + component + " ...");
-                addComponent(key,component);
-
-                Configuration config = null;
-                // If the component is an implementation class and that class implements the Configuration interface
-                // then we get an instance of it now and run it.
-                if (component instanceof Class) {
-                    Class aClass = (Class) component;
-                    if (Configuration.class.isAssignableFrom(aClass))
-                    {
-                        //noinspection UnusedAssignment
-                        config = (Configuration) getComponent(key);
-                    }
+                Object key = processName(keyName, classLoader);
+                if (exists(key)) {
+                    String valueName = props.getProperty(keyName);
+                    Object component = processName(valueName, classLoader);
+                    log.debug("Adding " + key + " : " + component + " ...");
+                    addComponent(key, component);
+                    Configuration config = getAsConfig(key, component);
+                    if (config != null)
+                        componentCount += configure(config);
+                    else
+                        componentCount++;
+                } else {
+                    log.debug("Key " + key + " already added.");
                 }
-                else if (component instanceof Configuration)
-                {
-                    //noinspection UnusedAssignment
-                    config = (Configuration) component;
-                }
-                if (config != null)
-                {
-                    log.info("Configuring with " + config);
-                    int before = getComponentAdapters().size();
-                    config.addComponents(this);
-                    int added = getComponentAdapters().size() - before;
-                    log.info("Added " + added + " components from " + config);
-                    componentCount += added;
-                }
-                componentCount++;
             }
         }
         log.info("Added " + componentCount + " components from " + resourceCount + " resources.");
     }
 
+    /**
+     * Returns true if the component for the key already exists.
+     * @param key the component key
+     * @return true if it exists, false if not
+     */
+    public boolean exists(Object key) {
+        return getComponentAdapter(key) == null;
+    }
+
+    private Configuration getAsConfig(Object key, Object component) {
+        Configuration config = null;
+        // If the component is an implementation class and that class implements the Configuration interface
+        // then we get an instance of it now and run it.
+        if (component instanceof Class) {
+            Class aClass = (Class) component;
+            if (Configuration.class.isAssignableFrom(aClass)) {
+                //noinspection UnusedAssignment
+                config = (Configuration) getComponent(key);
+            }
+        } else if (component instanceof Configuration) {
+            //noinspection UnusedAssignment
+            config = (Configuration) component;
+        }
+        return config;
+    }
+
+    /**
+     * Add components to the container using the configuration.
+     * @param config the configuration object
+     * @return the number of components added
+     */
+    public int configure(Configuration config) {
+
+        log.info("Configuring with " + config);
+        int before = getComponentAdapters().size();
+        config.addComponents(this);
+        int added = getComponentAdapters().size() - before;
+        log.info("Added " + added + " components from " + config);
+        return added;
+    }
+
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(this.getClass().getSimpleName()).append("{");
+        sb.append(this.getClass().getSimpleName()).append(" {");
         Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
         for (ComponentAdapter<?> adapter : adapters) {
-            sb.append("\n ").append(adapter.getComponentKey().toString()).append(" : ")
+            sb.append("\n ").append(adapter.getComponentKey().toString()).append(" -> ")
                     .append(adapter.getComponentImplementation().getName());
         }
         sb.append("\n}");
         return sb.toString();
     }
 
-    private Object processName(String name, ClassLoader classLoader) {
+    /**
+     * Returns the key for a given name.   If 'name' can be loaded with the class loader, the
+     * class is returned.   If 'name' is not a class, then only 'name' is returned.
+     *
+     * @param name        the name, might be a class
+     * @param classLoader the classloader to use
+     * @return the name or the loaded class
+     */
+    public static Object processName(String name, ClassLoader classLoader) {
 
         try {
             return classLoader.loadClass(name);
