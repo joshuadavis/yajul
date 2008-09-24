@@ -10,7 +10,9 @@ import java.io.IOException;
 
 /**
  * One singleton to rule them all.  This is actually a single level hierarchy of micro-containers.
- * The parent contains all the YAJUL singletons.   The
+ * The parent contains all the YAJUL singletons, and any 'bootstrap' singletons.  A child container
+ * named '_DEFAULT' has all the singletons registered using the getDefaultSingleton() method.
+ * Other child containers will be created on demand via the getSingletonContainer(String) method.
  * <br>
  * User: josh
  * Date: Mar 5, 2008
@@ -28,6 +30,11 @@ public class SingletonManager {
     private static final String DEFAULT = "_DEFAULT";
 
     private static SingletonManager ourInstance;
+
+    /**
+     * The parent MicroContainer, contains child containers so you can have different
+     * sets of singletons.   Bootstrap components
+     */
     private MicroContainer parent;
 
     public static SingletonManager getInstance() {
@@ -66,7 +73,7 @@ public class SingletonManager {
         {
             if (parent == null) {
                 log.info("Creating parent container...");
-                parent = new MicroContainer();
+                parent = new MicroContainer("SingletonManager");
                 try {
                     log.info("Bootstrapping...");
                     parent.addComponent(this);
@@ -79,7 +86,7 @@ public class SingletonManager {
             if (component == null)
             {
                 log.info("Creating context container " + context + " ...");
-                MicroContainer child = new MicroContainer(parent);
+                MicroContainer child = new MicroContainer(context,parent);
                 child.change(Characteristics.SINGLE);
                 parent.addComponent(context,child);
                 return child;
@@ -92,8 +99,17 @@ public class SingletonManager {
     private SingletonManager() {
     }
 
+    /**
+     * @return the MicroContainer where all the 'default singleton' components are registered.
+     */
     public MicroContainer getDefaultContainer() {
         return getContainer(DEFAULT);
     }
 
+    /**
+     * @return the parent MicroContainer, where all the bootstrap singleton components are registered.
+     */
+    public MicroContainer getParent() {
+        return parent;
+    }
 }

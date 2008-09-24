@@ -27,16 +27,25 @@ public class BeanProperties {
     public BeanProperties(Class c) {
         clazz = c;
         Method[] methods = c.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
-            if (isGetter(method))
-                continue;
-            String propertyName = ReflectionUtil.setterPropertyName(method);
-            if (propertyName != null) {
-                PropertyAccessors accessors = getAccessorMethods(propertyName);
-                accessors.setSetter(method);
-                accessors.setType(method.getParameterTypes()[0]);
+        Map<String,Method> getters = new HashMap<String,Method>();
+        Map<String,Method> setters = new HashMap<String,Method>();
+        for (Method method : methods) {
+            String propertyName = ReflectionUtil.getterPropertyName(method);
+            if (propertyName != null)
+                getters.put(propertyName, method);
+            else {
+                propertyName = ReflectionUtil.setterPropertyName(method);
+                if (propertyName != null)
+                    setters.put(propertyName, method);
             }
+        }
+        Set<String> propertyNames = new HashSet<String>(getters.keySet());
+        propertyNames.addAll(setters.keySet());
+        for (String propertyName : propertyNames) {
+            Method getter = getters.get(propertyName);
+            Method setter = setters.get(propertyName);
+            accessorsByName.put(propertyName,
+                    new PropertyAccessors(clazz,propertyName,getter,setter));
         }
     }
 
@@ -128,12 +137,7 @@ public class BeanProperties {
      * @return the accessor methods for the property
      */
     public PropertyAccessors getAccessorMethods(String propertyName) {
-        PropertyAccessors methods = accessorsByName.get(propertyName);
-        if (methods == null) {
-            methods = new PropertyAccessors(this, propertyName);
-            accessorsByName.put(propertyName, methods);
-        }
-        return methods;
+        return accessorsByName.get(propertyName);
     }
 
     /**
@@ -233,16 +237,5 @@ public class BeanProperties {
         if (bean.getClass() != clazz)
             throw new IllegalArgumentException("Bean class "
                     + bean.getClass().getName() + " does not match class " + getClassName());
-    }
-
-    private boolean isGetter(Method method) {
-        String propertyName = ReflectionUtil.getterPropertyName(method);
-        if (propertyName != null) {
-            PropertyAccessors accessors = getAccessorMethods(propertyName);
-            accessors.setGetter(method);
-            accessors.setType(method.getReturnType());
-            return true;
-        } else
-            return false;
     }
 }

@@ -6,6 +6,7 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.util.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +31,8 @@ import java.util.Properties;
 public class MicroContainer extends DefaultPicoContainer {
 
     private static Logger log = LoggerFactory.getLogger(MicroContainer.class);
+
+    private String name;
 
     public MicroContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(componentFactory, lifecycleStrategy, parent, componentMonitor);
@@ -72,6 +75,16 @@ public class MicroContainer extends DefaultPicoContainer {
         this(new AdaptingBehavior(), null);
     }
 
+    public MicroContainer(String name, MicroContainer parent) {
+        this(parent);
+        this.name = name;
+    }
+
+    public MicroContainer(String name) {
+        this(name, null);
+    }
+
+
     @Override
     public Object getComponent(Object componentKeyOrType, Class<? extends Annotation> annotation) {
         // Automatically add the component it the key is the implementation class and the
@@ -86,6 +99,23 @@ public class MicroContainer extends DefaultPicoContainer {
             }
         }
         return super.getComponent(componentKeyOrType, annotation);
+    }
+
+    /**
+     * Add a component using the names of interfaces/classes and a class loader.
+     * @param keyName the name of the key interface, or just a string if it's not in the ClassLoader
+     * @param valueName the name of the implementation class
+     * @param classLoader the class loader to use
+     * @return the component adapter for the component
+     */
+    public ComponentAdapter<?> addComponentByReflection(String keyName,String valueName,ClassLoader classLoader)
+    {
+        // If the key is a class (interface), then use it.
+        Object key = processName(keyName, classLoader);
+        Object component = processName(valueName, classLoader);
+        log.debug("Adding " + key + " : " + component + " ...");
+        addComponent(key, component);
+        return getComponentAdapter(key);
     }
 
     /**
@@ -109,27 +139,46 @@ public class MicroContainer extends DefaultPicoContainer {
             Properties props = new Properties();
             props.load(stream);
             resourceCount++;
-            Enumeration keyNames = props.propertyNames();
-            while (keyNames.hasMoreElements()) {
-                String keyName = (String) keyNames.nextElement();
-                // If the key is a class (interface), then use it.
-                Object key = processName(keyName, classLoader);
-                if (exists(key)) {
-                    String valueName = props.getProperty(keyName);
-                    Object component = processName(valueName, classLoader);
-                    log.debug("Adding " + key + " : " + component + " ...");
-                    addComponent(key, component);
-                    Configuration config = getAsConfig(key, component);
-                    if (config != null)
-                        componentCount += configure(config);
-                    else
-                        componentCount++;
-                } else {
-                    log.debug("Key " + key + " already added.");
-                }
-            }
+            componentCount += addComponentsFromProperties(props, classLoader);
         }
         log.info("Added " + componentCount + " components from " + resourceCount + " resources.");
+    }
+
+    /**
+     * Add components from a properties file, where the property names are interfaces/keys, and the
+     * property values are implementation class names.
+     * @param props the properties
+     * @param classLoader the class loader to use for looking up class/interface names.
+     * @return the number of components added.
+     */
+    public int addComponentsFromProperties(Properties props, ClassLoader classLoader) {
+        int componentCount = 0;
+        Enumeration keyNames = props.propertyNames();
+        while (keyNames.hasMoreElements()) {
+            String keyName = (String) keyNames.nextElement();
+            String valueName = props.getProperty(keyName);
+            ComponentAdapter<?> adapter = addComponentByReflection(keyName,valueName,classLoader);
+            // If the key is a class (interface), then use it.
+            Object key = adapter.getComponentKey();
+            Class<?> impl = adapter.getComponentImplementation();
+            Configuration config = null;
+            // If the component is an implementation class and that class implements the Configuration interface
+            // then we get an instance of it now and run it.
+            if (Configuration.class.isAssignableFrom(impl)) {
+                // Instantiate the component.
+                config = (Configuration) getComponent(key);
+            }
+            if (config != null) {
+                log.info("Configuring with " + config);
+                int before = getComponentAdapters().size();
+                config.addComponents(this);
+                int added = getComponentAdapters().size() - before;
+                log.info("Added " + added + " components from " + config);
+                componentCount += added;
+            }
+            componentCount++;
+        }
+        return componentCount;
     }
 
     /**
@@ -175,7 +224,8 @@ public class MicroContainer extends DefaultPicoContainer {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(this.getClass().getSimpleName()).append(" {");
+        sb.append(this.getClass().getSimpleName()).append("{");
+        StringUtil.appendIfNotEmpty(name, sb);
         Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
         for (ComponentAdapter<?> adapter : adapters) {
             sb.append("\n ").append(adapter.getComponentKey().toString()).append(" -> ")

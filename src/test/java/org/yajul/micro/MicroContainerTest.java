@@ -7,6 +7,10 @@ import junit.framework.TestSuite;
 import java.io.IOException;
 import java.util.*;
 
+import org.yajul.util.ReflectionUtil;
+import org.yajul.jmx.JmxBridge;
+import org.picocontainer.ComponentAdapter;
+
 /**
  * Test microcontainer behavior.
  * <br>User: Joshua Davis
@@ -49,8 +53,18 @@ public class MicroContainerTest extends TestCase {
         assertSame(mc.getComponentAdapter(Set.class).getComponentImplementation(), TreeSet.class);
         assertSame(mc.getComponentAdapter(Collection.class).getComponentImplementation(),HashSet.class);
         assertSame(mc.getComponentAdapter("testconfig").getComponentImplementation(),TestConfig.class);
-
+        TestConfig t = (TestConfig) mc.getComponent("testconfig");
+        assertFalse(t.isStarted());
+        mc.start();
+        assertTrue(t.isStarted());
     }
+
+    public void testSingletonManager() {
+        MicroContainer container = SingletonManager.getInstance().getDefaultContainer();
+        ComponentAdapter<?> adapter = container.getComponentAdapter(JmxBridge.class);
+        assertNotNull(adapter);
+    }
+    
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }
