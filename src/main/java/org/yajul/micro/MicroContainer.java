@@ -103,19 +103,59 @@ public class MicroContainer extends DefaultPicoContainer {
 
     /**
      * Add a component using the names of interfaces/classes and a class loader.
-     * @param keyName the name of the key interface, or just a string if it's not in the ClassLoader
-     * @param valueName the name of the implementation class
+     *
+     * @param keyName     the name of the key interface, or just a string if it's not in the ClassLoader
+     * @param valueName   the name of the implementation class
      * @param classLoader the class loader to use
      * @return the component adapter for the component
      */
-    public ComponentAdapter<?> addComponentByReflection(String keyName,String valueName,ClassLoader classLoader)
-    {
+    public ComponentAdapter<?> addComponentByReflection(String keyName, String valueName, ClassLoader classLoader) {
+        return addComponentByReflection(keyName, valueName, classLoader, false);
+    }
+
+    /**
+     * Add a component using the names of interfaces/classes and a class loader.
+     *
+     * @param keyName     the name of the key interface, or just a string if it's not in the ClassLoader
+     * @param valueName   the name of the implementation class
+     * @param classLoader the class loader to use
+     * @param replaceKey  true to replace components with keys that are classes, but are not in the same class loader.
+     * @return the component adapter for the component
+     */
+    public ComponentAdapter<?> addComponentByReflection(String keyName, String valueName,
+                                                        ClassLoader classLoader, boolean replaceKey) {
         // If the key is a class (interface), then use it.
         Object key = processName(keyName, classLoader);
+        if (key instanceof Class && replaceKey) {
+            Class<?> keyClass = (Class<?>) key;
+            ComponentAdapter<?> adapter = findAdapterByKeyName(keyName, keyClass);
+            if (adapter != null && adapter.getComponentKey() != keyClass) {
+                if (log.isDebugEnabled())
+                    log.debug("Removing " + adapter.getComponentKey() +
+                            " because it is from a different classloader.");
+                removeComponent(adapter.getComponentKey());
+            }
+        }
         Object component = processName(valueName, classLoader);
         log.debug("Adding " + key + " : " + component + " ...");
         addComponent(key, component);
         return getComponentAdapter(key);
+    }
+
+    private ComponentAdapter<?> findAdapterByKeyName(String keyName, Class<?> keyClass) {
+        ComponentAdapter<?> adapter = getComponentAdapter(keyClass);
+        if (adapter == null) {
+            Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
+            for (ComponentAdapter<?> a : adapters) {
+                Object aKey = a.getComponentKey();
+                String name = (aKey instanceof Class) ? ((Class) aKey).getName() : aKey.toString();
+                if (keyName.equals(name)) {
+                    adapter = a;
+                    break;
+                }
+            }
+        }
+        return adapter;
     }
 
     /**
@@ -147,7 +187,8 @@ public class MicroContainer extends DefaultPicoContainer {
     /**
      * Add components from a properties file, where the property names are interfaces/keys, and the
      * property values are implementation class names.
-     * @param props the properties
+     *
+     * @param props       the properties
      * @param classLoader the class loader to use for looking up class/interface names.
      * @return the number of components added.
      */
@@ -157,13 +198,13 @@ public class MicroContainer extends DefaultPicoContainer {
         while (keyNames.hasMoreElements()) {
             String keyName = (String) keyNames.nextElement();
             String valueName = props.getProperty(keyName);
-            ComponentAdapter<?> adapter = addComponentByReflection(keyName,valueName,classLoader);
+            ComponentAdapter<?> adapter = addComponentByReflection(keyName, valueName, classLoader);
             // If the key is a class (interface), then use it.
             Object key = adapter.getComponentKey();
             Class<?> impl = adapter.getComponentImplementation();
             Configuration config = null;
-            // If the component is an implementation class and that class implements the Configuration interface
-            // then we get an instance of it now and run it.
+            // If the component is an implementation class and that class implements the Configuration
+            // interface then we get an instance of it now and run it.
             if (Configuration.class.isAssignableFrom(impl)) {
                 // Instantiate the component.
                 config = (Configuration) getComponent(key);
@@ -183,6 +224,7 @@ public class MicroContainer extends DefaultPicoContainer {
 
     /**
      * Returns true if the component for the key already exists.
+     *
      * @param key the component key
      * @return true if it exists, false if not
      */
@@ -190,25 +232,9 @@ public class MicroContainer extends DefaultPicoContainer {
         return getComponentAdapter(key) == null;
     }
 
-    private Configuration getAsConfig(Object key, Object component) {
-        Configuration config = null;
-        // If the component is an implementation class and that class implements the Configuration interface
-        // then we get an instance of it now and run it.
-        if (component instanceof Class) {
-            Class aClass = (Class) component;
-            if (Configuration.class.isAssignableFrom(aClass)) {
-                //noinspection UnusedAssignment
-                config = (Configuration) getComponent(key);
-            }
-        } else if (component instanceof Configuration) {
-            //noinspection UnusedAssignment
-            config = (Configuration) component;
-        }
-        return config;
-    }
-
     /**
      * Add components to the container using the configuration.
+     *
      * @param config the configuration object
      * @return the number of components added
      */
