@@ -26,7 +26,8 @@ public class BasicScanner extends AbstractScanner {
         super(resourceName, classLoader);
     }
 
-    void handleItem(String name) {
+    @Override
+    protected void handleItem(String name) {
         if (log.isDebugEnabled())
             log.debug("handleItem('" + name + "')");
         items.add(name);

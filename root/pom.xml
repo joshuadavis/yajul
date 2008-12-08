@@ -104,6 +104,16 @@
                 <artifactId>jta</artifactId>
                 <version>1.0.1B</version>
             </dependency>
+            <dependency>
+                <groupId>javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.8.1.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yajul</groupId>
+                <artifactId>yajul-base</artifactId>
+                <version>${version.yajul}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
@@ -128,12 +138,14 @@
                     <attach>false</attach>
                 </configuration>
             </plugin>
+<!--
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
                 <configuration>
                     <locales>en</locales>
                 </configuration>
             </plugin>
+-->
         </plugins>
     </build>
     <reporting>
@@ -156,22 +168,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
-                <!--
-                                <groupId>org.apache.maven.plugins</groupId>
-                -->
                 <artifactId>maven-pmd-plugin</artifactId>
                 <configuration>
                     <targetJdk>${compileSource}</targetJdk>
-                    <!--
-                                        <rulesets>
-                                            <ruleset>/rulesets/basic.xml</ruleset>
-                                            <ruleset>/rulesets/controversial.xml</ruleset>
-                                        </rulesets>
-                                        <format>xml</format>
-                                        <linkXref>true</linkXref>
-                                        <sourceEncoding>utf-8</sourceEncoding>
-                                        <minimumTokens>100</minimumTokens>
-                    -->
                 </configuration>
             </plugin>
 

@@ -3,6 +3,7 @@ package org.yajul.micro;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.framework.Assert;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +11,6 @@ import java.util.*;
 import java.net.URL;
 
 import org.picocontainer.ComponentAdapter;
-import org.yajul.jmx.JmxBridge;
 
 /**
  * Test microcontainer behavior.
@@ -31,7 +31,7 @@ public class MicroContainerTest extends TestCase {
         List one = mc.getComponent(List.class);
         List two = mc.getComponent(List.class);
 
-        assertSame(one,two);
+        Assert.assertSame(one,two);
     }
 
     public void testAutoAdd()
@@ -40,9 +40,9 @@ public class MicroContainerTest extends TestCase {
         // MicroContainer will automatically add component implementations.
         List one = mc.getComponent(ArrayList.class);
         List two = mc.getComponent(ArrayList.class);
-        assertNotNull(one);
-        assertNotNull(two);
-        assertSame(one,two);
+        Assert.assertNotNull(one);
+        Assert.assertNotNull(two);
+        Assert.assertSame(one,two);
     }
 
     public void testBootstrap() throws IOException {
@@ -51,19 +51,17 @@ public class MicroContainerTest extends TestCase {
         mc.bootstrap("test-bootstrap.properties",Thread.currentThread().getContextClassLoader());
         System.out.println(mc);
         assertEquals(mc.getComponent("magicNumber"),42L);
-        assertSame(mc.getComponentAdapter(Set.class).getComponentImplementation(), TreeSet.class);
-        assertSame(mc.getComponentAdapter(Collection.class).getComponentImplementation(),HashSet.class);
-        assertSame(mc.getComponentAdapter("testconfig").getComponentImplementation(),TestConfig.class);
+        Assert.assertSame(mc.getComponentAdapter(Set.class).getComponentImplementation(), TreeSet.class);
+        Assert.assertSame(mc.getComponentAdapter(Collection.class).getComponentImplementation(),HashSet.class);
+        Assert.assertSame(mc.getComponentAdapter("testconfig").getComponentImplementation(),TestConfig.class);
         TestConfig t = (TestConfig) mc.getComponent("testconfig");
-        assertFalse(t.isStarted());
+        Assert.assertFalse(t.isStarted());
         mc.start();
-        assertTrue(t.isStarted());
+        Assert.assertTrue(t.isStarted());
     }
 
     public void testSingletonManager() {
         MicroContainer container = SingletonManager.getInstance().getDefaultContainer();
-        ComponentAdapter<?> adapter = container.getComponentAdapter(JmxBridge.class);
-        assertNotNull(adapter);
     }
 
     public static Test suite() {

@@ -1,29 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.yajul</groupId>
-    <artifactId>yajul</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>root</module>
-        <module>base</module>
-    </modules>
     <parent>
         <groupId>org.yajul</groupId>
         <artifactId>root</artifactId>
         <version>0.7-SNAPSHOT</version>
         <relativePath>root/pom.xml</relativePath>
     </parent>
+    <groupId>org.yajul</groupId>
+    <artifactId>yajul</artifactId>
     <version>0.7-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>root</module>
+        <module>base</module>
+        <module>micro</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.picocontainer</groupId>
-            <artifactId>picocontainer</artifactId>
         </dependency>
         <!-- SLF4J has much simpler dependencies than commons-logging -->
         <dependency>
@@ -40,9 +37,7 @@
             <artifactId>slf4j-log4j12</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Java APIs - These must be installed in the local
-      repository because they are not yet in the global
-      Maven repositories -->
+<!--
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>jms</artifactId>
@@ -51,6 +46,12 @@
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.8.1.GA</version>
+        </dependency>
+-->
     </dependencies>
     <build>
         <plugins>

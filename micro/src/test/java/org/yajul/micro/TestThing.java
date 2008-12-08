@@ -1,5 +1,7 @@
 package org.yajul.micro;
 
+import org.yajul.micro.annotations.Component;
+
 /**
  * TODO: Add class level comments!
 * <br>

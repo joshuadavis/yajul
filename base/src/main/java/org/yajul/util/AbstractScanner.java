@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
@@ -132,7 +133,6 @@ public abstract class AbstractScanner {
         return ((URLClassLoader) classLoader).getURLs();
     }
 
-
     private void handleArchive(File file) throws IOException {
         log.debug("archive: " + file);
         ZipFile zip = new ZipFile(file);
@@ -158,5 +158,12 @@ public abstract class AbstractScanner {
         }
     }
 
-    abstract void handleItem(String name);
+    protected InputStream getResourceAsStream(String name) {
+        InputStream stream = classLoader.getResourceAsStream(name);
+        if (stream == null)
+            log.warn("Resource '" + name + "' not found.");
+        return stream;
+    }
+    
+    protected abstract void handleItem(String name);
 }

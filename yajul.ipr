@@ -85,6 +85,11 @@
     </profiles>
     <list size="0" />
   </component>
+  <component name="IntelliCalc">
+    <mode value="0" />
+    <system value="10" />
+    <angles value="deg" />
+  </component>
   <component name="JUnitProjectSettings">
     <option name="TEST_RUNNER" value="UI" />
   </component>
@@ -163,6 +168,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/root/pom.xml" />
         <option value="$PROJECT_DIR$/base/pom.xml" />
+        <option value="$PROJECT_DIR$/micro/pom.xml" />
       </list>
     </option>
   </component>
@@ -294,6 +300,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/micro/micro.iml" filepath="$PROJECT_DIR$/micro/micro.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/root.iml" filepath="$PROJECT_DIR$/idea/root.iml" />
       <module fileurl="file://$PROJECT_DIR$/yajul.iml" filepath="$PROJECT_DIR$/yajul.iml" />
     </modules>
@@ -328,43 +335,9 @@
     </option>
   </component>
   <component name="libraryTable">
-    <library name="log4j-1.2.12">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.12.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="javax.jms">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/javax.jms.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="slf4j">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.4.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.4.3.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.4.3-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.4.3-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="picocontainer">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/picocontainer-2.0.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/picocontainer-2.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="junit-3.8.1">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/junit-3.8.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -376,129 +349,70 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="scannotation">
+    <library name="Maven: javassist:javassist:3.8.1.GA">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/scannotation-1.0.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/javassist.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA.jar!/" />
       </CLASSES>
-      <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../../../java/scannotation-1.0.2/apidocs" />
-      </JAVADOC>
-      <SOURCES />
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA-sources.jar!/" />
+      </SOURCES>
     </library>
     <library name="Maven: junit:junit:3.8.1">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/junit/junit/3.8.1/junit-3.8.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.picocontainer:picocontainer:2.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.0/picocontainer-2.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.0/picocontainer-2.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.0/picocontainer-2.0-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.slf4j:slf4j-api:1.4.3">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: log4j:log4j:1.2.15">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.15/log4j-1.2.15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.15/log4j-1.2.15-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.15/log4j-1.2.15-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.mail:mail:1.4">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4/mail-1.4.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4/mail-1.4-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4/mail-1.4-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.activation:activation:1.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.jms:jms:1.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/jms/jms/1.1/jms-1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/jms/jms/1.1/jms-1.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/jms/jms/1.1/jms-1.1-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.slf4j:slf4j-log4j12:1.4.3">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.transaction:jta:1.0.1B">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.0.1B/jta-1.0.1B-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.0.1B/jta-1.0.1B-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.picocontainer:picocontainer:2.6">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/picocontainer/picocontainer/2.6/picocontainer-2.6.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/picocontainer/picocontainer/2.6/picocontainer-2.6-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/picocontainer/picocontainer/2.6/picocontainer-2.6-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/picocontainer/picocontainer/2.6/picocontainer-2.6-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
-  <UsedPathMacros>
-    <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
-  </UsedPathMacros>
 </project>
 
