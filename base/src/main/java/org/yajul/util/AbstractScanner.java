@@ -35,6 +35,8 @@ public abstract class AbstractScanner {
     protected String resourceName;
     protected ClassLoader classLoader;
     private boolean scanned = false;
+    private Set<String> paths = new HashSet<String>();
+    private boolean useParentDirectory = false;
 
     /**
      * Scans everything in the classpath where the specified resource is located.
@@ -62,20 +64,20 @@ public abstract class AbstractScanner {
     protected void scan() {
         if (scanned)
             return;
-        Set<String> paths = new HashSet<String>();
         if (resourceName == null) {
             for (URL url : getURLsFromClassLoader()) {
                 String urlPath = url.getFile();
                 if (urlPath.endsWith("/")) {
                     urlPath = urlPath.substring(0, urlPath.length() - 1);
                 }
-                paths.add(urlPath);
+                addPath(urlPath);
             }
         } else {
             try {
                 Enumeration<URL> urlEnum = classLoader.getResources(resourceName);
                 while (urlEnum.hasMoreElements()) {
-                    String urlPath = urlEnum.nextElement().getFile();
+                    URL url = urlEnum.nextElement();
+                    String urlPath = url.getFile();
                     urlPath = URLDecoder.decode(urlPath, "UTF-8");
                     if (urlPath.startsWith("file:")) {
                         // On windows urlpath looks like file:/C: on Linux file:/home
@@ -86,13 +88,15 @@ public abstract class AbstractScanner {
                         urlPath = urlPath.substring(0, urlPath.indexOf('!'));
                     } else {
                         File dirOrArchive = new File(urlPath);
-                        if (resourceName != null && resourceName.lastIndexOf('/') > 0) {
-                            //for META-INF/components.xml
+                        if (useParentDirectory &&
+                                resourceName != null &&
+                                resourceName.lastIndexOf('/') > 0) {
+                            //for META-INF/someresource.xyz
                             dirOrArchive = dirOrArchive.getParentFile();
                         }
                         urlPath = dirOrArchive.getParent();
                     }
-                    paths.add(urlPath);
+                    addPath(urlPath);
                 }
             }
             catch (IOException ioe) {
@@ -116,6 +120,12 @@ public abstract class AbstractScanner {
             }
         }
         scanned = true;
+    }
+
+    private void addPath(String urlPath) {
+        if (log.isDebugEnabled())
+            log.debug("addPath('" + urlPath + "')");
+        paths.add(urlPath);
     }
 
     protected URL[] getURLsFromClassLoader() {

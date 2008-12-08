@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Properties;
 
 /**
- * TODO: Document this test case here.
+ * tests the basic object factory methods
  */
 public class ObjectFactoryTest extends TestCase
 {

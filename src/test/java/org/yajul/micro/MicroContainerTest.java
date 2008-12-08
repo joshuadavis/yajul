@@ -5,11 +5,12 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
+import java.net.URL;
 
-import org.yajul.util.ReflectionUtil;
-import org.yajul.jmx.JmxBridge;
 import org.picocontainer.ComponentAdapter;
+import org.yajul.jmx.JmxBridge;
 
 /**
  * Test microcontainer behavior.
@@ -29,7 +30,7 @@ public class MicroContainerTest extends TestCase {
 
         List one = mc.getComponent(List.class);
         List two = mc.getComponent(List.class);
-        
+
         assertSame(one,two);
     }
 
@@ -64,7 +65,7 @@ public class MicroContainerTest extends TestCase {
         ComponentAdapter<?> adapter = container.getComponentAdapter(JmxBridge.class);
         assertNotNull(adapter);
     }
-    
+
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }

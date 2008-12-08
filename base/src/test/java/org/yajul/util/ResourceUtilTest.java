@@ -24,7 +24,7 @@ public class ResourceUtilTest extends TestCase
 
     public void testLoadProperties() throws Exception
     {
-        Properties props = ResourceUtil.loadProperties("test-properties.properties");
+        Properties props = ResourceUtil.loadProperties("org/yajul/util/test-properties.properties");
         assertEquals("one",props.getProperty("this"));
         assertEquals("two",props.getProperty("that"));
         assertEquals(2,props.size());
@@ -35,7 +35,7 @@ public class ResourceUtilTest extends TestCase
         props = ResourceUtil.loadProperties("test-package-properties.properties",null,this.getClass());
         assertNotNull(props);
 
-        Properties defaults = ResourceUtil.loadProperties("test-properties.properties");
+        Properties defaults = ResourceUtil.loadProperties("org/yajul/util/test-properties.properties");
         props = ResourceUtil.loadProperties("test-package-properties.properties",defaults,this.getClass());
         assertEquals("one",props.getProperty("this"));
         assertEquals("overridden",props.getProperty("that"));
@@ -48,13 +48,13 @@ public class ResourceUtilTest extends TestCase
 
     public void testExists() throws Exception
     {
-        assertTrue(ResourceUtil.exists("test-properties.properties"));
+        assertTrue(ResourceUtil.exists("org/yajul/util/test-properties.properties"));
         assertFalse(ResourceUtil.exists("this-does-not-exist-either.props"));
     }
 
     public void testGetResource() throws Exception
     {
-        byte[] bytes = ResourceUtil.resourceAsBytes("test-properties.properties");
+        byte[] bytes = ResourceUtil.resourceAsBytes("org/yajul/util/test-properties.properties");
         assertNotNull(bytes);
         bytes = ResourceUtil.resourceAsBytes("foo-nothing-here.properties");
         assertNull(bytes);

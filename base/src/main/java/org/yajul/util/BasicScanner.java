@@ -1,5 +1,8 @@
 package org.yajul.util;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import java.util.List;
 import java.util.LinkedList;
 
@@ -12,6 +15,7 @@ import java.util.LinkedList;
  * Time: 12:22:34 PM
  */
 public class BasicScanner extends AbstractScanner {
+    private static Logger log = LoggerFactory.getLogger(BasicScanner.class);
     private List<String> items = new LinkedList<String>();
 
     public BasicScanner(String resourceName) {
@@ -23,6 +27,8 @@ public class BasicScanner extends AbstractScanner {
     }
 
     void handleItem(String name) {
+        if (log.isDebugEnabled())
+            log.debug("handleItem('" + name + "')");
         items.add(name);
     }
 
