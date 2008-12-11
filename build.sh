@@ -135,8 +135,5 @@ findJava
 
 findMaven
 
-
-cd $SCRIPT_DIR/root
-$M2_HOME/bin/mvn install
 cd $SCRIPT_DIR
 $M2_HOME/bin/mvn clean package site

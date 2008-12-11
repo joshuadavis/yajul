@@ -1,4 +1,3 @@
-
 package org.yajul.io;
 
 import java.io.ByteArrayInputStream;

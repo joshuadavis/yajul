@@ -2,8 +2,6 @@ package org.yajul.util;
 
 import junit.framework.TestCase;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 

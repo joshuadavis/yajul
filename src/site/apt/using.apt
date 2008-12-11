@@ -16,6 +16,6 @@ YAJUL Features
   
   * {{{./apidocs/index.html?org/yajul/log/package-summary.html}java.util.logging -> Log4j adapter}}
 
-  * {{{./apidocs/index.html?org/yajul/log/package-summary.html}JMX -> EJB bridge, other JMX helpers}}
+  * {{{./apidocs/index.html?org/yajul/jmx/package-summary.html}JMX -> EJB bridge, other JMX helpers}}
 
-  * {{{./apidocs/index.html?org/yajul/log/package-summary.html}IO helper classes, streams.}}
+  * {{{./apidocs/index.html?org/yajul/io/package-summary.html}IO helper classes, streams.}}

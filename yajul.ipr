@@ -299,9 +299,6 @@
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/micro/micro.iml" filepath="$PROJECT_DIR$/micro/micro.iml" />
-      <module fileurl="file://$PROJECT_DIR$/idea/root.iml" filepath="$PROJECT_DIR$/idea/root.iml" />
       <module fileurl="file://$PROJECT_DIR$/yajul.iml" filepath="$PROJECT_DIR$/yajul.iml" />
     </modules>
   </component>
@@ -321,6 +318,111 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://yajul.svn.sourceforge.net/svnroot/yajul/branches">
+                    <value>
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134559244" />
+                          <option name="revision" value="415" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/branches/josh-sandbox" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134559244" />
+                          <option name="revision" value="415" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/branches/kent-sandbox" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134236817" />
+                          <option name="revision" value="414" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/branches/testbranch" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134236817" />
+                          <option name="revision" value="414" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/branches/yajul" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134236817" />
+                          <option name="revision" value="414" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/branches/yajul-1.0" />
+                        </SvnBranchItem>
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox">
+                    <value>
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1221879817280" />
+                          <option name="revision" value="431" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/examples" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134970213" />
+                          <option name="revision" value="417" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/yajul-ee5" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134559244" />
+                          <option name="revision" value="415" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/seam-template" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1188441232292" />
+                          <option name="revision" value="391" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/yajul-site" />
+                        </SvnBranchItem>
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="https://yajul.svn.sourceforge.net/svnroot/yajul/tags">
+                    <value>
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1207134654365" />
+                          <option name="revision" value="416" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/tags/yajul-1.0" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1089112096000" />
+                          <option name="revision" value="331" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/tags/arelease" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1057680683000" />
+                          <option name="revision" value="140" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/tags/R00-00" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1032658954000" />
+                          <option name="revision" value="39" />
+                          <option name="url" value="https://yajul.svn.sourceforge.net/svnroot/yajul/tags/devel000" />
+                        </SvnBranchItem>
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://yajul.svn.sourceforge.net/svnroot/yajul/branches" />
+                  <option value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox" />
+                  <option value="https://yajul.svn.sourceforge.net/svnroot/yajul/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://yajul.svn.sourceforge.net/svnroot/yajul/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="myVersion" value="124" />
   </component>
   <component name="VcsDirectoryMappings">
@@ -335,20 +437,6 @@
     </option>
   </component>
   <component name="libraryTable">
-    <library name="javax.jms">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/javax.jms.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jta">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jta.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="Maven: javassist:javassist:3.8.1.GA">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA.jar!/" />
@@ -411,6 +499,28 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/picocontainer/picocontainer/2.6/picocontainer-2.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.jms:jms:1.1">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/jms/jms/1.1/jms-1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/jms/jms/1.1/jms-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.transaction:jta:1.0.1B">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/transaction/jta/1.0.1B/jta-1.0.1B-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/transaction/jta/1.0.1B/jta-1.0.1B-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
