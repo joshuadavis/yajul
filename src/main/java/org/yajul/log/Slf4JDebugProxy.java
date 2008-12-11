@@ -1,6 +1,7 @@
 package org.yajul.log;
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -12,17 +13,17 @@ import java.lang.reflect.InvocationTargetException;
  * Date: Aug 12, 2008
  * Time: 11:18:17 AM
  */
-public class Log4JDebugProxy implements java.lang.reflect.InvocationHandler {
+public class Slf4JDebugProxy implements java.lang.reflect.InvocationHandler {
     private Object target;
     private Logger log;
 
-    public Log4JDebugProxy(Object target) {
+    public Slf4JDebugProxy(Object target) {
         this.target = target;
-        log = Logger.getLogger(target.getClass());
+        log = LoggerFactory.getLogger(target.getClass());
     }
 
     public static <T> T create(Class<T> interfaceClass, Object target) {
-        Log4JDebugProxy proxy = new Log4JDebugProxy(target);
+        Slf4JDebugProxy proxy = new Slf4JDebugProxy(target);
         Class targetClass = target.getClass();
         Object proxyInstance = java.lang.reflect.Proxy.newProxyInstance(
                 targetClass.getClassLoader(),

@@ -27,7 +27,7 @@ function findJava {
             ;;
         Linux*)
             if [ "${JAVA_HOME:-}" == "" ] ; then
-                findJavaHome '/usr/java'
+                findJavaHome '/usr/java' '/opt'
                 JAVA_HOME="$javadir/$javaname"
             else
                 JAVA_HOME=$JAVA_HOME
@@ -67,7 +67,7 @@ function findMaven {
     case "$UNAME" in
         CYGWIN*)
             if [ "${M2_HOME:-}" == "" ]; then
-                findMavenHome '/cygdrive/c' '/cygdrive/c/java'
+                findMavenHome '/opt' '/cygdrive/c' '/cygdrive/c/java'
                 M2_HOME="$mavendir/$mavenname"
             else
                 M2_HOME=`cygpath --mixed $M2_HOME`

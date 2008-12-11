@@ -15,7 +15,7 @@ import java.lang.annotation.Annotation;
  * Date: Sep 7, 2008
  * Time: 10:49:49 AM
  */
-public class ComponentScanner extends AnnotationScanner {
+public class ComponentScanner extends AbstractAnnotationScanner {
     private static final Logger log = LoggerFactory.getLogger(ComponentScanner.class);
     private MicroContainer microContainer;
 

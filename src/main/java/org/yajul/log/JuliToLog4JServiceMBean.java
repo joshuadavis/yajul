@@ -1,6 +1,6 @@
 package org.yajul.log;
 
-import org.yajul.jmx.Lifecycle;
+import org.yajul.util.Lifecycle;
 
 /**
  * JMX Interface for the Juli->Log4J MBean.

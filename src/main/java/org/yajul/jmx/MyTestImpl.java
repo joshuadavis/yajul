@@ -1,5 +1,7 @@
 package org.yajul.jmx;
 
+import org.yajul.util.Lifecycle;
+
 /**
  * Test implementation for JmxBridge
  * <br>User: Joshua Davis

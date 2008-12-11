@@ -40,7 +40,7 @@ public class Log4JDebugProxyTest extends TestCase {
     public void testObjectStream() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
-        ObjectOutput out = Log4JDebugProxy.create(ObjectOutput.class,oos);
+        ObjectOutput out = Slf4JDebugProxy.create(ObjectOutput.class,oos);
         Thingie t = new Thingie(42,"fourty two");
         out.writeObject(t);
         out.close();

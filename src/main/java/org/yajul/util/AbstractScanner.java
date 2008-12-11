@@ -89,6 +89,8 @@ public abstract class AbstractScanner {
                         urlPath = urlPath.substring(0, urlPath.indexOf('!'));
                     } else {
                         File dirOrArchive = new File(urlPath);
+                        // When the tag resource is in the META-INF directory
+                        // we will want to search the parent directory.
                         if (useParentDirectory &&
                                 resourceName != null &&
                                 resourceName.lastIndexOf('/') > 0) {
@@ -108,7 +110,8 @@ public abstract class AbstractScanner {
 
         for (String urlPath : paths) {
             try {
-                log.info("scanning: " + urlPath);
+                if (log.isDebugEnabled())
+                   log.debug("scanning: " + urlPath);
                 File file = new File(urlPath);
                 if (file.isDirectory()) {
                     handleDirectory(file, null);
@@ -134,7 +137,8 @@ public abstract class AbstractScanner {
     }
 
     private void handleArchive(File file) throws IOException {
-        log.debug("archive: " + file);
+        if (log.isDebugEnabled())
+           log.debug("archive: " + file);
         ZipFile zip = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zip.entries();
         while (entries.hasMoreElements()) {
@@ -146,7 +150,8 @@ public abstract class AbstractScanner {
     }
 
     private void handleDirectory(File file, String path) {
-        log.debug("directory: " + file);
+        if (log.isDebugEnabled())
+           log.debug("directory: " + file);
         for (File child : file.listFiles()) {
             String newPath = path == null ?
                     child.getName() : path + '/' + child.getName();

@@ -3,6 +3,7 @@ package org.yajul.jmx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yajul.micro.MicroContainer;
+import org.yajul.util.Lifecycle;
 
 /**
  * A proxy that instantiates the implementation JMX MBean when needed.

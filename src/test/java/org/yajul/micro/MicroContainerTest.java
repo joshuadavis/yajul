@@ -6,11 +6,9 @@ import junit.framework.TestSuite;
 import junit.framework.Assert;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
-import java.net.URL;
 
-import org.picocontainer.ComponentAdapter;
+import org.yajul.micro.annotations.Component;
 
 /**
  * Test microcontainer behavior.
@@ -64,6 +62,14 @@ public class MicroContainerTest extends TestCase {
         MicroContainer container = SingletonManager.getInstance().getDefaultContainer();
     }
 
+    public void testAnnotations() {
+        AnnotationScanner scanner = new AnnotationScanner("test-bootstrap.properties");
+        scanner.addAnnotation(Component.class);
+        Collection<String> names = scanner.getNames();
+        System.out.println(names);
+        Assert.assertTrue(names.contains("org/yajul/micro/AnnotatedComponent.class"));
+    }
+    
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }

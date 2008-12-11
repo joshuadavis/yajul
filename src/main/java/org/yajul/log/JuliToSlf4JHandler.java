@@ -1,7 +1,7 @@
 package org.yajul.log;
 
-import org.apache.log4j.Priority;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.logging.Handler;
@@ -9,30 +9,53 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * A JULI (java.util.logging) handler that redirects java.util.logging messages to Log4J
+ * A JULI (java.util.logging) handler that redirects java.util.logging messages to Slf4J
  * http://wiki.apache.org/myfaces/Trinidad_and_Common_Logging
  * <br>
  * User: josh
  * Date: Jun 4, 2008
  * Time: 3:31:21 PM
  */
-public class JuliToLog4jHandler extends Handler {
+public class JuliToSlf4JHandler extends Handler {
 
     public void publish(LogRecord record) {
-        org.apache.log4j.Logger log4j = getTargetLogger(record.getLoggerName());
-        Priority priority = toLog4j(record.getLevel());
-        log4j.log(priority, toLog4jMessage(record), record.getThrown());
+        Logger slf4j = getTargetLogger(record.getLoggerName());
+        LogLevel level = LogLevel.toLogLevel(record.getLevel());
+        switch(level)
+        {
+            case ERROR:
+                if (slf4j.isErrorEnabled())
+                    slf4j.error(toMessage(record));
+                break;
+            case WARN:
+                if (slf4j.isWarnEnabled())
+                    slf4j.warn(toMessage(record));
+                break;
+            case INFO:
+                if (slf4j.isInfoEnabled())
+                    slf4j.info(toMessage(record));
+                break;
+            case DEBUG:
+                if (slf4j.isDebugEnabled())
+                    slf4j.debug(toMessage(record));
+                break;
+            case TRACE:
+                if (slf4j.isTraceEnabled())
+                    slf4j.trace(toMessage(record));
+                break;
+            case OFF: break; // Do nothing, OFF means no logging.
+        }
     }
 
     static Logger getTargetLogger(String loggerName) {
-        return Logger.getLogger(loggerName);
+        return LoggerFactory.getLogger(loggerName);
     }
 
     public static Logger getTargetLogger(Class clazz) {
         return getTargetLogger(clazz.getName());
     }
-    
-    private String toLog4jMessage(LogRecord record) {
+
+    private String toMessage(LogRecord record) {
         String message = record.getMessage();
         // Format message
         try {
@@ -51,26 +74,6 @@ public class JuliToLog4jHandler extends Handler {
             // ignore Exception
         }
         return message;
-    }
-
-    private org.apache.log4j.Level toLog4j(Level level) {
-        LogLevel logLevel = LogLevel.toLogLevel(level);
-        switch(logLevel)
-        {
-            case ERROR:
-                return org.apache.log4j.Level.ERROR;
-            case WARN:
-                return org.apache.log4j.Level.WARN;
-            case INFO:
-                return org.apache.log4j.Level.INFO;
-            case DEBUG:
-                return org.apache.log4j.Level.DEBUG;
-            case TRACE:
-                return org.apache.log4j.Level.TRACE;
-            case OFF:
-            default:
-                return org.apache.log4j.Level.OFF;
-        }
     }
 
     @Override

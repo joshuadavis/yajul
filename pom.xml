@@ -29,9 +29,13 @@
         </site>
     </distributionManagement>
     <properties>
-        <version.yajul>0.7-SNAPSHOT</version.yajul>
         <compileSource>1.5</compileSource>
+        <!-- Version numbers extracted as properties. -->
+        <version.yajul>0.7-SNAPSHOT</version.yajul>
         <version.picocontainer>2.6</version.picocontainer>
+        <version.junit>3.8.1</version.junit>
+        <version.slf4j>1.4.3</version.slf4j>
+        <version.javassist>3.8.1.GA</version.javassist>
     </properties>
     <repositories>
         <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
@@ -46,7 +50,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>3.8.1</version>
+                <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -58,7 +62,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.4.3</version>
+                <version>${version.slf4j}</version>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
@@ -87,12 +91,9 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.4.3</version>
+                <version>${version.slf4j}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- Java APIs - These must be installed in the local
-          repository because they are not yet in the global
-          Maven repositories -->
             <dependency>
                 <groupId>javax.jms</groupId>
                 <artifactId>jms</artifactId>
@@ -106,12 +107,7 @@
             <dependency>
                 <groupId>javassist</groupId>
                 <artifactId>javassist</artifactId>
-                <version>3.8.1.GA</version>
-            </dependency>
-            <dependency>
-                <groupId>org.yajul</groupId>
-                <artifactId>yajul-base</artifactId>
-                <version>${version.yajul}</version>
+                <version>${version.javassist}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -129,6 +125,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
+            <optional>true</optional>
         </dependency>
         <!-- At test time we'll use log4j as the SLF4J implementation. -->
         <dependency>
@@ -139,10 +136,12 @@
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>jms</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.picocontainer</groupId>
@@ -151,10 +150,11 @@
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
-        </dependency>        
+            <optional>true</optional>
+        </dependency>
     </dependencies>
     <build>
-        <plugins>  
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -175,39 +175,11 @@
                     <attach>false</attach>
                 </configuration>
             </plugin>
-<!--
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
                 <configuration>
                     <locales>en</locales>
                 </configuration>
-            </plugin>
--->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.picocontainer</groupId>
-                                    <artifactId>picocontainer</artifactId>
-                                    <version>${picocontainer.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>target/dependencies</outputDirectory>
-                                    <destFileName>picocontainer.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -236,11 +208,10 @@
                     <targetJdk>${compileSource}</targetJdk>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </reporting>    
+    </reporting>
 </project>
