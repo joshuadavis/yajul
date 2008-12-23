@@ -5,6 +5,7 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
+        <setting name="targe-facet" value="" />
         <datasource-mapping />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" optional="false" version="1.0" />
       </configuration>
@@ -22,8 +23,6 @@
           <setting name="EXPLODED_ENABLED" value="true" />
           <setting name="JAR_URL" value="file://" />
           <setting name="JAR_ENABLED" value="false" />
-          <setting name="BUILD_MODULE_ON_FRAME_DEACTIVATION" value="false" />
-          <setting name="BUILD_EXTERNAL_DEPENDENCIES" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
           <setting name="RUN_EJB_VALIDATION" value="true" />
         </building>
@@ -37,7 +36,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="bootstrap" level="project" />
+    <orderEntry type="module" module-name="bootstrap" />
     <orderEntry type="library" name="embedded" level="project" />
     <orderEntry type="module-library">
       <library>
@@ -48,7 +47,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntryProperties />
   </component>
 </module>
 
