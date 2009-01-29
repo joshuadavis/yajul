@@ -297,4 +297,22 @@ public class ReflectionUtil {
             return null;
         }
     }
+
+    /**
+     * Create an instance, return null if it doesn't work.
+     * @param implementationClassName the class name to instantiate
+     * @param type the type, usually an interface
+     * @param <T> the type
+     * @return an instance, or null if it doesn't work
+     */
+    public static <T> T createInstanceNoThrow(String implementationClassName,Class<T> type) {
+        try {
+            ClassLoader loader = getCurrentClassLoader();
+            Class implementationClass = loader.loadClass(implementationClassName);
+            return type.cast(implementationClass.newInstance());
+        } catch (Exception e) {
+            log.debug("Unable to create an instance of " + implementationClassName + " due to " + e);
+            return null;
+        }
+    }
 }

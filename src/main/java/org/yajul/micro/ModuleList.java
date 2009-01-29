@@ -64,7 +64,7 @@ public class ModuleList {
             }
         });
     }
-
+    
     /**
      * @return the number of modules in the list
      */

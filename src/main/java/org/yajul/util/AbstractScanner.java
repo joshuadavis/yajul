@@ -57,11 +57,6 @@ public abstract class AbstractScanner {
                 .replace('/', '.').replace('\\', '.');
     }
 
-    public static String filenameToPackage(String filename) {
-        return filename.substring(0, filename.lastIndexOf(".class"))
-                .replace('/', '.').replace('\\', '.');
-    }
-
     protected void scan() {
         if (scanned)
             return;
@@ -127,8 +122,8 @@ public abstract class AbstractScanner {
     }
 
     private void addPath(String urlPath) {
-        if (log.isDebugEnabled())
-            log.debug("addPath('" + urlPath + "')");
+        if (log.isTraceEnabled())
+            log.trace("addPath('" + urlPath + "')");
         paths.add(urlPath);
     }
 
@@ -137,8 +132,8 @@ public abstract class AbstractScanner {
     }
 
     private void handleArchive(File file) throws IOException {
-        if (log.isDebugEnabled())
-           log.debug("archive: " + file);
+        if (log.isTraceEnabled())
+           log.trace("archive: " + file);
         ZipFile zip = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zip.entries();
         while (entries.hasMoreElements()) {
@@ -150,8 +145,8 @@ public abstract class AbstractScanner {
     }
 
     private void handleDirectory(File file, String path) {
-        if (log.isDebugEnabled())
-           log.debug("directory: " + file);
+        if (log.isTraceEnabled())
+           log.trace("directory: " + file);
         for (File child : file.listFiles()) {
             String newPath = path == null ?
                     child.getName() : path + '/' + child.getName();

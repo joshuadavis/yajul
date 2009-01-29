@@ -6,6 +6,7 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.util.AbstractScanner;
 
 import java.util.Map;
 
@@ -50,9 +51,11 @@ public class MicroContainer {
     public static Object processName(String name, ClassLoader classLoader) {
 
         try {
-            return classLoader.loadClass(name);
+            String n = name.contains("/") ? AbstractScanner.filenameToClassname(name) : name;
+            return classLoader.loadClass(n);
         } catch (ClassNotFoundException e) {
-            log.debug(name + " is not a class, leaving it as a string");
+            if (log.isTraceEnabled())
+                log.trace(name + " is not a class, leaving it as a string");
             return name;
         }
     }

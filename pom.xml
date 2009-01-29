@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>http://yajul.sourceforge.net</url>
     <description>Yet Another Java Utility Library for Java Enterprise 5.</description>

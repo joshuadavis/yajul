@@ -1,6 +1,7 @@
 package org.yajul.micro;
 
 import com.google.inject.Inject;
+import org.yajul.micro.annotations.Component;
 
 /**
  * Test component
@@ -9,6 +10,7 @@ import com.google.inject.Inject;
  * Date: Jan 28, 2009
  * Time: 5:50:30 PM
  */
+@Component(key="TimeMachine")
 public class Delorian implements TimeMachine {
     private FluxCapacitor capacitor;
 

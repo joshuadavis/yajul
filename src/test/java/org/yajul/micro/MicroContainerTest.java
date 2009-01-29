@@ -11,6 +11,7 @@ import java.util.*;
 import org.yajul.micro.annotations.Component;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import com.google.inject.Injector;
 import com.google.inject.name.Names;
 
 /**
@@ -83,11 +84,19 @@ public class MicroContainerTest extends TestCase {
         Assert.assertTrue(names.contains("org/yajul/micro/AnnotatedComponent.class"));
     }
 
+    public void testComponentScanner() {
+        ComponentScanner scanner = new ComponentScanner("test-bootstrap.properties");
+        Injector injector = scanner.createInjector();
+        assertNotNull(injector.getInstance(AnnotatedComponent.class));
+        assertNotNull(injector.getInstance(TestThing.class));
+    }
+
     public void testSingletonManager() {
         SingletonManager sm = SingletonManager.getInstance();
         SingletonManager other = sm.getComponent(SingletonManager.class);
         assertSame(sm,other);
     }
+    
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }

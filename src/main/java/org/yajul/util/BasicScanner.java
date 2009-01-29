@@ -28,8 +28,8 @@ public class BasicScanner extends AbstractScanner {
 
     @Override
     protected void handleItem(String name) {
-        if (log.isDebugEnabled())
-            log.debug("handleItem('" + name + "')");
+        if (log.isTraceEnabled())
+            log.trace("handleItem('" + name + "')");
         items.add(name);
     }
 
