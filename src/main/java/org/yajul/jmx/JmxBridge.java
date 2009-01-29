@@ -68,6 +68,7 @@ public class JmxBridge {
 
     public JmxBridge() {
         proxiesByImplementationClassName = new HashMap<String, Proxy>();
+        implementationProvider = new DefaultImplementationProvider();
         log.info("created.");
     }
 
@@ -141,7 +142,8 @@ public class JmxBridge {
      */
     public void initializeProxies(ImplementationProvider provider) throws Exception {
         synchronized (this) {
-            this.implementationProvider = provider;
+            if (provider != null)
+                this.implementationProvider = provider;
             for (Proxy proxy : proxiesByImplementationClassName.values()) {
                 proxy.initialize();
             }
@@ -156,7 +158,7 @@ public class JmxBridge {
      * @throws Exception if the proxies created by the MBeans could not be initialized.
      */
     public void initializeProxies() throws Exception {
-        initializeProxies(new DefaultImplementationProvider());
+        initializeProxies(null);
     }
 
     private Proxy doGetProxy(String implementationClassName) {
