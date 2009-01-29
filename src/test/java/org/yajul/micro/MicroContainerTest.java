@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.*;
 
 import org.yajul.micro.annotations.Component;
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.google.inject.name.Names;
 
 /**
  * Test microcontainer behavior.
@@ -21,10 +24,15 @@ public class MicroContainerTest extends TestCase {
         super(n);
     }
 
-    public void testCacheing()
+    public void testSingleton()
     {
-        MicroContainer mc = new MicroContainer();
-        mc.addComponent(List.class, ArrayList.class);
+        ModuleList modules = new ModuleList();
+        modules.add(new AbstractModule() {
+            protected void configure() {
+                bind(List.class).to(ArrayList.class).in(Scopes.SINGLETON);
+            }
+        });
+        MicroContainer mc = new MicroContainer(modules.createInjector());
 
         List one = mc.getComponent(List.class);
         List two = mc.getComponent(List.class);
@@ -32,34 +40,39 @@ public class MicroContainerTest extends TestCase {
         Assert.assertSame(one,two);
     }
 
-    public void testAutoAdd()
+    public void testNamedConstant()
     {
-        MicroContainer mc = new MicroContainer();
-        // MicroContainer will automatically add component implementations.
-        List one = mc.getComponent(ArrayList.class);
-        List two = mc.getComponent(ArrayList.class);
-        Assert.assertNotNull(one);
-        Assert.assertNotNull(two);
-        Assert.assertSame(one,two);
+        ModuleList modules = new ModuleList();
+        modules.add(new AbstractModule() {
+            protected void configure() {
+                bind(Integer.class).annotatedWith(Names.named("magicNumber")).toInstance(42);
+            }
+        });
+        MicroContainer mc = new MicroContainer(modules.createInjector());
+        assertEquals(mc.getComponent(Integer.class,"magicNumber").intValue(),42);
     }
 
-    public void testBootstrap() throws IOException {
+    public void testModuleList() throws Exception {
+        ModuleList modules = new ModuleList();
+        modules.addClassName("org.yajul.micro.TestConfig");
+        TestThing theThing = new TestThing();
+        modules.addInstance(TestThing.class,theThing);
+        assertTrue(modules.size() > 0);
+        MicroContainer mc = new MicroContainer(modules.createInjector());
+        assertEquals(TreeSet.class,mc.getComponent(Set.class).getClass());
+        assertSame(theThing,mc.getComponent(TestThing.class));
+    }
+    
+    public void testResourceModule() throws IOException {
         // MicroContainer can bootstrap itself from properties files.
-        MicroContainer mc = new MicroContainer();
-        mc.bootstrap("test-bootstrap.properties",Thread.currentThread().getContextClassLoader());
+        ModuleList modules = new ModuleList();
+        modules.add(new ResourceModule("test-bootstrap.properties"));
+        MicroContainer mc = new MicroContainer(modules.createInjector());
         System.out.println(mc);
-        assertEquals(mc.getComponent("magicNumber"),42L);
-        Assert.assertSame(mc.getComponentAdapter(Set.class).getComponentImplementation(), TreeSet.class);
-        Assert.assertSame(mc.getComponentAdapter(Collection.class).getComponentImplementation(),HashSet.class);
-        Assert.assertSame(mc.getComponentAdapter("testconfig").getComponentImplementation(),TestConfig.class);
-        TestConfig t = (TestConfig) mc.getComponent("testconfig");
-        Assert.assertFalse(t.isStarted());
-        mc.start();
-        Assert.assertTrue(t.isStarted());
-    }
-
-    public void testSingletonManager() {
-        MicroContainer container = SingletonManager.getInstance().getDefaultContainer();
+        assertEquals(HashSet.class,mc.getComponent(Collection.class).getClass()); 
+        assertEquals(TreeSet.class,mc.getComponent(Set.class).getClass());
+        assertEquals(Delorian.class,mc.getComponent(TimeMachine.class).getClass());
+        assertEquals(1985,mc.getComponent(TimeMachine.class).getDestinationYear());
     }
 
     public void testAnnotations() {
@@ -69,7 +82,12 @@ public class MicroContainerTest extends TestCase {
         System.out.println(names);
         Assert.assertTrue(names.contains("org/yajul/micro/AnnotatedComponent.class"));
     }
-    
+
+    public void testSingletonManager() {
+        SingletonManager sm = SingletonManager.getInstance();
+        SingletonManager other = sm.getComponent(SingletonManager.class);
+        assertSame(sm,other);
+    }
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }

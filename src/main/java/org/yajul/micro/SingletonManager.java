@@ -1,12 +1,10 @@
 package org.yajul.micro;
 
-import org.picocontainer.Characteristics;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.util.ReflectionUtil;
 
-import java.io.IOException;
+import com.google.inject.*;
 
 /**
  * One singleton to rule them all.  This is actually a single level hierarchy of micro-containers.
@@ -27,89 +25,55 @@ public class SingletonManager {
      */
     public static final String BOOTSTRAP_RESOURCE_NAME = "singleton-bootstrap.properties";
 
-    private static final String DEFAULT = "_DEFAULT";
-
-    private static SingletonManager ourInstance;
+    private static SingletonManager INSTANCE = new SingletonManager();
 
     /**
      * The parent MicroContainer, contains child containers so you can have different
-     * sets of singletons.   Bootstrap components
+     * sets of singletons.
      */
-    private MicroContainer parent;
+    private MicroContainer container;
 
     public static SingletonManager getInstance() {
-        synchronized (SingletonManager.class) {
-            if (ourInstance == null)
-                ourInstance = new SingletonManager();
-            return ourInstance;
-        }
+        return INSTANCE;
     }
 
-    public static PicoContainer getSingletonContainer(String context) {
-        return getInstance().getContainer(context);
+    public static <T> T getSingleton(Class<T> componentType) {
+        return getInstance().getComponent(componentType);
     }
 
-    public static <T> T getDefaultSingleton(Class<T> componentType) {
-        return getInstance().findOrCreateComponent(componentType);
+    public <T> T getComponent(Class<T> componentType) {
+        return getContainer().getComponent(componentType);
     }
 
-    public static MicroContainer defaultContainer() {
-        return getInstance().getDefaultContainer();
-    }
-
-    private <T> T findOrCreateComponent(Class<T> componentType) {
-        MutablePicoContainer container = getDefaultContainer();
-        synchronized (container)
-        {
-            if (container.getComponentAdapter(componentType) == null)
-                container.addComponent(componentType);
-            return container.getComponent(componentType);
-        }
-    }
-
-
-    private MicroContainer getContainer(String context) {
-        synchronized (this)
-        {
-            if (parent == null) {
-                log.info("Creating parent container...");
-                parent = new MicroContainer("SingletonManager");
-                try {
-                    log.info("Bootstrapping...");
-                    parent.addComponent(this);
-                    parent.bootstrap(BOOTSTRAP_RESOURCE_NAME,Thread.currentThread().getContextClassLoader());
-                } catch (IOException e) {
-                    throw new IllegalStateException("Unable to bootstrap due to " + e,e);
-                }
-            }
-            Object component = parent.getComponent(context);
-            if (component == null)
-            {
-                log.info("Creating context container " + context + " ...");
-                MicroContainer child = new MicroContainer(context,parent);
-                child.change(Characteristics.SINGLE);
-                parent.addComponent(context,child);
-                return child;
-            }
-            else
-                return (MicroContainer) component;
-        }
+    public static MicroContainer container() {
+        return getInstance().getContainer();
     }
 
     private SingletonManager() {
     }
 
     /**
-     * @return the MicroContainer where all the 'default singleton' components are registered.
+     * @return the MicroContainer where all the components are registered.
      */
-    public MicroContainer getDefaultContainer() {
-        return getContainer(DEFAULT);
-    }
-
-    /**
-     * @return the parent MicroContainer, where all the bootstrap singleton components are registered.
-     */
-    public MicroContainer getParent() {
-        return parent;
+    public MicroContainer getContainer() {
+        synchronized (this)
+        {
+            if (container == null) {
+                log.info("Creating micro container...");
+                ModuleList modules = new ModuleList();
+                modules.addInstance(SingletonManager.class,this);
+                modules.add(new ResourceModule(
+                        "org/yajul/micro/" + BOOTSTRAP_RESOURCE_NAME, 
+                        ReflectionUtil.getCurrentClassLoader(),
+                        Scopes.SINGLETON));
+                modules.add(new ResourceModule(
+                        BOOTSTRAP_RESOURCE_NAME,
+                        ReflectionUtil.getCurrentClassLoader(),
+                        Scopes.SINGLETON));
+                Injector injector = modules.createInjector();
+                container = new MicroContainer(injector);
+            }
+        }
+        return container;
     }
 }

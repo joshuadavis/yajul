@@ -19,13 +19,13 @@ public class Proxy implements Lifecycle {
     private boolean started;
     private boolean implementationStarted;
     private Exception exception;
-    private MicroContainer container;
+    private JmxBridge bridge;
 
-    Proxy(String implementationClassName, MicroContainer implementationContainer) {
+    Proxy(String implementationClassName,JmxBridge bridge) {
         this.implementationClassName = implementationClassName;
+        this.bridge = bridge;
         started = false;
         implementationStarted = false;
-        this.container = implementationContainer;
     }
 
     public String getImplementationClassName() {
@@ -89,7 +89,7 @@ public class Proxy implements Lifecycle {
             String className = getImplementationClassName();
             try {
                 log.info("initialize() : Looking up implementation class " + className + " ...");
-                implementationClass = Thread.currentThread().getContextClassLoader().loadClass(className);
+                implementationClass = bridge.getImplementationClass(className);
                 // Call the start method (delayed) if the proxy is in the started state.
                 log.info("initialize() : " + className + " created.");
                 if (started) {
@@ -105,7 +105,7 @@ public class Proxy implements Lifecycle {
     private void startImplementation() throws Exception {
         if (implementationClass != null && implementation == null) {
             log.info("Instantiating " + implementationClass.getName() + " ...");
-            Object impl = container.getComponent(implementationClass);
+            Object impl = bridge.getImplementation(implementationClass);
             if (!(impl instanceof Lifecycle))
                 throw new ClassCastException("Class " + implementationClass.getName() + " doesn't implement " + Lifecycle.class.getName());
             implementation = (Lifecycle) impl;

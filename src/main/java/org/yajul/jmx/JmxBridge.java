@@ -9,8 +9,6 @@ package org.yajul.jmx;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yajul.micro.MicroContainer;
-import org.yajul.micro.SingletonManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,18 +57,43 @@ public class JmxBridge {
     private static final Logger log = LoggerFactory.getLogger(JmxBridge.class);
 
     private Map<String, Proxy> proxiesByImplementationClassName;
-    private MicroContainer implementationContainer;
+    private ImplementationProvider implementationProvider;
+
+    private static JmxBridge INSTANCE = new JmxBridge();
 
     public static JmxBridge getInstance() {
-        return SingletonManager.getDefaultSingleton(JmxBridge.class);
+        // NOTE: This it's own singleton to decouple it from SingletonManager.
+        return INSTANCE;
     }
 
     public JmxBridge() {
         proxiesByImplementationClassName = new HashMap<String, Proxy>();
-        implementationContainer = SingletonManager.defaultContainer();
         log.info("created.");
     }
 
+    /**
+     * @return the implementation provider
+     */
+    public ImplementationProvider getImplementationProvider() {
+        synchronized (this) {
+            return implementationProvider;
+        }
+    }
+
+    /**
+     * Sets the implementation provider (e.g. a microcontainer for the JMX MBean implementations)
+     *
+     * @param implementationProvider the implementation provider
+     */
+    public void setImplementationProvider(ImplementationProvider implementationProvider) {
+        synchronized (this) {
+            this.implementationProvider = implementationProvider;
+        }
+    }
+
+    /**
+     * Stop all MBeans.  Clear everything.
+     */
     public void reset() {
         synchronized (this) {
             for (Proxy proxy : proxiesByImplementationClassName.values()) {
@@ -80,6 +103,12 @@ public class JmxBridge {
         }
     }
 
+    /**
+     * Return the proxy for the given MBean implementation.
+     *
+     * @param implementationClassName the implementation class
+     * @return the proxy
+     */
     public Proxy getProxy(String implementationClassName) {
         synchronized (this) {
             return doGetProxy(implementationClassName);
@@ -107,10 +136,12 @@ public class JmxBridge {
      * Initializes all the proxies.   Invoke this from a suitable class loading context.  For example, from
      * a startup Servlet.
      *
+     * @param provider class lookup / MBean factory
      * @throws Exception if the proxies created by the MBeans could not be initialized.
      */
-    public void initializeProxies() throws Exception {
+    public void initializeProxies(ImplementationProvider provider) throws Exception {
         synchronized (this) {
+            this.implementationProvider = provider;
             for (Proxy proxy : proxiesByImplementationClassName.values()) {
                 proxy.initialize();
             }
@@ -118,12 +149,30 @@ public class JmxBridge {
         log.info("initializeProxies() : completed.");
     }
 
+    /**
+     * Initializes all the proxies.   Invoke this from a suitable class loading context.  For example, from
+     * a startup Servlet.
+     *
+     * @throws Exception if the proxies created by the MBeans could not be initialized.
+     */
+    public void initializeProxies() throws Exception {
+        initializeProxies(new DefaultImplementationProvider());
+    }
+
     private Proxy doGetProxy(String implementationClassName) {
         Proxy proxy = proxiesByImplementationClassName.get(implementationClassName);
         if (proxy == null) {
-            proxy = new Proxy(implementationClassName,implementationContainer);
+            proxy = new Proxy(implementationClassName, this);
             proxiesByImplementationClassName.put(implementationClassName, proxy);
         }
         return proxy;
+    }
+
+    Class<?> getImplementationClass(String className) throws ClassNotFoundException {
+        return implementationProvider.getImplementationClass(className);
+    }
+
+    <T> T getImplementation(Class<T> implementationClass) {
+        return implementationProvider.getImplementation(implementationClass);
     }
 }

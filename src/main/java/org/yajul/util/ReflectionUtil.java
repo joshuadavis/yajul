@@ -36,6 +36,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Module;
+
 /**
  * Reflection utilities.
  * User: josh
@@ -56,8 +58,7 @@ public class ReflectionUtil {
     public static Map<Integer, String> getConstantNameMap(Class c) {
         Field[] fields = c.getFields();
         Map<Integer, String> map = new HashMap<Integer, String>();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 Object value;
                 try {
@@ -210,11 +211,12 @@ public class ReflectionUtil {
 
     /**
      * Type checked version of create instance using the default class loader.
-     * @param className the class name
+     *
+     * @param className     the class name
      * @param componentType the type of the instance (e.g. an interface)
      * @return an instance of the object cast to 'componentType'
      */
-    public static <T> T createInstance(String className,Class<T> componentType) {
+    public static <T> T createInstance(String className, Class<T> componentType) {
         return componentType.cast(createInstance(className));
     }
 
@@ -243,12 +245,56 @@ public class ReflectionUtil {
 
     /**
      * Turns a class file name into a class name.
+     *
      * @param filename the file name
      * @return the class name.
      */
-    public static String filenameToClassname(String filename)
-    {
-       return filename.substring( 0, filename.lastIndexOf(".class") )
-             .replace('/', '.').replace('\\', '.');
+    public static String filenameToClassname(String filename) {
+        return filename.substring(0, filename.lastIndexOf(".class"))
+                .replace('/', '.').replace('\\', '.');
+    }
+
+    /**
+     * Loads the class with the current class loader, throws InitializationError if there was a problem.
+     * @param className the class name
+     * @return the class
+     */
+    public static Class loadClass(String className) {
+        try {
+            return getCurrentClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new InitializationError(e);
+        }
+    }
+
+    /**
+     * Creates an insance of a class, throws InitializationError if there is a problem.
+     * @param implementationClass the class
+     * @param <T> the class
+     * @return an instance of the class
+     */
+    public static <T> T createInstance(Class<T> implementationClass) {
+        try {
+            return implementationClass.newInstance();
+        } catch (IllegalAccessException e) {
+            throw new InitializationError(e);
+        } catch (InstantiationException e) {
+            throw new InitializationError(e);
+        }
+    }
+
+    /**
+     * Create an instance, return null if it doesn't work.
+     * @param implementationClass the class to instantiate
+     * @param <T> the type
+     * @return an instance, or null if it doesn't work
+     */
+    public static <T> T createInstanceNoThrow(
+            Class<T> implementationClass) {
+        try {
+            return implementationClass.newInstance();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

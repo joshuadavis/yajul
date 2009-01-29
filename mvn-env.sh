@@ -5,7 +5,7 @@ UNAME=`uname`
 JDK_BASENAME='jdk1.5'
 MAVEN_BASENAME='maven-2'
 
-$SCRIPT_NAME/bin/shell-functions.sh
+source $SCRIPT_DIR/bin/shell-functions.sh
 
 findJava
 

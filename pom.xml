@@ -1,3 +1,4 @@
+<!--suppress MavenModelInspection -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -27,6 +28,10 @@
             <id>website</id>
             <url>scp://shell.sourceforge.net/home/groups/y/ya/yajul/htdocs</url>
         </site>
+        <snapshotRepository>
+            <id>internal.artifactory</id>
+            <url>http://artifactory/artifactory/libs-snapshots-local</url>
+        </snapshotRepository>
     </distributionManagement>
     <properties>
         <compileSource>1.5</compileSource>
@@ -53,11 +58,13 @@
                 <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.picocontainer</groupId>
-                <artifactId>picocontainer</artifactId>
-                <version>${version.picocontainer}</version>
-            </dependency>
+            <!--
+                        <dependency>
+                            <groupId>org.picocontainer</groupId>
+                            <artifactId>picocontainer</artifactId>
+                            <version>${version.picocontainer}</version>
+                        </dependency>
+            -->
             <!-- SLF4J has much simpler dependencies than commons-logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -117,6 +124,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.guice</groupId>
+            <artifactId>guice</artifactId>
+            <version>1.0</version>
+        </dependency>
         <!-- SLF4J has much simpler dependencies than commons-logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -144,10 +156,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.picocontainer</groupId>
-            <artifactId>picocontainer</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
             <optional>true</optional>
@@ -172,8 +180,17 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <configuration>
                     <finalName>${project.build.finalName}</finalName>
-                    <attach>false</attach>
+                    <!-- Deploy source jars as well as binaries. -->
+                    <attach>true</attach>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
@@ -181,19 +198,42 @@
                     <locales>en</locales>
                 </configuration>
             </plugin>
+            <!-- Copy dependencies so we can find them with IDEA -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>src-dependencies</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>sources</classifier>
+                            <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>dependencies</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <reporting>
         <plugins>
             <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <targetJdk>${compileSource}</targetJdk>
+                    <stripVersion>true</stripVersion>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jxr-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -201,16 +241,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <targetJdk>${compileSource}</targetJdk>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </reporting>
