@@ -467,6 +467,21 @@
         <root url="jar://$PROJECT_DIR$/target/sources/javassist-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="jboss-embedded">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded-all.jar!/" />
+        <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="thirdparty-all">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/target/dependency/thirdparty-all.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
 </project>
 

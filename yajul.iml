@@ -19,6 +19,17 @@
     <orderEntry type="library" name="jms" level="project" />
     <orderEntry type="library" name="jta" level="project" />
     <orderEntry type="library" name="javassist" level="project" />
+    <orderEntry type="library" name="jboss-embedded" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/etc/bootstrap" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="thirdparty-all" level="project" />
   </component>
 </module>
 

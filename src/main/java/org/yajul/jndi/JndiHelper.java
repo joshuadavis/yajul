@@ -1,7 +1,6 @@
 package org.yajul.jndi;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.naming.*;
 
 /**
  * Helper functions for JNDI.
@@ -51,5 +50,18 @@ public class JndiHelper {
             throw new LookupException(String.format(
                     "Unable to find JNDI name '%s'", name), e);
         }
+    }
+
+    public static String listBindings(Context context,String name) throws NamingException {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Listing for ").append(name).append("\n");
+        NamingEnumeration<NameClassPair> pairs = context.list(name);
+        while (pairs.hasMore())
+        {
+            NameClassPair pair = pairs.next();
+            sb.append(name).append(pair.getName()).append("->")
+                    .append(pair.getClassName()).append("\n");
+        }
+        return sb.toString();
     }
 }

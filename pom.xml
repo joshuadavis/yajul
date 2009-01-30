@@ -41,6 +41,7 @@
         <version.junit>3.8.1</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.javassist>3.8.1.GA</version.javassist>
+        <version.jboss-embedded>beta3.SP4</version.jboss-embedded>
     </properties>
     <repositories>
         <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
@@ -160,6 +161,45 @@
             <artifactId>javassist</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- Embedded JBoss (not embedded EJB3!) -->
+        <dependency>
+            <groupId>org.jboss.embedded</groupId>
+            <artifactId>jboss-embedded-all</artifactId>
+            <version>${version.jboss-embedded}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.embedded</groupId>
+                    <artifactId>jboss-embedded</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.microcontainer</groupId>
+                    <artifactId>jboss-deployers-client-spi</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.microcontainer</groupId>
+                    <artifactId>jboss-deployers-core-spi</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.embedded</groupId>
+            <artifactId>jboss-embedded</artifactId>
+            <version>${version.jboss-embedded}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.embedded</groupId>
+            <artifactId>thirdparty-all</artifactId>
+            <version>${version.jboss-embedded}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.embedded</groupId>
+            <artifactId>hibernate-all</artifactId>
+            <version>${version.jboss-embedded}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -241,6 +281,11 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>etc/bootstrap</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>
