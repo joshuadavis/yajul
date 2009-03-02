@@ -36,7 +36,8 @@ public class ModuleList {
      */
     public void addClassName(String moduleClassName) {
         try {
-            Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(moduleClassName);
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            Class<?> clazz = loader.loadClass(moduleClassName);
             Module module = (Module) clazz.newInstance();
             modules.add(module);
         }
@@ -77,9 +78,17 @@ public class ModuleList {
      * @return the new Guice injector.
      */
     public Injector createInjector() {
-        log.info("Creating injector with " + modules.size() + " modules...");
-        Injector injector = Guice.createInjector(modules);
+        log.info("Creating injector with " + size() + " modules...");
+        Injector injector = Guice.createInjector(getModules());
         log.info("Injector created.");
         return injector;
+    }
+
+    /**
+     * Returns the modules in a way that can be used with Guice.createInjector()
+     * @return an iterable list of modules
+     */
+    public Iterable<Module> getModules() {
+        return modules;
     }
 }
