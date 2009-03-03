@@ -35,6 +35,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
         TextMessage textMessage = (TextMessage) received;
         String text = textMessage.getText();
         System.out.println("text=" + text);
+        assertEquals("hello there",text);
         JmsHelper.close(sub,ses,con);
     }
     
