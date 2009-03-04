@@ -1,6 +1,8 @@
 package org.yajul.jndi;
 
 import org.yajul.embedded.EmbeddedJBossTestCase;
+import org.yajul.embedded.UnitTestJndiConstants;
+import static org.yajul.embedded.UnitTestJndiConstants.*;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -23,7 +25,7 @@ public class JndiTest extends EmbeddedJBossTestCase {
         InitialContext ic = new InitialContext();
         String listing = JndiHelper.listBindings(ic,"java:/");
         System.out.println(listing);
-        DataSource ds = JndiHelper.lookup(ic, DataSource.class, "java:/DefaultDS");
+        DataSource ds = JndiHelper.lookup(ic, DataSource.class, DEFAULT_DATA_SOURCE);
         assertNotNull(ds);
     }
 }

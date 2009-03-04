@@ -3,6 +3,7 @@ package org.yajul.jms;
 import junit.framework.TestSuite;
 import junit.framework.Test;
 import org.yajul.embedded.EmbeddedJBossTestCase;
+import org.yajul.embedded.UnitTestJndiConstants;
 import org.yajul.jndi.JndiReference;
 
 import javax.naming.InitialContext;
@@ -20,7 +21,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
     public void testJmsAttributes() throws NamingException, JMSException {
         InitialContext ic = new InitialContext();
 
-        ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic, "java:JmsXA");
+        ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
         final JndiReference<Topic> testTopic = new JndiReference<Topic>(ic, "topic/testTopic");
 
         JmsTemplate runner = new JmsTemplate(factoryReference);
