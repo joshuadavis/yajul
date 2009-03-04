@@ -18,27 +18,9 @@ public class JmsHelper {
      * @param conn    the connection (may be null)
      */
     public static void close(MessageProducer sender, Session session, Connection conn) {
-        if (sender != null) {
-            //noinspection EmptyCatchBlock
-            try {
-                sender.close();
-            } catch (Exception ignore) {
-            }
-        }
-        if (session != null) {
-            //noinspection EmptyCatchBlock
-            try {
-                session.close();
-            } catch (Exception ignore) {
-            }
-        }
-        if (conn != null) {
-            //noinspection EmptyCatchBlock
-            try {
-                conn.close();
-            } catch (Exception ignore) {
-            }
-        }
+        close(sender);
+        close(session);
+        close(conn);
     }
 
     /**
@@ -49,6 +31,13 @@ public class JmsHelper {
      * @param conn     the connection (may be null)
      */
     public static void close(MessageConsumer consumer, Session session, Connection conn) {
+        stop(conn);
+        close(consumer);
+        close(session);
+        close(conn);
+    }
+
+    public static void stop(Connection conn) {
         if (conn != null) {
             //noinspection EmptyCatchBlock
             try {
@@ -56,7 +45,19 @@ public class JmsHelper {
             } catch (Exception ignore) {
             }
         }
+    }
 
+    public static void close(MessageProducer sender) {
+        if (sender != null) {
+            //noinspection EmptyCatchBlock
+            try {
+                sender.close();
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    public static void close(MessageConsumer consumer) {
         if (consumer != null) {
             //noinspection EmptyCatchBlock
             try {
@@ -64,6 +65,9 @@ public class JmsHelper {
             } catch (Exception ignore) {
             }
         }
+    }
+
+    public static void close(Session session) {
         if (session != null) {
             //noinspection EmptyCatchBlock
             try {
@@ -71,6 +75,9 @@ public class JmsHelper {
             } catch (Exception ignore) {
             }
         }
+    }
+
+    public static void close(Connection conn) {
         if (conn != null) {
             //noinspection EmptyCatchBlock
             try {
@@ -131,5 +138,4 @@ public class JmsHelper {
             throw new RuntimeException(e);
         }
     }
-
 }

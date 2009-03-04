@@ -2,8 +2,8 @@ package org.yajul.jms;
 
 import junit.framework.TestSuite;
 import junit.framework.Test;
-import org.yajul.jms.JmsAttributes;
 import org.yajul.embedded.EmbeddedJBossTestCase;
+import org.yajul.jndi.JndiReference;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -19,27 +19,32 @@ public class JmsTest extends EmbeddedJBossTestCase {
 
     public void testJmsAttributes() throws NamingException, JMSException {
         InitialContext ic = new InitialContext();
-        JmsAttributes testTopic = new JmsAttributes(ic,"java:JmsXA","topic/testTopic");
-        ConnectionFactory tcf = testTopic.getConnectionFactory();
-        Topic topic = testTopic.getTopic();
 
-        // Subscribe and publish one message.
-        TopicConnection con = testTopic.createTopicConnection();
-        TopicSession ses = testTopic.createTopicSession(con);
-        TopicSubscriber sub = testTopic.createSubscriber(ses);
-        TopicPublisher pub = testTopic.createPublisher(ses);
-        con.start();    // Don't forget to start the connection.
-        TextMessage msg = ses.createTextMessage("hello there");
-        pub.send(msg);
-        Message received = sub.receive();
-        TextMessage textMessage = (TextMessage) received;
-        String text = textMessage.getText();
-        System.out.println("text=" + text);
-        assertEquals("hello there",text);
-        JmsHelper.close(sub,ses,con);
+        ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic, "java:JmsXA");
+        final JndiReference<Topic> testTopic = new JndiReference<Topic>(ic, "topic/testTopic");
+
+        JmsTemplate runner = new JmsTemplate(factoryReference);
+        runner.doAction(new JmsTemplate.JmsAction<Boolean>() {
+            public Boolean run(JmsContext ctx) throws JMSException {
+                TopicConnection con = ctx.createTopicConnection();
+                TopicSession ses = ctx.createTopicSession(con);
+                TopicSubscriber sub = ctx.createSubscriber(ses, testTopic.getObject(), null);
+                TopicPublisher pub = ctx.createPublisher(ses, testTopic.getObject());
+                con.start();    // Don't forget to start the connection.
+                TextMessage msg = ses.createTextMessage("hello there");
+                pub.send(msg);
+                Message received = sub.receive();
+                TextMessage textMessage = (TextMessage) received;
+                String text = textMessage.getText();
+                System.out.println("text=" + text);
+                assertEquals("hello there", text);
+                return null;
+            }
+        });
     }
-    
+
     public static Test suite() {
         return new TestSuite(JmsTest.class);
     }
+
 }

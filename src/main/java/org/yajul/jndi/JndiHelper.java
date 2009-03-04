@@ -28,40 +28,55 @@ public class JndiHelper {
      */
     @SuppressWarnings("unchecked")
     public static <T> T lookup(InitialContext context, Class<T> clazz, String name) {
-
-        if (context == null) {
-            try {
-                context = new InitialContext();
-            } catch (NamingException e) {
-                throw new LookupException("Unable to create default InitialContext", e);
-            }
-        }
-        try {
-            final Object object = context.lookup(name);
-            if (clazz.isAssignableFrom(object.getClass())) {
-                return (T) object;
-            } else {
-                throw new LookupException(String.format(
-                        "Found JNDI name '%s' of type %s, but it cannot be assigned to type: %s",
-                        name, object.getClass(), clazz));
-            }
-
-        } catch (NamingException e) {
+        final Object object = doLookup(context, name);
+        if (clazz.isAssignableFrom(object.getClass())) {
+            return (T) object;
+        } else {
             throw new LookupException(String.format(
-                    "Unable to find JNDI name '%s'", name), e);
+                    "Found JNDI name '%s' of type %s, but it cannot be assigned to type: %s",
+                    name, object.getClass(), clazz));
         }
     }
 
-    public static String listBindings(Context context,String name) throws NamingException {
+    public static String listBindings(Context context, String name) throws NamingException {
         StringBuffer sb = new StringBuffer();
         sb.append("Listing for ").append(name).append("\n");
         NamingEnumeration<NameClassPair> pairs = context.list(name);
-        while (pairs.hasMore())
-        {
+        while (pairs.hasMore()) {
             NameClassPair pair = pairs.next();
             sb.append(name).append(pair.getName()).append("->")
                     .append(pair.getClassName()).append("\n");
         }
         return sb.toString();
+    }
+
+    public static <T> T lookup(InitialContext ic, String name) {
+        Object object = doLookup(ic, name);
+        try {
+            //noinspection unchecked
+            return (T) object;
+        } catch (ClassCastException cce) {
+            throw new LookupException(String.format(
+                    "Found JNDI name '%s' of type %s, but that isn't the right type.",
+                    name, object.getClass()));
+
+        }
+    }
+
+    private static Object doLookup(InitialContext ic, String name) {
+        InitialContext context = ic;
+        if (context == null) {
+            try {
+                context = new InitialContext();
+            } catch (NamingException e1) {
+                throw new LookupException("Unable to create default InitialContext", e1);
+            }
+        }
+        try {
+            return context.lookup(name);
+        } catch (NamingException e) {
+            throw new LookupException(String.format(
+                    "Unable to find JNDI name '%s'", name), e);
+        }
     }
 }
