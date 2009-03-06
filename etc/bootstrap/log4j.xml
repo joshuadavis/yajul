@@ -51,8 +51,6 @@
         <priority value="WARN"/>
     </category>
 
-
-
     <!-- These things are too noisy
     <category name="org.jboss.seam.jsf.SeamVariableResolver">
         <priority value="INFO"/>
@@ -101,6 +99,10 @@
     </category>
     -->
 
+    <category name="org.yajul">
+        <priority value="DEBUG"/>
+    </category>
+    
     <root>
         <priority value="INFO"/>
         <appender-ref ref="CONSOLE"/>
