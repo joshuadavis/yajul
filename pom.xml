@@ -6,6 +6,7 @@
     <artifactId>yajul</artifactId>
     <version>0.3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>Yet Another Java Utility Library</name>
     <url>http://yajul.sourceforge.net</url>
     <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
     <developers>
@@ -267,7 +268,11 @@
         </plugins>
     </build>
     <reporting>
-        <plugins>
+	    <plugins>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+       		<artifactId>maven-javadoc-plugin</artifactId>
+	      </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

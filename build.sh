@@ -11,5 +11,8 @@ findJava
 
 findMaven
 
+export JAVA_HOME
+export M2_HOME
+
 cd $SCRIPT_DIR
 $M2_HOME/bin/mvn clean package site
