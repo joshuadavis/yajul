@@ -237,6 +237,7 @@
         <option value="$PROJECT_DIR$/root/pom.xml" />
         <option value="$PROJECT_DIR$/base/pom.xml" />
         <option value="$PROJECT_DIR$/micro/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -366,7 +367,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="https://yajul.svn.sourceforge.net/svnroot/yajul/trunk/yajul.ipr" />
+    <option name="state" value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/fix-spike/yajul.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
