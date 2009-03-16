@@ -5,6 +5,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.yajul.util.Bytes;
+import org.junit.Test;
 
 /**
  * Test the Bytes class.
@@ -21,9 +22,7 @@ public class BytesTest extends TestCase
         super(name);
     }
 
-    /**
-     * Test conversion to byte arrays.
-     */
+    @Test
     public void testByteArrays() throws Exception
     {
         byte[] value = new byte[] { (byte)0x49, (byte)0x96, (byte)0x02, (byte)0xd2 };
@@ -47,6 +46,7 @@ public class BytesTest extends TestCase
         assertEquals(0,bytes.length);
     }
 
+    @Test
     public void testException()
     {
         IllegalArgumentException iae = null;

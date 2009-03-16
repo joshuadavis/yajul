@@ -166,7 +166,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -371,6 +371,8 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fix/fix.iml" filepath="$PROJECT_DIR$/fix/fix.iml" />
       <module fileurl="file://$PROJECT_DIR$/yajul.iml" filepath="$PROJECT_DIR$/yajul.iml" />
     </modules>
   </component>
@@ -425,79 +427,244 @@
   <component name="libraryTable">
     <library name="junit">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/junit.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/junit.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/junit-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/sources/junit-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="guice">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/guice.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/guice.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/guice-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/sources/guice-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="slf4j">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/slf4j-api.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/dependency/slf4j-log4j12.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/slf4j-log4j12.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/slf4j-api.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/slf4j-api-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/sources/slf4j-log4j12-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/sources/slf4j-log4j12-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/sources/slf4j-api-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="log4j">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/log4j.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/log4j.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/log4j-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/sources/log4j-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="jms">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/jms.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/jms.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="jta">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/jta.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/jta.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="javassist">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/javassist.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/javassist.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/javassist-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/sources/javassist-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="jboss-embedded">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded-all.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/jboss-embedded-all.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/jboss-embedded.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="thirdparty-all">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/thirdparty-all.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/target/dependency/thirdparty-all.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="Maven: junit:junit:4.5">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/junit/junit/4.5/junit-4.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/junit/junit/4.5/junit-4.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/junit/junit/4.5/junit-4.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.code.guice:guice:1.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/com/google/code/guice/guice/1.0/guice-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/com/google/code/guice/guice/1.0/guice-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/com/google/code/guice/guice/1.0/guice-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:slf4j-api:1.4.3">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: log4j:log4j:1.2.15">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:slf4j-log4j12:1.4.3">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.jms:jms:1.1">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/jms/jms/1.1/jms-1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/jms/jms/1.1/jms-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.transaction:jta:1.0.1B">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/transaction/jta/1.0.1B/jta-1.0.1B-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javax/transaction/jta/1.0.1B/jta-1.0.1B-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javassist:javassist:3.8.1.GA">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:jboss-embedded-all:beta3.SP4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/jboss-embedded-all/beta3.SP4/jboss-embedded-all-beta3.SP4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/jboss-embedded-all/beta3.SP4/jboss-embedded-all-beta3.SP4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/jboss-embedded-all/beta3.SP4/jboss-embedded-all-beta3.SP4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:jboss-embedded:beta3.SP4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/jboss-embedded/beta3.SP4/jboss-embedded-beta3.SP4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/jboss-embedded/beta3.SP4/jboss-embedded-beta3.SP4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/jboss-embedded/beta3.SP4/jboss-embedded-beta3.SP4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-deployers-client-spi:2.0.0.Beta6">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/microcontainer/jboss-deployers-client-spi/2.0.0.Beta6/jboss-deployers-client-spi-2.0.0.Beta6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/microcontainer/jboss-deployers-client-spi/2.0.0.Beta6/jboss-deployers-client-spi-2.0.0.Beta6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/microcontainer/jboss-deployers-client-spi/2.0.0.Beta6/jboss-deployers-client-spi-2.0.0.Beta6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-deployers-core-spi:2.0.0.Beta6">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/thirdparty-all/beta3.SP4/thirdparty-all-beta3.SP4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/thirdparty-all/beta3.SP4/thirdparty-all-beta3.SP4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/thirdparty-all/beta3.SP4/thirdparty-all-beta3.SP4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:hibernate-all:beta3.SP4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/hibernate-all/beta3.SP4/hibernate-all-beta3.SP4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/hibernate-all/beta3.SP4/hibernate-all-beta3.SP4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/jboss/embedded/hibernate-all/beta3.SP4/hibernate-all-beta3.SP4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.mina:mina-core:2.0.0-M4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/apache/mina/mina-core/2.0.0-M4/mina-core-2.0.0-M4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/apache/mina/mina-core/2.0.0-M4/mina-core-2.0.0-M4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/../../../../Documents and Settings/Josh.JOSHWIN/.m2/repository/org/apache/mina/mina-core/2.0.0-M4/mina-core-2.0.0-M4-sources.jar!/" />
+      </SOURCES>
     </library>
   </component>
 </project>

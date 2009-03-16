@@ -5,10 +5,14 @@
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
     <version>0.3.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>Yet Another Java Utility Library</name>
     <url>http://yajul.sourceforge.net</url>
     <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
+    <modules>
+        <module>core</module>
+        <module>fix</module>
+    </modules>
     <developers>
         <developer>
             <id>pgmjsd</id>
@@ -37,12 +41,13 @@
     <properties>
         <compileSource>1.5</compileSource>
         <!-- Version numbers extracted as properties. -->
-        <version.yajul>0.7-SNAPSHOT</version.yajul>
-        <version.picocontainer>2.6</version.picocontainer>
-        <version.junit>3.8.1</version.junit>
+        <version.yajul>0.3.1-SNAPSHOT</version.yajul>
+        <version.junit>4.5</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.javassist>3.8.1.GA</version.javassist>
         <version.jboss-embedded>beta3.SP4</version.jboss-embedded>
+        <version.mina>2.0.0-M4</version.mina>
+        <version.jmock>2.5.1</version.jmock>
     </properties>
     <repositories>
         <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
@@ -118,6 +123,17 @@
                 <artifactId>javassist</artifactId>
                 <version>${version.javassist}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>${version.mina}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jmock</groupId>
+                <artifactId>jmock</artifactId>
+                <version>${version.jmock}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -125,11 +141,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.guice</groupId>
-            <artifactId>guice</artifactId>
-            <version>1.0</version>
         </dependency>
         <!-- SLF4J has much simpler dependencies than commons-logging -->
         <dependency>
@@ -145,60 +156,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.jms</groupId>
-            <artifactId>jms</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!-- Embedded JBoss (not embedded EJB3!) -->
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>jboss-embedded-all</artifactId>
-            <version>${version.jboss-embedded}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.embedded</groupId>
-                    <artifactId>jboss-embedded</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.microcontainer</groupId>
-                    <artifactId>jboss-deployers-client-spi</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.microcontainer</groupId>
-                    <artifactId>jboss-deployers-core-spi</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>jboss-embedded</artifactId>
-            <version>${version.jboss-embedded}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>thirdparty-all</artifactId>
-            <version>${version.jboss-embedded}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>hibernate-all</artifactId>
-            <version>${version.jboss-embedded}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -268,11 +225,11 @@
         </plugins>
     </build>
     <reporting>
-	    <plugins>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-       		<artifactId>maven-javadoc-plugin</artifactId>
-	      </plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
