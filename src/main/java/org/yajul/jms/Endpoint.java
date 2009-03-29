@@ -18,8 +18,8 @@ public class Endpoint
 {
     private static Logger log = LoggerFactory.getLogger(Endpoint.class);
 
-    private InitialContext ic;
-    private ConnectionFactory connectionFactory;
+    private ConnectionFactoryReference connectionFactoryReference;
+    private DestinationReference destinationReference;
     private Session session;
     private Destination destination;
     private Connection connection;
@@ -34,40 +34,22 @@ public class Endpoint
 
     public Endpoint(InitialContext ic, String factoryJndiName, String destinationName, String messageSelector)
     {
-        try
-        {
-            initialize(ic, factoryJndiName,messageSelector);
-            this.destination = (Destination) ic.lookup(destinationName);
-        }
-        catch (NamingException e)
-        {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+        this(new ConnectionFactoryReference(ic,factoryJndiName),
+                new DestinationReference(ic,destinationName),messageSelector);
     }
 
-    private void initialize(InitialContext ic, String factoryJndiName, String messageSelector) throws NamingException {
-        if (ic == null)
-            this.ic = new InitialContext();
-        else
-            this.ic = ic;
 
-        this.connectionFactory = (ConnectionFactory) this.ic.lookup(factoryJndiName);
+    public Endpoint(ConnectionFactoryReference factoryReference, DestinationReference destinationReference,
+                    String messageSelector) {
+        this.connectionFactoryReference = factoryReference;
+        this.destinationReference = destinationReference;
         this.messageSelector = messageSelector;
     }
 
     public Endpoint(InitialContext ic,String factoryJndiName, Destination destination, String messageSelector)
     {
-        try
-        {
-            initialize(ic, factoryJndiName,messageSelector);
-            this.destination = destination;
-        }
-        catch (NamingException e)
-        {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+        this(new ConnectionFactoryReference(ic,factoryJndiName),
+                new DestinationReference(destination),messageSelector);
     }
 
     public boolean isQueueEndpoint()
@@ -135,7 +117,7 @@ public class Endpoint
             throw new IllegalStateException("This is already a consumer!");
         if (consumer == null)
         {
-            consumer = getSession().createConsumer(destination, messageSelector);
+            consumer = getSession().createConsumer(getDestination(), messageSelector);
         }
         return consumer;
     }
@@ -146,7 +128,7 @@ public class Endpoint
             throw new IllegalStateException("This is already a consumer!");
         if (producer == null)
         {
-            producer = getSession().createProducer(destination);
+            producer = getSession().createProducer(getDestination());
         }
         return producer;
     }
@@ -172,9 +154,9 @@ public class Endpoint
         if (connection == null)
         {
             if (queueEndpoint)
-                connection = ((QueueConnectionFactory)connectionFactory).createQueueConnection();
+                connection = connectionFactoryReference.getQueueConnectionFactory().createQueueConnection();
             else
-                connection = connectionFactory.createConnection();
+                connection = connectionFactoryReference.getTopicConnectionFactory().createTopicConnection();
             onConnectionCreated(connection);
         }
         return connection;
@@ -192,6 +174,8 @@ public class Endpoint
 
     protected Destination getDestination()
     {
+        if (destination == null)
+            destination = destinationReference.getDestination();
         return destination;
     }
 }

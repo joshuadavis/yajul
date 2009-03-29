@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * IoC tempalte for JMS.   Automagically cleans up JMS connections, sessions, consumers
+ * IoC template for working with multiple JMS destinations.
+ * Automagically cleans up JMS connections, sessions, consumers
  * and producers.
  * <br>
  * User: josh
