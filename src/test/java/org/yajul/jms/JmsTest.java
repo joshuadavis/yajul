@@ -48,14 +48,15 @@ public class JmsTest extends EmbeddedJBossTestCase {
         InitialContext ic = new InitialContext();
         ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic,
                 UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationReference destinationReference = new DestinationReference(ic,"topic/testTopic");
-        MessageReceiver receiver = new MessageReceiver(factoryReference,destinationReference,new MessageListener() {
+        final DestinationReference destinationReference = new DestinationReference(ic, "topic/testTopic");
+        MessageReceiver receiver = new MessageReceiver(factoryReference, destinationReference, new MessageListener() {
 
             public void onMessage(Message message) {
                 System.out.println("message = " + message);
+                MessageSender.sendReply(null,UnitTestJndiConstants.JMS_CONNECTION_FACTORY,message,new String("poot!"));
             }
         }, null, 2000);
-        receiver.start(null,null);
+        receiver.start(null, null);
 
         JmsTemplate runner = new JmsTemplate(factoryReference);
         runner.doAction(new JmsTemplate.JmsAction<Boolean>() {
@@ -64,23 +65,18 @@ public class JmsTest extends EmbeddedJBossTestCase {
                 TopicSession ses = ctx.createTopicSession(con);
                 TopicPublisher pub = ctx.createPublisher(ses, destinationReference.getTopic());
                 con.start();    // Don't forget to start the connection.
+                Topic replyTo = ses.createTemporaryTopic();
                 TextMessage msg = ses.createTextMessage("hello there");
+                msg.setJMSReplyTo(replyTo);
+                TopicSubscriber sub = ses.createSubscriber(replyTo);
                 pub.send(msg);
+                Message reply = sub.receive();
+                System.out.println("reply: " + reply);
                 return null;
             }
         });
     }
 
-    public static class QueueListener {
-        private ConnectionFactoryReference factoryReference;
-
-
-    }
-    
-    public static class Responder implements MessageListener {
-        public void onMessage(Message message) {
-        }
-    }
     public static Test suite() {
         return new TestSuite(JmsTest.class);
     }
