@@ -13,8 +13,33 @@ import javax.transaction.UserTransaction;
  * Date: Nov 30, 2007
  * Time: 4:01:17 PM
  */
-public class TransactionHelper {
-    private static final Logger log = LoggerFactory.getLogger(TransactionHelper.class);
+public class UserTransactionTemplate {
+    private static final Logger log = LoggerFactory.getLogger(UserTransactionTemplate.class);
+
+    private UserTransaction ut;
+
+    public UserTransactionTemplate(UserTransaction ut) {
+        this.ut = ut;
+    }
+    
+    public <T> T doAction(Action<T> action) {
+        T rv = null;
+        try {
+            ut.begin();
+            rv = action.run();
+            ut.commit();
+        }
+        catch (Exception e) {
+            try {
+                ut.rollback();
+            }
+            catch (Exception ex) {
+                log.error("Unable to rollback due to: " + e, e);
+                throw new RuntimeException(ex);
+            }
+        }
+        return rv;
+    }
 
     public static Object doInTx(UserTransaction ut, Action action) {
         Object returnValue;
@@ -39,7 +64,7 @@ public class TransactionHelper {
         throw new RuntimeException(e);
     }
 
-    public interface Action {
-        Object run();
+    public interface Action<T> {
+        T run();
     }
 }

@@ -6,6 +6,7 @@ import static org.yajul.embedded.UnitTestJndiConstants.*;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 
 /**
  * JNDI test
@@ -27,5 +28,12 @@ public class JndiTest extends EmbeddedJBossTestCase {
         System.out.println(listing);
         DataSource ds = JndiHelper.lookup(ic, DataSource.class, DEFAULT_DATA_SOURCE);
         assertNotNull(ds);
+    }
+
+    public void testJndiReference() throws Exception {
+        InitialContext ic = new InitialContext();
+        JndiReference<TransactionManager> tmr = new JndiReference<TransactionManager>(ic,"java:/TransactionManager");
+        TransactionManager tm = tmr.getObject();
+        assertNotNull(tm);
     }
 }

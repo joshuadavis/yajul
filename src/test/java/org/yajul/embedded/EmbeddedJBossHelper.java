@@ -2,7 +2,6 @@ package org.yajul.embedded;
 
 import org.yajul.log.LogSuppressor;
 import org.jboss.embedded.Bootstrap;
-import org.jboss.deployers.spi.DeploymentException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 

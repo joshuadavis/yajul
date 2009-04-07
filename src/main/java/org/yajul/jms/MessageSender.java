@@ -3,7 +3,7 @@ package org.yajul.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yajul.jta.TransactionHelper;
+import org.yajul.jta.UserTransactionTemplate;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -99,9 +99,9 @@ public class MessageSender extends Endpoint {
             msg.setJMSReplyTo(replyto);
 
             final Message m = msg;
-            TransactionHelper.doInTx(
+            UserTransactionTemplate.doInTx(
                     ut,
-                    new TransactionHelper.Action() {
+                    new UserTransactionTemplate.Action() {
                         public Object run() {
                             send(m);
                             return null;
@@ -166,18 +166,13 @@ public class MessageSender extends Endpoint {
     }
 
     public static void sendReply(final InitialContext ic, final String factoryJndiName, Message message, Serializable replyObject, Map<String, Object> properties) {
-        try {
-            final Destination jmsReplyTo = message.getJMSReplyTo();
-            if (jmsReplyTo != null) {
-                sendObject(new SenderFactory() {
-                    public MessageSender createSender() {
-                        return new MessageSender(ic, factoryJndiName, jmsReplyTo, null);
-                    }
-                }, replyObject, properties);
-            }
-        }
-        catch (JMSException e) {
-            log.warn("Unable to send reply due to: " + e, e);
+        final Destination jmsReplyTo = JmsHelper.getReplyTo(message);
+        if (jmsReplyTo != null) {
+            sendObject(new SenderFactory() {
+                public MessageSender createSender() {
+                    return new MessageSender(ic, factoryJndiName, jmsReplyTo, null);
+                }
+            }, replyObject, properties);
         }
     }
 

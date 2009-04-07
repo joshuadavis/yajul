@@ -1,5 +1,8 @@
 package org.yajul.jms;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import javax.jms.*;
 import java.util.Enumeration;
 
@@ -10,6 +13,8 @@ import java.util.Enumeration;
  * Time: 10:41:52 AM
  */
 public class JmsHelper {
+    private static final Logger log = LoggerFactory.getLogger(JmsHelper.class);
+
     /**
      * Clean up JMS producer objects.  Typically used in a finally block.
      *
@@ -109,6 +114,38 @@ public class JmsHelper {
     }
 
 
+    /**
+     * Returns the text in the JMS message if it's a text message.
+     *
+     * @param message the JMS message
+     * @return the text in the JMS message if it's a text message, null otherwise.
+     */
+    public static String getText(Message message) {
+        if (message == null)
+            return null;
+        if (message instanceof TextMessage) {
+            TextMessage textMessage = (TextMessage) message;
+            try {
+                return textMessage.getText();
+            }
+            catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        } else
+            return null;
+    }
+
+
+    public static Destination getReplyTo(Message message) {
+        try {
+            return message.getJMSReplyTo();
+        } catch (JMSException e) {
+            log.warn("Unable to get JMSReplyTo due to: " + e);
+            return null;
+        }
+
+    }
+    
     public static Long getNullableLongProperty(Message m, String property) throws JMSException {
         return (Long) (m == null ? null : m.getObjectProperty(property));
     }
