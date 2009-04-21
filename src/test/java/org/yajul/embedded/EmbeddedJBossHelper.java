@@ -1,9 +1,13 @@
 package org.yajul.embedded;
 
-import org.yajul.log.LogSuppressor;
 import org.jboss.embedded.Bootstrap;
+import org.jboss.virtual.VirtualFile;
+import org.jboss.deployers.spi.DeploymentException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Embedded JBoss helper methods
@@ -17,39 +21,49 @@ public class EmbeddedJBossHelper {
 
     private static EmbeddedJBossHelper INSTANCE = new EmbeddedJBossHelper();
 
-    private boolean started = false;
+    private List<VirtualFile> deployments = new ArrayList<VirtualFile>();
 
     private synchronized boolean isStarted() {
-        return started;
-    }
-
-    private synchronized void setStarted(boolean started) {
-        this.started = started;
+        return Bootstrap.getInstance().isStarted();
     }
 
     public static void startup() throws Exception {
-        if (!INSTANCE.isStarted())
-        {
+        if (!INSTANCE.isStarted()) {
             Bootstrap.getInstance().setIgnoreShutdownErrors(true);
             log.info("##### Bootstrapping #####");
             Bootstrap.getInstance().bootstrap();
-            INSTANCE.setStarted(true);
-            log.info("##### Embedded JBoss BOOTED #####");
+            assert Bootstrap.getInstance().isStarted();
+            log.info("##### Embedded JBoss STARTED #####");
+        }
+        else {
+            log.debug("Embedded JBoss already started.");
         }
     }
-    
+
     public static void shutdown() {
-        if (INSTANCE.isStarted()) {
-            LogSuppressor suppressor = new LogSuppressor(
-                    "org.jboss.aop.deployers.AspectDeployer",
-                    "org.jboss.remoting.transport.Connector",
-                    "org.jboss.jms.server.messagecounter.MessageCounterManager"
-            );
-            log.info("##### Shutting Down #####");
-            Bootstrap.getInstance().shutdown();
-            log.info("##### Embedded JBoss STOPPED #####");
-            suppressor.restore();
-            INSTANCE.setStarted(false);
-        }
+        INSTANCE.doShutdown();
     }
+
+    private void doShutdown() {
+        // Undeploy
+        for (VirtualFile deployment : deployments) {
+            try {
+                Bootstrap.getInstance().undeploy(deployment);
+            } catch (DeploymentException e) {
+                log.warn("Unable to undeploy due to: " + e, e);
+            }
+        }
+        deployments.clear();
+    }
+
+    public static void deploy(VirtualFile deployment) throws DeploymentException {
+        INSTANCE.doDeploy(deployment);
+    }
+
+    private void doDeploy(VirtualFile deployment) throws DeploymentException {
+        Bootstrap.getInstance().deploy(deployment);
+        deployments.add(deployment);
+    }
+
+
 }

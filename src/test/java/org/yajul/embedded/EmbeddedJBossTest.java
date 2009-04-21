@@ -28,11 +28,7 @@ public class EmbeddedJBossTest extends TestCase {
     }
 
     public void testDeploy() throws Exception {
-//      AssembledDirectory jar = AssembledContextFactory.getInstance().create("tutorial.jar");
-//      String[] includes = {"**/beans/*.class"};
-//      jar.addResources(Customer.class, includes, null);
-//      // Get tutorial-persistence.xml from classloader and alias it within the archive.
-//      jar.mkdir("META-INF").addResource("tutorial-persistence.xml", "persistence.xml");
+        AssembledDirectory ejbjar = null;
         try {
             EmbeddedJBossHelper.startup();
             // No need to modify the bootstrap files much, just deploy your own resources.
@@ -40,14 +36,16 @@ public class EmbeddedJBossTest extends TestCase {
             resources.addResource("my-ds.xml","my-ds.xml");
             Bootstrap.getInstance().deploy(resources);
 
-            AssembledDirectory ejbjar = AssembledContextFactory.getInstance().create("ejbjar");
+            ejbjar = AssembledContextFactory.getInstance().create("ejbjar");
             String[] includes = { "**/embedded/Echo*.class" };
             ejbjar.addResources(Echo.class,includes, null);
-            Bootstrap.getInstance().deploy(ejbjar);
+            EmbeddedJBossHelper.deploy(ejbjar);
             InitialContext ic = new InitialContext();
             String listing = JndiHelper.listBindings(ic,"/");
             System.out.println(listing);
-
+            Echo echo = (Echo) ic.lookup("EchoBean/local");
+            String rv  = echo.echo("hello");
+            System.out.println(rv);
         }
         finally {
             EmbeddedJBossHelper.shutdown();

@@ -487,6 +487,7 @@
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded-all.jar!/" />
         <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded.jar!/" />
+        <root url="jar://$PROJECT_DIR$/target/dependency/hibernate-all.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
