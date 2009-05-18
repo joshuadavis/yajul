@@ -40,14 +40,17 @@
         <version.junit>4.5</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.mina>2.0.0-M4</version.mina>
+        <version.netty>3.0.1.GA</version.netty>
         <version.jmock>2.5.1</version.jmock>
     </properties>
     <repositories>
         <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
         <repository>
-            <id>maven2-repository.jboss</id>
-            <name>Maven2 repository at JBoss.org</name>
+            <id>repository.jboss.org</id>
             <url>http://repository.jboss.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
     <dependencyManagement>
@@ -115,6 +118,16 @@
                 <version>${version.mina}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>${version.mina}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.netty</groupId>
+                <artifactId>netty</artifactId>
+                <version>${version.netty}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.jmock</groupId>
                 <artifactId>jmock</artifactId>
                 <version>${version.jmock}</version>
@@ -147,6 +160,10 @@
         <dependency>
             <groupId>org.apache.mina</groupId>
             <artifactId>mina-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.netty</groupId>
+            <artifactId>netty</artifactId>
         </dependency>
     </dependencies>
     <build>
