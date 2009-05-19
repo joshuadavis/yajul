@@ -63,12 +63,18 @@ public class FrameDecoderTest extends TestCase {
 
         log.debug("Writing message to socket (two fragments)...");
         Socket client = new Socket("localhost",9999);
+        client.setTcpNoDelay(true);
+        client.setKeepAlive(true);
         OutputStream outputStream = client.getOutputStream();
         outputStream.write(getBytes("garbage8=F"));
+        outputStream.flush();
+        Thread.sleep(1000);
         outputStream.write(getBytes("IX.4.2\0019=12\00135=X\001108=30\00110=049\001"));
+        outputStream.flush();
+        Thread.sleep(1000);
         outputStream.write(getBytes("schmutz>8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001"));
         outputStream.flush();
-        Thread.sleep(100);
+        Thread.sleep(1000);
         log.debug("Closing socket...");
         client.close();
     }

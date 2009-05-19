@@ -93,8 +93,10 @@ public class FixFrameDecoder extends FrameDecoder {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
+/*
         if (log.isDebugEnabled())
            log.debug("messageReceived() : " + e);
+*/
         super.messageReceived(ctx, e);
     }
 
@@ -108,15 +110,13 @@ public class FixFrameDecoder extends FrameDecoder {
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer)
             throws Exception {
         if (log.isDebugEnabled())
-           log.debug("decode() : state=" + state +
-                   "\n[" + new String(ChannelBufferHelper.copyBytes(
+           log.debug("** decode() : state=" + state +
+                   " [" + new String(ChannelBufferHelper.copyBytes(
                        buffer,buffer.readerIndex(),buffer.readableBytes())) + "]");
-        int index;
+        int index,end;
         switch (state) {
             case INITIAL:
                 // Look for the beginstring "8=FIX"
-                if (buffer.readableBytes() < BEGINSTRING_TOKEN.length)
-                    return null;   // There is not enough data to decode.
                 index = indexOf(buffer, buffer.readerIndex(), BEGINSTRING_TOKEN);
                 if (log.isDebugEnabled())
                    log.debug("decode() : " + state+ " index=" + index);
@@ -129,13 +129,11 @@ public class FixFrameDecoder extends FrameDecoder {
                 buffer.readerIndex(index);  // Consume data before the token.
                 messageStart = 0;           // The message starts at offset zero from the position.
                 state = ParserState.BEGINSTRING;    // Were in the beginstring.
-                return null;    // The message is incomplete, read more.
+                // Flow into the next state.
             case BEGINSTRING:
                 // We got the "8=FIX".  Skip until we find "<SOH>9="
-                beginStringStart = buffer.readerIndex() + 2;
+                beginStringStart = buffer.readerIndex() + 2;    // The location just after '8='.
                 // Look for a separator followed by '9='.
-                if (buffer.readableBytes() < BODYLENGTH_TOKEN.length)
-                    return null;   // Not enough bytes for the token, get more.
                 index = indexOf(buffer, beginStringStart, BODYLENGTH_TOKEN);
                 if (log.isDebugEnabled())
                    log.debug("decode() : " + state+ " index=" + index);
@@ -147,39 +145,48 @@ public class FixFrameDecoder extends FrameDecoder {
                    log.debug("decode() : beginString=" + new String(beginString));
                 bodyLengthStart = index + BODYLENGTH_TOKEN.length;
                 state = ParserState.BODYLENGTH;
-                return null;
+                // Flow into the next state.
             case BODYLENGTH:
                 // Read digits until the separator.
                 index = bodyLengthStart;
-                while (index < buffer.readableBytes()) {
+                end = buffer.readerIndex() + buffer.readableBytes();
+                while (index < end && state == ParserState.BODYLENGTH) {
                     if (buffer.getByte(index) == separator) {
                         // Stop, parse the integer.
                         bodyLength = ChannelBufferHelper.parseDigits(buffer,bodyLengthStart, index - bodyLengthStart);
                         bodyEnd = index + bodyLength;   // Calculate the offset of the end of the body.
+                        if (log.isDebugEnabled())
+                           log.debug("decode() : bodyLength=" + bodyLength + " bodyEnd=" + bodyEnd);
                         state = ParserState.BODY;
-                        return null;
                     }
-                    index ++;
+                    else {
+                        index ++;
+                    }
                 }
-                return null;
+                if (state != ParserState.BODY)
+                    return null;
+                // Flow into the next state.
             case BODY:
+                if (log.isDebugEnabled())
+                   log.debug("decode() : " + state+ " readableBytes=" + buffer.readableBytes() + " bodyEnd=" + bodyEnd);
                 // We read the body length field.  Skip and keep acculmulating until 'bodyLength' has been read.
                 if (buffer.readableBytes() < bodyEnd)
                     return null;
                 // Begin reading the footer.
                 state = ParserState.CHECKSUM;
-                return null;
+                // Flow into the next state.
             case CHECKSUM:
                 // Body skipped, read the checksum "10=nnnn<SOH>"
                 index = indexOf(buffer,bodyEnd,CHECKSUM_TOKEN);
+                if (log.isDebugEnabled())
+                   log.debug("decode() : " + state + " index=" + index);
                 if (index == -1) {
                     return null;
                 }
                 checksumStart = index + 3;
-                if (log.isDebugEnabled())
-                   log.debug("decode() : checksumStart=" + checksumStart);
                 index = checksumStart;
-                while (index < buffer.readableBytes()) {
+                end = buffer.readerIndex() + buffer.readableBytes();
+                while (index < end) {
                     if (buffer.getByte(index) == separator) {
                         // Stop, parse the integer.
                         checksum = ChannelBufferHelper.parseDigits(buffer,checksumStart,index - checksumStart);
@@ -202,6 +209,8 @@ public class FixFrameDecoder extends FrameDecoder {
                     index++;
                 }
                 // Something is wrong.
+                if (log.isDebugEnabled())
+                   log.debug("decode() : separator not found.");
                 return null;
         }
         return null;
