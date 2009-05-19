@@ -15,12 +15,18 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fix.iml" afterPath="$PROJECT_DIR$/fix.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/FixHandler.java" />
+    <list default="true" readonly="true" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/util" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixMessageDecoder.java" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixMessageDecoder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/yajul/fix/test/DecoderTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/yajul/fix/test/DecoderTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fix.ipr" afterPath="$PROJECT_DIR$/fix.ipr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/netty" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/ChannelBufferHelper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/yajul/fix/test/FrameDecoderTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/CodecHelper.java" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/CodecHelper.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/CodecConstants.java" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/util/CodecConstants.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/FixFrameDecoder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/yajul/fix/util/Bytes.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fix.iws" afterPath="$PROJECT_DIR$/fix.iws" />
     </list>
     <ignored path=".idea/workspace.xml" />
@@ -44,7 +50,7 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java" line="130" class="org.yajul.fix.decoder.FixDecoder" package="org.yajul.fix.decoder">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java" line="131" class="org.yajul.fix.decoder.FixDecoder" package="org.yajul.fix.decoder">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -98,75 +104,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="FrameDecoder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/frame/FrameDecoder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="143" column="30" selection-start="5430" selection-end="5430" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReplayingDecoder.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/replay/ReplayingDecoder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="332" column="48" selection-start="11365" selection-end="11365" vertical-scroll-proportion="0.56712675">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CompatibleObjectDecoder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/serialization/CompatibleObjectDecoder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="54" selection-start="2487" selection-end="2487" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DelimiterBasedFrameDecoder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/frame/DelimiterBasedFrameDecoder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="13" selection-start="2792" selection-end="2792" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FixHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/FixHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="2" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DecoderTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/org/yajul/fix/test/DecoderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="13" selection-start="456" selection-end="456" vertical-scroll-proportion="0.0">
+            <state line="28" column="29" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ObjectSizeEstimator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/execution/ObjectSizeEstimator.java">
+      <file leaf-file-name="FrameDecoderTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/org/yajul/fix/test/FrameDecoderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="0" selection-start="1299" selection-end="1299" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DefaultObjectSizeEstimator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/execution/DefaultObjectSizeEstimator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="22" column="38" selection-start="792" selection-end="792" vertical-scroll-proportion="0.40640393">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -174,19 +124,77 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CharSequence.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar:///usr/java/jdk1.5.0_12/src.zip!/java/lang/CharSequence.java">
+      <file leaf-file-name="ChannelBuffers.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/buffer/ChannelBuffers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="17" selection-start="993" selection-end="993" vertical-scroll-proportion="0.0">
+            <state line="212" column="41" selection-start="8037" selection-end="8037" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ByteBuffer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar:///usr/java/jdk1.5.0_12/src.zip!/java/nio/ByteBuffer.java">
+      <file leaf-file-name="FixFrameDecoder.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/FixFrameDecoder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="239" column="22" selection-start="7695" selection-end="7695" vertical-scroll-proportion="0.0">
+            <state line="86" column="0" selection-start="2479" selection-end="2479" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FrameDecoder.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/frame/FrameDecoder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="206" column="30" selection-start="7339" selection-end="7339" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CodecHelper.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/CodecHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="60" selection-start="353" selection-end="359" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bytes.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/util/Bytes.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CodecConstants.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/util/CodecConstants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="20" selection-start="151" selection-end="151" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChannelBufferHelper.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/ChannelBufferHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="0" selection-start="712" selection-end="712" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FixDecoder.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="192" column="0" selection-start="537" selection-end="7892" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -396,98 +404,6 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="serialization" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="fix" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="fix" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Libraries" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="netty" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="netty-3.0.1.GA.jar" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="jboss" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="netty" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="handler" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="codec" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="replay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="fix" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="fix" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Libraries" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="netty" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="netty-3.0.1.GA.jar" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="jboss" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="netty" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="handler" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="codec" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
           <option name="myItemId" value="frame" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
@@ -512,6 +428,80 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="netty-3.0.1.GA.jar" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="jboss" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="netty" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="buffer" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="netty" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="netty-3.0.1.GA.jar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="mina2" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Libraries" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="&lt; 1.5 &gt;" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
         </PATH_ELEMENT>
       </PATH>
       <PATH>
@@ -672,6 +662,48 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
+          <option name="myItemId" value="util" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="main" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="java" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="yajul" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="fix" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
           <option name="myItemId" value="netty" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
@@ -758,12 +790,18 @@
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.yajul.fix.util.Bytes" />
+    </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.yajul.fix.util" />
+    </key>
   </component>
-  <component name="RunManager" selected="JUnit.DecoderTest">
-    <tempConfiguration default="false" name="DecoderTest" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
+  <component name="RunManager" selected="JUnit.FrameDecoderTest">
+    <tempConfiguration default="false" name="FrameDecoderTest" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
       <pattern>
         <option name="PATTERN" value="org.yajul.fix.test.*" />
         <option name="ENABLED" value="true" />
@@ -772,7 +810,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="PACKAGE_NAME" value="org.yajul.fix.test" />
-      <option name="MAIN_CLASS_NAME" value="org.yajul.fix.test.DecoderTest" />
+      <option name="MAIN_CLASS_NAME" value="org.yajul.fix.test.FrameDecoderTest" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="" />
@@ -786,7 +824,7 @@
       </option>
       <envs />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="3320" />
+        <option name="DEBUG_PORT" value="43102" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
@@ -881,7 +919,7 @@
       </method>
     </configuration>
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.DecoderTest" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.FrameDecoderTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -950,7 +988,7 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951945" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993135" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32914287" sideWeight="0.0" order="3" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
@@ -960,7 +998,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295082" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.0" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.37942857" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" />
@@ -1046,83 +1084,86 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java">
+    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/serialization/CompatibleObjectDecoderState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="425" selection-end="425" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="52" selection-start="5303" selection-end="5303" vertical-scroll-proportion="0.0">
+        <state line="32" column="4" selection-start="1299" selection-end="1299" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/channel/SimpleChannelHandler.java">
+    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/util/SwitchableInputStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="0" selection-start="5816" selection-end="5816" vertical-scroll-proportion="0.0">
+        <state line="51" column="13" selection-start="1762" selection-end="1762" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/serialization/ObjectDecoder.java">
+    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/serialization/CompatibleObjectDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="13" selection-start="2240" selection-end="2240" vertical-scroll-proportion="0.0">
+        <state line="81" column="32" selection-start="3340" selection-end="3340" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/string/StringDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="13" selection-start="2914" selection-end="2914" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/execution/ChannelEventRunnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="13" selection-start="1588" selection-end="1588" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/java/jdk1.5.0_12/src.zip!/java/nio/ByteBuffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="239" column="22" selection-start="7695" selection-end="7695" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/java/jdk1.5.0_12/src.zip!/java/lang/CharSequence.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="17" selection-start="993" selection-end="993" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/execution/ObjectSizeEstimator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="1299" selection-end="1299" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/execution/DefaultObjectSizeEstimator.java">
+    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/buffer/ChannelBufferInputStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/FixHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="2" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
+        <state line="14" column="1" selection-start="322" selection-end="322" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixMessageDecoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="44" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/FixDecoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="192" column="0" selection-start="537" selection-end="7892" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/buffer/ChannelBuffers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="212" column="41" selection-start="8037" selection-end="8037" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/util/Bytes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/util/CodecConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="20" selection-start="151" selection-end="151" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/decoder/CodecHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="60" selection-start="353" selection-end="359" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/ChannelBufferHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="712" selection-end="712" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1131,36 +1172,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/yajul/fix/test/DecoderTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="13" selection-start="456" selection-end="456" vertical-scroll-proportion="0.0">
+        <state line="28" column="29" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/frame/DelimiterBasedFrameDecoder.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/yajul/fix/netty/FixFrameDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="13" selection-start="2792" selection-end="2792" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="86" column="0" selection-start="2479" selection-end="2479" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/frame/FrameDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="143" column="30" selection-start="5430" selection-end="5430" vertical-scroll-proportion="0.0">
+        <state line="206" column="30" selection-start="7339" selection-end="7339" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/serialization/CompatibleObjectDecoder.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/yajul/fix/test/FrameDecoderTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="54" selection-start="2487" selection-end="2487" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/org/jboss/netty/handler/codec/replay/ReplayingDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="332" column="48" selection-start="11365" selection-end="11365" vertical-scroll-proportion="0.56712675">
-          <folding />
+        <state line="22" column="38" selection-start="792" selection-end="792" vertical-scroll-proportion="0.40640393">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

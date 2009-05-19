@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Test;
 import org.yajul.fix.decoder.FixDecoder;
-import org.yajul.fix.decoder.CodecHelper;
 import org.yajul.fix.RawFixMessage;
+import org.yajul.fix.util.Bytes;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class DecoderTest extends TestCase {
     }
 
     private IoBuffer createBuffer(String s) {
-        return IoBuffer.wrap(CodecHelper.getBytes(s));
+        return IoBuffer.wrap(Bytes.getBytes(s));
     }
 
     public static Test suite() {

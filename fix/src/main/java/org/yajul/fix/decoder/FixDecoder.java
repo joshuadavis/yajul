@@ -2,8 +2,9 @@ package org.yajul.fix.decoder;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
-import static org.yajul.fix.decoder.CodecHelper.getBytes;
 import org.yajul.fix.RawFixMessage;
+import org.yajul.fix.util.CodecConstants;
+import org.yajul.fix.util.Bytes;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -16,9 +17,9 @@ import org.slf4j.Logger;
 public class FixDecoder {
     private final static Logger log = LoggerFactory.getLogger(FixDecoder.class);
 
-    private static final byte[] BEGINSTRING_TOKEN = getBytes("8=FIX");
-    private static final byte[] BODYLENGTH_TOKEN = getBytes("\0019=");
-    private static final byte[] CHECKSUM_TOKEN = getBytes("10=");
+    private static final byte[] BEGINSTRING_TOKEN = Bytes.getBytes("8=FIX");
+    private static final byte[] BODYLENGTH_TOKEN = Bytes.getBytes("\0019=");
+    private static final byte[] CHECKSUM_TOKEN = Bytes.getBytes("10=");
 
     public static enum ParserState {
         INITIAL,

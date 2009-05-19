@@ -1,6 +1,7 @@
 package org.yajul.fix.decoder;
 
 import org.apache.mina.core.buffer.IoBuffer;
+import org.yajul.fix.util.CodecConstants;
 
 import java.io.UnsupportedEncodingException;
 
@@ -11,13 +12,6 @@ import java.io.UnsupportedEncodingException;
  * Time: 9:51:06 PM
  */
 public class CodecHelper {
-    public static byte[] getBytes(String s) {
-        try {
-            return s.getBytes(CodecConstants.CHARSET_NAME);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static boolean matchBytes(IoBuffer buf,int offset,byte[] bytes) {
         for (int i = 0; i < bytes.length ; i++) {

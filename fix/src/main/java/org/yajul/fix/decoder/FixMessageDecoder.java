@@ -5,9 +5,6 @@ import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.session.AttributeKey;
 import org.apache.mina.core.buffer.IoBuffer;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import static org.yajul.fix.decoder.CodecHelper.getBytes;
 
 /**
  * Decodes FIX messages into RawFixMessage objects.  The real work is done by FixDecoder.  This is just

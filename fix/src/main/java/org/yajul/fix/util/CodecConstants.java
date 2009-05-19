@@ -1,4 +1,4 @@
-package org.yajul.fix.decoder;
+package org.yajul.fix.util;
 
 import java.nio.charset.Charset;
 
