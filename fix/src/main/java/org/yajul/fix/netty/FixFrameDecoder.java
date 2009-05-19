@@ -3,9 +3,14 @@ package org.yajul.fix.netty;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.yajul.fix.util.CodecConstants;
 import org.yajul.fix.util.Bytes;
+import static org.yajul.fix.netty.ChannelBufferHelper.indexOf;
+import org.yajul.fix.RawFixMessage;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  * Handles packet fagmentation.
@@ -14,6 +19,8 @@ import org.yajul.fix.util.Bytes;
  * Time: 1:23:44 PM
  */
 public class FixFrameDecoder extends FrameDecoder {
+    private final static Logger log = LoggerFactory.getLogger(FixFrameDecoder.class);
+
     private static final byte[] BEGINSTRING_TOKEN = Bytes.getBytes("8=FIX");
     private static final byte[] BODYLENGTH_TOKEN = Bytes.getBytes("\0019=");
     private static final byte[] CHECKSUM_TOKEN = Bytes.getBytes("10=");
@@ -84,98 +91,119 @@ public class FixFrameDecoder extends FrameDecoder {
                 '}';
     }
 
+    @Override
+    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
+        if (log.isDebugEnabled())
+           log.debug("messageReceived() : " + e);
+        super.messageReceived(ctx, e);
+    }
+
+    @Override
+    protected Object decodeLast(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
+        if (log.isDebugEnabled())
+           log.debug("decodeLast() : " + buffer);
+        return super.decodeLast(ctx, channel, buffer);
+    }
+
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer)
             throws Exception {
+        if (log.isDebugEnabled())
+           log.debug("decode() : state=" + state +
+                   "\n[" + new String(ChannelBufferHelper.copyBytes(
+                       buffer,buffer.readerIndex(),buffer.readableBytes())) + "]");
         int index;
-/*
         switch (state) {
             case INITIAL:
                 // Look for the beginstring "8=FIX"
                 if (buffer.readableBytes() < BEGINSTRING_TOKEN.length)
                     return null;   // There is not enough data to decode.
-                index = indexOf(buffer, BEGINSTRING_TOKEN);
+                index = indexOf(buffer, buffer.readerIndex(), BEGINSTRING_TOKEN);
                 if (log.isDebugEnabled())
-                   log.debug("doDecode() : " + state+ " index=" + index);
+                   log.debug("decode() : " + state+ " index=" + index);
                 if (index == -1) {
                     // Consume the stuff in the buffer up until limit - token.length
                     // (there may be an unfinished token at the end of the buffer).
-                    in.position(in.limit() - BEGINSTRING_TOKEN.length);
-                    return false;   // There is not enough data to decode.
+                    buffer.skipBytes(buffer.readableBytes() - BEGINSTRING_TOKEN.length);
+                    return null;   // There is not enough data to decode.
                 }
-                in.position(index); // Consume data before the token.
-                messageStart = 0;   // The message starts at offset zero from the position.
+                buffer.readerIndex(index);  // Consume data before the token.
+                messageStart = 0;           // The message starts at offset zero from the position.
                 state = ParserState.BEGINSTRING;    // Were in the beginstring.
-                return false;   // The message is incomplete, read more.
+                return null;    // The message is incomplete, read more.
             case BEGINSTRING:
                 // We got the "8=FIX".  Skip until we find "<SOH>9="
-                beginStringStart = messageStart + 2;
+                beginStringStart = buffer.readerIndex() + 2;
                 // Look for a separator followed by '9='.
-                if (in.remaining() < BODYLENGTH_TOKEN.length)
-                    return false;   // Not enough bytes for the token, get more.
-                index = CodecHelper.indexOf(in, beginStringStart, BODYLENGTH_TOKEN);
+                if (buffer.readableBytes() < BODYLENGTH_TOKEN.length)
+                    return null;   // Not enough bytes for the token, get more.
+                index = indexOf(buffer, beginStringStart, BODYLENGTH_TOKEN);
                 if (log.isDebugEnabled())
-                   log.debug("doDecode() : " + state+ " index=" + index);
+                   log.debug("decode() : " + state+ " index=" + index);
                 if (index == -1)
-                    return false;   // Read more.
+                    return null;   // Read more.
                 beginStringLength = index - beginStringStart;
-                beginString = CodecHelper.copyBytes(in,beginStringStart,beginStringLength);
+                beginString = ChannelBufferHelper.copyBytes(buffer,beginStringStart,beginStringLength);
                 if (log.isDebugEnabled())
-                   log.debug("doDecode() : beginString=" + new String(beginString));
+                   log.debug("decode() : beginString=" + new String(beginString));
                 bodyLengthStart = index + BODYLENGTH_TOKEN.length;
                 state = ParserState.BODYLENGTH;
-                return false;
+                return null;
             case BODYLENGTH:
                 // Read digits until the separator.
                 index = bodyLengthStart;
-                while (index < in.limit()) {
-                    if (in.get(index) == separator) {
+                while (index < buffer.readableBytes()) {
+                    if (buffer.getByte(index) == separator) {
                         // Stop, parse the integer.
-                        bodyLength = CodecHelper.parseDigits(in,bodyLengthStart, index - bodyLengthStart);
+                        bodyLength = ChannelBufferHelper.parseDigits(buffer,bodyLengthStart, index - bodyLengthStart);
                         bodyEnd = index + bodyLength;   // Calculate the offset of the end of the body.
                         state = ParserState.BODY;
-                        return false;
+                        return null;
                     }
                     index ++;
                 }
-                return false;
+                return null;
             case BODY:
                 // We read the body length field.  Skip and keep acculmulating until 'bodyLength' has been read.
-                if (in.limit() < bodyEnd)
-                    return false;
+                if (buffer.readableBytes() < bodyEnd)
+                    return null;
                 // Begin reading the footer.
                 state = ParserState.CHECKSUM;
-                return false;
+                return null;
             case CHECKSUM:
                 // Body skipped, read the checksum "10=nnnn<SOH>"
-                index = CodecHelper.indexOf(in,bodyEnd,CHECKSUM_TOKEN);
+                index = indexOf(buffer,bodyEnd,CHECKSUM_TOKEN);
                 if (index == -1) {
-                    return false;
+                    return null;
                 }
                 checksumStart = index + 3;
                 if (log.isDebugEnabled())
-                   log.debug("doDecode() : checksumStart=" + checksumStart);
+                   log.debug("decode() : checksumStart=" + checksumStart);
                 index = checksumStart;
-                while (index < in.limit()) {
-                    if (in.get(index) == separator) {
+                while (index < buffer.readableBytes()) {
+                    if (buffer.getByte(index) == separator) {
                         // Stop, parse the integer.
-                        checksum = CodecHelper.parseDigits(in,checksumStart,index - checksumStart);
+                        checksum = ChannelBufferHelper.parseDigits(buffer,checksumStart,index - checksumStart);
                         if (log.isDebugEnabled())
-                           log.debug("doDecode() : checksum=" + checksum);
-                        int length = index - in.position();
+                           log.debug("decode() : checksum=" + checksum);
+                        int length = (index - buffer.readerIndex()) + 1;
                         byte[] bytes = new byte[length];
                         // Consume the whole thing.
-                        in.get(bytes);
+                        buffer.readBytes(bytes);
                         // Write the RawFixMessage to the output.
-                        out.write(new RawFixMessage(bytes,beginStringStart,new String(beginString),bodyLengthStart,bodyLength,bodyEnd,checksum));
+                        RawFixMessage rv = new RawFixMessage(
+                                bytes,beginStringStart,
+                                new String(beginString),bodyLengthStart,bodyLength,
+                                bodyEnd,checksum);
                         reset();
-                        // If there are more bytes in the buffer, keep parsing it.
-                        return in.remaining() > 0;
+                        if (log.isDebugEnabled())
+                           log.debug("decode() : returning " + rv);
+                        return rv;
                     }
                     index++;
                 }
                 // Something is wrong.
+                return null;
         }
-*/
         return null;
     }
 }
