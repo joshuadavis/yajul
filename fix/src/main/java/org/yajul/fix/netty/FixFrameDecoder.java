@@ -3,7 +3,7 @@ package org.yajul.fix.netty;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.MessageEvent;
+import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.yajul.fix.util.CodecConstants;
 import org.yajul.fix.util.Bytes;
@@ -25,14 +25,7 @@ public class FixFrameDecoder extends FrameDecoder {
     private static final byte[] BODYLENGTH_TOKEN = Bytes.getBytes("\0019=");
     private static final byte[] CHECKSUM_TOKEN = Bytes.getBytes("10=");
 
-    public static enum ParserState {
-        INITIAL,
-        BEGINSTRING,
-        BODYLENGTH,
-        BODY, CHECKSUM,
-    }
-
-    private ParserState state = ParserState.INITIAL;
+    private ParserState state;
 
     private int messageStart;
     private int beginStringStart;
@@ -43,7 +36,20 @@ public class FixFrameDecoder extends FrameDecoder {
     private int bodyEnd;
     private int checksumStart;
     private int checksum;
-    public byte separator = CodecConstants.SOH;
+    public final byte separator;
+    private byte[] bodyLengthToken;
+
+    public FixFrameDecoder() {
+        this(CodecConstants.SOH);
+    }
+
+    public FixFrameDecoder(byte separator) {
+        super();
+        this.separator = separator;
+        this.bodyLengthToken = new byte[BODYLENGTH_TOKEN.length];
+        System.arraycopy(BODYLENGTH_TOKEN,0,this.bodyLengthToken,0,BODYLENGTH_TOKEN.length);
+        this.bodyLengthToken[0] = separator;
+    }
 
     public void reset() {
         state = ParserState.INITIAL;
@@ -76,7 +82,7 @@ public class FixFrameDecoder extends FrameDecoder {
 
     @Override
     public String toString() {
-        return "FixDecoder{" +
+        return "FixMessageDecoder{" +
                 "state=" + state +
                 ", messageStart=" + messageStart +
                 ", beginStringStart=" + beginStringStart +
@@ -92,34 +98,44 @@ public class FixFrameDecoder extends FrameDecoder {
     }
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-/*
+    protected Object decodeLast(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
         if (log.isDebugEnabled())
-           log.debug("messageReceived() : " + e);
-*/
-        super.messageReceived(ctx, e);
+            log.debug("decodeLast() : " + buffer);
+        return super.decodeLast(ctx, channel, buffer);
     }
 
     @Override
-    protected Object decodeLast(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
+    public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         if (log.isDebugEnabled())
-           log.debug("decodeLast() : " + buffer);
-        return super.decodeLast(ctx, channel, buffer);
+           log.debug("channelConnected()");
+        super.channelConnected(ctx, e);
+        reset();
+    }
+
+    @Override
+    public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+        if (log.isDebugEnabled())
+           log.debug("channelDisconnected()");
+        super.channelDisconnected(ctx, e);
+        reset();
+        state = null;
     }
 
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer)
             throws Exception {
+        if (state == null)
+            throw new IllegalStateException("Decoder not initialized.");
         if (log.isDebugEnabled())
-           log.debug("** decode() : state=" + state +
-                   " [" + new String(ChannelBufferHelper.copyBytes(
-                       buffer,buffer.readerIndex(),buffer.readableBytes())) + "]");
-        int index,end;
+            log.debug("** decode() : state=" + state +
+                    " [" + new String(ChannelBufferHelper.copyBytes(
+                    buffer, buffer.readerIndex(), buffer.readableBytes())) + "]");
+        int index, end;
         switch (state) {
             case INITIAL:
                 // Look for the beginstring "8=FIX"
                 index = indexOf(buffer, buffer.readerIndex(), BEGINSTRING_TOKEN);
                 if (log.isDebugEnabled())
-                   log.debug("decode() : " + state+ " index=" + index);
+                    log.debug("decode() : " + state + " index=" + index);
                 if (index == -1) {
                     // Consume the stuff in the buffer up until limit - token.length
                     // (there may be an unfinished token at the end of the buffer).
@@ -134,16 +150,16 @@ public class FixFrameDecoder extends FrameDecoder {
                 // We got the "8=FIX".  Skip until we find "<SOH>9="
                 beginStringStart = buffer.readerIndex() + 2;    // The location just after '8='.
                 // Look for a separator followed by '9='.
-                index = indexOf(buffer, beginStringStart, BODYLENGTH_TOKEN);
+                index = indexOf(buffer, beginStringStart, bodyLengthToken);
                 if (log.isDebugEnabled())
-                   log.debug("decode() : " + state+ " index=" + index);
+                    log.debug("decode() : " + state + " index=" + index);
                 if (index == -1)
                     return null;   // Read more.
                 beginStringLength = index - beginStringStart;
-                beginString = ChannelBufferHelper.copyBytes(buffer,beginStringStart,beginStringLength);
+                beginString = ChannelBufferHelper.copyBytes(buffer, beginStringStart, beginStringLength);
                 if (log.isDebugEnabled())
-                   log.debug("decode() : beginString=" + new String(beginString));
-                bodyLengthStart = index + BODYLENGTH_TOKEN.length;
+                    log.debug("decode() : beginString=" + new String(beginString));
+                bodyLengthStart = index + bodyLengthToken.length;
                 state = ParserState.BODYLENGTH;
                 // Flow into the next state.
             case BODYLENGTH:
@@ -153,14 +169,13 @@ public class FixFrameDecoder extends FrameDecoder {
                 while (index < end && state == ParserState.BODYLENGTH) {
                     if (buffer.getByte(index) == separator) {
                         // Stop, parse the integer.
-                        bodyLength = ChannelBufferHelper.parseDigits(buffer,bodyLengthStart, index - bodyLengthStart);
+                        bodyLength = ChannelBufferHelper.parseDigits(buffer, bodyLengthStart, index - bodyLengthStart);
                         bodyEnd = index + bodyLength;   // Calculate the offset of the end of the body.
                         if (log.isDebugEnabled())
-                           log.debug("decode() : bodyLength=" + bodyLength + " bodyEnd=" + bodyEnd);
+                            log.debug("decode() : bodyLength=" + bodyLength + " bodyEnd=" + bodyEnd);
                         state = ParserState.BODY;
-                    }
-                    else {
-                        index ++;
+                    } else {
+                        index++;
                     }
                 }
                 if (state != ParserState.BODY)
@@ -168,7 +183,7 @@ public class FixFrameDecoder extends FrameDecoder {
                 // Flow into the next state.
             case BODY:
                 if (log.isDebugEnabled())
-                   log.debug("decode() : " + state+ " readableBytes=" + buffer.readableBytes() + " bodyEnd=" + bodyEnd);
+                    log.debug("decode() : " + state + " readableBytes=" + buffer.readableBytes() + " bodyEnd=" + bodyEnd);
                 // We read the body length field.  Skip and keep acculmulating until 'bodyLength' has been read.
                 if (buffer.readableBytes() < bodyEnd)
                     return null;
@@ -177,9 +192,9 @@ public class FixFrameDecoder extends FrameDecoder {
                 // Flow into the next state.
             case CHECKSUM:
                 // Body skipped, read the checksum "10=nnnn<SOH>"
-                index = indexOf(buffer,bodyEnd,CHECKSUM_TOKEN);
+                index = indexOf(buffer, bodyEnd, CHECKSUM_TOKEN);
                 if (log.isDebugEnabled())
-                   log.debug("decode() : " + state + " index=" + index);
+                    log.debug("decode() : " + state + " index=" + index);
                 if (index == -1) {
                     return null;
                 }
@@ -189,28 +204,28 @@ public class FixFrameDecoder extends FrameDecoder {
                 while (index < end) {
                     if (buffer.getByte(index) == separator) {
                         // Stop, parse the integer.
-                        checksum = ChannelBufferHelper.parseDigits(buffer,checksumStart,index - checksumStart);
+                        checksum = ChannelBufferHelper.parseDigits(buffer, checksumStart, index - checksumStart);
                         if (log.isDebugEnabled())
-                           log.debug("decode() : checksum=" + checksum);
+                            log.debug("decode() : checksum=" + checksum);
                         int length = (index - buffer.readerIndex()) + 1;
                         byte[] bytes = new byte[length];
                         // Consume the whole thing.
                         buffer.readBytes(bytes);
                         // Write the RawFixMessage to the output.
                         RawFixMessage rv = new RawFixMessage(
-                                bytes,beginStringStart,
-                                new String(beginString),bodyLengthStart,bodyLength,
-                                bodyEnd,checksum);
+                                bytes, beginStringStart,
+                                new String(beginString), bodyLengthStart, bodyLength,
+                                bodyEnd, checksum);
                         reset();
                         if (log.isDebugEnabled())
-                           log.debug("decode() : returning " + rv);
+                            log.debug("decode() : returning " + rv);
                         return rv;
                     }
                     index++;
                 }
                 // Something is wrong.
                 if (log.isDebugEnabled())
-                   log.debug("decode() : separator not found.");
+                    log.debug("decode() : separator not found.");
                 return null;
         }
         return null;

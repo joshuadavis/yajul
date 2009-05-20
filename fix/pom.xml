@@ -165,6 +165,11 @@
             <groupId>org.jboss.netty</groupId>
             <artifactId>netty</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

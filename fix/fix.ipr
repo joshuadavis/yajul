@@ -447,6 +447,34 @@
         <root url="jar://$PROJECT_DIR$/target/sources/netty-3.0.1.GA-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="quickfixj">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-msg-fix41.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-msg-fix44.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-msg-fix43.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-examples.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-msg-fix40.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-core.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-msg-fix42.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/quickfixj-src.zip!/" />
+      </SOURCES>
+    </library>
+    <library name="jmock">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/target/dependency/jmock-2.5.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/target/dependency/hamcrest-library-1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/target/dependency/hamcrest-core-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/target/sources/jmock-2.5.1-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/target/sources/hamcrest-library-1.1-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/target/sources/hamcrest-core-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
   </component>
   <component name="testng.defaultConfiguration">
     <outputDirectory />

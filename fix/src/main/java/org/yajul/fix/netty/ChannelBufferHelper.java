@@ -48,6 +48,10 @@ public class ChannelBufferHelper {
         return bytes;
     }
 
+    public static byte[] copyBytes(ChannelBuffer in) {
+        return copyBytes(in,in.readerIndex(),in.readableBytes());
+    }
+
     public static int parseDigits(ChannelBuffer buf, int start, int len) {
         int value = 0;
         for (int i = start; i < start + len; i++) {
