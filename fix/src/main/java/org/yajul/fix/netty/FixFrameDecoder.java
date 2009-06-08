@@ -215,7 +215,7 @@ public class FixFrameDecoder extends FrameDecoder {
                         RawFixMessage rv = new RawFixMessage(
                                 bytes, beginStringStart,
                                 new String(beginString), bodyLengthStart, bodyLength,
-                                bodyEnd, checksum);
+                                bodyEnd, checksum, separator);
                         reset();
                         if (log.isDebugEnabled())
                             log.debug("decode() : returning " + rv);

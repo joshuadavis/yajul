@@ -17,12 +17,14 @@ public class RawFixMessage implements Serializable {
     private int bodyLength;
     private int bodyEnd;
     private int checksum;
+    private byte separator;
 
     public RawFixMessage(byte[] bytes,
                          int beginStringStart, String beginString,
                          int bodyLengthStart, int bodyLength,
                          int bodyEnd,
-                         int checksum) {
+                         int checksum,
+                         byte separator) {
         this.bytes = bytes;
         this.beginStringStart = beginStringStart;
         this.beginString = beginString;
@@ -30,6 +32,7 @@ public class RawFixMessage implements Serializable {
         this.bodyLength = bodyLength;
         this.bodyEnd = bodyEnd;
         this.checksum = checksum;
+        this.separator = separator;
     }
 
     public byte[] getBytes() {
@@ -58,6 +61,15 @@ public class RawFixMessage implements Serializable {
 
     public int getChecksum() {
         return checksum;
+    }
+
+    public int computeChecksum() {
+        int sum = 0;
+        for (int i = 0; i <= bodyEnd; i++) {
+            byte b = bytes[i];
+            sum += b;
+        }
+        return sum % 256;
     }
 
     @Override
