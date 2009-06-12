@@ -213,8 +213,8 @@ public class FixFrameDecoder extends FrameDecoder {
                         buffer.readBytes(bytes);
                         // Write the RawFixMessage to the output.
                         RawFixMessage rv = new RawFixMessage(
-                                bytes, beginStringStart,
-                                new String(beginString), bodyLengthStart, bodyLength,
+                                bytes,
+                                new String(beginString), bodyLength,
                                 bodyEnd, checksum, separator);
                         reset();
                         if (log.isDebugEnabled())

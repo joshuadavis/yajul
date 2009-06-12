@@ -12,6 +12,9 @@ import static org.yajul.fix.netty.ChannelBufferHelper.indexOf;
 import org.yajul.fix.netty.FixFrameDecoder;
 import org.yajul.fix.netty.ChannelBufferHelper;
 import static org.yajul.fix.util.Bytes.getBytes;
+import org.yajul.fix.util.Bytes;
+import static org.yajul.fix.util.CodecConstants.DEFAULT_SEPARATOR;
+import static org.yajul.fix.util.CodecConstants.DEFAULT_TAG_SEPARATOR;
 import org.yajul.fix.RawFixMessage;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
@@ -20,6 +23,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.Description;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Test the Netty frame decoder for FIX messages.
@@ -64,6 +68,19 @@ public class FrameDecoderTest extends TestCase {
         b.readBytes(first.length);
         byte[] bytes3 = ChannelBufferHelper.copyBytes(b);
         assertEquals(Arrays.equals(second, bytes3), true);
+    }
+
+    public void testBytes() throws Exception {
+        assertEquals(1,Bytes.numdigits(8));
+        assertEquals(2,Bytes.numdigits(12));
+        assertEquals(3,Bytes.numdigits(128));
+        assertEquals(1,Bytes.numdigits(0));
+    }
+    public void testRawTag() throws Exception {
+        byte[] bytes1 = Bytes.getBytes("8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001");
+        RawFixMessage message = new RawFixMessage(bytes1);
+        List<RawFixMessage.RawTag> tags = message.getRawTags();
+        log.info("tags=" + tags);
     }
 
     public void testDecoder() throws Exception {
