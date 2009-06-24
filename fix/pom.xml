@@ -40,7 +40,7 @@
         <version.junit>4.5</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.mina>2.0.0-M4</version.mina>
-        <version.netty>3.0.1.GA</version.netty>
+        <version.netty>3.0.2.GA</version.netty>
         <version.jmock>2.5.1</version.jmock>
     </properties>
     <repositories>

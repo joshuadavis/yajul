@@ -13,8 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 /**
- * Handles packet fagmentation.
- * User: josh
+ * Parses FIX messages from incoming stream.  The input is a Netty ChannelBuffer, and the output
+ * is a RawFixMessage.  
+ * Uses Netty FrameDecoder to handle fragmentation, and ignores any garbage before and after
+ * FIX messages.
+ * <br>
+ *  User: josh
  * Date: May 19, 2009
  * Time: 1:23:44 PM
  */
@@ -48,6 +52,7 @@ public class FixFrameDecoder extends FrameDecoder {
         this.separator = separator;
         this.bodyLengthToken = new byte[BODYLENGTH_TOKEN.length];
         System.arraycopy(BODYLENGTH_TOKEN,0,this.bodyLengthToken,0,BODYLENGTH_TOKEN.length);
+        // Copy the body length token and replace the sep
         this.bodyLengthToken[0] = separator;
     }
 

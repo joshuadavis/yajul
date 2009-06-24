@@ -5,6 +5,9 @@ import junit.framework.Assert;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
+import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.yajul.fix.netty.ChannelBufferHelper.buffer;
@@ -24,6 +27,9 @@ import org.hamcrest.Description;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.io.File;
+import java.net.InetSocketAddress;
 
 /**
  * Test the Netty frame decoder for FIX messages.
@@ -76,11 +82,17 @@ public class FrameDecoderTest extends TestCase {
         assertEquals(3,Bytes.numdigits(128));
         assertEquals(1,Bytes.numdigits(0));
     }
+
     public void testRawTag() throws Exception {
         byte[] bytes1 = Bytes.getBytes("8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001");
         RawFixMessage message = new RawFixMessage(bytes1);
         List<RawFixMessage.RawTag> tags = message.getRawTags();
         log.info("tags=" + tags);
+    }
+
+    public void testFixStream() throws Exception {
+        File f = new File("etc/example-messages.fix");
+
     }
 
     public void testDecoder() throws Exception {
@@ -166,5 +178,28 @@ public class FrameDecoderTest extends TestCase {
 
         public void describeTo(Description description) {
         }
+    }
+
+    public void testServerDecoder() {
+        InetSocketAddress localAddress = new InetSocketAddress(9876);
+
+        ChannelFactory serverFactory =
+            new NioServerSocketChannelFactory(
+                    Executors.newCachedThreadPool(),
+                    Executors.newCachedThreadPool());
+        ServerBootstrap serverBootstrap = new ServerBootstrap(serverFactory);
+        FixFrameDecoder decoder = new FixFrameDecoder();
+        ChannelPipeline pipeline = serverBootstrap.getPipeline();
+        pipeline.addLast("decoder", decoder);
+        serverBootstrap.setOption("child.tcpNoDelay", true);
+        serverBootstrap.setOption("child.keepAlive", true);
+        serverBootstrap.bind(localAddress);
+
+        ChannelFactory clientFactory = new NioServerSocketChannelFactory(
+                Executors.newCachedThreadPool(),
+                Executors.newCachedThreadPool());
+        ClientBootstrap clientBootstrap = new ClientBootstrap(clientFactory);
+        clientBootstrap.connect(localAddress);
+        
     }
 }

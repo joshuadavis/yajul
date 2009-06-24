@@ -21,6 +21,7 @@ public class MessageDefinitionReader {
     private static final Logger log = LoggerFactory.getLogger(MessageDefinitionReader.class);
     private static final String BASE_DIR = "etc/qfj-test/acceptance/definitions/";
     private int heartBeatOverride;
+    private PrintWriter pw;
 
     public static void main(String[] args) {
         try {
@@ -39,8 +40,16 @@ public class MessageDefinitionReader {
                     !file.getParentFile().getName().equals("future"));
         }
     }
+
     private void readAll() throws IOException {
-        File d = new File(BASE_DIR + "server/fix44");
+        File out = new File("etc/example-messages.fix");
+        pw = new PrintWriter(out);
+        readFiles(new File(BASE_DIR + "server/fix44"));
+        readFiles(new File(BASE_DIR + "server/fix43"));
+        readFiles(new File(BASE_DIR + "server/fix42"));
+    }
+
+    private void readFiles(File d) throws IOException {
         File[] files = d.listFiles(new TestDefinitionFilter());
         for (File file : files) {
             readFile(file);
@@ -56,16 +65,8 @@ public class MessageDefinitionReader {
             String line = in.readLine();
             while (line != null) {
                 if (line.matches("^[ \t]*#.*")) {
-                    // steps.add(new PrintComment(line));
                 } else if (line.startsWith("I")) {
-                    // steps.add(new InitiateMessageStep(line));
                     generateMessage(line);
-                } else if (line.startsWith("E")) {
-                    // steps.add(new ExpectMessageStep(line));
-                } else if (line.matches("^i\\d*,?CONNECT")) {
-                    // steps.add(new ConnectToServerStep(line, transportType, port));
-                } else if (line.matches("^e\\d*,?DISCONNECT")) {
-                    // steps.add(new ExpectDisconnectStep(line));
                 }
                 line = in.readLine();
             }
@@ -75,6 +76,13 @@ public class MessageDefinitionReader {
                     in.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
+                }
+            }
+            if (pw != null) {
+                try {
+                    pw.close();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
                 }
             }
         }
@@ -118,8 +126,8 @@ public class MessageDefinitionReader {
         if (message.indexOf("\00110=") == -1) {
             message += "10=" + CHECKSUM_FORMAT.format(checksum(message)) + '\001';
         }
+        pw.write(message);
         log.debug("sending to client " + clientId + ": " + message);
-
     }
 
     private String insertTimes(String message) {
