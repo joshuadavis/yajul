@@ -14,6 +14,7 @@ import static org.yajul.fix.netty.ChannelBufferHelper.buffer;
 import static org.yajul.fix.netty.ChannelBufferHelper.indexOf;
 import org.yajul.fix.netty.FixFrameDecoder;
 import org.yajul.fix.netty.ChannelBufferHelper;
+import org.yajul.fix.netty.FixHandler;
 import static org.yajul.fix.util.Bytes.getBytes;
 import org.yajul.fix.util.Bytes;
 import static org.yajul.fix.util.CodecConstants.DEFAULT_SEPARATOR;
@@ -44,7 +45,7 @@ public class FrameDecoderTest extends TestCase {
     private Mockery mockery = new Mockery();
 
     public void testBufferHelper() {
-        ChannelBuffer buf = buffer("8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001");
+        ChannelBuffer buf = buffer(Fix44Examples.EXAMPLE);
         assertEquals(buf.readerIndex(), 0);
         assertEquals(buf.readableBytes(), 34);
         int index = indexOf(buf, 0, getBytes("8=FIX"));
@@ -84,15 +85,10 @@ public class FrameDecoderTest extends TestCase {
     }
 
     public void testRawTag() throws Exception {
-        byte[] bytes1 = Bytes.getBytes("8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001");
+        byte[] bytes1 = Bytes.getBytes(Fix44Examples.EXAMPLE);
         RawFixMessage message = new RawFixMessage(bytes1);
         List<RawFixMessage.RawTag> tags = message.getRawTags();
         log.info("tags=" + tags);
-    }
-
-    public void testFixStream() throws Exception {
-        File f = new File("etc/example-messages.fix");
-
     }
 
     public void testDecoder() throws Exception {
@@ -180,7 +176,7 @@ public class FrameDecoderTest extends TestCase {
         }
     }
 
-    public void testServerDecoder() {
+    public void testServerDecoder() throws InterruptedException {
         InetSocketAddress localAddress = new InetSocketAddress(9876);
 
         ChannelFactory serverFactory =
@@ -191,15 +187,71 @@ public class FrameDecoderTest extends TestCase {
         FixFrameDecoder decoder = new FixFrameDecoder();
         ChannelPipeline pipeline = serverBootstrap.getPipeline();
         pipeline.addLast("decoder", decoder);
+        ServerHandler serverHandler = new ServerHandler();
+        pipeline.addLast("handler", serverHandler );
         serverBootstrap.setOption("child.tcpNoDelay", true);
         serverBootstrap.setOption("child.keepAlive", true);
         serverBootstrap.bind(localAddress);
+        log.info("bound to " + localAddress);
 
         ChannelFactory clientFactory = new NioServerSocketChannelFactory(
                 Executors.newCachedThreadPool(),
                 Executors.newCachedThreadPool());
         ClientBootstrap clientBootstrap = new ClientBootstrap(clientFactory);
-        clientBootstrap.connect(localAddress);
-        
+        ClientHandler clientHandler = new ClientHandler();
+        clientBootstrap.getPipeline().addLast("handler", clientHandler);
+        log.info("Connect...");
+        ChannelFuture cf = clientBootstrap.connect(localAddress);
+        cf.await();
+        log.info("Connected.");
+        Thread.sleep(1000);
+    }
+
+
+    @ChannelPipelineCoverage("all")
+    public class ServerHandler extends SimpleChannelHandler {
+        private final Logger log = LoggerFactory.getLogger(ServerHandler.class);
+
+        @Override
+        public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
+            log.info("handleUpstream() " + e);
+            super.handleUpstream(ctx, e);
+        }
+
+        @Override
+        public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
+            log.info("handleDownstream() " + e);
+            super.handleDownstream(ctx, e);
+        }
+    }
+
+    @ChannelPipelineCoverage("all")
+    public class ClientHandler extends SimpleChannelHandler {
+        private final Logger log = LoggerFactory.getLogger(ClientHandler.class);
+
+        @Override
+        public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
+            log.info("handleUpstream() " + e);
+            super.handleUpstream(ctx, e);
+        }
+
+        @Override
+        public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
+            log.info("handleDownstream() " + e);
+            super.handleDownstream(ctx, e);
+        }
+
+        @Override
+        public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+            super.channelConnected(ctx, e);
+            log.info("channelConnected()");
+            // Send some stuff...
+            ChannelBuffer buf = buffer("8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001whoops8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001");
+            Channel channel = e.getChannel();
+            ChannelFuture cf = channel.write(buf);
+            log.info("waiting for write...");
+            cf.await();
+            log.info("done.");
+        }
     }
 }
