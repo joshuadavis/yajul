@@ -10,6 +10,7 @@ import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.yajul.fix.netty.ChannelBufferHelper;
+import org.yajul.fix.util.LockHelper;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -108,13 +109,7 @@ public class BasicNettyTest extends TestCase {
         public void messageReceived(
                 ChannelHandlerContext ctx, final MessageEvent e) {
             log.info("CLIENT - messageRecieved() " + e.getMessage());
-            lock.lock();
-            try
-            {
-                finished.signal();
-            } finally {
-                lock.unlock();
-            }
+            LockHelper.signal(lock,finished);
         }
 
         @Override
@@ -130,12 +125,7 @@ public class BasicNettyTest extends TestCase {
 
         public void waitUntilFinished() throws InterruptedException {
             log.info("CLIENT - waiting...");
-            lock.lock();
-            try{
-            finished.await(10, TimeUnit.SECONDS);
-            } finally {
-                lock.unlock();     
-            }
+            LockHelper.await(lock,finished,10,TimeUnit.SECONDS);
         }
     }
 }

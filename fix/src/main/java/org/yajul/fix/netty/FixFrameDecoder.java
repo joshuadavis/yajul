@@ -13,12 +13,18 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 /**
- * Parses FIX messages from incoming stream.  The input is a Netty ChannelBuffer, and the output
- * is a RawFixMessage.  
- * Uses Netty FrameDecoder to handle fragmentation, and ignores any garbage before and after
- * FIX messages.
+ * Parses FIX messages from incoming stream, handling fragmenttion and 'garbage'.
+ * <ul>
+ * <li>Inuput events are Netty ChannelBuffer.</li>
+ * <li>Output events are RawFixMessage objects.</li>
+ * <li>Stateful: One instance per channel.  Do not use an instance of this for multiple
+ * channels.</li>
+ * <li>Message fragmentation is handled by Netty FrameDecoder.  Data will be accumulated until
+ * a full FIX message is received.</li>
+ * <li>Garbage data (before '8=FIX' and after message end) is discarded.</li>
+ * </ul>
  * <br>
- *  User: josh
+ * User: josh
  * Date: May 19, 2009
  * Time: 1:23:44 PM
  */
