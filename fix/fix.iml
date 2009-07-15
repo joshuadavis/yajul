@@ -13,7 +13,7 @@
     <orderEntry type="library" name="jms" level="project" />
     <orderEntry type="library" name="junit" level="project" />
     <orderEntry type="library" name="openfast" level="project" />
-    <orderEntry type="library" name="mina2" level="project" />
+    <orderEntry type="library" name="mina" level="project" />
     <orderEntry type="library" name="netty" level="project" />
     <orderEntry type="library" name="quickfixj" level="project" />
     <orderEntry type="library" name="jmock" level="project" />

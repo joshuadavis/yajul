@@ -78,10 +78,10 @@ public class FrameDecoderTest extends TestCase {
     }
 
     public void testBytes() throws Exception {
-        assertEquals(1,Bytes.numdigits(8));
-        assertEquals(2,Bytes.numdigits(12));
-        assertEquals(3,Bytes.numdigits(128));
-        assertEquals(1,Bytes.numdigits(0));
+        assertEquals(1, Bytes.numdigits(8));
+        assertEquals(2, Bytes.numdigits(12));
+        assertEquals(3, Bytes.numdigits(128));
+        assertEquals(1, Bytes.numdigits(0));
     }
 
     public void testRawTag() throws Exception {
@@ -165,10 +165,10 @@ public class FrameDecoderTest extends TestCase {
 
         @Override
         public boolean matchesSafely(DefaultMessageEvent e) {
-            Assert.assertTrue("Unexpected message event: " + e,e.getMessage() instanceof RawFixMessage);
+            Assert.assertTrue("Unexpected message event: " + e, e.getMessage() instanceof RawFixMessage);
             RawFixMessage rawFixMessage = (RawFixMessage) e.getMessage();
-            Assert.assertEquals(expectedChecksum,rawFixMessage.getChecksum());
-            Assert.assertEquals(expectedChecksum,rawFixMessage.computeChecksum());
+            Assert.assertEquals(expectedChecksum, rawFixMessage.getChecksum());
+            Assert.assertEquals(expectedChecksum, rawFixMessage.computeChecksum());
             return true;
         }
 
@@ -176,8 +176,7 @@ public class FrameDecoderTest extends TestCase {
         }
     }
 
-    public void testServerDecoder() throws InterruptedException
-    {
+    public void testServerDecoder() throws InterruptedException {
         int port = 9876;
         String host = "localhost";
 
@@ -186,10 +185,8 @@ public class FrameDecoderTest extends TestCase {
                         Executors.newCachedThreadPool(),
                         Executors.newCachedThreadPool());
         ServerBootstrap serverBootstrap = new ServerBootstrap(serverFactory);
-        ServerHandler serverHandler = new ServerHandler();
-        FixFrameDecoder decoder = new FixFrameDecoder();
-        serverBootstrap.getPipeline().addLast("decoder", decoder);        
-        serverBootstrap.getPipeline().addLast("handler", serverHandler);
+        ServerPipelineFactory pipelineFactory = new ServerPipelineFactory();
+        serverBootstrap.setPipelineFactory(pipelineFactory);
         serverBootstrap.setOption("child.tcpNoDelay", true);
         serverBootstrap.setOption("child.keepAlive", true);
         serverBootstrap.bind(new InetSocketAddress(host, port));
@@ -208,28 +205,32 @@ public class FrameDecoderTest extends TestCase {
         ChannelFuture cf = clientBootstrap.connect(new InetSocketAddress(host, port));
         cf.await();
         log.info("Connected.");
-        //clientHandler.waitForSend();
-        Thread.sleep(1000);
     }
 
+    public class ServerPipelineFactory implements ChannelPipelineFactory {
+        public ChannelPipeline getPipeline() throws Exception {
+            ChannelPipeline pipeline = Channels.pipeline();
+            ServerHandler serverHandler = new ServerHandler();
+            FixFrameDecoder decoder = new FixFrameDecoder();
+            pipeline.addLast("decoder", decoder);
+            pipeline.addLast("handler", serverHandler);
+            return pipeline;
+        }
+    }
 
-    @ChannelPipelineCoverage("all")
-    public class ServerHandler extends SimpleChannelHandler
-    {
+    @ChannelPipelineCoverage("one")
+    public class ServerHandler extends SimpleChannelHandler {
         private final Logger log = LoggerFactory.getLogger(ServerHandler.class);
 
         @Override
-        public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception
-        {
+        public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
             log.info("SERVER - messageReceived() " + e);
             Object obj = e.getMessage();
-            if (obj instanceof RawFixMessage)
-            {
+            if (obj instanceof RawFixMessage) {
                 RawFixMessage rawFixMessage = (RawFixMessage) obj;
                 log.info(rawFixMessage.toString());
                 Channel channel = e.getChannel();
-                if (channel.isWritable())
-                {
+                if (channel.isWritable()) {
                     e.getChannel().write(buffer("OK"));
                 }
             }
@@ -237,29 +238,25 @@ public class FrameDecoderTest extends TestCase {
     }
 
     @ChannelPipelineCoverage("all")
-    public class ClientHandler extends SimpleChannelHandler
-    {
+    public class ClientHandler extends SimpleChannelHandler {
         private final Logger log = LoggerFactory.getLogger(ClientHandler.class);
 
         private ReentrantLock lock = new ReentrantLock();
         private Condition finished = lock.newCondition();
 
         @Override
-        public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e)
-        {
+        public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
             sendData(e);
         }
 
         @Override
-        public void channelInterestChanged(ChannelHandlerContext ctx, ChannelStateEvent e)
-        {
+        public void channelInterestChanged(ChannelHandlerContext ctx, ChannelStateEvent e) {
             sendData(e);
         }
 
         private void sendData(ChannelStateEvent e) {
-           Channel channel = e.getChannel();
-            if (channel.isWritable())
-            {
+            Channel channel = e.getChannel();
+            if (channel.isWritable()) {
                 ChannelBuffer buf = buffer("8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001whoops8=FIX.4.2\0019=12\00135=X\001108=30\00110=049\001");
                 channel.write(buf);
             }
@@ -268,24 +265,20 @@ public class FrameDecoderTest extends TestCase {
 
         @Override
         public void messageReceived(
-                ChannelHandlerContext ctx, final MessageEvent e)
-        {
+                ChannelHandlerContext ctx, final MessageEvent e) {
             log.info("CLIENT - messageRecieved() " + e.getMessage());
             lock.lock();
-            try
-            {
+            try {
                 finished.signal();
             }
-            finally
-            {
+            finally {
                 lock.unlock();
             }
         }
 
         @Override
         public void exceptionCaught(
-                ChannelHandlerContext ctx, ExceptionEvent e)
-        {
+                ChannelHandlerContext ctx, ExceptionEvent e) {
             //noinspection ThrowableResultOfMethodCallIgnored
             log.warn(
                     "Unexpected exception from downstream.",
@@ -294,16 +287,13 @@ public class FrameDecoderTest extends TestCase {
         }
 
 
-        public void waitUntilFinished() throws InterruptedException
-        {
+        public void waitUntilFinished() throws InterruptedException {
             log.info("CLIENT - waiting...");
             lock.lock();
-            try
-            {
+            try {
                 finished.await(10, TimeUnit.SECONDS);
             }
-            finally
-            {
+            finally {
                 lock.unlock();
             }
         }

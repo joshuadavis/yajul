@@ -440,13 +440,13 @@
         <root url="jar://$PROJECT_DIR$/lib/openfast-0.9.7-src.zip!/" />
       </SOURCES>
     </library>
-    <library name="mina2">
+    <library name="mina">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mina-core-2.0.0-M4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mina-core-1.1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/mina-core-2.0.0-M4-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mina-core-1.1.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="netty">
