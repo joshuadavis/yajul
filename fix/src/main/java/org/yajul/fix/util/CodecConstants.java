@@ -17,4 +17,5 @@ public class CodecConstants {
     public static final int TAG_BEGINSTRING = 8;
     public static final int TAG_BODYLENGTH = 9;
     public static final int TAG_CHECKSUM = 10;
+    public static final int TAG_MSGTYPE = 35;
 }

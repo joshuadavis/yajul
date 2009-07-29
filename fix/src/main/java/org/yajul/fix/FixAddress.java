@@ -2,6 +2,7 @@ package org.yajul.fix;
 
 import java.net.SocketAddress;
 import java.net.InetSocketAddress;
+import java.io.Serializable;
 
 /**
  * The address of a FIX server.
@@ -10,7 +11,7 @@ import java.net.InetSocketAddress;
  * Date: Jul 15, 2009
  * Time: 1:44:58 AM
  */
-public class FixAddress {
+public class FixAddress implements Serializable {
     private String host;
     private int port;
     private String beginString;

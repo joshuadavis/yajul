@@ -84,13 +84,6 @@ public class FrameDecoderTest extends TestCase {
         assertEquals(1, Bytes.numdigits(0));
     }
 
-    public void testRawTag() throws Exception {
-        byte[] bytes1 = Bytes.getBytes(Fix44Examples.EXAMPLE);
-        RawFixMessage message = new RawFixMessage(bytes1);
-        List<RawFixMessage.RawTag> tags = message.getRawTags();
-        log.info("tags=" + tags);
-    }
-
     public void testDecoder() throws Exception {
         // Create the decoder, mock out all the rest.
         FixFrameDecoder decoder = new FixFrameDecoder();

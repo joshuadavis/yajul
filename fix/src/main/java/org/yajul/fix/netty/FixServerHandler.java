@@ -23,12 +23,21 @@ public class FixServerHandler extends SimpleChannelHandler {
         Object obj = e.getMessage();
         if (obj instanceof RawFixMessage) {
             RawFixMessage rawFixMessage = (RawFixMessage) obj;
+            switch (rawFixMessage.getMessageTypeEnum()) {
+                case LOGON:  onLogon(rawFixMessage);
+            }
             log.info(rawFixMessage.toString());
             Channel channel = e.getChannel();
             if (channel.isWritable()) {
                 e.getChannel().write(buffer("OK"));
             }
         }
+    }
+
+    private void onLogon(RawFixMessage rawFixMessage) {
+        log.info("LOGON: " + rawFixMessage);
+        // Respond with a logon message.
+
     }
 
 }

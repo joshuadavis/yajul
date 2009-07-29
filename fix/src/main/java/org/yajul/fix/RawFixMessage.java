@@ -2,6 +2,7 @@ package org.yajul.fix;
 
 import org.yajul.fix.util.Bytes;
 import org.yajul.fix.util.CodecConstants;
+import org.yajul.fix.util.ByteCharSequence;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -22,13 +23,14 @@ public class RawFixMessage implements Serializable {
     private List<RawTag> tags;
     private byte separator = CodecConstants.DEFAULT_SEPARATOR;
     private byte tagsep = CodecConstants.DEFAULT_TAG_SEPARATOR;
-    private transient byte[] bytes;
+
+    // Important tags.
     private RawTag beginString;
-    private RawTag checkSum;
     private RawTag bodyLength;
+    private RawTag messageType;
+    private RawTag checkSum;
 
     private void parseTags(byte[] bytes) {
-        this.bytes = bytes;
         // The number of separators is approximately equal to the number of tags.
         int sepcount = Bytes.count(bytes, separator);
         tags = new ArrayList<RawTag>(sepcount);
@@ -57,6 +59,8 @@ public class RawFixMessage implements Serializable {
                     break;
             }
         }
+        if (log.isDebugEnabled())
+            log.debug("parseTags() : messageType= " + messageType + ", " + bytes.length + " bytes, " + tags.size() + " tags.");
     }
 
     private void addTag(byte[] bytes, int tagStart, int tagEnd, int valueStart, int valueEnd) {
@@ -71,6 +75,9 @@ public class RawFixMessage implements Serializable {
             case CodecConstants.TAG_CHECKSUM:
                 checkSum = tag;
                 break;
+            case CodecConstants.TAG_MSGTYPE:
+                messageType = tag;
+                break;
         }
         tags.add(tag);
     }
@@ -84,19 +91,15 @@ public class RawFixMessage implements Serializable {
                          int bodyLength,
                          int bodyEnd,
                          int checksum,
-                         byte separator) {
+                         byte separator,
+                         byte tagsep) {
+        this.separator = separator;
+        this.tagsep = tagsep;
         parseTags(bytes);
-//        if (log.isDebugEnabled())
-//            log.debug("bodyEnd=" + bodyEnd + " getBodyEnd()=" + getBodyEnd());
         assert getBodyEnd() == bodyEnd;
         assert getBodyLength() == bodyLength;
         assert computeChecksum() == checksum;
         assert beginString.equals(getBeginString());
-        this.separator = separator;
-    }
-
-    public byte[] getBytes() {
-        return bytes;
     }
 
     public String getBeginString() {
@@ -115,22 +118,34 @@ public class RawFixMessage implements Serializable {
         return beginString.length() + bodyLength.length() + getBodyLength() - 1;
     }
 
+    public RawTag getMessageType() {
+        return messageType;
+    }
+
+    public MessageType getMessageTypeEnum() {
+        if (messageType != null)
+            return MessageType.valueFor(messageType.getValueBytes());
+        else
+            return MessageType.UNKNOWN;
+    }
+
     public int computeChecksum() {
-        return Bytes.checksum(bytes,0,getBodyEnd(), CodecConstants.CHECKSUM_MODULO);
+        // Use the tag list to compute the checksum.
+        int sum = 0;
+        for (RawTag tag : tags) {
+            sum += tag.sum();
+        }
+        return sum % CodecConstants.CHECKSUM_MODULO;
     }
 
     @Override
     public String toString() {
         return "RawFixMessage{" +
-                "bytes=" + (bytes == null ? null : new String(bytes)) +
-                ", beginString='" + beginString + '\'' +
+                "beginString=" + beginString +
                 ", bodyLength=" + bodyLength +
                 ", checkSum=" + checkSum + " (" + computeChecksum() + ") " +
+                ", messageType=" + messageType +
                 '}';
-    }
-
-    public List<RawTag> getRawTags() {
-        return tags;
     }
 
     /**
@@ -142,33 +157,50 @@ public class RawFixMessage implements Serializable {
      */
     public class RawTag implements Serializable {
         private int tag;
-        private byte[] value;
+        private byte[] tagBytes;
+        private byte[] valueBytes;
 
-        public RawTag(byte[] bytes,int tagStart,int tagEnd, int valueStart, int valueEnd) {
+        private RawTag(byte[] bytes,int tagStart,int tagEnd, int valueStart, int valueEnd) {
+            this.tagBytes = Bytes.copy(bytes,tagStart,tagEnd);
+            this.valueBytes = Bytes.copy(bytes,valueStart,valueEnd);
             tag = Bytes.parseDigits(bytes,tagStart,tagEnd);
-            value = new byte[valueEnd - valueStart];
-            System.arraycopy(bytes,valueStart,value,0,value.length);
         }
 
 
         @Override
         public String toString() {
-            return "RawTag{" +
-                    "tag=" + tag +
-                    ", value=" + (value == null ? null : new String(value)) +
-                    '}';
+            StringBuilder sb = new StringBuilder();
+            sb.append('{');
+            append(sb);
+            sb.append('}');
+            return sb.toString();
+        }
+
+        public void append(StringBuilder sb) {
+            Bytes.append(sb,tagBytes);
+            sb.append((char)tagsep);
+            Bytes.append(sb,valueBytes);
+            sb.append((char)separator);
+        }
+
+        public byte[] getValueBytes() {
+            return valueBytes;
         }
 
         public String getStringValue() {
-            return new String(value);
+            return new String(valueBytes);
         }
 
         public int getIntValue() {
-            return Bytes.parseDigits(value,0,value.length);
+            return Bytes.parseDigits(valueBytes,0,valueBytes.length);
         }
 
         public int length() {
-            return Bytes.numdigits(tag) + value.length + 2;
+            return tagBytes.length + valueBytes.length + 2;
+        }
+
+        public int sum() {
+            return  Bytes.sum(tagBytes) + tagsep + Bytes.sum(valueBytes) + separator;
         }
     }
 

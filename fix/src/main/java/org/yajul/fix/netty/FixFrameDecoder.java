@@ -46,20 +46,28 @@ public class FixFrameDecoder extends FrameDecoder {
     private int bodyEnd;
     private int checksumStart;
     private int checksum;
-    public final byte separator;
+    private final byte separator;
+    private final byte tagSep;
     private byte[] bodyLengthToken;
+    private byte[] beginStringToken;
+    private byte[] checksumToken;
 
     public FixFrameDecoder() {
-        this(CodecConstants.SOH);
+        this(CodecConstants.DEFAULT_SEPARATOR,CodecConstants.DEFAULT_TAG_SEPARATOR);
     }
 
-    public FixFrameDecoder(byte separator) {
+    public FixFrameDecoder(byte separator,byte tagSep) {
         super();
         this.separator = separator;
-        this.bodyLengthToken = new byte[BODYLENGTH_TOKEN.length];
-        System.arraycopy(BODYLENGTH_TOKEN,0,this.bodyLengthToken,0,BODYLENGTH_TOKEN.length);
+        this.tagSep = tagSep;
+        this.beginStringToken = Bytes.copy(BEGINSTRING_TOKEN);
+        this.beginStringToken[1] = tagSep;
+        this.bodyLengthToken = Bytes.copy(BODYLENGTH_TOKEN);
         // Copy the body length token and replace the sep
         this.bodyLengthToken[0] = separator;
+        this.bodyLengthToken[2] = tagSep;
+        this.checksumToken = Bytes.copy(CHECKSUM_TOKEN);
+        this.checksumToken[2] = tagSep;
     }
 
     public void reset() {
@@ -144,13 +152,13 @@ public class FixFrameDecoder extends FrameDecoder {
         switch (state) {
             case INITIAL:
                 // Look for the beginstring "8=FIX"
-                index = indexOf(buffer, buffer.readerIndex(), BEGINSTRING_TOKEN);
+                index = indexOf(buffer, buffer.readerIndex(), beginStringToken);
                 if (log.isDebugEnabled())
                     log.debug("decode() : " + state + " index=" + index);
                 if (index == -1) {
                     // Consume the stuff in the buffer up until limit - token.length
                     // (there may be an unfinished token at the end of the buffer).
-                    buffer.skipBytes(buffer.readableBytes() - BEGINSTRING_TOKEN.length);
+                    buffer.skipBytes(buffer.readableBytes() - beginStringToken.length);
                     return null;   // There is not enough data to decode.
                 }
                 buffer.readerIndex(index);  // Consume data before the token.
@@ -203,7 +211,7 @@ public class FixFrameDecoder extends FrameDecoder {
                 // Flow into the next state.
             case CHECKSUM:
                 // Body skipped, read the checksum "10=nnnn<SOH>"
-                index = indexOf(buffer, bodyEnd, CHECKSUM_TOKEN);
+                index = indexOf(buffer, bodyEnd, checksumToken);
                 if (log.isDebugEnabled())
                     log.debug("decode() : " + state + " index=" + index);
                 if (index == -1) {
@@ -226,7 +234,7 @@ public class FixFrameDecoder extends FrameDecoder {
                         RawFixMessage rv = new RawFixMessage(
                                 bytes,
                                 new String(beginString), bodyLength,
-                                bodyEnd, checksum, separator);
+                                bodyEnd, checksum, separator, tagSep );
                         reset();
                         if (log.isDebugEnabled())
                             log.debug("decode() : returning " + rv);
