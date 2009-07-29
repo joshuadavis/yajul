@@ -148,6 +148,11 @@ public class RawFixMessage implements Serializable {
                 '}';
     }
 
+    public byte[] getBytes() {
+        // TODO: Implement this.
+        return new byte[0];
+    }
+
     /**
      * Tag / Value pair
      * <br>

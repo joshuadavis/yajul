@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="quickfixj" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.slf4j:slf4j-api:1.4.3" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.netty:netty:3.0.2.GA" level="project" />
     <orderEntry type="library" exported="" name="Maven: javax.xml.bind:jaxb-api:2.2" level="project" />
@@ -24,7 +25,6 @@
     <orderEntry type="library" name="Maven: org.jmock:jmock:2.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-library:1.1" level="project" />
-    <orderEntry type="library" name="quickfixj" level="project" />
   </component>
 </module>
 
