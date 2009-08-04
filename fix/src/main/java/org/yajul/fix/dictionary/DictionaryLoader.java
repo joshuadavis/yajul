@@ -4,11 +4,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.yajul.fix.ValueType;
+import org.yajul.fix.message.ValueType;
 import static org.yajul.fix.util.DomHelper.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * Loads Dictionaries from resources or files.
@@ -18,6 +21,8 @@ import java.util.Map;
  * Time: 8:57:03 AM
  */
 public class DictionaryLoader {
+    private static final Logger log = LoggerFactory.getLogger(DictionaryLoader.class);
+
     private Document doc;
     private Dictionary dictionary;
 
@@ -38,7 +43,43 @@ public class DictionaryLoader {
     private Dictionary load() {
         readVersion();
         readFields();
+        dictionary.setHeader(readFieldList("header"));
+        dictionary.setTrailer(readFieldList("trailer"));
         return dictionary;
+    }
+
+    private Dictionary.FieldList readFieldList(String fieldListElementName) {
+        Element documentElement = doc.getDocumentElement();
+        NodeList headerNode = documentElement.getElementsByTagName(fieldListElementName);
+        if (headerNode.getLength() == 0) {
+            throw new ConfigError("<" + fieldListElementName + "> section not found in data dictionary");
+        }
+        return readFieldList(fieldListElementName,headerNode.item(0));
+    }
+
+    private Dictionary.FieldList readFieldList(String listName,Node node) {
+
+        String name;
+        NodeList fieldNodes = node.getChildNodes();
+        if (fieldNodes.getLength() == 0) {
+            throw new ConfigError("No fields found!");
+        }
+        Dictionary.FieldList fieldList = dictionary.new FieldList(listName,fieldNodes.getLength());
+
+        for (int j = 0; j < fieldNodes.getLength(); j++) {
+            Node fieldNode = fieldNodes.item(j);
+            String elementName = fieldNode.getNodeName();
+            if (elementName.equals("field") ||
+                    elementName.equals("group")) {
+                name = getAttribute(fieldNode, "name");
+                if (name == null) {
+                    throw new ConfigError("<field> does not have a name attribute");
+                }
+                boolean required = getAttributeYN(fieldNode, "required");
+                fieldList.addField(name, required);
+            }
+        } // for
+        return fieldList;
     }
 
     private void readFields() {
@@ -62,7 +103,7 @@ public class DictionaryLoader {
                     throw new ConfigError("<field> does not have a name attribute");
                 }
 
-                int num = getIntAttribute(fieldNode,"number",-1);
+                int num = getIntAttribute(fieldNode, "number", -1);
                 if (num == -1) {
                     throw new ConfigError("<field> " + name + " does not have a number attribute");
                 }
@@ -73,9 +114,11 @@ public class DictionaryLoader {
                     throw new ConfigError("<field> " + name + " does not have a valid type attribute");
                 }
 
+                boolean required = getAttributeYN(fieldNode, "required");
+
                 NodeList valueNodes = fieldNode.getChildNodes();
                 int valueCount = valueNodes.getLength();
-                Map<String,String> values = new HashMap<String,String>(valueCount);
+                Map<String, String> values = new HashMap<String, String>(valueCount);
                 for (int j = 0; j < valueNodes.getLength(); j++) {
                     Node valueNode = valueNodes.item(j);
                     if (valueNode.getNodeName().equals("value")) {
@@ -85,15 +128,21 @@ public class DictionaryLoader {
                                     + name);
                         }
                         String description = getAttribute(valueNode, "description");
-                        values.put(e,description);
+                        values.put(e, description);
                     }
                 }
-                boolean allowOtherValues = getBooleanAttribute(fieldNode,"allowOtherValues",false);
+                boolean allowOtherValues = getBooleanAttribute(fieldNode, "allowOtherValues", false);
                 if (allowOtherValues)
-                    values.put(Dictionary.ANY_VALUE,null);
-                dictionary.addField(num,valueType,values);
+                    values.put(Dictionary.ANY_VALUE, null);
+                dictionary.addField(num, name, required, valueType, values);
             } // element is <field>
         } // for
+    }
+
+    private boolean getAttributeYN(Node fieldNode, String attribute) {
+        String requiredStr = getAttribute(fieldNode, attribute, "N");
+        boolean required = "Y".equalsIgnoreCase(requiredStr);
+        return required;
     }
 
     private void readVersion() {

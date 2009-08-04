@@ -1,6 +1,6 @@
 package org.yajul.fix.test;
 
-import org.yajul.fix.FixAddress;
+import org.yajul.fix.netty.FixAddress;
 import org.yajul.fix.netty.FixServerPipelineFactory;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.util.concurrent.Executors;
-import java.net.InetSocketAddress;
 
 /**
  * Server for the QFJ Banzai client.

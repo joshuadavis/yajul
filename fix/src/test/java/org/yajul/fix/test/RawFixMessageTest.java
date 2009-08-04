@@ -3,7 +3,7 @@ package org.yajul.fix.test;
 import junit.framework.TestCase;
 import org.yajul.fix.util.Bytes;
 import org.yajul.fix.util.ByteCharSequence;
-import org.yajul.fix.RawFixMessage;
+import org.yajul.fix.message.RawFixMessage;
 
 /**
  * Tests message parse/create with RawFixMessage.

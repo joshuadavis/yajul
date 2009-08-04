@@ -6,7 +6,7 @@ import org.jboss.netty.channel.ChannelEvent;
 import org.jboss.netty.channel.MessageEvent;
 import static org.jboss.netty.channel.Channels.write;
 import static org.jboss.netty.buffer.ChannelBuffers.copiedBuffer;
-import org.yajul.fix.RawFixMessage;
+import org.yajul.fix.message.RawFixMessage;
 
 /**
  * Transforms RawFixMessage objects into ChannelBuffer bytes.

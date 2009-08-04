@@ -1,4 +1,4 @@
-package org.yajul.fix;
+package org.yajul.fix.message;
 
 /**
  * TODO: Add class level comments!

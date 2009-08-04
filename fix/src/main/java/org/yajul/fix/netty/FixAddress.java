@@ -1,4 +1,4 @@
-package org.yajul.fix;
+package org.yajul.fix.netty;
 
 import java.net.SocketAddress;
 import java.net.InetSocketAddress;

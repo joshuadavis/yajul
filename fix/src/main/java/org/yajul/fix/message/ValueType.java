@@ -1,4 +1,4 @@
-package org.yajul.fix;
+package org.yajul.fix.message;
 
 import java.util.Date;
 

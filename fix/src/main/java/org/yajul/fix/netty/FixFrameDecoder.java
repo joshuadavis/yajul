@@ -8,7 +8,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import org.yajul.fix.util.CodecConstants;
 import org.yajul.fix.util.Bytes;
 import static org.yajul.fix.netty.ChannelBufferHelper.indexOf;
-import org.yajul.fix.RawFixMessage;
+import org.yajul.fix.message.RawFixMessage;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 

@@ -1,7 +1,7 @@
 package org.yajul.fix.netty;
 
 import org.jboss.netty.channel.*;
-import org.yajul.fix.RawFixMessage;
+import org.yajul.fix.message.RawFixMessage;
 import static org.yajul.fix.netty.ChannelBufferHelper.buffer;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
