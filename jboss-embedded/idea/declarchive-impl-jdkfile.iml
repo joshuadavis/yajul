@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile">
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/src/test/resources" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-jdkfile/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="declarchive-impl-base" exported="" />
+    <orderEntry type="module" module-name="declarchive-spi" exported="" />
+    <orderEntry type="module" module-name="declarchive-api" exported="" />
+    <orderEntry type="module" module-name="declarchive-spi-jdkfile" exported="" />
+    <orderEntry type="library" name="Maven: junit:junit:4.6" level="project" />
+  </component>
+</module>
+

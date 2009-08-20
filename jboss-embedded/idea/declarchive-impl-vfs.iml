@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs">
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/src/test/resources" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../declarchive-trunk/impl-vfs/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="declarchive-impl-base" exported="" />
+    <orderEntry type="module" module-name="declarchive-spi" exported="" />
+    <orderEntry type="module" module-name="declarchive-api" exported="" />
+    <orderEntry type="module" module-name="declarchive-spi-vfs" exported="" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss:jboss-vfs:2.2.0.M4" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss:jboss-common-core:2.2.13.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.logging:jboss-logging-spi:2.0.5.GA" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:4.6" level="project" />
+  </component>
+</module>
+
