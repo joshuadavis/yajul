@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Yet Another Java Utility Library</name>
     <url>http://yajul.sourceforge.net</url>
@@ -36,9 +36,6 @@
     </distributionManagement>
     <properties>
         <compileSource>1.5</compileSource>
-        <!-- Version numbers extracted as properties. -->
-        <version.yajul>0.7-SNAPSHOT</version.yajul>
-        <version.picocontainer>2.6</version.picocontainer>
         <version.junit>3.8.1</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.javassist>3.8.1.GA</version.javassist>
@@ -51,6 +48,12 @@
             <name>Maven2 repository at JBoss.org</name>
             <url>http://repository.jboss.org/maven2</url>
         </repository>
+        <!-- Guice 2.0.x still isn't in the main repository -->
+        <repository>
+            <id>guice-maven</id>
+            <name>guice maven</name>
+            <url>http://guice-maven.googlecode.com/svn/trunk</url>
+        </repository>
     </repositories>
     <dependencyManagement>
         <dependencies>
@@ -60,13 +63,6 @@
                 <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
-            <!--
-                        <dependency>
-                            <groupId>org.picocontainer</groupId>
-                            <artifactId>picocontainer</artifactId>
-                            <version>${version.picocontainer}</version>
-                        </dependency>
-            -->
             <!-- SLF4J has much simpler dependencies than commons-logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -129,6 +125,11 @@
         <dependency>
             <groupId>com.google.code.guice</groupId>
             <artifactId>guice</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
             <version>1.0</version>
         </dependency>
         <!-- SLF4J has much simpler dependencies than commons-logging -->
@@ -268,11 +269,11 @@
         </plugins>
     </build>
     <reporting>
-	    <plugins>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-       		<artifactId>maven-javadoc-plugin</artifactId>
-	      </plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
