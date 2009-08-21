@@ -95,4 +95,17 @@ public class SerializationUtil {
         return deserialize(bais);
     }
 
+    /**
+     * Returns the size of the object if it was serialize all by itself.
+     * @param object the serializable object
+     * @return the number of bytes
+     * @throws IOException if something goes wrong
+     */
+    public static int sizeOf(Serializable object) throws IOException {
+        ByteCountingOutputStream counter = new ByteCountingOutputStream(
+                new NullOutputStream());
+        serialize(object,counter);
+        return counter.getByteCount();
+    }
+
 }
