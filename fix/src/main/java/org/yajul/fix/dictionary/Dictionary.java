@@ -1,7 +1,7 @@
 package org.yajul.fix.dictionary;
 
 import org.yajul.fix.message.ValueType;
-import org.yajul.fix.util.FormatHelper;
+import org.yajul.fix.util.FormatUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -270,7 +270,7 @@ public class Dictionary {
             int i = 0;
             for (Map.Entry<Serializable, Element> entry : elements.entrySet()) {
                 sb.append('\n');
-                FormatHelper.indent(level + 1, sb);
+                FormatUtil.indent(level + 1, sb);
                 sb.append(String.format("%4d) ", ++i));
                 entry.getValue().append(level + 1, sb);
             }
