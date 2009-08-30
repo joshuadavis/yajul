@@ -31,6 +31,13 @@ public class DictionaryLoader {
     private static final String GROUP = "group";
     private static final String NAME = "name";
     private static final String REQUIRED = "required";
+    private static final String FIELDS = "fields";
+    private static final String NUMBER = "number";
+    private static final String TYPE = "type";
+    private static final String MESSAGES = "messages";
+    private static final String HEADER = "header";
+    private static final String TRAILER = "trailer";
+    private static final String COMPONENTS = "components";
 
     public DictionaryLoader(Document doc) {
         this.doc = doc;
@@ -49,11 +56,11 @@ public class DictionaryLoader {
     private Dictionary load() {
         readVersion();
         readFields();
-        Dictionary.ElementList header = readElementList("header");
+        Dictionary.ElementList header = readElementList(HEADER);
         if (log.isDebugEnabled())
             log.debug("header : " + header);
         dictionary.setHeader(header);
-        Dictionary.ElementList trailer = readElementList("trailer");
+        Dictionary.ElementList trailer = readElementList(TRAILER);
         if (log.isDebugEnabled())
             log.debug("trailer : " + trailer);
         dictionary.setTrailer(trailer);
@@ -63,7 +70,7 @@ public class DictionaryLoader {
     }
 
     private void readComponents() {
-        NodeList nodeList = getSectionChildren(doc.getDocumentElement(), "components");
+        NodeList nodeList = getSectionChildren(doc.getDocumentElement(), COMPONENTS);
         // The first past adds empty component definitions.
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
@@ -85,7 +92,7 @@ public class DictionaryLoader {
                 Dictionary.ComponentDefinition c = dictionary.findComponentDefinition(name);
                 readElements(c, node);
                 if (log.isDebugEnabled())
-                    log.debug("component : " + c);
+                    log.debug("\n" + c);
             }
         }
     }
@@ -94,29 +101,48 @@ public class DictionaryLoader {
         NodeList nodeList = parent.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            String elementName = node.getNodeName();
-            if (FIELD.equals(elementName) || COMPONENT.equals(elementName) || GROUP.equals(elementName)) {
-                String name = requireAttribute(node, NAME);
-                boolean required = getAttributeYN(node, REQUIRED);
-                if (FIELD.equals(elementName)) {
-                    elementList.addField(name, required);
-                } else if (COMPONENT.equals(elementName)) {
-                    elementList.addComponent(name, required);
-                } else if (GROUP.equals(elementName)) {
-                    // Groups are defined 'inline'.
-                    NodeList groupNodes = node.getChildNodes();
-                    Dictionary.Group g = dictionary.new Group(name, groupNodes.getLength());
-                    // Fill in the group and add it.
-                    readElements(g, node);
-                    elementList.addElement(g, required);
-                }
+            readElement(elementList, node);
+        }
+    }
+
+    private void readElement(Dictionary.ElementList elementList, Node node) {
+        String elementName = node.getNodeName();
+        if (FIELD.equals(elementName) || COMPONENT.equals(elementName) || GROUP.equals(elementName)) {
+            String name = requireAttribute(node, NAME);
+            boolean required = getAttributeYN(node, REQUIRED);
+            if (FIELD.equals(elementName)) {
+                elementList.addField(name, required);
+            } else if (COMPONENT.equals(elementName)) {
+                elementList.addComponent(name, required);
+            } else if (GROUP.equals(elementName)) {
+                // Groups are defined 'inline', the name is actually a field definition.
+                Dictionary.FieldDefinition fd = dictionary.requireFieldDefinition(name);
+                NodeList groupNodes = node.getChildNodes();
+                Dictionary.Group g = dictionary.new Group(fd,elementList, name, groupNodes.getLength());
+                // Fill in the group and add it.
+                readElements(g, node);
+                elementList.addElement(g, required);
             }
         }
     }
 
     private void readMessageTypes() {
-        Node section = getSection(doc.getDocumentElement(), "messages");
-
+        NodeList nodeList = getSectionChildren(doc.getDocumentElement(), MESSAGES);
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                if (!node.getNodeName().equals("message"))
+                    throw new ConfigError("<message> expected, found <" + node.getNodeName() + ">");
+                String name = requireAttribute(node, NAME);
+                String key = requireAttribute(node,"msgtype");
+                Dictionary.MessageType msgType = dictionary.addMessageType(name,
+                        key,
+                        node.getChildNodes().getLength());
+                readElements(msgType,node);
+                if (log.isDebugEnabled())
+                    log.debug(msgType.toString());
+            }
+        }
 
     }
 
@@ -127,7 +153,6 @@ public class DictionaryLoader {
 
     private Dictionary.ElementList readFieldList(String listName, Node node) {
 
-        String name;
         NodeList childNodes = node.getChildNodes();
         if (childNodes.getLength() == 0) {
             throw new ConfigError("No fields found!");
@@ -140,43 +165,49 @@ public class DictionaryLoader {
     private void readFields() {
         Element documentElement = doc.getDocumentElement();
         // FIELDS
-        NodeList fieldNodes = getSectionChildren(documentElement, "fields");
-
+        int count = 0;
+        NodeList fieldNodes = getSectionChildren(documentElement, FIELDS);
         for (int i = 0; i < fieldNodes.getLength(); i++) {
             Node fieldNode = fieldNodes.item(i);
             if (fieldNode.getNodeName().equals(FIELD)) {
                 String name = requireAttribute(fieldNode, NAME);
-                int num = requireIntAttribute(fieldNode, "number");
+                int num = requireIntAttribute(fieldNode, NUMBER);
                 ValueType valueType = getValueType(fieldNode, name);
-
                 boolean required = getAttributeYN(fieldNode, REQUIRED);
-
-                NodeList valueNodes = fieldNode.getChildNodes();
-                int valueCount = valueNodes.getLength();
-                Map<String, String> values = new HashMap<String, String>(valueCount);
-                for (int j = 0; j < valueNodes.getLength(); j++) {
-                    Node valueNode = valueNodes.item(j);
-                    if (valueNode.getNodeName().equals("value")) {
-                        String e = requireAttribute(valueNode, "enum");
-                        String description = getAttribute(valueNode, "description");
-                        values.put(e, description);
-                    }
-                }
-                boolean allowOtherValues = getBooleanAttribute(fieldNode, "allowOtherValues", false);
-                if (allowOtherValues)
-                    values.put(Dictionary.ANY_VALUE, null);
+                Map<String, String> values = readValues(fieldNode);
                 dictionary.addFieldDefinition(num, name, required, valueType, values);
+                count++;
             } // element is <field>
         } // for
+        if (log.isDebugEnabled())
+            log.debug("readFields() : " + count);
+    }
+
+    private Map<String, String> readValues(Node fieldNode) {
+        NodeList valueNodes = fieldNode.getChildNodes();
+        int valueCount = valueNodes.getLength();
+        Map<String, String> values = new HashMap<String, String>(valueCount);
+        for (int j = 0; j < valueNodes.getLength(); j++) {
+            Node valueNode = valueNodes.item(j);
+            if (valueNode.getNodeName().equals("value")) {
+                String e = requireAttribute(valueNode, "enum");
+                String description = getAttribute(valueNode, "description");
+                values.put(e, description);
+            }
+        }
+        boolean allowOtherValues = getBooleanAttribute(fieldNode, "allowOtherValues", false);
+        if (allowOtherValues)
+            values.put(Dictionary.ANY_VALUE, null);
+        return values;
     }
 
     private ValueType getValueType(Node fieldNode, String name) {
-        String type = requireAttribute(fieldNode, "type");
-        ValueType valueType = null;
+        String type = requireAttribute(fieldNode, TYPE);
+        ValueType valueType;
         try {
             valueType = ValueType.valueOf(type);
         } catch (IllegalArgumentException e) {
-            throw new ConfigError("No such value type: " + type);
+            throw new ConfigError("No such value type: " + type + " for " + name);
         }
         return valueType;
     }
@@ -231,5 +262,7 @@ public class DictionaryLoader {
         String minor = requireAttribute(documentElement, "minor");
         String version = "FIX." + major + "." + minor;
         dictionary = new Dictionary(version);
+        if (log.isDebugEnabled())
+            log.debug("readVersion() : " + version);
     }
 }

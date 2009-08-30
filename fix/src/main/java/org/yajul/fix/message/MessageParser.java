@@ -24,13 +24,16 @@ public class MessageParser {
     private final byte tagsep;
     private final TagList tagList;
     private final Dictionary dictionary;
+    private State state;
     private static final int MESG_TYPE = 35;
+    private Dictionary.MessageType messageType;
 
     public MessageParser(byte separator, byte tagsep, TagList tagList, Dictionary dictionary) {
         this.separator = separator;
         this.tagsep = tagsep;
         this.tagList = tagList;
         this.dictionary = dictionary;
+        this.state = State.HEADER;
     }
 
     public void parse(byte[] bytes) {
@@ -70,21 +73,39 @@ public class MessageParser {
         byte[] tagBytes = Bytes.copy(bytes, tagStart, tagEnd);
         byte[] valueBytes = Bytes.copy(bytes, valueStart, valueEnd);
         int tag = Bytes.parseDigits(bytes, tagStart, tagEnd);
-        // MessageType is special, it determines the body TagList.
-        if (tag == MESG_TYPE && dictionary != null) {
-            String msgType = new String(valueBytes);
-            Dictionary.ElementList body = dictionary.findMessageType(msgType);
+        switch (state) {
+            case HEADER:
+                // MessageType is special, it determines the body TagList.
+                if (tag == MESG_TYPE && dictionary != null) {
+                    if (messageType != null) {
+                        // TODO: Handle duplicate message type.
+                    }
+                    String msgType = new String(valueBytes);
+                    messageType = dictionary.findMessageType(msgType);
+                }
+                break;
+            case BODY:
+                if (messageType == null) {
+                    // TODO: Handle no message type here.
+                }
+                break;
+            case FOOTER:
+
+                break;
         }
+        // Each tag changes the state.
         tagList.add(tag, tagBytes, valueBytes, null);
-    }
-
-    private void nextFieldList() {
-
     }
 
     public interface TagList {
         void initialize(byte separator, byte tagsep, int initialSize);
 
         void add(int tag, byte[] tagBytes, byte[] valueBytes, Dictionary.Field f);
+    }
+
+    enum State {
+        HEADER,
+        BODY,
+        FOOTER
     }
 }

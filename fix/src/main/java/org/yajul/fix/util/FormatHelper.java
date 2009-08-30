@@ -9,8 +9,9 @@ import java.text.DecimalFormat;
  * Date: Jul 22, 2009
  * Time: 8:12:15 AM
  */
-public class Formatter {
-    private static DecimalFormat checksumFormat = new DecimalFormat("000");
+public class FormatHelper {
+    public static final String CHECKSUM_PATTERN = "000";
+    public static final String FOUR_DIGITS = "###0";
 
     public static void indent(int level,StringBuilder sb) {
         for (int i = 0 ; i < level ; i++) {

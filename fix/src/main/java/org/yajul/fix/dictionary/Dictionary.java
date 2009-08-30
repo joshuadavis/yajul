@@ -1,6 +1,7 @@
 package org.yajul.fix.dictionary;
 
 import org.yajul.fix.message.ValueType;
+import org.yajul.fix.util.FormatHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +21,14 @@ public class Dictionary {
     public static final String ANY_VALUE = "__ANY__";
 
     private String version;
-    private Map<Integer,FieldDefinition> fieldDefByTag = new HashMap<Integer,FieldDefinition>();
-    private Map<String,FieldDefinition> fieldDefByName = new HashMap<String,FieldDefinition>();
+    private Map<Integer, FieldDefinition> fieldDefByTag = new HashMap<Integer, FieldDefinition>();
+    private Map<String, FieldDefinition> fieldDefByName = new HashMap<String, FieldDefinition>();
     private ElementList header;
     private ElementList trailer;
-    private Map<String,ComponentDefinition> components = new HashMap<String,ComponentDefinition>();
-    private Map<String,ElementList> msgTypes = new HashMap<String,ElementList>();
-    
+    private Map<String, ComponentDefinition> components = new HashMap<String, ComponentDefinition>();
+    private Map<String, MessageType> msgTypes = new HashMap<String, MessageType>();
+    private Map<String, MessageType> msgTypesByName = new HashMap<String, MessageType>();
+
     public Dictionary(String version) {
         this.version = version;
     }
@@ -38,20 +40,37 @@ public class Dictionary {
         if (fieldDefByName.containsKey(name))
             throw new ConfigError("Duplicate field name: " + name);
         fieldDefByTag.put(num, field);
-        fieldDefByName.put(name,field);
+        fieldDefByName.put(name, field);
     }
 
     public ComponentDefinition addComponentDefinition(String name, int initialSize) {
         if (components.containsKey(name))
             throw new ConfigError("Component '" + name + "' already exists!");
-        ComponentDefinition def = new ComponentDefinition(name,initialSize);
-        components.put(name,def);
+        ComponentDefinition def = new ComponentDefinition(name, initialSize);
+        components.put(name, def);
         return def;
     }
 
+    public MessageType addMessageType(String name, String key, int length) {
+        if (msgTypesByName.containsKey(name))
+            throw new ConfigError("MessageType '" + name + "' already exists!");
+        if (msgTypes.containsKey(key))
+            throw new ConfigError("MessageType '" + key + "' already exists!");
+        MessageType msgType = new MessageType(name, key, length);
+        msgTypes.put(key, msgType);
+        msgTypesByName.put(name,msgType);
+        return msgType;
+    }
 
-    public FieldDefinition findField(String name) {
+    public FieldDefinition findFieldDefinition(String name) {
         return fieldDefByName.get(name);
+    }
+
+    FieldDefinition requireFieldDefinition(String name) {
+        FieldDefinition definition = findFieldDefinition(name);
+        if (definition == null)
+            throw new ConfigError("No field '" + name + "'");
+        return definition;
     }
 
     void setHeader(ElementList header) {
@@ -59,8 +78,6 @@ public class Dictionary {
     }
 
     void setTrailer(ElementList trailer) {
-        if (log.isDebugEnabled())
-            log.debug("setTrailer() : " + trailer);
         this.trailer = trailer;
     }
 
@@ -72,8 +89,8 @@ public class Dictionary {
         return trailer;
     }
 
-    public ElementList findMessageType(String msgType) {
-        return null;  // TODO: Implement this!
+    public MessageType findMessageType(String msgType) {
+        return msgTypes.get(msgType);
     }
 
     /**
@@ -135,7 +152,7 @@ public class Dictionary {
         private FieldDefinition definition;
         private boolean required;
 
-        public Field(FieldDefinition definition,boolean required) {
+        public Field(FieldDefinition definition, boolean required) {
             this.definition = definition;
             this.required = required;
         }
@@ -166,7 +183,7 @@ public class Dictionary {
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
-            append(0,sb);
+            append(0, sb);
             return sb.toString();
         }
     }
@@ -174,16 +191,18 @@ public class Dictionary {
     public class Component implements Element {
         private ComponentDefinition componentDefinition;
         private boolean required;
+        private ElementList parent;
 
-        public Component(ComponentDefinition componentDefinition,boolean required) {
+        public Component(ElementList parent, ComponentDefinition componentDefinition, boolean required) {
+            this.parent = parent;
             this.componentDefinition = componentDefinition;
             this.required = required;
         }
 
         public void append(int level, StringBuilder sb) {
             sb.append("{").append(componentDefinition.getName());
-            sb.append(", required=").append(required);
-            componentDefinition.append(level+1,sb);
+            sb.append(", required=").append(required).append(", ");
+            componentDefinition.append(level + 1, sb);
             sb.append('}');
         }
 
@@ -193,19 +212,18 @@ public class Dictionary {
         }
 
         public Serializable getKey() {
-            return null;
+            return componentDefinition.getKey();
         }
-
     }
 
     public class ElementList {
         private String name;
-        private LinkedHashMap<Serializable,Element> elements;
+        private LinkedHashMap<Serializable, Element> elements;
         private Set<Serializable> required;
 
-        protected ElementList(String name,int initialSize) {
+        protected ElementList(String name, int initialSize) {
             this.name = name;
-            elements = new LinkedHashMap<Serializable,Element>(initialSize);
+            elements = new LinkedHashMap<Serializable, Element>(initialSize);
             required = new HashSet<Serializable>(initialSize);
         }
 
@@ -214,24 +232,22 @@ public class Dictionary {
         }
 
         void addField(String name, boolean required) {
-            FieldDefinition definition = findField(name);
-            if (definition == null)
-                throw new ConfigError("No field '" + name + "'");
-            addElement(new Field(definition,required),required);
+            FieldDefinition definition = requireFieldDefinition(name);
+            addElement(new Field(definition, required), required);
         }
 
         void addComponent(String name, boolean required) {
             ComponentDefinition cd = findComponentDefinition(name);
             if (cd == null)
                 throw new ConfigError("No component '" + name + "'");
-            addElement(new Component(cd,required),required);
+            addElement(new Component(this, cd, required), required);
         }
 
         void addElement(Element e, boolean required) {
             Serializable key = e.getKey();
             if (elements.containsKey(key))
                 throw new ConfigError("Already contains tag " + key);
-            elements.put(key,e);
+            elements.put(key, e);
             if (required) {
                 this.required.add(key);
             }
@@ -249,20 +265,25 @@ public class Dictionary {
             return name;
         }
 
-        public void append(int level,StringBuilder sb) {
-            sb.append(this.getClass().getSimpleName()).append(" ").append(name).append(":");
+        public void append(int level, StringBuilder sb) {
+            appendHeader(sb);
+            int i = 0;
             for (Map.Entry<Serializable, Element> entry : elements.entrySet()) {
                 sb.append('\n');
-                org.yajul.fix.util.Formatter.indent(level,sb);
-                sb.append(entry.getKey()).append("->");
-                entry.getValue().append(level+1,sb);
+                FormatHelper.indent(level + 1, sb);
+                sb.append(String.format("%4d) ", ++i));
+                entry.getValue().append(level + 1, sb);
             }
+        }
+
+        protected void appendHeader(StringBuilder sb) {
+            sb.append(this.getClass().getSimpleName()).append(" ").append(name).append(":");
         }
 
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            append(0,sb);
+            append(0, sb);
             return sb.toString();
         }
     }
@@ -272,13 +293,22 @@ public class Dictionary {
     }
 
     public class Group extends ElementList implements Element {
-        private Field countField;
-        protected Group(String name, int initialSize) {
+        private FieldDefinition fieldDefinition;
+        private ElementList parent;
+
+        protected Group(FieldDefinition field,ElementList parent,String name, int initialSize) {
             super(name, initialSize);
+            this.fieldDefinition = field;
+            this.parent = parent;
         }
 
         public boolean isRequired() {
             return false;
+        }
+
+        @Override
+        protected void appendHeader(StringBuilder sb) {
+            sb.append("Group: ").append(fieldDefinition.getFieldName());
         }
     }
 
@@ -289,9 +319,17 @@ public class Dictionary {
     }
 
     public class MessageType extends ElementList {
-        public MessageType(String name, int initialSize) {
+        private String key;
+
+        public MessageType(String name, String key, int initialSize) {
             super(name, initialSize);
+            this.key = key;
+        }
+
+        @Override
+        protected void appendHeader(StringBuilder sb) {
+            sb.append(getName()).append('<').append(key).append('>');
         }
     }
-    
+
 }
