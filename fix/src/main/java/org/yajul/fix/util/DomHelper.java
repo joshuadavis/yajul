@@ -361,4 +361,15 @@ public class DomHelper {
             throw new java.io.IOException("Resource not found: '" + resourceName + "'");
         return parse(is);
     }
+
+    public static class EmptyNodeList implements NodeList {
+        public Node item(int index) {
+            return null;
+
+        }
+
+        public int getLength() {
+            return 0;
+        }
+    }
 }

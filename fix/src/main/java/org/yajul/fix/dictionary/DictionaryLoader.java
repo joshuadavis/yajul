@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.yajul.fix.message.ValueType;
 import static org.yajul.fix.util.DomHelper.*;
+import org.yajul.fix.util.DomHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,11 @@ public class DictionaryLoader {
 
     private Document doc;
     private Dictionary dictionary;
+    private static final String COMPONENT = "component";
+    private static final String FIELD = "field";
+    private static final String GROUP = "group";
+    private static final String NAME = "name";
+    private static final String REQUIRED = "required";
 
     public DictionaryLoader(Document doc) {
         this.doc = doc;
@@ -43,78 +49,107 @@ public class DictionaryLoader {
     private Dictionary load() {
         readVersion();
         readFields();
-        dictionary.setHeader(readFieldList("header"));
-        dictionary.setTrailer(readFieldList("trailer"));
+        Dictionary.ElementList header = readElementList("header");
+        if (log.isDebugEnabled())
+            log.debug("header : " + header);
+        dictionary.setHeader(header);
+        Dictionary.ElementList trailer = readElementList("trailer");
+        if (log.isDebugEnabled())
+            log.debug("trailer : " + trailer);
+        dictionary.setTrailer(trailer);
+        readComponents();
+        readMessageTypes();
         return dictionary;
     }
 
-    private Dictionary.FieldList readFieldList(String fieldListElementName) {
-        Element documentElement = doc.getDocumentElement();
-        NodeList headerNode = documentElement.getElementsByTagName(fieldListElementName);
-        if (headerNode.getLength() == 0) {
-            throw new ConfigError("<" + fieldListElementName + "> section not found in data dictionary");
+    private void readComponents() {
+        NodeList nodeList = getSectionChildren(doc.getDocumentElement(), "components");
+        // The first past adds empty component definitions.
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                if (!node.getNodeName().equals(COMPONENT))
+                    throw new ConfigError("<component> expected, found <" + node.getNodeName() + ">");
+                String name = requireAttribute(node, NAME);
+                dictionary.addComponentDefinition(name, node.getChildNodes().getLength());
+            }
         }
-        return readFieldList(fieldListElementName,headerNode.item(0));
+        // Fill in the component definitions in a second pass, so forward references
+        // are handled.
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                if (!node.getNodeName().equals(COMPONENT))
+                    throw new ConfigError("<component> expected, found <" + node.getNodeName() + ">");
+                String name = requireAttribute(node, NAME);
+                Dictionary.ComponentDefinition c = dictionary.findComponentDefinition(name);
+                readElements(c, node);
+                if (log.isDebugEnabled())
+                    log.debug("component : " + c);
+            }
+        }
     }
 
-    private Dictionary.FieldList readFieldList(String listName,Node node) {
+    private void readElements(Dictionary.ElementList elementList, Node parent) {
+        NodeList nodeList = parent.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            String elementName = node.getNodeName();
+            if (FIELD.equals(elementName) || COMPONENT.equals(elementName) || GROUP.equals(elementName)) {
+                String name = requireAttribute(node, NAME);
+                boolean required = getAttributeYN(node, REQUIRED);
+                if (FIELD.equals(elementName)) {
+                    elementList.addField(name, required);
+                } else if (COMPONENT.equals(elementName)) {
+                    elementList.addComponent(name, required);
+                } else if (GROUP.equals(elementName)) {
+                    // Groups are defined 'inline'.
+                    NodeList groupNodes = node.getChildNodes();
+                    Dictionary.Group g = dictionary.new Group(name, groupNodes.getLength());
+                    // Fill in the group and add it.
+                    readElements(g, node);
+                    elementList.addElement(g, required);
+                }
+            }
+        }
+    }
+
+    private void readMessageTypes() {
+        Node section = getSection(doc.getDocumentElement(), "messages");
+
+
+    }
+
+    private Dictionary.ElementList readElementList(String fieldListElementName) {
+        Node section = getSection(doc.getDocumentElement(), fieldListElementName);
+        return readFieldList(fieldListElementName, section);
+    }
+
+    private Dictionary.ElementList readFieldList(String listName, Node node) {
 
         String name;
-        NodeList fieldNodes = node.getChildNodes();
-        if (fieldNodes.getLength() == 0) {
+        NodeList childNodes = node.getChildNodes();
+        if (childNodes.getLength() == 0) {
             throw new ConfigError("No fields found!");
         }
-        Dictionary.FieldList fieldList = dictionary.new FieldList(listName,fieldNodes.getLength());
-
-        for (int j = 0; j < fieldNodes.getLength(); j++) {
-            Node fieldNode = fieldNodes.item(j);
-            String elementName = fieldNode.getNodeName();
-            if (elementName.equals("field") ||
-                    elementName.equals("group")) {
-                name = getAttribute(fieldNode, "name");
-                if (name == null) {
-                    throw new ConfigError("<field> does not have a name attribute");
-                }
-                boolean required = getAttributeYN(fieldNode, "required");
-                fieldList.addField(name, required);
-            }
-        } // for
-        return fieldList;
+        Dictionary.ElementList list = dictionary.new ElementList(listName, childNodes.getLength());
+        readElements(list, node);
+        return list;
     }
 
     private void readFields() {
         Element documentElement = doc.getDocumentElement();
         // FIELDS
-        NodeList fieldsNode = documentElement.getElementsByTagName("fields");
-        if (fieldsNode.getLength() == 0) {
-            throw new ConfigError("<fields> section not found in data dictionary");
-        }
-
-        NodeList fieldNodes = fieldsNode.item(0).getChildNodes();
-        if (fieldNodes.getLength() == 0) {
-            throw new ConfigError("No fields defined");
-        }
+        NodeList fieldNodes = getSectionChildren(documentElement, "fields");
 
         for (int i = 0; i < fieldNodes.getLength(); i++) {
             Node fieldNode = fieldNodes.item(i);
-            if (fieldNode.getNodeName().equals("field")) {
-                String name = getAttribute(fieldNode, "name");
-                if (name == null) {
-                    throw new ConfigError("<field> does not have a name attribute");
-                }
+            if (fieldNode.getNodeName().equals(FIELD)) {
+                String name = requireAttribute(fieldNode, NAME);
+                int num = requireIntAttribute(fieldNode, "number");
+                ValueType valueType = getValueType(fieldNode, name);
 
-                int num = getIntAttribute(fieldNode, "number", -1);
-                if (num == -1) {
-                    throw new ConfigError("<field> " + name + " does not have a number attribute");
-                }
-
-                String type = getAttribute(fieldNode, "type");
-                ValueType valueType = ValueType.valueOf(type);
-                if (valueType == null) {
-                    throw new ConfigError("<field> " + name + " does not have a valid type attribute");
-                }
-
-                boolean required = getAttributeYN(fieldNode, "required");
+                boolean required = getAttributeYN(fieldNode, REQUIRED);
 
                 NodeList valueNodes = fieldNode.getChildNodes();
                 int valueCount = valueNodes.getLength();
@@ -122,11 +157,7 @@ public class DictionaryLoader {
                 for (int j = 0; j < valueNodes.getLength(); j++) {
                     Node valueNode = valueNodes.item(j);
                     if (valueNode.getNodeName().equals("value")) {
-                        String e = getAttribute(valueNode, "enum");
-                        if (e == null) {
-                            throw new ConfigError("<value> does not have enum attribute in field "
-                                    + name);
-                        }
+                        String e = requireAttribute(valueNode, "enum");
                         String description = getAttribute(valueNode, "description");
                         values.put(e, description);
                     }
@@ -134,15 +165,60 @@ public class DictionaryLoader {
                 boolean allowOtherValues = getBooleanAttribute(fieldNode, "allowOtherValues", false);
                 if (allowOtherValues)
                     values.put(Dictionary.ANY_VALUE, null);
-                dictionary.addField(num, name, required, valueType, values);
+                dictionary.addFieldDefinition(num, name, required, valueType, values);
             } // element is <field>
         } // for
     }
 
-    private boolean getAttributeYN(Node fieldNode, String attribute) {
+    private ValueType getValueType(Node fieldNode, String name) {
+        String type = requireAttribute(fieldNode, "type");
+        ValueType valueType = null;
+        try {
+            valueType = ValueType.valueOf(type);
+        } catch (IllegalArgumentException e) {
+            throw new ConfigError("No such value type: " + type);
+        }
+        return valueType;
+    }
+
+    private NodeList getSectionChildren(Element documentElement, String sectionElementName) {
+        Node section = getSection(documentElement, sectionElementName);
+        if (section == null)
+            return new DomHelper.EmptyNodeList();
+        NodeList childNodes = section.getChildNodes();
+        if (childNodes.getLength() == 0) {
+            throw new ConfigError("<" + sectionElementName + "> section is empty");
+        }
+        return childNodes;
+    }
+
+    private Node getSection(Element documentElement, String sectionElementName) {
+        NodeList nodeList = documentElement.getElementsByTagName(sectionElementName);
+        if (nodeList.getLength() == 0) {
+            return null;
+        }
+        if (nodeList.getLength() > 1) {
+            throw new ConfigError("More than one section: <" + sectionElementName + ">");
+        }
+        return nodeList.item(0);
+    }
+
+    public static int requireIntAttribute(Node node, String attribute) {
+        String sval = requireAttribute(node, attribute);
+        return Integer.parseInt(sval);
+    }
+
+    public static String requireAttribute(Node node, String attribute) {
+        String value = getAttribute(node, attribute);
+        if (value == null || value.length() == 0) {
+            throw new ConfigError("<" + node.getNodeName() + "> does not have attribute '" + attribute + "'");
+        }
+        return value;
+    }
+
+    public static boolean getAttributeYN(Node fieldNode, String attribute) {
         String requiredStr = getAttribute(fieldNode, attribute, "N");
-        boolean required = "Y".equalsIgnoreCase(requiredStr);
-        return required;
+        return "Y".equalsIgnoreCase(requiredStr);
     }
 
     private void readVersion() {
@@ -151,17 +227,9 @@ public class DictionaryLoader {
             throw new ConfigError(
                     "Could not parse data dictionary file, or no <fix> node found at root");
         }
-
-        if (!documentElement.hasAttribute("major")) {
-            throw new ConfigError("major attribute not found on <fix>");
-        }
-
-        if (!documentElement.hasAttribute("minor")) {
-            throw new ConfigError("minor attribute not found on <fix>");
-        }
-
-        String version = "FIX." + documentElement.getAttribute("major") + "."
-                + documentElement.getAttribute("minor");
+        String major = requireAttribute(documentElement, "major");
+        String minor = requireAttribute(documentElement, "minor");
+        String version = "FIX." + major + "." + minor;
         dictionary = new Dictionary(version);
     }
 }

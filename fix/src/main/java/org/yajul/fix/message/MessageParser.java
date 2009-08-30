@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * General message parser loop.  Parses single FIX messages (doesn't handle fragmentation).
@@ -22,8 +24,7 @@ public class MessageParser {
     private final byte tagsep;
     private final TagList tagList;
     private final Dictionary dictionary;
-    private Dictionary.FieldList fieldList;
-    private Set<Integer> requiredTags;
+    private static final int MESG_TYPE = 35;
 
     public MessageParser(byte separator, byte tagsep, TagList tagList, Dictionary dictionary) {
         this.separator = separator;
@@ -33,10 +34,6 @@ public class MessageParser {
     }
 
     public void parse(byte[] bytes) {
-        // If we're using a dictionary, set the current field list to the header.
-        if (dictionary != null) {
-            setFieldList(dictionary.getHeader());
-        }
         // The number of separators is approximately equal to the number of tags.
         int sepcount = Bytes.count(bytes, separator);
         tagList.initialize(separator, tagsep, sepcount);
@@ -69,35 +66,25 @@ public class MessageParser {
 
     }
 
-    private void setFieldList(Dictionary.FieldList fieldList) {
-        // If there was a previous field list, check for required values.
-        if (requiredTags != null && this.fieldList != null) {
-            if (requiredTags.size() > 0) {
-                log.warn(this.fieldList.getName() + " missing required tags: " + requiredTags);
-            }
-        }
-
-        this.fieldList = fieldList;
-        requiredTags = new HashSet<Integer>(fieldList.getRequiredTags());
-    }
-
     private void addTag(byte[] bytes, int tagStart, int tagEnd, int valueStart, int valueEnd) {
         byte[] tagBytes = Bytes.copy(bytes, tagStart, tagEnd);
         byte[] valueBytes = Bytes.copy(bytes, valueStart, valueEnd);
         int tag = Bytes.parseDigits(bytes, tagStart, tagEnd);
-        // Remove this tag from the required list.
-        if (requiredTags != null)
-            requiredTags.remove(tag);
-        if (fieldList != null) {
-            Dictionary.Field f = fieldList.find(tag);
-
+        // MessageType is special, it determines the body TagList.
+        if (tag == MESG_TYPE && dictionary != null) {
+            String msgType = new String(valueBytes);
+            Dictionary.ElementList body = dictionary.findMessageType(msgType);
         }
-        tagList.add(tag, tagBytes, valueBytes);
+        tagList.add(tag, tagBytes, valueBytes, null);
+    }
+
+    private void nextFieldList() {
+
     }
 
     public interface TagList {
         void initialize(byte separator, byte tagsep, int initialSize);
 
-        void add(int tag, byte[] tagBytes, byte[] valueBytes);
+        void add(int tag, byte[] tagBytes, byte[] valueBytes, Dictionary.Field f);
     }
 }

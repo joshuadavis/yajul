@@ -12,4 +12,9 @@ import java.text.DecimalFormat;
 public class Formatter {
     private static DecimalFormat checksumFormat = new DecimalFormat("000");
 
+    public static void indent(int level,StringBuilder sb) {
+        for (int i = 0 ; i < level ; i++) {
+            sb.append('\t');
+        }
+    }
 }

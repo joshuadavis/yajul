@@ -21,6 +21,7 @@ public enum ValueType {
     MULTIPLEVALUESTRING(),
     EXCHANGE,
     UTCTIMESTAMP(Date.class),
+    DATE(Date.class),
     BOOLEAN(Boolean.class),
     LOCALMKTDATE(),
     DATA(),

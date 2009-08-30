@@ -4,6 +4,7 @@ import org.yajul.fix.util.Bytes;
 import org.yajul.fix.util.CodecConstants;
 import org.yajul.fix.message.MessageParser;
 import org.yajul.fix.message.MessageType;
+import org.yajul.fix.dictionary.Dictionary;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -34,7 +35,7 @@ public class RawFixMessage implements Serializable {
             tags = new ArrayList<RawTag>(initialSize);
         }
 
-        public void add(int tag, byte[] tagBytes, byte[] valueBytes) {
+        public void add(int tag, byte[] tagBytes, byte[] valueBytes, Dictionary.Field f) {
             RawTag t = new RawTag(tag,tagBytes,valueBytes);
             tags.add(t);
         }

@@ -13,6 +13,7 @@ import org.yajul.fix.dictionary.DictionaryLoader;
  */
 public class DictionaryTest extends TestCase {
     public void testDictionaryLoader() throws Exception {
-        Dictionary d = DictionaryLoader.load("FIX44.xml");
+        Dictionary d40 = DictionaryLoader.load("FIX40.xml");
+        Dictionary d44 = DictionaryLoader.load("FIX44.xml");
     }
 }
