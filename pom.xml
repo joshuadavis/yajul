@@ -1,10 +1,9 @@
 <!--suppress MavenModelInspection -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
-    <version>0.3.3-SNAPSHOT</version>
+    <version>0.3.3</version>
     <packaging>jar</packaging>
     <name>Yet Another Java Utility Library</name>
     <url>http://yajul.sourceforge.net</url>
@@ -20,9 +19,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/</connection>
-        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/</developerConnection>
-        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/</url>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/yajul-0.3.3</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/tags/yajul-0.3.3</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/yajul-0.3.3</url>
     </scm>
     <distributionManagement>
         <site>
