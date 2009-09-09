@@ -166,7 +166,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -237,6 +237,7 @@
         <option value="$PROJECT_DIR$/root/pom.xml" />
         <option value="$PROJECT_DIR$/base/pom.xml" />
         <option value="$PROJECT_DIR$/micro/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -422,83 +423,174 @@
     </option>
   </component>
   <component name="libraryTable">
-    <library name="junit">
+    <library name="Maven: junit:junit:3.8.1">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/junit.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
       </CLASSES>
-      <JAVADOC />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-javadoc.jar!/" />
+      </JAVADOC>
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/junit-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="guice">
+    <library name="Maven: com.google.code.guice:guice:2.0.1">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/guice.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1.jar!/" />
       </CLASSES>
-      <JAVADOC />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1-javadoc.jar!/" />
+      </JAVADOC>
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/guice-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/guice/guice/2.0.1/guice-2.0.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="slf4j">
+    <library name="Maven: aopalliance:aopalliance:1.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/slf4j-api.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/dependency/slf4j-log4j12.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0.jar!/" />
       </CLASSES>
-      <JAVADOC />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0-javadoc.jar!/" />
+      </JAVADOC>
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/slf4j-api-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/sources/slf4j-log4j12-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="log4j">
+    <library name="Maven: org.slf4j:slf4j-api:1.4.3">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/log4j.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3.jar!/" />
       </CLASSES>
-      <JAVADOC />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-javadoc.jar!/" />
+      </JAVADOC>
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/log4j-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="jms">
+    <library name="Maven: log4j:log4j:1.2.15">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/jms.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.15/log4j-1.2.15.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jta">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/jta.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="javassist">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/javassist.jar!/" />
-      </CLASSES>
-      <JAVADOC />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.15/log4j-1.2.15-javadoc.jar!/" />
+      </JAVADOC>
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/target/sources/javassist-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.15/log4j-1.2.15-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="jboss-embedded">
+    <library name="Maven: org.slf4j:slf4j-log4j12:1.4.3">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded-all.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/dependency/jboss-embedded.jar!/" />
-        <root url="jar://$PROJECT_DIR$/target/dependency/hibernate-all.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-log4j12/1.4.3/slf4j-log4j12-1.4.3-sources.jar!/" />
+      </SOURCES>
     </library>
-    <library name="thirdparty-all">
+    <library name="Maven: javax.jms:jms:1.1">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/target/dependency/thirdparty-all.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/javax/jms/jms/1.1/jms-1.1.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/jms/jms/1.1/jms-1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/jms/jms/1.1/jms-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.transaction:jta:1.0.1B">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.0.1B/jta-1.0.1B-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.0.1B/jta-1.0.1B-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javassist:javassist:3.8.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.8.1.GA/javassist-3.8.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-deployers-client-spi:2.0.0.Beta6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-client-spi/2.0.0.Beta6/jboss-deployers-client-spi-2.0.0.Beta6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-client-spi/2.0.0.Beta6/jboss-deployers-client-spi-2.0.0.Beta6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-client-spi/2.0.0.Beta6/jboss-deployers-client-spi-2.0.0.Beta6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-deployers-core-spi:2.0.0.Beta6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:jboss-embedded-all:beta3.SP10">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-all/beta3.SP10/jboss-embedded-all-beta3.SP10.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-all/beta3.SP10/jboss-embedded-all-beta3.SP10-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-all/beta3.SP10/jboss-embedded-all-beta3.SP10-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:jboss-embedded:beta3.SP10">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded/beta3.SP10/jboss-embedded-beta3.SP10.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded/beta3.SP10/jboss-embedded-beta3.SP10-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded/beta3.SP10/jboss-embedded-beta3.SP10-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP10">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/thirdparty-all/beta3.SP10/thirdparty-all-beta3.SP10.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/thirdparty-all/beta3.SP10/thirdparty-all-beta3.SP10-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/thirdparty-all/beta3.SP10/thirdparty-all-beta3.SP10-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:hibernate-all:beta3.SP10">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP10/hibernate-all-beta3.SP10.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP10/hibernate-all-beta3.SP10-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP10/hibernate-all-beta3.SP10-sources.jar!/" />
+      </SOURCES>
     </library>
   </component>
+  <UsedPathMacros>
+    <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
+  </UsedPathMacros>
 </project>
 

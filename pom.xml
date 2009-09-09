@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Yet Another Java Utility Library</name>
     <url>http://yajul.sourceforge.net</url>
@@ -39,7 +39,7 @@
         <version.junit>3.8.1</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.javassist>3.8.1.GA</version.javassist>
-        <version.jboss-embedded>beta3.SP4</version.jboss-embedded>
+        <version.jboss-embedded>beta3.SP10</version.jboss-embedded>
     </properties>
     <repositories>
         <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
@@ -114,6 +114,16 @@
                 <artifactId>javassist</artifactId>
                 <version>${version.javassist}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.code.guice</groupId>
+                <artifactId>guice</artifactId>
+                <version>2.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>aopalliance</groupId>
+                <artifactId>aopalliance</artifactId>
+                <version>1.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -125,12 +135,10 @@
         <dependency>
             <groupId>com.google.code.guice</groupId>
             <artifactId>guice</artifactId>
-            <version>2.0.1</version>
         </dependency>
         <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
-            <version>1.0</version>
         </dependency>
         <!-- SLF4J has much simpler dependencies than commons-logging -->
         <dependency>
@@ -292,6 +300,13 @@
                         <additionalClasspathElement>etc/bootstrap</additionalClasspathElement>
                     </additionalClasspathElements>
                 </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-release-plugin</artifactId>
+              <configuration>
+                <tagBase>https://yajul.svn.sourceforge.net/svnroot/yajul/tags</tagBase>
+              </configuration>
             </plugin>
         </plugins>
     </reporting>

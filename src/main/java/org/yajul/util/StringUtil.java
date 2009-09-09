@@ -71,20 +71,33 @@ public class StringUtil {
     }
 
     /**
-     * Prints the class name of the object, followed by '@', followed by the hash code
+     * Prints the class name of the object, followed by '@', followed by the identity hash code
      * of the object, just like java.lang.Object.toString().
      *
      * @param o The object to print.
      * @return String - The object's default string representation.
      */
     public static String defaultToString(Object o) {
+        return defaultToString(o,true);
+    }
+
+    /**
+     * Prints the class name of the object, followed by '@', followed by the identity hash code
+     * of the object, just like java.lang.Object.toString().
+     *
+     * @param o The object to print.
+     * @param hex True for hex, false for decimal
+     * @return String - The object's default string representation.
+     */
+    public static String defaultToString(Object o,boolean hex) {
         StringBuffer buf = new StringBuffer();
         if (o == null)
             buf.append("null");
         else {
             buf.append(o.getClass().getName());
             buf.append("@");
-            buf.append(Integer.toHexString(o.hashCode()));
+            int identity = System.identityHashCode(o);
+            buf.append(hex ? Integer.toHexString(identity) : Integer.toString(identity));
         }
         return buf.toString();
     }
