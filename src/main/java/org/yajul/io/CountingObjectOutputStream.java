@@ -1,7 +1,5 @@
 package org.yajul.io;
 
-import org.apache.commons.collections.map.UnmodifiableMap;
-
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.IOException;
