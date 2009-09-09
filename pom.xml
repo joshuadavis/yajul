@@ -28,7 +28,11 @@
             <id>website</id>
             <url>scp://shell.sourceforge.net/home/groups/y/ya/yajul/htdocs</url>
         </site>
-        <snapshotRepository>
+      <repository>
+            <id>internal.artifactory</id>
+            <url>http://artifactory/artifactory/libs-releases-local</url>
+      </repository>
+      <snapshotRepository>
             <id>internal.artifactory</id>
             <url>http://artifactory/artifactory/libs-snapshots-local</url>
         </snapshotRepository>
