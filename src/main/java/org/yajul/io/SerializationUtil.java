@@ -5,9 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Collection;
-import java.util.TreeSet;
-
-import sun.management.MemoryNotifInfoCompositeData;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  * General serialization helper methods.
@@ -17,6 +18,7 @@ import sun.management.MemoryNotifInfoCompositeData;
  */
 public class SerializationUtil {
     private final static Logger log = LoggerFactory.getLogger(SerializationUtil.class);
+    private static final int DEFAULT_INITIAL_SIZE = 512;
 
     /**
      * Deep clones an object using serialization.
@@ -26,8 +28,9 @@ public class SerializationUtil {
      * @throws java.io.IOException    if something goes wrong
      * @throws ClassNotFoundException if a class cannot be found
      */
-    public static Object clone(Serializable object) throws IOException, ClassNotFoundException {
-        return fromByteArray(toByteArray(object));
+    public static <T extends Serializable> T clone(T object) throws IOException, ClassNotFoundException {
+        //noinspection unchecked
+        return (T) fromByteArray(toByteArray(object));
     }
 
     /**
@@ -61,8 +64,24 @@ public class SerializationUtil {
      * @throws java.io.IOException if something goes wrong
      */
     public static byte[] toByteArray(Serializable obj) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(512);
+        return toByteArray(obj, DEFAULT_INITIAL_SIZE);
+    }
+
+    public static byte[] toByteArray(Serializable obj, int initialSize) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(initialSize);
         serialize(obj, baos);
+        return baos.toByteArray();
+    }
+
+    public static byte[] toCompressedByteArray(Serializable obj, int initialSize, int level, int bufferSize) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(initialSize);
+        Deflater def = new Deflater(level);
+        DeflaterOutputStream dos = new DeflaterOutputStream(baos,def,bufferSize);
+        try {
+            serialize(obj, dos);
+        } finally {
+            def.end();
+        }
         return baos.toByteArray();
     }
 
@@ -108,6 +127,22 @@ public class SerializationUtil {
         return deserialize(bais);
     }
 
+    public static Object fromCompressedByteArray(byte[] objectData, int bufferSize) throws ClassNotFoundException, IOException {
+        if (objectData == null) {
+            throw new IllegalArgumentException("The byte[] must not be null");
+        }
+        ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
+        Inflater inf = new Inflater();
+        InflaterInputStream iis = new InflaterInputStream(bais,inf,bufferSize);
+        Object o;
+        try {
+            o = deserialize(iis);
+        } finally {
+            inf.end();
+        }
+        return o;
+    }
+
     /**
      * Returns the size of the object if it was serialize all by itself.
      *
@@ -122,6 +157,12 @@ public class SerializationUtil {
         return counter.getByteCount();
     }
 
+    /**
+     * Counts the number of objects of each class inside the serializable object, and also
+     * counts the number of bytes that the object would have in serialized form.
+     * @param obj the object
+     * @return the statistics.
+     */
     public static Stats getStats(Serializable obj) {
         try {
             ByteCountingOutputStream counter = new ByteCountingOutputStream(new NullOutputStream());
@@ -135,6 +176,9 @@ public class SerializationUtil {
         }
     }
 
+    /**
+     * The total size, and the number of instances of each class in an object.
+     */
     public static class Stats {
         private int totalSize;
         private CountingObjectOutputStream oos;
@@ -155,5 +199,23 @@ public class SerializationUtil {
         public CountingObjectOutputStream.Counter getCounter(String name) {
             return oos.getCounter(name);
         }
+    }
+
+    /**
+     * Automatically unwrap the object if it implements SerializableWrapper.
+     *
+     * @param obj The object, or a SerializableWrapper around an object.
+     * @return The wrapped object if the argument implements SerializableWrapper, or the argument
+     *         object if it doesn't implement SerializableWrapper.
+     * @throws java.io.IOException    if something goes wrong
+     * @throws ClassNotFoundException if something goes wrong
+     */
+    public static Serializable autoUnwrap(Serializable obj) throws IOException, ClassNotFoundException {
+        if (obj instanceof SerializableWrapper) {
+            SerializableWrapper wrapper = (SerializableWrapper) obj;
+            return wrapper.unwrap();
+        } else
+            return obj;
+
     }
 }

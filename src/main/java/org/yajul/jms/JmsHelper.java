@@ -1,9 +1,12 @@
 package org.yajul.jms;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yajul.io.SerializationUtil;
 
 import javax.jms.*;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Enumeration;
 
 /**
@@ -92,6 +95,43 @@ public class JmsHelper {
         }
     }
 
+
+    public static void close(Session session, Connection connection) {
+        close(session);
+        close(connection);
+    }
+
+    /**
+     * Returns the object in the JMS message if it's an object message.
+     *
+     * @param message the JMS message
+     * @param autoUnwrap true to automatically unwrap SerializableWrapper, false to never unwrap
+     * (just return the object).
+     * @return the object in the JMS message if it's an object message, null otherwise.
+     */
+    public static Object getObject(Message message,boolean autoUnwrap) {
+        if (message == null)
+            return null;
+        if (message instanceof ObjectMessage) {
+            ObjectMessage objectMessage = (ObjectMessage) message;
+            try {
+                Serializable serializable = objectMessage.getObject();
+                if (autoUnwrap)
+                    return SerializationUtil.autoUnwrap(serializable);
+                else
+                    return serializable;
+            }
+            catch (JMSException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else
+            return null;
+    }
+
     /**
      * Returns the object in the JMS message if it's an object message.
      *
@@ -99,20 +139,8 @@ public class JmsHelper {
      * @return the object in the JMS message if it's an object message, null otherwise.
      */
     public static Object getObject(Message message) {
-        if (message == null)
-            return null;
-        if (message instanceof ObjectMessage) {
-            ObjectMessage objectMessage = (ObjectMessage) message;
-            try {
-                return objectMessage.getObject();
-            }
-            catch (JMSException e) {
-                throw new RuntimeException(e);
-            }
-        } else
-            return null;
+        return getObject(message,false);
     }
-
 
     /**
      * Returns the text in the JMS message if it's a text message.

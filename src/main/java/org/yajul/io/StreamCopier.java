@@ -118,6 +118,23 @@ public class StreamCopier implements Runnable {
     }
 
     /**
+     * Copies the reader into the writer in an efficient manner.
+     * This version does not synchronize on the streams, so it is not safe
+     * to use when the streams are being accessed by multiple threads.
+     *
+     * @param in    The reader.
+     * @param out   The writer.  If this is null, the input will be
+     *              discarded, similar to piping to /dev/null on UN*X.
+     * @param bufsz The size of the buffer to use.
+     * @return int The number of bytes copied.
+     * @throws IOException When the stream could not be copied.
+     */
+    public static int unsyncCopy(Reader in, Writer out,
+                                 int bufsz) throws IOException {
+        return unsyncCopy(in, out, bufsz, UNLIMITED);
+    }
+
+    /**
      * Copies the input stream into the output stream in an efficient manner.
      * This version does not synchronize on the streams, so it is not safe
      * to use when the streams are being accessed by multiple threads.

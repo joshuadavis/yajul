@@ -1,5 +1,25 @@
 #!/bin/bash
- 
+
+UNAME=`uname`
+
+
+function checkJavaHome { 
+     case `uname` in
+         Darwin*)
+             if [[ ! -f $JAVA_HOME/lib/dt.jar ]] ; then
+             echo "ERROR: dt.jar was not found in $JAVA_HOME/lib !"
+             exit -1
+             fi
+             ;;
+         *)
+             if [[ ! -f $JAVA_HOME/lib/tools.jar ]] ; then
+             echo "ERROR: tools.jar was not found in $JAVA_HOME/lib !"
+             exit -1
+             fi
+             ;;
+     esac
+}
+
 function findJavaHome {
     for javadir in $@
     do
@@ -28,6 +48,18 @@ function findJava {
         Linux*)
             if [ "${JAVA_HOME:-}" == "" ] ; then
                 findJavaHome '/usr/java' '/opt'
+                JAVA_HOME="$javadir/$javaname"
+            else
+                JAVA_HOME=$JAVA_HOME
+            fi
+            ;;
+        Darwin*)
+            if [ "${JAVA_HOME:-}" == "" ] ; then
+                findJavaHome '/usr/java' '/opt'
+                if [ -z $javadir  ] ; then
+                    echo "Using Darwin default..."
+                    JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK'
+                fi
                 JAVA_HOME="$javadir/$javaname"
             else
                 JAVA_HOME=$JAVA_HOME
@@ -74,6 +106,14 @@ function findMaven {
             fi
             ;;
         Linux*)
+            if [ "${M2_HOME:-}" == "" ] ; then
+                findMavenHome '/opt'
+                M2_HOME="$mavendir/$mavenname"
+            else
+                M2_HOME=$M2_HOME
+            fi
+            ;;
+        Darwin*)
             if [ "${M2_HOME:-}" == "" ] ; then
                 findMavenHome '/opt'
                 M2_HOME="$mavendir/$mavenname"

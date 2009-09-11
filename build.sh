@@ -1,9 +1,8 @@
 #!/bin/bash
 SCRIPT_NAME=${0##*/}
 SCRIPT_DIR=`dirname $0`
-UNAME=`uname`
 JDK_BASENAME='jdk1.5'
-MAVEN_BASENAME='maven-2'
+MAVEN_BASENAME='apache-maven-2'
 
 source $SCRIPT_DIR/bin/shell-functions.sh
 

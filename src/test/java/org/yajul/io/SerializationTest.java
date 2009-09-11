@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Deflater;
 
@@ -33,6 +34,14 @@ public class SerializationTest extends TestCase {
         int size = SerializationUtil.sizeOf(f);
         log.debug("size = " + size);
         assertEquals(size, bytes.length);
+        ByteArrayWrapper<Foo> wrapper = new ByteArrayWrapper<Foo>(f);
+        ByteArrayWrapper<Foo> clone = SerializationUtil.clone(wrapper);
+        assertTrue(Arrays.equals(bytes,wrapper.wrap()));
+        assertTrue(Arrays.equals(bytes,clone.wrap()));
+        f2 = (Foo) SerializationUtil.autoUnwrap(clone);
+        assertNotSame(clone,f2);
+        assertEquals(f,f2);
+        assertNotSame(f,f2);
     }
 
     public void testCountingOutputStream() throws Exception {
@@ -79,7 +88,7 @@ public class SerializationTest extends TestCase {
 
         ThingEx tex = new ThingEx();
         addFoos(tex.getFoos());
-        ThingEx tex2 = (ThingEx) SerializationUtil.clone(tex);
+        ThingEx tex2 = SerializationUtil.clone(tex);
         checkFooList(tex2.getFoos(), tex.getFoos());
     }
 
@@ -101,31 +110,36 @@ public class SerializationTest extends TestCase {
         log.info("b = " + SerializationUtil.sizeOf(b));
         log.info("be = " + SerializationUtil.sizeOf(be));
 
-        NullOutputStream nos = new NullOutputStream();
-        ByteCountingOutputStream bcos = new ByteCountingOutputStream(nos);
-        Deflater def = new Deflater(Deflater.BEST_SPEED);
-        DeflaterOutputStream dos = new DeflaterOutputStream(bcos, def);
-        ObjectOutputStream oos = new ObjectOutputStream(dos);
-        oos.writeObject(be);
-        oos.flush();
-        oos.close();
-        log.info(String.format("be (comp) = %d bytes %d/%d %.2f%%",bcos.getByteCount(),
-                def.getTotalOut(),def.getTotalIn(),
-                ((double)def.getTotalOut() / (double)def.getTotalIn()) * 100.0));
-
-        bcos = new ByteCountingOutputStream(nos);
-        def = new Deflater(Deflater.BEST_SPEED);
-        dos = new DeflaterOutputStream(bcos, def);
-        oos = new ObjectOutputStream(dos);
-        oos.writeObject(b);
-        oos.flush();
-        oos.close();
-        log.info(String.format("b (comp) = %d bytes %d/%d %.2f%%",bcos.getByteCount(),
-                def.getTotalOut(),def.getTotalIn(),
-                ((double)def.getTotalOut() / (double)def.getTotalIn()) * 100.0));
-
-        BazEx be2 = (BazEx) SerializationUtil.clone(be);
+        BazEx be2 = SerializationUtil.clone(be);
         assertEquals(be,be2);
+    }
+
+
+    public void testCompress() throws Exception {
+        Baz b = new Baz();
+        byte[] bu = SerializationUtil.toByteArray(b);
+        byte[] bc = SerializationUtil.toCompressedByteArray(b,512,Deflater.BEST_SPEED,512);
+        log.info(String.format("b (comp) = %d bytes %d/%d %.2f%%",bc.length,
+                bc.length,bu.length,
+                ((double)bc.length / (double)bu.length) * 100.0));
+        Baz clone = (Baz) SerializationUtil.fromCompressedByteArray(bc,512);
+        assertEquals(b,clone);
+
+        long start = System.currentTimeMillis();
+        int iterations = 2000;
+        for (int i = 0; i < iterations; i++) {
+            byte[] bytes = SerializationUtil.toCompressedByteArray(b,512,Deflater.BEST_SPEED,512);
+            Baz another = (Baz) SerializationUtil.fromCompressedByteArray(bytes,512);
+        }
+        long end = System.currentTimeMillis();
+        log.info("with compression, elapsed = " + (end - start));
+        start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            byte[] bytes = SerializationUtil.toByteArray(b);
+            Baz another = (Baz) SerializationUtil.fromByteArray(bytes);
+        }
+        end = System.currentTimeMillis();
+        log.info("no compression, elapsed = " + (end - start));        
     }
 
     public static enum MyEnum {

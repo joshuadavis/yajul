@@ -14,14 +14,12 @@ import java.lang.IllegalStateException;
  * Date: Sep 18, 2007
  * Time: 7:07:35 AM
  */
-public class Endpoint
-{
+public class Endpoint {
     private static Logger log = LoggerFactory.getLogger(Endpoint.class);
 
     private ConnectionFactoryReference connectionFactoryReference;
     private DestinationReference destinationReference;
     private Session session;
-    private Destination destination;
     private Connection connection;
 
     private MessageConsumer consumer;
@@ -32,10 +30,9 @@ public class Endpoint
     private boolean queueEndpoint;
     private String messageSelector;
 
-    public Endpoint(InitialContext ic, String factoryJndiName, String destinationName, String messageSelector)
-    {
-        this(new ConnectionFactoryReference(ic,factoryJndiName),
-                new DestinationReference(ic,destinationName),messageSelector);
+    public Endpoint(InitialContext ic, String factoryJndiName, String destinationName, String messageSelector) {
+        this(new ConnectionFactoryReference(ic, factoryJndiName),
+                new DestinationReference(ic, destinationName), messageSelector);
     }
 
 
@@ -46,113 +43,90 @@ public class Endpoint
         this.messageSelector = messageSelector;
     }
 
-    public Endpoint(InitialContext ic,String factoryJndiName, Destination destination, String messageSelector)
-    {
-        this(new ConnectionFactoryReference(ic,factoryJndiName),
-                new DestinationReference(destination),messageSelector);
+    public Endpoint(InitialContext ic, String factoryJndiName, Destination destination, String messageSelector) {
+        this(new ConnectionFactoryReference(ic, factoryJndiName),
+                new DestinationReference(destination), messageSelector);
     }
 
-    public boolean isQueueEndpoint()
-    {
+    public boolean isQueueEndpoint() {
         return queueEndpoint;
     }
 
-    public void setQueueEndpoint(boolean queueEndpoint)
-    {
+    public void setQueueEndpoint(boolean queueEndpoint) {
         this.queueEndpoint = queueEndpoint;
     }
 
-    public void close()
-    {
+    public void close() {
         consumerStarted = false;
-        if (consumer != null)
-        {
-            JmsHelper.close(consumer, session, connection);
+        if (consumer != null) {
+            JmsHelper.close(consumer);
             consumer = null;
-            session = null;
-            connection = null;
         }
-        else if (producer != null)
-        {
-            JmsHelper.close(producer, session, connection);
+        if (producer != null) {
+            JmsHelper.close(producer);
             producer = null;
-            session = null;
-            connection = null;
         }
+        JmsHelper.close(session, connection);
+        session = null;
+        connection = null;
     }
 
 
-    public void startConsumer() throws JMSException
-    {
-        if (!consumerStarted)
-        {
+    public void startConsumer() throws JMSException {
+        if (!consumerStarted) {
             getConsumer();
             connection.start();
             consumerStarted = true;
         }
     }
 
-    public Message receive(long timeout) throws JMSException
-    {
+    public Message receive(long timeout) throws JMSException {
         if (consumer == null)
             throw new IllegalStateException("No consumer!");
         return consumer.receive(timeout);
     }
 
-    public Message receiveNowait() throws JMSException
-    {
+    public Message receiveNowait() throws JMSException {
         if (consumer == null)
             throw new IllegalStateException("No consumer!");
         return consumer.receiveNoWait();
     }
 
-    protected boolean hasConsumer()
-    {
+    protected boolean hasConsumer() {
         return consumer != null;
     }
 
-    protected MessageConsumer getConsumer() throws JMSException
-    {
+    protected MessageConsumer getConsumer() throws JMSException {
         if (producer != null)
             throw new IllegalStateException("This is already a consumer!");
-        if (consumer == null)
-        {
+        if (consumer == null) {
             consumer = getSession().createConsumer(getDestination(), messageSelector);
         }
         return consumer;
     }
 
-    public MessageProducer getProducer() throws JMSException
-    {
+    public MessageProducer getProducer() throws JMSException {
         if (consumer != null)
             throw new IllegalStateException("This is already a consumer!");
-        if (producer == null)
-        {
+        if (producer == null) {
             producer = getSession().createProducer(getDestination());
         }
         return producer;
     }
 
-    public Session getSession() throws JMSException
-    {
-        if (session == null)
-        {
-            if (queueEndpoint)
-            {
-                session = ((QueueConnection)getConnection()).createQueueSession(transacted,acknowledgeMode);
-            }
-            else
-            {
+    public Session getSession() throws JMSException {
+        if (session == null) {
+            if (queueEndpoint) {
+                session = ((QueueConnection) getConnection()).createQueueSession(transacted, acknowledgeMode);
+            } else {
                 session = getConnection().createSession(transacted, acknowledgeMode);
             }
         }
         return session;
     }
 
-    public Connection getConnection() throws JMSException
-    {
-        if (connection == null)
-        {
+    public Connection getConnection() throws JMSException {
+        if (connection == null) {
             if (queueEndpoint)
                 connection = connectionFactoryReference.getQueueConnectionFactory().createQueueConnection();
             else
@@ -162,20 +136,15 @@ public class Endpoint
         return connection;
     }
 
-    protected void onConnectionCreated(Connection connection) throws JMSException
-    {
+    protected void onConnectionCreated(Connection connection) throws JMSException {
     }
 
-    protected void finalize() throws Throwable
-    {
+    protected void finalize() throws Throwable {
         super.finalize();
         close();
     }
 
-    protected Destination getDestination()
-    {
-        if (destination == null)
-            destination = destinationReference.getDestination();
-        return destination;
+    protected Destination getDestination() {
+        return destinationReference.getDestination();
     }
 }
