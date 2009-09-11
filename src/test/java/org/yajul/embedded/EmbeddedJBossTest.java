@@ -4,11 +4,16 @@ import junit.framework.TestCase;
 import org.jboss.embedded.Bootstrap;
 import org.jboss.virtual.plugins.context.vfs.AssembledDirectory;
 import org.jboss.virtual.plugins.context.vfs.AssembledContextFactory;
+import org.jboss.virtual.VirtualFile;
+import org.jboss.virtual.VirtualFileVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yajul.jndi.JndiHelper;
+import org.yajul.jndi.EarJndiLookup;
+import org.yajul.jndi.JndiProvider;
 
 import javax.naming.InitialContext;
+import java.util.List;
 
 /**
  * <br>
@@ -28,7 +33,6 @@ public class EmbeddedJBossTest extends TestCase {
     }
 
     public void testDeploy() throws Exception {
-        AssembledDirectory ejbjar = null;
         try {
             EmbeddedJBossHelper.startup();
             // No need to modify the bootstrap files much, just deploy your own resources.
@@ -36,16 +40,19 @@ public class EmbeddedJBossTest extends TestCase {
             resources.addResource("my-ds.xml","my-ds.xml");
             Bootstrap.getInstance().deploy(resources);
 
-            ejbjar = AssembledContextFactory.getInstance().create("ejbjar");
             String[] includes = { "**/embedded/Echo*.class" };
-            ejbjar.addResources(Echo.class,includes, null);
-            EmbeddedJBossHelper.deploy(ejbjar);
+            AssembledDirectory ear = AssembledContextFactory.getInstance().create("hello.ear");
+            ear.mkdir("hello-ejbs.jar").addResources(Echo.class,includes,null);
+            ear.mkdir("META-INF").addResource("hello-application.xml","application.xml");
+            EmbeddedJBossHelper.deploy(ear);
             InitialContext ic = new InitialContext();
             String listing = JndiHelper.listBindings(ic,"/");
             System.out.println(listing);
-            Echo echo = (Echo) ic.lookup("EchoBean/local");
-            String rv  = echo.echo("hello");
-            System.out.println(rv);
+            JndiProvider<Echo> p = new JndiProvider<Echo>(new EarJndiLookup(ic,"hello"),Echo.class,"EchoBean/local");
+            Echo echo = p.get();
+            String rv  = echo.echo("Hello world!");
+            assertEquals("msg=Hello world!",rv);
+            EmbeddedJBossHelper.undeploy(ear);
         }
         finally {
             EmbeddedJBossHelper.shutdown();

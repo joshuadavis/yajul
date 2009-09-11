@@ -105,6 +105,19 @@ public class JmsHelper {
      * Returns the object in the JMS message if it's an object message.
      *
      * @param message the JMS message
+     * @param clazz the class
+     * @param autoUnwrap true to automatically unwrap SerializableWrapper, false to never unwrap
+     * (just return the object).
+     * @return the object in the JMS message if it's an object message, null otherwise.
+     */
+    public static <T extends Serializable> T getObject(Message message,Class<T> clazz, boolean autoUnwrap) {
+        return clazz.cast(getObject(message,autoUnwrap));
+    }
+
+    /**
+     * Returns the object in the JMS message if it's an object message.
+     *
+     * @param message the JMS message
      * @param autoUnwrap true to automatically unwrap SerializableWrapper, false to never unwrap
      * (just return the object).
      * @return the object in the JMS message if it's an object message, null otherwise.

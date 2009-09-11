@@ -60,6 +60,16 @@ public class EmbeddedJBossHelper {
         INSTANCE.doDeploy(deployment);
     }
 
+    public static void undeploy(VirtualFile deployment) throws DeploymentException {
+        INSTANCE.doUndeploy(deployment);
+    }
+
+    private void doUndeploy(VirtualFile deployment) throws DeploymentException
+    {
+        deployments.remove(deployment);
+        Bootstrap.getInstance().undeploy(deployment);
+    }
+
     private void doDeploy(VirtualFile deployment) throws DeploymentException {
         Bootstrap.getInstance().deploy(deployment);
         deployments.add(deployment);

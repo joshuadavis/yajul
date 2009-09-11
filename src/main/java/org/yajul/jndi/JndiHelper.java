@@ -15,10 +15,14 @@ public class JndiHelper {
      * a failed lookup means some kind of unrecoverable deployment problem.  That eliminates
      * some of the redundant code sprinkled throughout an application.
      * <br>
-     * This should not be used to replace EJB3 injection, but it does come in handy when there
-     * are EJB3 beans that have circular dependencies, which makes lookup (Service Locator pattern)
-     * necessary.
-     *
+     * This should not be used to replace EJB3 injection, but it does come in handy when:
+     * <ul>
+     * <li>There are EJBs that have circular dependencies, which makes lookup (Service Locator pattern)
+     * necessary.</li>
+     * <li>There are cluster singletons, or other cases where you want to use a different InitialContext
+     * to look up an EJB or other JNDI object.  For example: EJB3 Timers are usually deployed as cluster
+     * singletons in JBoss AS, so these should be looked up in HAJNDI.</li>
+     * </ul>
      * @param context The initial context.  Null to use the default <tt>new InitialContext()</tt>
      * @param clazz   the expected type of the object in JNDI.  For an EJB, this will be the local
      *                interface class.

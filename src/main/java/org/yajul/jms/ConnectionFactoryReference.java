@@ -19,7 +19,7 @@ import javax.jms.QueueConnectionFactory;
 public class ConnectionFactoryReference extends JndiReference<ConnectionFactory> {
 
     public ConnectionFactoryReference(InitialContext ic, String connectionFactoryName) {
-        super(ic,connectionFactoryName);
+        super(ic,ConnectionFactory.class,connectionFactoryName);
     }
 
     public ConnectionFactoryReference(ConnectionFactory connectionFactory) {
