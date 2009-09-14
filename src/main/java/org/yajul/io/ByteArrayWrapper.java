@@ -57,5 +57,6 @@ public class ByteArrayWrapper<T extends Serializable>
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         bytes = (byte[]) in.readObject();
+        obj = null;
     }
 }
