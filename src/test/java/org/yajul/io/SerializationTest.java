@@ -35,8 +35,11 @@ public class SerializationTest extends TestCase {
         log.debug("size = " + size);
         assertEquals(size, bytes.length);
         ByteArrayWrapper<Foo> wrapper = new ByteArrayWrapper<Foo>(f);
+        assertTrue(wrapper.isUnwrapped());
         ByteArrayWrapper<Foo> clone = SerializationUtil.clone(wrapper);
-        assertTrue(Arrays.equals(bytes,wrapper.wrap()));
+        byte[] bytes1 = wrapper.wrap();
+        assertTrue(wrapper.isWrapped());
+        assertTrue(Arrays.equals(bytes, bytes1));
         assertTrue(Arrays.equals(bytes,clone.wrap()));
         f2 = (Foo) SerializationUtil.autoUnwrap(clone);
         assertNotSame(clone,f2);

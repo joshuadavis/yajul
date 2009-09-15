@@ -26,7 +26,7 @@ public class ByteArrayWrapper<T extends Serializable>
     public ByteArrayWrapper() {
     }
 
-    public T unwrap() throws IOException, ClassNotFoundException {
+    public final T unwrap() throws IOException, ClassNotFoundException {
         if (obj == null) {
             obj = byteArrayToObject(bytes);
             bytes = null; // Don't need the bytes now.
@@ -34,7 +34,7 @@ public class ByteArrayWrapper<T extends Serializable>
         return obj;
     }
 
-    public byte[] wrap() throws IOException {
+    public final byte[] wrap() throws IOException {
         if (bytes == null) {
             bytes = objectToByteArray(obj);
             obj = null; // Don't need the object now.
@@ -42,20 +42,42 @@ public class ByteArrayWrapper<T extends Serializable>
         return bytes;
     }
 
+    /**
+     * Turns the byte array back into an object.  Subclasses can override this to customize
+     * the behavior.
+     * @param bytes the bytes to convert
+     * @return the object
+     * @throws IOException if something goes wrong
+     * @throws ClassNotFoundException if something goes wrong
+     */
     protected T byteArrayToObject(byte[] bytes) throws IOException, ClassNotFoundException {
         //noinspection unchecked
         return (T) SerializationUtil.fromByteArray(bytes);
     }
 
-    public void writeExternal(ObjectOutput out) throws IOException {
+    public final void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(wrap());
     }
 
-    private byte[] objectToByteArray(T obj) throws IOException {
+    public final boolean isWrapped() {
+        return obj == null && bytes != null;
+    }
+
+    public final boolean isUnwrapped() {
+        return !isWrapped();
+    }
+    
+    /**
+     * Turns the object into a byte array.  Subclasses can override this to customize the behavior.
+     * @param obj the object
+     * @return the byte array
+     * @throws IOException if something goes wrong.
+     */
+    protected byte[] objectToByteArray(T obj) throws IOException {
         return SerializationUtil.toByteArray(obj);
     }
 
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    public final void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         bytes = (byte[]) in.readObject();
         obj = null;
     }
