@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
-    <version>0.3.5-SNAPSHOT</version>
+    <version>0.3.5</version>
     <packaging>jar</packaging>
     <name>Yet Another Java Utility Library</name>
     <url>http://yajul.sourceforge.net</url>
@@ -19,9 +19,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/yajul-0.3.3</connection>
-        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/tags/yajul-0.3.3</developerConnection>
-        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/yajul-0.3.3</url>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/yajul-0.3.5</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/tags/yajul-0.3.5</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/yajul-0.3.5</url>
     </scm>
     <distributionManagement>
         <site>
