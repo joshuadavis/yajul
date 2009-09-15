@@ -2,7 +2,6 @@
 
 UNAME=`uname`
 
-
 function checkJavaHome { 
      case `uname` in
          Darwin*)
