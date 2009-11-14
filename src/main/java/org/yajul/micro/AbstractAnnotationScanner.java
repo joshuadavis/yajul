@@ -5,6 +5,7 @@ import javassist.bytecode.ClassFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yajul.util.AbstractScanner;
+import org.yajul.util.ReflectionUtil;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public abstract class AbstractAnnotationScanner extends AbstractScanner {
     @Override
     final public void handleItem(String name) {
         if (name.endsWith(".class")) {
-            String className = AbstractScanner.filenameToClassname(name);
+            String className = ReflectionUtil.filenameToClassname(name);
             try {
                 // Use Javassist to get the meta data so we don't actually
                 // load the class into the class loader.

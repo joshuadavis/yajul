@@ -36,8 +36,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.inject.Module;
-
 /**
  * Reflection utilities.
  * User: josh

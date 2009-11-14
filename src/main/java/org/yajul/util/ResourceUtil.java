@@ -2,7 +2,10 @@ package org.yajul.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+import java.net.URL;
+import java.net.URLDecoder;
 
 /**
  * Provides utility methods for finding and loading resources. User: josh Date: Sep 20, 2003 Time: 7:06:23 PM
@@ -83,4 +86,21 @@ public class ResourceUtil {
         InputStream is = getResourceAsStream(name);
         return is != null;
     }
+
+   public static String getFilePathFromURL(String urlPath) {
+      // On windows urlpath looks like file:/C: on Linux file:/home
+      // substring(5) works for both
+      urlPath = urlPath.substring(5);
+      return urlPath;
+   }
+
+   public static String getPath(URL url) throws UnsupportedEncodingException {
+      String urlPath = url.getFile();
+      urlPath = URLDecoder.decode(urlPath, "UTF-8");
+      return urlPath;
+   }
+
+   public static boolean isFileURL(String urlPath) {
+      return urlPath.startsWith("file:");
+   }
 }

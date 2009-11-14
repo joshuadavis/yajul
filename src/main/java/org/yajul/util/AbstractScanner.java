@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,12 +51,7 @@ public abstract class AbstractScanner {
         this.classLoader = classLoader;
     }
 
-    public static String filenameToClassname(String filename) {
-        return filename.substring(0, filename.lastIndexOf(".class"))
-                .replace('/', '.').replace('\\', '.');
-    }
-
-    protected void scan() {
+   protected void scan() {
         if (scanned)
             return;
         if (resourceName == null) {
@@ -73,12 +67,9 @@ public abstract class AbstractScanner {
                 Enumeration<URL> urlEnum = classLoader.getResources(resourceName);
                 while (urlEnum.hasMoreElements()) {
                     URL url = urlEnum.nextElement();
-                    String urlPath = url.getFile();
-                    urlPath = URLDecoder.decode(urlPath, "UTF-8");
-                    if (urlPath.startsWith("file:")) {
-                        // On windows urlpath looks like file:/C: on Linux file:/home
-                        // substring(5) works for both
-                        urlPath = urlPath.substring(5);
+                   String urlPath = ResourceUtil.getPath(url);
+                    if (ResourceUtil.isFileURL(urlPath)) {
+                       urlPath = ResourceUtil.getFilePathFromURL(urlPath);
                     }
                     if (urlPath.indexOf('!') > 0) {
                         urlPath = urlPath.substring(0, urlPath.indexOf('!'));
@@ -121,7 +112,7 @@ public abstract class AbstractScanner {
         scanned = true;
     }
 
-    private void addPath(String urlPath) {
+   private void addPath(String urlPath) {
         if (log.isTraceEnabled())
             log.trace("addPath('" + urlPath + "')");
         paths.add(urlPath);

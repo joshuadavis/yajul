@@ -41,6 +41,7 @@ import java.util.Properties;
  * for instantiating abstract singletons, or replacing 'hard'
  * dependencies (often circular) with soft linkages that are resolved
  * at run-time.
+ * Or... you could just use Guice. :)
  * <br>
  * User: josh
  * Date: Oct 21, 2003
@@ -143,7 +144,10 @@ public class ObjectFactory {
         return inst;
     }
 
-    private static String getClassName(Properties properties, String propertyName, String resourceName, boolean resourceAndPropertyRequired, String defaultClassName) throws InitializationException {
+    private static String getClassName(Properties properties,
+                                       String propertyName, String resourceName,
+                                       boolean resourceAndPropertyRequired,
+                                       String defaultClassName) throws InitializationException {
         String className;
         className = (properties == null) ? null : properties.getProperty(propertyName);
         if (StringUtil.isEmpty(className)) {
