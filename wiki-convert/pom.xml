@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.yajul</groupId>
+    <artifactId>wikiconvert</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Wiki converter</name>
+    <url>http://yajul.sourceforge.net</url>
+    <description>Wiki Converter</description>
+    <developers>
+        <developer>
+            <id>pgmjsd</id>
+            <name>Joshua Davis</name>
+            <email>pgmjsd _at_ sourceforge _dot_ net</email>
+            <roles>
+                <role>Project Lead</role>
+            </roles>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/wiki-convert</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/wiki-convert</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/sandbox/wiki-convert</url>
+    </scm>
+    <distributionManagement>
+        <site>
+            <id>website</id>
+            <url>scp://shell.sourceforge.net/home/groups/y/ya/yajul/htdocs</url>
+        </site>
+      <repository>
+            <id>internal.artifactory</id>
+            <url>http://artifactory/artifactory/libs-releases-local</url>
+      </repository>
+      <snapshotRepository>
+            <id>internal.artifactory</id>
+            <url>http://artifactory/artifactory/libs-snapshots-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
+        <repository>
+            <id>maven2-repository.jboss</id>
+            <name>Maven2 repository at JBoss.org</name>
+            <url>http://repository.jboss.org/maven2</url>
+        </repository>
+        <!-- Guice 2.0.x still isn't in the main repository -->
+        <repository>
+            <id>guice-maven</id>
+            <name>guice maven</name>
+            <url>http://guice-maven.googlecode.com/svn/trunk</url>
+        </repository>
+    </repositories>
+    <modules>
+        <module>wiki-event-model</module>
+        <module>converter</module>
+    </modules>
+</project>
