@@ -30,12 +30,12 @@
     <orderEntry type="library" name="Maven: javax.jms:jms:1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.0.1B" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.8.1.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.embedded:jboss-embedded-all:beta3.SP10" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.embedded:jboss-embedded:beta3.SP10" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.embedded:jboss-embedded-all:beta3.SP12" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.embedded:jboss-embedded:beta3.SP12" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.microcontainer:jboss-deployers-client-spi:2.0.0.Beta6" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.microcontainer:jboss-deployers-core-spi:2.0.0.Beta6" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP10" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.embedded:hibernate-all:beta3.SP10" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP12" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.embedded:hibernate-all:beta3.SP12" level="project" />
   </component>
 </module>
 

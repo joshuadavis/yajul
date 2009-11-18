@@ -1,5 +1,6 @@
 <!--suppress MavenModelInspection -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>yajul</artifactId>
@@ -28,11 +29,11 @@
             <id>website</id>
             <url>scp://shell.sourceforge.net/home/groups/y/ya/yajul/htdocs</url>
         </site>
-      <repository>
+        <repository>
             <id>internal.artifactory</id>
             <url>http://artifactory/artifactory/libs-releases-local</url>
-      </repository>
-      <snapshotRepository>
+        </repository>
+        <snapshotRepository>
             <id>internal.artifactory</id>
             <url>http://artifactory/artifactory/libs-snapshots-local</url>
         </snapshotRepository>
@@ -42,7 +43,7 @@
         <version.junit>3.8.1</version.junit>
         <version.slf4j>1.4.3</version.slf4j>
         <version.javassist>3.8.1.GA</version.javassist>
-        <version.jboss-embedded>beta3.SP10</version.jboss-embedded>
+        <version.jboss-embedded>beta3.SP12</version.jboss-embedded>
     </properties>
     <repositories>
         <!-- The JBoss Maven2 repository for the JMS 1.1 API -->
@@ -302,18 +303,24 @@
                     <additionalClasspathElements>
                         <additionalClasspathElement>etc/bootstrap</additionalClasspathElement>
                     </additionalClasspathElements>
+                    <systemProperties>
+                        <property>
+                            <name>sun.lang.ClassLoader.allowArraySyntax</name>
+                            <value>true</value>
+                        </property>
+                    </systemProperties>
                 </configuration>
-	    </plugin>
+            </plugin>
             <plugin>
-		<groupId>org.codehaus.mojo</groupId>
-		<artifactId>cobertura-maven-plugin</artifactId>
-	    </plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-release-plugin</artifactId>
-              <configuration>
-                <tagBase>https://yajul.svn.sourceforge.net/svnroot/yajul/tags</tagBase>
-              </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagBase>https://yajul.svn.sourceforge.net/svnroot/yajul/tags</tagBase>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>
