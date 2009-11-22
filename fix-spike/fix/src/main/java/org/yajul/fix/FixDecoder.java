@@ -28,9 +28,21 @@ public class FixDecoder extends CumulativeProtocolDecoder {
     private static final byte[] BODY_LENGTH_TOKEN = getBytes("\0019=");
     private static final byte[] BODY_LENGTH_END = getBytes("\001");
     private static final byte[] CHECKSUM_TOKEN = getBytes("10=");
-    
+
+    /**
+     *
+     *
+     * @param in the cumulative buffer
+     * @return <tt>true</tt> if and only if there's more to decode in the buffer
+     *         and you want to have <tt>doDecode</tt> method invoked again.
+     *         Return <tt>false</tt> if remaining data is not enough to decode,
+     *         then this method will be invoked again when more data is cumulated.
+     * @throws Exception if cannot decode <tt>in</tt>.
+     */    
     protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
         DecoderState decoderState = getDecoderState(session);
+        return decoderState.doDecode(in,out);
+
         int start = in.position();
 
         if (decoderState.beginStringPosition == -1) {

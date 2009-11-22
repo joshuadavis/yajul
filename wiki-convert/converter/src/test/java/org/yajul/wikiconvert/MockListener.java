@@ -275,12 +275,6 @@ public class MockListener implements IWemListener
            log.debug("onNewLine() :");
     }
 
-    public void onSpecialSymbol(String str)
-    {
-        if (log.isDebugEnabled())
-           log.debug("onSpecialSymbol() :");
-    }
-
     public void onTableCaption(String str)
     {
         if (log.isDebugEnabled())
@@ -298,6 +292,13 @@ public class MockListener implements IWemListener
         if (log.isDebugEnabled())
            log.debug("onVerbatimInline() :");
     }
+
+    public void onSpecialSymbol(String str)
+    {
+        if (log.isDebugEnabled())
+           log.debug("onSpecialSymbol() : '" + str + "'");
+    }
+
 
     public void onReference(String ref, boolean explicitLink)
     {

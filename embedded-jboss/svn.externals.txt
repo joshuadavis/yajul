@@ -1,0 +1,2 @@
+jboss-as http://anonsvn.jboss.org/repos/jbossas/tags/JBoss_6_0_0_M1
+embedded-trunk http://anonsvn.jboss.org/repos/jbossas/projects/embedded/trunk
