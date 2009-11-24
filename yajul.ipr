@@ -103,6 +103,8 @@
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
+      <entry name="?*.properties" />
+      <entry name="?*.xml" />
     </wildcardResourcePatterns>
   </component>
   <component name="CopyrightManager" default="">
@@ -552,50 +554,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-deployers-core-spi/2.0.0.Beta6/jboss-deployers-core-spi-2.0.0.Beta6-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.jboss.embedded:jboss-embedded-all:beta3.SP10">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-all/beta3.SP10/jboss-embedded-all-beta3.SP10.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-all/beta3.SP10/jboss-embedded-all-beta3.SP10-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-all/beta3.SP10/jboss-embedded-all-beta3.SP10-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.jboss.embedded:jboss-embedded:beta3.SP10">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded/beta3.SP10/jboss-embedded-beta3.SP10.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded/beta3.SP10/jboss-embedded-beta3.SP10-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded/beta3.SP10/jboss-embedded-beta3.SP10-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP10">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/thirdparty-all/beta3.SP10/thirdparty-all-beta3.SP10.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/thirdparty-all/beta3.SP10/thirdparty-all-beta3.SP10-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/thirdparty-all/beta3.SP10/thirdparty-all-beta3.SP10-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.jboss.embedded:hibernate-all:beta3.SP10">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP10/hibernate-all-beta3.SP10.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP10/hibernate-all-beta3.SP10-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP10/hibernate-all-beta3.SP10-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
