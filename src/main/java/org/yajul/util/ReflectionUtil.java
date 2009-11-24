@@ -211,11 +211,23 @@ public class ReflectionUtil {
      * Type checked version of create instance using the default class loader.
      *
      * @param className     the class name
+     * @param classLoader   the class loader
+     * @param componentType the type of the instance (e.g. an interface)
+     * @return an instance of the object cast to 'componentType'
+     */
+    public static <T> T createInstance(String className, ClassLoader classLoader, Class<T> componentType) {
+        return componentType.cast(createInstance(className,classLoader));
+    }
+
+    /**
+     * Type checked version of create instance using the default class loader.
+     *
+     * @param className     the class name
      * @param componentType the type of the instance (e.g. an interface)
      * @return an instance of the object cast to 'componentType'
      */
     public static <T> T createInstance(String className, Class<T> componentType) {
-        return componentType.cast(createInstance(className));
+        return createInstance(className,getCurrentClassLoader(),componentType);
     }
 
     /**
@@ -309,7 +321,7 @@ public class ReflectionUtil {
             Class implementationClass = loader.loadClass(implementationClassName);
             return type.cast(implementationClass.newInstance());
         } catch (Exception e) {
-            log.debug("Unable to create an instance of " + implementationClassName + " due to " + e);
+            // Don't log anything.  Just return null.
             return null;
         }
     }

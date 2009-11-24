@@ -2,8 +2,8 @@
 SCRIPT_NAME=${0##*/}
 SCRIPT_DIR=`dirname $0`
 UNAME=`uname`
-JDK_BASENAME='jdk1.5'
-MAVEN_BASENAME='maven-2'
+JDK_BASENAME='jdk1.6'
+MAVEN_BASENAME='maven-2.0.10'
 
 source $SCRIPT_DIR/bin/shell-functions.sh
 

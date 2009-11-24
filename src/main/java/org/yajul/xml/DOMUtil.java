@@ -217,19 +217,18 @@ public class DOMUtil {
      * @return String - The text in the element.
      */
     public static String getChildText(Element element) {
-        // Iterate through the children and append text nodes
-        // to the StringBuffer.
-        StringBuffer buf = new StringBuffer();
+        // Iterate through the children and append text nodes.
+        StringBuilder sb = new StringBuilder();
         Node n = element.getFirstChild();
         Text t;
         while (n != null) {
             if (n.getNodeType() == Node.TEXT_NODE) {
                 t = (Text) n;
-                buf.append(t.getData());
+                sb.append(t.getData());
             }
             n = n.getNextSibling();
         } // for
-        return buf.toString();
+        return sb.toString();
     }
 
     /**

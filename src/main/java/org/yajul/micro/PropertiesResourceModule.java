@@ -1,15 +1,14 @@
 package org.yajul.micro;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 import com.google.inject.Scope;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,48 +24,29 @@ import org.yajul.util.ReflectionUtil;
  * Date: Dec 30, 2008
  * Time: 4:09:31 PM
  */
-public class ResourceModule extends AbstractModule {
-    private final static Logger log = LoggerFactory.getLogger(ResourceModule.class);
+public class PropertiesResourceModule extends AbstractResourceModule
+{
+    private final static Logger log = LoggerFactory.getLogger(PropertiesResourceModule.class);
 
-    private String resourceName;
-    private ClassLoader classLoader;
     private Scope scope = Scopes.SINGLETON;
 
-    public ResourceModule(String resourceName, ClassLoader classLoader,Scope scope) {
-        this.resourceName = resourceName;
-        this.classLoader = classLoader;
+    public PropertiesResourceModule(String resourceName, ClassLoader classLoader, Scope scope)
+    {
+        super(resourceName, classLoader);
         this.scope = scope;
     }
 
-    public ResourceModule(String resourceName) {
-        this(resourceName,ReflectionUtil.getCurrentClassLoader(),Scopes.SINGLETON);
+    public PropertiesResourceModule(String resourceName)
+    {
+        this(resourceName, ReflectionUtil.getCurrentClassLoader(), Scopes.SINGLETON);
     }
 
-    protected void configure() {
-        // Look for the resource in the class loader.   Load each properties file and register all
-        // of the components.
-        Enumeration<URL> resources = null;
-        try {
-            resources = classLoader.getResources(resourceName);
-        } catch (IOException e) {
-            binder().addError(e.getMessage(),e);
-            return;
-        }
-        int resourceCount = 0;
-        while (resources.hasMoreElements()) {
-            URL url = resources.nextElement();
-            log.debug(url + " ...");
-            try {
-                InputStream stream = url.openStream();
-                Properties props = new Properties();
-                props.load(stream);
-                resourceCount++;
-                addComponentsFromProperties(props, classLoader);
-            } catch (IOException e) {
-                binder().addError(e.getMessage(),e);
-            }
-        }
-        log.info("Added components from " + resourceCount + " resources.");
+    protected void configureFromResource(InputStream stream, URL url)
+            throws IOException
+    {
+        Properties props = new Properties();
+        props.load(stream);
+        addComponentsFromProperties(props, getClassLoader());
     }
 
     /**
@@ -76,30 +56,37 @@ public class ResourceModule extends AbstractModule {
      * @param props       the properties
      * @param classLoader the class loader to use for looking up class/interface names.
      */
-    public void addComponentsFromProperties(Properties props, ClassLoader classLoader) {
+    public void addComponentsFromProperties(Properties props, ClassLoader classLoader)
+    {
         Enumeration keyNames = props.propertyNames();
         if (log.isDebugEnabled())
-           log.debug("addComponentsFromProperties() : " + props.size() + " properties.");
-        while (keyNames.hasMoreElements()) {
+            log.debug("addComponentsFromProperties() : " + props.size() + " properties.");
+        while (keyNames.hasMoreElements())
+        {
             String keyName = (String) keyNames.nextElement();
             String valueName = props.getProperty(keyName);
             // If the key is a class (interface), then use it.
             Object key = MicroContainer.processName(keyName, classLoader);
             Class<?> impl = (Class<?>) MicroContainer.processName(valueName, classLoader);
             // If this is a module, use it to configure other components.
-            if (Module.class.isAssignableFrom(impl)) {
+            if (Module.class.isAssignableFrom(impl))
+            {
                 Module module = (Module) ReflectionUtil.createInstanceNoThrow(impl);
-                if (module != null) {
+                if (module != null)
+                {
                     log.info("Configuring with " + module);
                     binder().install(module);
                 }
             }
-            else if (key instanceof Class) {
+            else if (key instanceof Class)
+            {
                 Class keyClass = (Class) key;
-                if (keyClass.equals(impl)) {
+                if (keyClass.equals(impl))
+                {
                     bind(impl).in(scope);
                 }
-                else {
+                else
+                {
                     //noinspection unchecked
                     bind(keyClass).to(impl).in(scope);
                 }
@@ -108,7 +95,7 @@ public class ResourceModule extends AbstractModule {
             {
                 // The key is a string.
                 if (log.isDebugEnabled())
-                   log.debug("addComponentsFromProperties() : ignoring [" + keyName + "=" + valueName + "]");
+                    log.debug("addComponentsFromProperties() : ignoring [" + keyName + "=" + valueName + "]");
             }
         }
     }

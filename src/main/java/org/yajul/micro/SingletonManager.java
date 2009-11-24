@@ -7,10 +7,8 @@ import org.yajul.util.ReflectionUtil;
 import com.google.inject.*;
 
 /**
- * One singleton to rule them all.  This is actually a single level hierarchy of micro-containers.
- * The parent contains all the YAJUL singletons, and any 'bootstrap' singletons.  A child container
- * named '_DEFAULT' has all the singletons registered using the getDefaultSingleton() method.
- * Other child containers will be created on demand via the getSingletonContainer(String) method.
+ * One singleton to rule them all.   Automatically includes the YAJUL Guice modules, plus
+ * any modules listed in 'singleton-bootstrap.properties'.
  * <br>
  * User: josh
  * Date: Mar 5, 2008
@@ -24,6 +22,8 @@ public class SingletonManager {
      * The resource that the bootstrapper looks for.
      */
     public static final String BOOTSTRAP_RESOURCE_NAME = "singleton-bootstrap.properties";
+
+    public static final String BOOTSTRAP_XML_RESOURCE_NAME = "module-bootstrap.xml";
 
     private static SingletonManager INSTANCE = new SingletonManager();
 
@@ -62,14 +62,15 @@ public class SingletonManager {
                 log.info("Creating micro container...");
                 ModuleList modules = new ModuleList();
                 modules.addInstance(SingletonManager.class,this);
-                modules.add(new ResourceModule(
+                modules.add(new PropertiesResourceModule(
                         "org/yajul/micro/" + BOOTSTRAP_RESOURCE_NAME, 
                         ReflectionUtil.getCurrentClassLoader(),
                         Scopes.SINGLETON));
-                modules.add(new ResourceModule(
+                modules.add(new PropertiesResourceModule(
                         BOOTSTRAP_RESOURCE_NAME,
                         ReflectionUtil.getCurrentClassLoader(),
                         Scopes.SINGLETON));
+                modules.add(new XmlResourceModule(BOOTSTRAP_XML_RESOURCE_NAME));
                 Injector injector = modules.createInjector();
                 container = new MicroContainer(injector);
             }

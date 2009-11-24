@@ -303,12 +303,15 @@
                     <additionalClasspathElements>
                         <additionalClasspathElement>etc/bootstrap</additionalClasspathElement>
                     </additionalClasspathElements>
+                    <argLine>-Dsun.lang.ClassLoader.allowArraySyntax=true</argLine>
+<!-- [jsd] Doesn't work!
                     <systemProperties>
                         <property>
                             <name>sun.lang.ClassLoader.allowArraySyntax</name>
                             <value>true</value>
                         </property>
                     </systemProperties>
+-->
                 </configuration>
             </plugin>
             <plugin>

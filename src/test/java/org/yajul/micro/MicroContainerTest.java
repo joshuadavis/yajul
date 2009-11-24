@@ -67,10 +67,22 @@ public class MicroContainerTest extends TestCase {
     public void testResourceModule() throws IOException {
         // MicroContainer can bootstrap itself from properties files.
         ModuleList modules = new ModuleList();
-        modules.add(new ResourceModule("test-bootstrap.properties"));
+        modules.add(new PropertiesResourceModule("test-bootstrap.properties"));
         MicroContainer mc = new MicroContainer(modules.createInjector());
         System.out.println(mc);
         assertEquals(HashSet.class,mc.getComponent(Collection.class).getClass()); 
+        assertEquals(TreeSet.class,mc.getComponent(Set.class).getClass());
+        assertEquals(Delorian.class,mc.getComponent(TimeMachine.class).getClass());
+        assertEquals(1985,mc.getComponent(TimeMachine.class).getDestinationYear());
+    }
+
+    public void testXmlModule() throws IOException {
+        // MicroContainer can bootstrap itself from properties files.
+        ModuleList modules = new ModuleList();
+        modules.add(new XmlResourceModule("test-modules.xml"));
+        MicroContainer mc = new MicroContainer(modules.createInjector());
+        System.out.println(mc);
+        assertEquals(HashSet.class,mc.getComponent(Collection.class).getClass());
         assertEquals(TreeSet.class,mc.getComponent(Set.class).getClass());
         assertEquals(Delorian.class,mc.getComponent(TimeMachine.class).getClass());
         assertEquals(1985,mc.getComponent(TimeMachine.class).getDestinationYear());
