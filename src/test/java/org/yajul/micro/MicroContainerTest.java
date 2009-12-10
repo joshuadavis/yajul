@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 import org.yajul.micro.annotations.Component;
-import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
-import com.google.inject.Injector;
+import com.google.inject.*;
 import com.google.inject.name.Names;
 
 /**
@@ -108,7 +106,28 @@ public class MicroContainerTest extends TestCase {
         SingletonManager other = sm.getComponent(SingletonManager.class);
         assertSame(sm,other);
     }
-    
+
+    public void testAbstractCachingProvider() {
+        Injector injector = Guice.createInjector(new AbstractModule() {
+            protected void configure() {
+                bind(TestThing.class).toProvider(new AbstractCachingProvider<TestThing>() {
+                    protected TestThing create() {
+                        return new TestThing();
+                    }
+                });
+            }
+        });
+
+        TestThing.counter.set(0);
+        Provider<TestThing> provider =  injector.getProvider(TestThing.class);
+        assertEquals(0,TestThing.counter.get());
+        TestThing t = provider.get();
+        assertEquals(1,TestThing.counter.get());
+        TestThing u = provider.get();
+        assertEquals(1,TestThing.counter.get());
+        assertSame(t,u);
+    }
+
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }

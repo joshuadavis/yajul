@@ -2,8 +2,10 @@ package org.yajul.micro;
 
 import org.yajul.micro.annotations.Component;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * TODO: Add class level comments!
+ * for testing
 * <br>
 * User: josh
 * Date: Sep 11, 2008
@@ -11,5 +13,9 @@ import org.yajul.micro.annotations.Component;
 */
 @Component
 public class TestThing {
+    public static AtomicInteger counter = new AtomicInteger();
 
+    public TestThing() {
+        counter.incrementAndGet();
+    }
 }
