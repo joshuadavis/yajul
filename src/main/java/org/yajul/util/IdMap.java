@@ -15,22 +15,31 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
     private Map<K, V> map;
 
     public IdMap() {
-        this.map = new HashMap<K, V>();
+        this(new LinkedHashMap<K, V>(), null);
+    }
+
+    public IdMap(Map<K, V> map, Collection<V> items) {
+        this.map = map;
+        if (items != null)
+            putAll(items);
+    }
+
+    public IdMap(Map<K, V> map) {
+        this(map, null);
     }
 
     public IdMap(Collection<V> items) {
-        this();
-        putAll(items);
+        this(new LinkedHashMap<K, V>(items.size()), items);
     }
 
     /**
      * Creates a map as a subset of another map.
      *
-     * @param reference the superset map
-     * @param ids       the subset of ids for this map
+     * @param superSet the superset map
+     * @param ids      the subset of ids for this map
      */
-    public IdMap(IdMap<K, V> reference, K[] ids) {
-        addSubset(reference, ids);
+    public IdMap(IdMap<K, V> superSet, Collection<K> ids) {
+        addSubset(superSet, ids);
     }
 
     /**
@@ -39,12 +48,14 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      * @param reference the reference map (superset)
      * @param ids       the ids in the subset
      */
-    public void addSubset(IdMap<K, V> reference, K[] ids) {
-        if (ids.length > 0) {
-            this.map = new HashMap<K, V>(ids.length);
+    public void addSubset(IdMap<K, V> reference, Collection<K> ids) {
+        final int size = ids.size();
+        if (size > 0) {
+            this.map = new LinkedHashMap<K, V>(size);
             for (K id : ids)
                 put(reference.get(id));
-        } else
+        }
+        else
             this.map = Collections.emptyMap();
     }
 
@@ -57,11 +68,9 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         map.put(id, thing);
     }
 
-    public void aggregate(Collection<V> objects) {
-        if (notEmpty(objects)) {
-            for (V thing : objects) {
-                put(thing);
-            }
+    public void aggregate(Iterable<V> objects) {
+        for (V thing : objects) {
+            put(thing);
         }
     }
 
@@ -139,14 +148,6 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         return map.values().iterator().next();
     }
 
-    static boolean notEmpty(Collection summaryCollection) {
-        return summaryCollection != null && summaryCollection.size() > 0;
-    }
-
-    public Collection<K> getIds() {
-        return map.keySet();
-    }
-
     public String toString() {
         if (map.size() == 0)
             return "{}";
@@ -160,7 +161,6 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         for (V v : map.values()) {
             out.writeObject(v);
         }
-        // out.writeObject(map);
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
@@ -171,14 +171,12 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
             V v = (V) in.readObject();
             put(v); // Get the key from the object.
         }
-        // map = (Map<K, V>) in.readObject();
     }
 
-    public static <K, E extends EntityWithId<K>> Set<K> idSet(Collection<E> things) {
-        HashSet<K> set = new HashSet<K>();
+    public static <K, E extends EntityWithId<K>> Set<K> idSet(Iterable<E> things) {
+        LinkedHashSet<K> set = new LinkedHashSet<K>();
         for (E thing : things)
             set.add(thing.getId());
-
         return set;
     }
 }

@@ -8,11 +8,16 @@ import org.jboss.virtual.VirtualFile;
 import org.jboss.virtual.VirtualFileVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.jmx.JmxUtil;
 import org.yajul.jndi.JndiHelper;
 import org.yajul.jndi.EarJndiLookup;
 import org.yajul.jndi.JndiProvider;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.management.QueryExp;
 import javax.naming.InitialContext;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,6 +27,8 @@ import java.util.List;
  * Time: 3:10:22 PM
  */
 public class EmbeddedJBossTest extends TestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(EmbeddedJBossTest.class);
 
     public void testEmbeddedJBossBoot() throws Exception {
         try {
@@ -52,6 +59,14 @@ public class EmbeddedJBossTest extends TestCase {
             Echo echo = p.get();
             String rv  = echo.echo("Hello world!");
             assertEquals("msg=Hello world!",rv);
+            // Test JMX
+            MBeanServer server = JmxUtil.locateServerWithDomain(null,"jboss");
+            log.info("*** mbeanCount=" + server.getMBeanCount());
+            List<ObjectName> names = JmxUtil.sortByDomain(server.queryNames(null,null));
+            int i = 0;
+            for (ObjectName name : names) {
+                log.info("[" + (++i) + "] domain=" + name.getDomain() + " keyPropertyList=" + name.getCanonicalKeyPropertyListString());
+            }
             EmbeddedJBossHelper.undeploy(ear);
         }
         finally {

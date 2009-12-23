@@ -4,6 +4,9 @@ import org.yajul.io.StreamCopier;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import junit.framework.TestCase;
 import junit.framework.Assert;
@@ -42,9 +45,31 @@ public class IdMapTest extends TestCase
         System.out.println("bytes.length=" + bytes.length);
         //noinspection unchecked
         idmap2 = (IdMap<Long,Thingie>) StreamCopier.unserializeObject(bytes);
-
         checkMap(idmap2,thingies);
-        
+
+        Thingie[] one = new Thingie[1];
+        one[0] = thingies[0];
+
+        IdMap<Long,Thingie> subsetOfOne = new IdMap<Long,Thingie>(idmap, Collections.singleton(one[0].getId()));
+        Assert.assertEquals(subsetOfOne.size(),1);
+        Assert.assertEquals(subsetOfOne.getOne(),one[0]);
+
+        IdMap<Long,Thingie> aggregate = new IdMap<Long,Thingie>();
+        List<Thingie> list = new ArrayList<Thingie>();
+        for(int i = 0; i < thingies.length; i++)
+        {
+            // Aggregate bunches of 10...
+            if (i % 10 == 0 && !list.isEmpty())
+            {
+                aggregate.aggregate(list);
+                list.clear();
+            }
+            list.add(thingies[i]);
+        }
+        if (!list.isEmpty())
+            aggregate.aggregate(list);
+
+        Assert.assertEquals(aggregate,idmap);
     }
 
     private void ensureEmpty(IdMap<Long,Thingie> idmap2)
