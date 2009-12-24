@@ -148,6 +148,10 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         return map.values().iterator().next();
     }
 
+    public Collection<K> getIds() {
+        return map.keySet();
+    }
+
     public String toString() {
         if (map.size() == 0)
             return "{}";
