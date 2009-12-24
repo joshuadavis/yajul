@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Comparator;
 
 /**
  * Provides commonly used string functions.
@@ -42,6 +43,7 @@ import java.io.UnsupportedEncodingException;
  * @author jdavis
  */
 public class StringUtil {
+
     /**
      * A logger for this class.
      */

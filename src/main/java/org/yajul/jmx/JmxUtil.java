@@ -1,6 +1,6 @@
 package org.yajul.jmx;
 
-import org.apache.commons.collections.comparators.ComparatorChain;
+import org.yajul.util.ComparatorChain;
 
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
@@ -41,11 +41,11 @@ public class JmxUtil {
         }
     };
 
-    public static final Comparator<ObjectName> DOMAIN_KEY_COMPARATOR = new ComparatorChain(
-            Arrays.asList(DOMAIN_COMPARATOR, KEY_PROPERTY_COMPARATOR));
+    public static final Comparator<ObjectName> DOMAIN_KEY_COMPARATOR =
+            new ComparatorChain<ObjectName>(DOMAIN_COMPARATOR, KEY_PROPERTY_COMPARATOR);
 
     public static List<ObjectName> sortByDomain(Collection<ObjectName> objectNames) {
-        List<ObjectName> list = new ArrayList(objectNames);
+        List<ObjectName> list = new ArrayList<ObjectName>(objectNames);
         Collections.sort(list,DOMAIN_KEY_COMPARATOR);
         return list;
     }
