@@ -14,20 +14,41 @@ import java.util.*;
 public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<K, V> {
     private Map<K, V> map;
 
+    /**
+     * Makes an empty IdMap with the default map implementation.
+     */
     public IdMap() {
         this(new LinkedHashMap<K, V>(), null);
     }
 
+    /**
+     * Makes an IdMap using the map provided as the backing store, and adds all the 'items'
+     * to it.
+     *
+     * @param map   the backing map
+     * @param items the entities to add
+     */
     public IdMap(Map<K, V> map, Collection<V> items) {
         this.map = map;
         if (items != null)
             putAll(items);
     }
 
+    /**
+     * Creates the IdMap with the specified backing map.
+     *
+     * @param map the map implementation
+     */
     public IdMap(Map<K, V> map) {
         this(map, null);
     }
 
+    /**
+     * Makes an IdMap using the default backing store, and adds all the 'items'
+     * to it.
+     *
+     * @param items the entities to add
+     */
     public IdMap(Collection<V> items) {
         this(new LinkedHashMap<K, V>(items.size()), items);
     }
@@ -59,6 +80,12 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
             this.map = Collections.emptyMap();
     }
 
+    /**
+     * Adds the entity to the map by it's id.
+     *
+     * @param thing the entity to add
+     * @see EntityWithId<K>.getId()
+     */
     public void put(V thing) {
         if (thing == null)
             return;
@@ -68,10 +95,16 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         map.put(id, thing);
     }
 
+    /**
+     * Objects are added if their ids don't exist, replaced if the id exists.
+     *
+     * @param objects the objects to add or replace
+     */
     public void aggregate(Iterable<V> objects) {
-        for (V thing : objects) {
+        if (objects == null)
+            return;
+        for (V thing : objects)
             put(thing);
-        }
     }
 
     public int size() {
@@ -135,10 +168,19 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         return map.hashCode();
     }
 
+    /**
+     * @return the values in the id map, same as Map.values()
+     * @see Map#values()
+     */
     public Collection<V> getCollection() {
         return values();
     }
 
+    /**
+     * @param id the id to look for
+     * @return true if the id exists in the map
+     * @see Map#containsKey(Object)
+     */
     public boolean containsId(K id) {
         return containsKey(id);
     }
@@ -148,6 +190,10 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         return map.values().iterator().next();
     }
 
+    /**
+     * @return the unique ids, same as Map.keySet()
+     * @see Map#keySet()
+     */
     public Collection<K> getIds() {
         return map.keySet();
     }
@@ -177,6 +223,14 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         }
     }
 
+    /**
+     * Gets the set of unique ids from a bunch of entities.
+     *
+     * @param things the entities
+     * @param <K>    the key type
+     * @param <E>    the entity type
+     * @return a set of unique ids
+     */
     public static <K, E extends EntityWithId<K>> Set<K> idSet(Iterable<E> things) {
         LinkedHashSet<K> set = new LinkedHashSet<K>();
         for (E thing : things)

@@ -4,9 +4,7 @@ import org.yajul.io.StreamCopier;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import junit.framework.TestCase;
 import junit.framework.Assert;
@@ -69,6 +67,9 @@ public class IdMapTest extends TestCase
         if (!list.isEmpty())
             aggregate.aggregate(list);
 
+        // Aggregate null.
+        aggregate.aggregate(null);
+        
         Assert.assertEquals(aggregate,idmap);
     }
 
@@ -89,6 +90,17 @@ public class IdMapTest extends TestCase
             Assert.assertTrue(idmap.getCollection().contains(thingies[i]));
             Assert.assertEquals(idmap.get(id),thingies[i]);
         }
+
+        Collection<Long> ids = idmap.getIds();
+        for(int i = 0; i < 100; i++)
+        {
+            long id = (long) i;
+            Assert.assertTrue(ids.contains(id));            
+        }
+
+        Set<Long> idSet = IdMap.idSet(Arrays.asList(thingies));
+        Set<Long> idSet2 = new HashSet<Long>(ids);
+        assertEquals(idSet,idSet2);
     }
 
     public static class Thingie implements EntityWithId<Long>, Serializable

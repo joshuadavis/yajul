@@ -11,8 +11,8 @@ package org.yajul.util;
 public interface EntityWithId<K>
 {
     /**
-     * Returns the id of the object.
-     * @return the id of the object.
+     * Returns the id of the entity.
+     * @return the id of the entity.
      */
     K getId();
 }
