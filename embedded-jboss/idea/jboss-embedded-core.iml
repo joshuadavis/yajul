@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../embedded-trunk/core/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../embedded-trunk/core/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../embedded-trunk/core">
+      <sourceFolder url="file://$MODULE_DIR$/../embedded-trunk/core/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../embedded-trunk/core/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../embedded-trunk/core/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../embedded-trunk/core/src/test/resources" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../embedded-trunk/core/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="jboss-embedded-api" exported="" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-as:2.0.0-alpha-4" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-mc:2.0.0-alpha-3" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.mortbay.jetty:jetty:6.1.16" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.mortbay.jetty:jetty-util:6.1.16" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.mortbay.jetty:servlet-api:2.5-20081211" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-base:2.0.0-alpha-4" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-spi:2.0.0-alpha-3" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss:jbossxb:2.0.2.Beta3" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.logging:jboss-logging-spi:2.1.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss:jboss-common-core:2.2.16.GA" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jboss:jboss-reflect:2.0.2.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: apache-xerces:xml-apis:2.9.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: wutka-dtdparser:dtdparser121:1.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: sun-jaxb:jaxb-api:2.1.9-brew" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.logging:jboss-logging-log4j:2.1.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.cl:jboss-classloading:2.0.8.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.cl:jboss-classloader:2.0.8.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.integration:jboss-classloading-spi:5.1.0.SP1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.microcontainer:jboss-dependency:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss:jboss-mdr:2.0.2.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.man:jboss-managed:2.1.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.man:jboss-metatype:2.1.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: log4j:log4j:1.2.14" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-spi-mc:2.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-mc:2.0.0-alpha-1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.microcontainer:jboss-kernel:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-spi-as:2.0.0-alpha-4" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-vfs-spi:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss:jboss-vfs:2.2.0.Alpha1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-spi:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-structure-spi:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-client-spi:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-core-spi:2.0.9.GA" level="project" />
+    <orderEntry type="library" exported="" name="Maven: stax:stax-api:1.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.6" level="project" />
+  </component>
+</module>
+

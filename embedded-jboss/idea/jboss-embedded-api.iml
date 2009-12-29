@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../embedded-trunk/api/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../embedded-trunk/api/target/test-classes" />
+    <content url="file://$MODULE_DIR$/../embedded-trunk/api">
+      <sourceFolder url="file://$MODULE_DIR$/../embedded-trunk/api/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../embedded-trunk/api/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2" level="project" />
+  </component>
+</module>
+
