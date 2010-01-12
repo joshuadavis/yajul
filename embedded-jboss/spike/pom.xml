@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>spike</groupId>
+    <artifactId>spike</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>spike</name>
+    <properties>
+        <version.org.jboss.jbossas>6.0.0.M1</version.org.jboss.jbossas>
+        <!-- JBOSS_HOME (We'll unpack into here -->
+        <JBOSS_HOME>${project.build.directory}/jboss-as-distribution-${version.org.jboss.jbossas}</JBOSS_HOME>
+        <version.org.jboss.embedded>1.0.0-SNAPSHOT</version.org.jboss.embedded>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.embedded</groupId>
+            <artifactId>jboss-embedded-depchain</artifactId>
+            <version>${version.org.jboss.embedded}</version>
+            <!-- Replace with the current release -->
+            <scope>test</scope>
+            <!-- Don't leak us out if we're only used in testing -->
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- Enforce Maven Environment -->
+            <plugin>
+              <artifactId>maven-enforcer-plugin
+              </artifactId>
+              <executions>
+                <execution>
+                  <id>enforce-maven-environment</id>
+                  <goals>
+                    <goal>enforce</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <version>[2.0.9,2.2.1)</version> <!-- Must be Maven 2.0.9 >= x > 2.2.1  -->
+                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>1.6.0</version> <!-- Must be JDK6 -->
+                  </requireJavaVersion>
+                </rules>
+              </configuration>
+            </plugin>
+            <!-- Compiler -->
+            <plugin>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <inherited>true</inherited>
+              <configuration>
+                <source>1.6</source>
+                <target>1.6</target>
+                <showDeprecation>false</showDeprecation>
+                <showWarnings>true</showWarnings>
+                <optimize>true</optimize>
+                <compilerVersion>1.6</compilerVersion>
+                <fork>true</fork>
+              </configuration>
+            </plugin>
+            <!-- Get AS and put into "target" -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>unpack</id>
+                  <phase>pre-integration-test</phase> <!-- So run before testing -->
+                  <goals>
+                    <goal>unpack</goal>
+                  </goals>
+                  <configuration>
+                    <artifactItems>
+                      <artifactItem>
+                        <groupId>org.jboss.jbossas</groupId>
+                        <artifactId>jboss-as-distribution</artifactId>
+                        <version>${version.org.jboss.jbossas}</version>
+                        <type>zip</type>
+                        <overWrite>false</overWrite>
+                        <outputDirectory>${project.build.directory}</outputDirectory>
+                      </artifactItem>
+                    </artifactItems>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>integration-test</id>
+                  <phase>integration-test</phase>
+                  <goals>
+                    <goal>test</goal>
+                  </goals>
+                  <configuration>
+                    <additionalClasspathElements>
+                      <additionalClasspathElement>${JBOSS_HOME}/client/jbossws-native-client.jar</additionalClasspathElement>
+                    </additionalClasspathElements>
+
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <trimStackTrace>false</trimStackTrace>
+                    <printSummary>true</printSummary>
+                    <includes>
+                      <include>**/*IntegrationTest.java</include>
+                    </includes>
+                    <forkMode>always</forkMode>
+                    <!--
+                      MaxPermSize Required to bump the space for relective
+                      data like classes, methods, etc. EMB-41, EMB-74. Endorsed
+                      required for things like WS support (EMB-61)
+                    -->
+                    <argLine>-Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Djava.endorsed.dirs=${JBOSS_HOME}/lib/endorsed -Djboss.home=${JBOSS_HOME}</argLine>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -33,11 +33,8 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="EclipseCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="FacetAutodetectingManager">
@@ -101,18 +98,11 @@
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
   </component>
-  <component name="JikesSettings">
-    <option name="JIKES_PATH" value="" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="DEPRECATION" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="IS_EMACS_ERRORS_MODE" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/embedded-trunk/pom.xml" />
+        <option value="$PROJECT_DIR$/spike/pom.xml" />
       </list>
     </option>
   </component>
@@ -245,6 +235,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/idea/all-files.iml" filepath="$PROJECT_DIR$/idea/all-files.iml" />
       <module fileurl="file://$PROJECT_DIR$/all-files.iml" filepath="$PROJECT_DIR$/all-files.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/jboss-embedded-api.iml" filepath="$PROJECT_DIR$/idea/jboss-embedded-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/jboss-embedded-assembly.iml" filepath="$PROJECT_DIR$/idea/jboss-embedded-assembly.iml" />
@@ -254,6 +245,7 @@
       <module fileurl="file://$PROJECT_DIR$/idea/jboss-embedded-parent.iml" filepath="$PROJECT_DIR$/idea/jboss-embedded-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/jboss-embedded-testsuite.iml" filepath="$PROJECT_DIR$/idea/jboss-embedded-testsuite.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/jboss-embedded-testsuite-jbosshomecl.iml" filepath="$PROJECT_DIR$/idea/jboss-embedded-testsuite-jbosshomecl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spike/spike.iml" filepath="$PROJECT_DIR$/spike/spike.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
@@ -2737,6 +2729,127 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-servlet-api/2.5.0.GA/jboss-servlet-api-2.5.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-transaction-api:1.0.1.CR1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-transaction-api/1.0.1.CR1/jboss-transaction-api-1.0.1.CR1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-transaction-api/1.0.1.CR1/jboss-transaction-api-1.0.1.CR1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-transaction-api/1.0.1.CR1/jboss-transaction-api-1.0.1.CR1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: antlr:antlr:2.7.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.transaction:jta:1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.1/jta-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.1/jta-1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.1/jta-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:slf4j-api:1.5.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.5.3/slf4j-api-1.5.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.5.3/slf4j-api-1.5.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.5.3/slf4j-api-1.5.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cache:jbosscache-core:3.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-core/3.0.0.GA/jbosscache-core-3.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-core/3.0.0.GA/jbosscache-core-3.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-core/3.0.0.GA/jbosscache-core-3.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: trove:trove:2.1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/trove/trove/2.1.1/trove-2.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/trove/trove/2.1.1/trove-2.1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/trove/trove/2.1.1/trove-2.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-jpa-int:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-jpa-int/1.0.0/jboss-ejb3-jpa-int-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-jpa-int/1.0.0/jboss-ejb3-jpa-int-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-jpa-int/1.0.0/jboss-ejb3-jpa-int-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aspects:jboss-current-invocation-aspects:1.0.0.CR1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-current-invocation-aspects/1.0.0.CR1/jboss-current-invocation-aspects-1.0.0.CR1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-current-invocation-aspects/1.0.0.CR1/jboss-current-invocation-aspects-1.0.0.CR1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-current-invocation-aspects/1.0.0.CR1/jboss-current-invocation-aspects-1.0.0.CR1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jpa:jboss-jpa-impl:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-impl/1.0.0/jboss-jpa-impl-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-impl/1.0.0/jboss-jpa-impl-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-impl/1.0.0/jboss-jpa-impl-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.interceptor:jboss-interceptor-api:3.1.0-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/interceptor/jboss-interceptor-api/3.1.0-SNAPSHOT/jboss-interceptor-api-3.1.0-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/interceptor/jboss-interceptor-api/3.1.0-SNAPSHOT/jboss-interceptor-api-3.1.0-SNAPSHOT-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/interceptor/jboss-interceptor-api/3.1.0-SNAPSHOT/jboss-interceptor-api-3.1.0-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.logmanager:jboss-logmanager:1.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.0.0.GA/jboss-logmanager-1.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.0.0.GA/jboss-logmanager-1.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.0.0.GA/jboss-logmanager-1.0.0.GA-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
