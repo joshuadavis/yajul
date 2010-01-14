@@ -128,7 +128,6 @@
                 <groupId>aopalliance</groupId>
                 <artifactId>aopalliance</artifactId>
                 <version>1.0</version>
-                <scope>runtime</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -305,15 +304,8 @@
                     <additionalClasspathElements>
                         <additionalClasspathElement>etc/bootstrap</additionalClasspathElement>
                     </additionalClasspathElements>
+                    <!-- Required when using jboss-embedded with JDK 6 -->
                     <argLine>-Dsun.lang.ClassLoader.allowArraySyntax=true</argLine>
-<!-- [jsd] Doesn't work!
-                    <systemProperties>
-                        <property>
-                            <name>sun.lang.ClassLoader.allowArraySyntax</name>
-                            <value>true</value>
-                        </property>
-                    </systemProperties>
--->
                 </configuration>
             </plugin>
             <plugin>
