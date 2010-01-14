@@ -20,7 +20,7 @@ import javax.naming.InitialContext;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.Callable;
+import org.yajul.util.Callable;
 
 /**
  * Generic message sender.

@@ -16,34 +16,13 @@ import java.lang.reflect.Method;
  * Time: 1:52:48 PM
  */
 public class MethodWrapperInterceptor implements MethodInterceptor {
-
-    private static final Matcher<Method> METHOD_MATCHER = new AbstractMatcher<Method>() {
+    
+    static final Matcher<Method> METHOD_MATCHER = new AbstractMatcher<Method>() {
         public boolean matches(Method m) {
             return !ReflectionUtil.isDefinedIn(m,MethodWrapper.class);
         }
     };
 
-    /**
-     * Use this to prevent recursion.
-     * @return A Guice method matcher that filters out methods that belong to the MethodWrapper interface
-     */
-    public static Matcher<Method> notMethodWrapper() {
-        return METHOD_MATCHER;
-    }
-
-    /**
-     * Matches only methods that are defined in the specified class / interface.
-     * @param clazz the class (usually an interface)
-     * @return A matcher that filters out everything but methods in the class / interface.
-     */
-    public static Matcher<Method> onlyDefinedIn(final Class<?> clazz) {
-        return new AbstractMatcher<Method>() {
-            public boolean matches(Method method) {
-                return ReflectionUtil.isDefinedIn(method,clazz);
-            }
-        };
-    }
-    
     public Object invoke(MethodInvocation invocation) throws Throwable {
         final Object target = invocation.getThis();
         final Method method = invocation.getMethod();
@@ -64,5 +43,13 @@ public class MethodWrapperInterceptor implements MethodInterceptor {
                 methodWrapper.onException(method, t);
             throw t;
         }
+    }
+
+    /**
+     * Use this to prevent recursion.
+     * @return A Guice method matcher that filters out methods that belong to the MethodWrapper interface
+     */
+    public static Matcher<Method> notMethodWrapper() {
+        return METHOD_MATCHER;
     }
 }

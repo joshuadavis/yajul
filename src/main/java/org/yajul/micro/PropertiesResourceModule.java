@@ -69,14 +69,9 @@ public class PropertiesResourceModule extends AbstractResourceModule
             Object key = MicroContainer.processName(keyName, classLoader);
             Class<?> impl = (Class<?>) MicroContainer.processName(valueName, classLoader);
             // If this is a module, use it to configure other components.
-            if (Module.class.isAssignableFrom(impl))
+            if (ModuleHelper.isModule(impl))
             {
-                Module module = (Module) ReflectionUtil.createInstanceNoThrow(impl);
-                if (module != null)
-                {
-                    log.info("Configuring with " + module);
-                    binder().install(module);
-                }
+                ModuleHelper.bindModuleClass(binder(),impl);
             }
             else if (key instanceof Class)
             {

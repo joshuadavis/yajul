@@ -1,15 +1,11 @@
 package org.yajul.micro;
 
-import com.google.inject.matcher.AbstractMatcher;
-import com.google.inject.matcher.Matchers;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Assert;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -134,6 +130,13 @@ public class MicroContainerTest extends TestCase {
     }
 
     private class DelorianInterceptor extends MethodWrapperInterceptor {
+        private FluxCapacitor defaultFlux;
+
+        @Inject
+        public void setDefaultFlux(FluxCapacitor defaultFlux) {
+            this.defaultFlux = defaultFlux;
+        }
+
         @Override
         public Object invoke(MethodInvocation invocation) throws Throwable {
             return super.invoke(invocation);
@@ -145,10 +148,8 @@ public class MicroContainerTest extends TestCase {
             protected void configure() {
                 bind(Delorian.class).in(Scopes.SINGLETON);
                 bind(TimeMachine.class).to(Delorian.class);
-                bindInterceptor(
-                        Matchers.identicalTo(Delorian.class),
-                        MethodWrapperInterceptor.onlyDefinedIn(TimeMachine.class),
-                        new DelorianInterceptor());
+                final DelorianInterceptor interceptor = new DelorianInterceptor();
+                ModuleHelper.bindAndInjectInterceptor(binder(),interceptor,TimeMachine.class,Delorian.class);
             }
         });
 

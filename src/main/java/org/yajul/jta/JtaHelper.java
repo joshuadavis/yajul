@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.transaction.*;
-import java.util.concurrent.Callable;
+import org.yajul.util.Callable;
 
 /**
  * Helper methods for using JTA.
@@ -70,7 +70,7 @@ public class JtaHelper {
             returnValue = action.call();
             tx.commit();
         }
-        catch (Exception e) {
+        catch (Throwable e) {
             rollback(tx);
             throw new RuntimeException(e);
         }

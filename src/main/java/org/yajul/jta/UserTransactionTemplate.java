@@ -1,10 +1,8 @@
 package org.yajul.jta;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.yajul.util.Callable;
 
 import javax.transaction.UserTransaction;
-import java.util.concurrent.Callable;
 
 /**
  * IoC template for bean managed transactions or for using JTA outside of the EJB container.

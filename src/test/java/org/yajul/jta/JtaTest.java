@@ -10,7 +10,7 @@ import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
-import java.util.concurrent.Callable;
+import org.yajul.util.Callable;
 
 /**
  * Unit test for the JTA classes.
@@ -58,8 +58,7 @@ public class JtaTest extends EmbeddedJBossTestCase {
 
     private TransactionManager getTxm() {
         final JndiLookup lookup = getJndiLookup();
-        TransactionManager txm = lookup.lookup(TransactionManager.class, JBossJndiNames.TRANSACTION_MANAGER);
-        return txm;
+        return lookup.lookup(TransactionManager.class, JBossJndiNames.TRANSACTION_MANAGER);
     }
 
     private class TxAction implements Callable<Object> {
