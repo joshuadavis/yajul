@@ -26,16 +26,12 @@ public class ConnectionFactoryReference extends JndiReference<ConnectionFactory>
         super(connectionFactory);
     }
 
-    public ConnectionFactory getConnectionFactory() {
-        return getObject();
-    }
-
     public TopicConnectionFactory getTopicConnectionFactory() {
-        return (TopicConnectionFactory)getConnectionFactory();
+        return (TopicConnectionFactory)get();
     }
 
     public QueueConnectionFactory getQueueConnectionFactory() {
-        return (QueueConnectionFactory)getConnectionFactory();
+        return (QueueConnectionFactory)get();
     }
 }
 

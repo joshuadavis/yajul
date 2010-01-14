@@ -1,5 +1,7 @@
 package org.yajul.jndi;
 
+import com.google.inject.Provider;
+
 import javax.naming.InitialContext;
 
 /**
@@ -9,17 +11,14 @@ import javax.naming.InitialContext;
  * Date: Sep 11, 2009
  * Time: 10:43:41 AM
  */
-public class SimpleInitialContextProvider implements InitialContextProvider
-{
-    private InitialContext ic;
+public class SimpleInitialContextProvider implements Provider<InitialContext> {
+   private InitialContext ic;
 
-    public SimpleInitialContextProvider(InitialContext ic)
-    {
-        this.ic = ic;
-    }
+   public SimpleInitialContextProvider(InitialContext ic) {
+      this.ic = ic;
+   }
 
-    public InitialContext getInitialContext()
-    {
-        return ic;
-    }
+   public InitialContext get() {
+      return ic;
+   }
 }

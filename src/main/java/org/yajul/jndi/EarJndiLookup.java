@@ -1,5 +1,6 @@
 package org.yajul.jndi;
 
+import com.google.inject.Provider;
 import org.yajul.util.StringUtil;
 
 import javax.naming.InitialContext;
@@ -15,7 +16,7 @@ public class EarJndiLookup extends DefaultJndiLookup
 {
     private String earName;
 
-    public EarJndiLookup(InitialContextProvider icp,String earName)
+    public EarJndiLookup(Provider<InitialContext> icp,String earName)
     {
         super(icp);
         this.earName = earName;

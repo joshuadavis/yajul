@@ -1,13 +1,18 @@
 package org.yajul.micro;
 
+import com.google.inject.matcher.AbstractMatcher;
+import com.google.inject.matcher.Matchers;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Assert;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
+import org.aopalliance.intercept.MethodInvocation;
 import org.yajul.micro.annotations.Component;
 import com.google.inject.*;
 import com.google.inject.name.Names;
@@ -128,6 +133,34 @@ public class MicroContainerTest extends TestCase {
         assertSame(t,u);
     }
 
+    private class DelorianInterceptor extends MethodWrapperInterceptor {
+        @Override
+        public Object invoke(MethodInvocation invocation) throws Throwable {
+            return super.invoke(invocation);
+        }
+    }
+
+    public void testBeforeAndAfterMethods() {
+        Injector injector = Guice.createInjector(new AbstractModule() {
+            protected void configure() {
+                bind(Delorian.class).in(Scopes.SINGLETON);
+                bind(TimeMachine.class).to(Delorian.class);
+                bindInterceptor(
+                        Matchers.identicalTo(Delorian.class),
+                        MethodWrapperInterceptor.onlyDefinedIn(TimeMachine.class),
+                        new DelorianInterceptor());
+            }
+        });
+
+        TimeMachine timeMachine = injector.getInstance(TimeMachine.class);
+        timeMachine.getDestinationYear();
+
+        Delorian delorian = injector.getInstance(Delorian.class);
+        assertEquals(1,delorian.getBefore());
+        assertEquals(1,delorian.getAfter());
+        assertEquals(0,delorian.getExcep());
+    }
+    
     public static Test suite() {
         return new TestSuite(MicroContainerTest.class);
     }

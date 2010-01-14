@@ -3,7 +3,7 @@ package org.yajul.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yajul.jta.UserTransactionTemplate;
+import org.yajul.jta.JtaHelper;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -20,6 +20,7 @@ import javax.naming.InitialContext;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * Generic message sender.
@@ -99,10 +100,10 @@ public class MessageSender extends Endpoint {
             msg.setJMSReplyTo(replyto);
 
             final Message m = msg;
-            UserTransactionTemplate.doInTx(
+            JtaHelper.doInTx(
                     ut,
-                    new UserTransactionTemplate.Action() {
-                        public Object run() {
+                    new Callable<Object>() {
+                        public Object call() {
                             send(m);
                             return null;
                         }

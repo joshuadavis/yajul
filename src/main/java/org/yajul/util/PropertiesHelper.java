@@ -3,6 +3,8 @@ package org.yajul.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +41,7 @@ public class PropertiesHelper {
       try {
          defaults = ResourceUtil.loadProperties(resource,defaults,clazz);
          if (defaults == null)
-            log.warn("Resource not found: " + resource);
+            log.trace("Resource not found: " + resource);
       }
       catch (IOException e) {
          log.error(e.getMessage(), e);
@@ -47,6 +49,14 @@ public class PropertiesHelper {
       }
       return defaults;
    }
+
+    public static List<String> getNameList(Properties props)
+    {
+        List<String> names = new ArrayList<String>(props.size());
+        for (Object o : props.keySet())
+            names.add((String)o);
+        return names;
+    }
 
    public static boolean getBoolean(Properties properties, String key) {
       return TRUE.equals(properties.getProperty(key, FALSE));

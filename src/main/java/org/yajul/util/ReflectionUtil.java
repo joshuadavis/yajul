@@ -54,16 +54,29 @@ public class ReflectionUtil {
      * @noinspection EmptyCatchBlock
      */
     public static Map<Integer, String> getConstantNameMap(Class c) {
+        return getConstantNameMap(c, Integer.class);
+    }
+
+    /**
+     * Returns a map of (Integer->String) from the values of
+     * any static integer constants in the class.
+     *
+     * @param c         The class to get the constants from.
+     * @param valueType the value type to look for
+     * @return Map - A map of the constant values to their names.
+     * @noinspection EmptyCatchBlock
+     */
+    public static <T> Map<T, String> getConstantNameMap(Class<?> c, Class<T> valueType) {
         Field[] fields = c.getFields();
-        Map<Integer, String> map = new HashMap<Integer, String>();
+        Map<T, String> map = new HashMap<T, String>();
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 Object value;
                 try {
                     value = field.get(null);
-                    if (value instanceof Integer) {
-                        Integer integer = (Integer) value;
-                        map.put(integer, field.getName());
+                    if (valueType.isAssignableFrom(value.getClass())) {
+                        T val = valueType.cast(value);
+                        map.put(val, field.getName());
                     }
                 }
                 catch (IllegalArgumentException ignore) {
@@ -73,6 +86,40 @@ public class ReflectionUtil {
             }
         } // for
         return map;
+    }
+
+    /**
+     * Wraps java.lang.Class.getMethod(String, Class[]) so it returns null instead of throwing
+     * NoSuchMethodException.
+     *
+     * @param clazz          the class to get the method from
+     * @param name           the name of the method
+     * @param parameterTypes the parameter types
+     * @return the method, or null if the method was not found.
+     * @see java.lang.Class#getMethod(String, Class[])
+     */
+    public static Method getMethodOrNull(Class<?> clazz, String name, Class<?>... parameterTypes) {
+        try {
+            return clazz.getMethod(name, parameterTypes);
+        }
+        catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns true if the method is an implementation of a method in the specified class.
+     * @param method the method, usually from an implementing class.
+     * @param clazz the class (usually an interface)
+     * @return true if the method is an implementation of a method in the specified class.
+     */
+    public static boolean isDefinedIn(Method method, Class<?> clazz) {
+        // Don't bother if the declaring class doesn't even implement the interface.
+        if (!clazz.isAssignableFrom(method.getDeclaringClass()))
+            return false;
+        final String name = method.getName();
+        final Class<?>[] parameterTypes = method.getParameterTypes();
+        return getMethodOrNull(clazz, name, parameterTypes) != null;
     }
 
     /**
@@ -192,7 +239,7 @@ public class ReflectionUtil {
             throw new InitializationError("Class " + className
                     + " could not be accessed - "
                     + "is it private or is the empty constructor private?",
-                    iae);
+                                          iae);
         }
     }
 
@@ -216,7 +263,7 @@ public class ReflectionUtil {
      * @return an instance of the object cast to 'componentType'
      */
     public static <T> T createInstance(String className, ClassLoader classLoader, Class<T> componentType) {
-        return componentType.cast(createInstance(className,classLoader));
+        return componentType.cast(createInstance(className, classLoader));
     }
 
     /**
@@ -227,7 +274,7 @@ public class ReflectionUtil {
      * @return an instance of the object cast to 'componentType'
      */
     public static <T> T createInstance(String className, Class<T> componentType) {
-        return createInstance(className,getCurrentClassLoader(),componentType);
+        return createInstance(className, getCurrentClassLoader(), componentType);
     }
 
     /**
@@ -266,61 +313,70 @@ public class ReflectionUtil {
 
     /**
      * Loads the class with the current class loader, throws InitializationError if there was a problem.
+     *
      * @param className the class name
      * @return the class
      */
     public static Class loadClass(String className) {
         try {
             return getCurrentClassLoader().loadClass(className);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             throw new InitializationError(e);
         }
     }
 
     /**
      * Creates an insance of a class, throws InitializationError if there is a problem.
+     *
      * @param implementationClass the class
-     * @param <T> the class
+     * @param <T>                 the class
      * @return an instance of the class
      */
     public static <T> T createInstance(Class<T> implementationClass) {
         try {
             return implementationClass.newInstance();
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
             throw new InitializationError(e);
-        } catch (InstantiationException e) {
+        }
+        catch (InstantiationException e) {
             throw new InitializationError(e);
         }
     }
 
     /**
      * Create an instance, return null if it doesn't work.
+     *
      * @param implementationClass the class to instantiate
-     * @param <T> the type
+     * @param <T>                 the type
      * @return an instance, or null if it doesn't work
      */
     public static <T> T createInstanceNoThrow(
             Class<T> implementationClass) {
         try {
             return implementationClass.newInstance();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return null;
         }
     }
 
     /**
      * Create an instance, return null if it doesn't work.
+     *
      * @param implementationClassName the class name to instantiate
-     * @param type the type, usually an interface
-     * @param <T> the type
+     * @param type                    the type, usually an interface
+     * @param <T>                     the type
      * @return an instance, or null if it doesn't work
      */
-    public static <T> T createInstanceNoThrow(String implementationClassName,Class<T> type) {
+    public static <T> T createInstanceNoThrow(String implementationClassName, Class<T> type) {
         try {
             ClassLoader loader = getCurrentClassLoader();
             Class implementationClass = loader.loadClass(implementationClassName);
             return type.cast(implementationClass.newInstance());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // Don't log anything.  Just return null.
             return null;
         }

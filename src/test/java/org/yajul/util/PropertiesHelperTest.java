@@ -2,6 +2,7 @@ package org.yajul.util;
 
 import junit.framework.TestCase;
 
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -35,4 +36,16 @@ public class PropertiesHelperTest extends TestCase {
       assertNotNull(props.get("this"));
       assertNotNull(props.get("that"));
    }
+
+    public void testNameList() {
+        Properties props = new Properties();
+        props.put("one","abc");
+        props.put("two","def");
+        props.put("a.three","ghi");
+        List<String> names = PropertiesHelper.getNameList(props);
+        assertEquals(3,names.size());
+        assertTrue(names.contains("one"));
+        assertTrue(names.contains("two"));
+        assertTrue(names.contains("a.three"));
+    }
 }

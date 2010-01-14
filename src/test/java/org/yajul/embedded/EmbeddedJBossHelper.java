@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Embedded JBoss helper methods
+ * Embedded JBoss helper methods, designed to work with "Embedded JBoss".
+ * This will be deprecated and removed at some point when the new "JBoss Embedded AS" becomes stable enough.
  * <br>
  * User: josh
  * Date: Jan 30, 2009

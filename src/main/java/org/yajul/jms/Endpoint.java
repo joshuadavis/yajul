@@ -9,7 +9,8 @@ import javax.naming.NamingException;
 import java.lang.IllegalStateException;
 
 /**
- * Generic JMS producer or consumer.
+ * Generic JMS producer or consumer.  NOTE: This will cache the JMS Connection object, so it should never be used
+ * by multiple threads.
  * <br>User: Joshua Davis
  * Date: Sep 18, 2007
  * Time: 7:07:35 AM

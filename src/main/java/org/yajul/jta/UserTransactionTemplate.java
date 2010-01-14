@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.transaction.UserTransaction;
+import java.util.concurrent.Callable;
 
 /**
  * IoC template for bean managed transactions or for using JTA outside of the EJB container.
@@ -14,57 +15,14 @@ import javax.transaction.UserTransaction;
  * Time: 4:01:17 PM
  */
 public class UserTransactionTemplate {
-    private static final Logger log = LoggerFactory.getLogger(UserTransactionTemplate.class);
 
     private UserTransaction ut;
 
     public UserTransactionTemplate(UserTransaction ut) {
         this.ut = ut;
     }
-    
-    public <T> T doAction(Action<T> action) {
-        T rv = null;
-        try {
-            ut.begin();
-            rv = action.run();
-            ut.commit();
-        }
-        catch (Exception e) {
-            try {
-                ut.rollback();
-            }
-            catch (Exception ex) {
-                log.error("Unable to rollback due to: " + e, e);
-                throw new RuntimeException(ex);
-            }
-        }
-        return rv;
-    }
 
-    public static Object doInTx(UserTransaction ut, Action action) {
-        Object returnValue;
-        try {
-            ut.begin();
-            returnValue = action.run();
-            ut.commit();
-        }
-        catch (Exception e) {
-            return handleException(ut, e);
-        }
-        return returnValue;
-    }
-
-    public static Object handleException(UserTransaction ut, Exception e) {
-        try {
-            ut.rollback();
-        }
-        catch (javax.transaction.SystemException e1) {
-            log.error(e1.getMessage(), e1);
-        }
-        throw new RuntimeException(e);
-    }
-
-    public interface Action<T> {
-        T run();
+    public <T> T doAction(Callable<T> action) {
+        return JtaHelper.doInTx(ut,action);
     }
 }

@@ -23,6 +23,7 @@ public class JndiHelper {
      * to look up an EJB or other JNDI object.  For example: EJB3 Timers are usually deployed as cluster
      * singletons in JBoss AS, so these should be looked up in HAJNDI.</li>
      * </ul>
+     *
      * @param context The initial context.  Null to use the default <tt>new InitialContext()</tt>
      * @param clazz   the expected type of the object in JNDI.  For an EJB, this will be the local
      *                interface class.
@@ -35,7 +36,8 @@ public class JndiHelper {
         final Object object = doLookup(context, name);
         if (clazz.isAssignableFrom(object.getClass())) {
             return (T) object;
-        } else {
+        }
+        else {
             throw new LookupException(String.format(
                     "Found JNDI name '%s' of type %s, but it cannot be assigned to type: %s",
                     name, object.getClass(), clazz));
@@ -59,7 +61,8 @@ public class JndiHelper {
         try {
             //noinspection unchecked
             return (T) object;
-        } catch (ClassCastException cce) {
+        }
+        catch (ClassCastException cce) {
             throw new LookupException(String.format(
                     "Found JNDI name '%s' of type %s, but that isn't the right type.",
                     name, object.getClass()));
@@ -72,15 +75,26 @@ public class JndiHelper {
         if (context == null) {
             try {
                 context = new InitialContext();
-            } catch (NamingException e1) {
+            }
+            catch (NamingException e1) {
                 throw new LookupException("Unable to create default InitialContext", e1);
             }
         }
         try {
             return context.lookup(name);
-        } catch (NamingException e) {
+        }
+        catch (NamingException e) {
             throw new LookupException(String.format(
                     "Unable to find JNDI name '%s'", name), e);
+        }
+    }
+
+    public static InitialContext getDefaultInitialContext() {
+        try {
+            return new InitialContext();
+        }
+        catch (NamingException e) {
+            throw new RuntimeException("Unable to create default InitialContext due to " + e, e);
         }
     }
 }

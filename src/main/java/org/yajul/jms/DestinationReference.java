@@ -26,7 +26,7 @@ public class DestinationReference extends JndiReference<Destination> {
     }
 
     public Destination getDestination() {
-        return getObject();
+        return get();
     }
 
     public Topic getTopic() {

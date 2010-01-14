@@ -13,9 +13,6 @@
   <body>
     <links>
       <item name="Yajul" href="http://yajul.sourceforge.net" />
-<!--
-      <item name="Maven 1.0" href="http://maven.apache.org/"/>
--->
       <item name="Maven" href="http://maven.apache.org"/>
     </links>
 
@@ -24,7 +21,7 @@
           <item name="Developing YAJUL" href="developing.html"/>
       </menu>
 
-      ${reports}
+      <menu ref="reports"/>
 
   </body>
 </project>
