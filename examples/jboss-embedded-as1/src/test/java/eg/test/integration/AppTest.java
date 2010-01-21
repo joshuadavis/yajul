@@ -14,6 +14,9 @@ public class AppTest
 
     public void testApp()
     {
-        log.info("testing, testing, 1... 2... 3?");    
+        log.info("testing, testing, 1... 2... 3?");
+        UnitTestServer.start();
+
+        UnitTestServer.stop();
     }
 }

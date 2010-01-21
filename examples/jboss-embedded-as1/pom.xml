@@ -71,11 +71,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/test/integration/*Test.java</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>integration-test</id>
@@ -100,9 +95,7 @@
                               data like classes, methods, etc. EMB-41, EMB-74. Endorsed
                               required for things like WS support (EMB-61)
                             -->
-                            <argLine>-Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true
-                                -Djava.endorsed.dirs=${JBOSS_HOME}/lib/endorsed -Djboss.home=${JBOSS_HOME}
-                            </argLine>
+                            <argLine>-Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Djava.endorsed.dirs=${JBOSS_HOME}/lib/endorsed -Djboss.home=${JBOSS_HOME}</argLine>
                         </configuration>
                     </execution>
                 </executions>
