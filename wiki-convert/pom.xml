@@ -55,5 +55,8 @@
     <modules>
         <module>wiki-event-model</module>
         <module>converter</module>
+        <module>groovy-scripts</module>
+        <module>groovy-scripts</module>
+        <module>groovy-scripts</module>
     </modules>
 </project>
