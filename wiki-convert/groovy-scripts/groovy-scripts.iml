@@ -15,7 +15,10 @@
     <orderEntry type="library" exported="" name="Maven: org.apache.ivy:ivy:2.1.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.apache.ant:ant:1.7.1" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.apache.ant:ant-launcher:1.7.1" level="project" />
+    <orderEntry type="module" module-name="org.wikimodel.wem" exported="" />
+    <orderEntry type="library" exported="" name="Maven: net.java.dev.javacc:javacc:4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: mysql:mysql-connector-java:5.1.10" level="project" />
   </component>
 </module>
 
