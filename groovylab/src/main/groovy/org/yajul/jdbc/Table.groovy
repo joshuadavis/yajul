@@ -18,9 +18,14 @@ class Table
     return "Table{name='$name',columns=\n  ${columns.entrySet().join("\n  ")}}";
   }
 
+  def List<Column> getSortedPrimaryKeys()
+  {
+    return primaryKeys.sort(Column.SORT_BY_ORD)  
+  }
+
   def List<Column> getSortedColumns()
   {
-    return columns.values().sort({Column a, Column b -> a.ord - b.ord })
+    return columns.values().sort(Column.SORT_BY_ORD)
   }
 
   def List<String> getColumnNames()

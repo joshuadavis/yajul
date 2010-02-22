@@ -9,6 +9,8 @@ package org.yajul.jdbc
  */
 class Column
 {
+  static SORT_BY_ORD = {Column a, Column b -> a.ord - b.ord }
+
   String name
   Table table
   ColumnType type
