@@ -1,7 +1,7 @@
 package org.yajul.dbarchiver
 
 /**
- * TODO: Add class level comments!
+ * Data row, including the total list of data and the primary key values
  * <br>
  * User: josh
  * Date: Feb 21, 2010

@@ -1,3 +1,5 @@
+package test
+
 import groovy.grape.Grape
 
 import org.yajul.jdbc.ConnectionInfo
@@ -5,20 +7,14 @@ import org.yajul.jdbc.ConnectionInfo
 import org.yajul.dbarchiver.Archiver
 
 /**
- * Database Metadata with Groovy
+ * Simple archiver test
  * <br>
  * User: Josh
  * Date: Feb 21, 2010
  * Time: 7:45:28 AM
  */
 
-// Grape.grab(group: 'mysql', module: 'mysql-connector-java', version: '5.1.10', classLoader: this.class.classLoader.rootLoader)
-
 Grape.grab(group:'org.hsqldb', module:'hsqldb', version: '1.8.0.10', classLoader: this.class.classLoader.rootLoader)
-
-
-
-
 
 def username = "sa"
 def password = ""
@@ -58,10 +54,11 @@ message varchar(128) )
 // Create some rows, one every day starting with 2008-12-01
 def date = new GregorianCalendar(2008, Calendar.DECEMBER, 01).time
 println "adding test data..."
-for (i in 1..10000) {
-  archiver.source.executeUpdate('INSERT INTO ' + tableName + ' (event_timestamp,event_millis,message) values (?,?,?)',[
+for (i in 1..100000) {
+  archiver.source.executeUpdate('INSERT INTO ' + tableName +
+          ' (event_timestamp,event_millis,message) values (?,?,?)',[
           new java.sql.Timestamp(date.time),date.time,"MSG ${i}"])
-  date = new Date(date.time + 1000 * 60 * 60)
+  date = new Date(date.time + 1000 * 60)
 }
 
 println "copying data..."
@@ -69,6 +66,13 @@ println "copying data..."
 // Get a batch of rows from the source table.
 def conditions = "where event_timestamp < '2009-01-01 00:00:00'"
 def orderBy = "order by event_timestamp asc, event_millis asc, id asc"
-def batchSize = 100
+def batchSize = 500
 archiver.archiveRows(tableName,conditions,orderBy,batchSize)
 
+archiver.source.eachRow('select * from ' + tableName + ' ' + orderBy + ' limit 1') {
+  r -> println "${r}"
+}
+
+archiver.target.eachRow('select * from ' + tableName + ' ' + orderBy + ' limit 1') {
+  r -> println "${r}"
+}
