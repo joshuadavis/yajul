@@ -1,12 +1,12 @@
 package org.yajul.dbarchiver
 
-import groovy.sql.Sql
-import org.yajul.jdbc.ConnectionInfo
-import org.yajul.jdbc.DbSchema
-import org.yajul.jdbc.Column
-import java.sql.PreparedStatement
-import org.yajul.jdbc.JdbcUtil
 import java.sql.Connection
+import java.sql.PreparedStatement
+import org.yajul.jdbc.Column
+import org.yajul.jdbc.ConnectionInfo
+import org.yajul.jdbc.JdbcUtil
+
+import org.yajul.jdbc.DbSchema
 
 /**
  * Safely archives
@@ -15,52 +15,43 @@ import java.sql.Connection
  * Date: Feb 21, 2010
  * Time: 9:06:47 PM
  */
-class Archiver
-{
-  Sql source
-  Sql target
+class Archiver {
+  Endpoint source
+  Endpoint target
+  boolean createTargetTable
 
   int rowsRetrieved;
   int rowsInserted;
   int rowsDeleted;
   int batches;
 
+  List<Column> columns
+
   Archiver(ConnectionInfo sourceInfo, ConnectionInfo targetInfo) {
-    source = sourceInfo.connect()
-    target = targetInfo.connect()
+    source = new Endpoint(info: sourceInfo)
+    target = new Endpoint(info: targetInfo)
+    connect(source)
+    connect(target)
   }
 
-  def archiveRows(String tableName,String conditions,String orderBy, int batchSize) {
-    def sourceSchema = new DbSchema(source,tableName)
-    println "${sourceSchema.tables.size()} tables in source"
-    def sourceTable = sourceSchema.tables[tableName]
-    if (sourceTable == null)
-      throw new IllegalArgumentException("Table $tableName not found in source databaase")
-    def targetSchema = new DbSchema(target,tableName)
-    if (!targetSchema.tableExists(tableName))
-    {
-      println "Creating $tableName in target..."
-      String createSql = sourceTable.createStatement()
-      target.execute(createSql)
-    }
-    List<Column> columns = sourceTable.sortedColumns
-    def columnNames = columns.collect({ Column c -> c.name }).join(", ")
+
+  def archiveRows(String sourceTableName,String targetTableName, String conditions, String orderBy, int batchSize) {
+    checkSchema(sourceTableName,targetTableName)
+    def columnNames = columns.collect({Column c -> c.name }).join(", ")
     String columnValueParams = columns.collect({ "?" }).join(", ")
-    def primaryKeys = sourceTable.sortedPrimaryKeys
-    String primaryKeyParams = primaryKeys.collect({ Column c -> "${c.name} = ?" }).join(" and ")
-    String insert = "insert into ${tableName} (${columnNames}) values (${columnValueParams})"
-    String delete = "delete from ${tableName} where ${primaryKeyParams}"
-    String select = "select ${columnNames} from ${tableName} ${conditions} ${orderBy} limit ${batchSize}"
+    def primaryKeys = source.table.sortedPrimaryKeys
+    String primaryKeyParams = primaryKeys.collect({Column c -> "${c.name} = ?" }).join(" and ")
+    String insert = "insert into ${targetTableName} (${columnNames}) values (${columnValueParams})"
+    String delete = "delete from ${sourceTableName} where ${primaryKeyParams}"
+    String select = "select ${columnNames} from ${sourceTableName} ${conditions} ${orderBy} limit ${batchSize}"
 
-    def sourceCon = source.connection
-    def targetCon = target.connection
+    def sourceCon = source.sql.connection
+    def targetCon = target.sql.connection
 
-    while (true)
-    {
-      List<ArchiveRow> rows = retrieveRows(select, sourceTable)
+    while (true) {
+      List<ArchiveRow> rows = retrieveRows(select, source.table)
 
-      if (rows.isEmpty())
-      {
+      if (rows.isEmpty()) {
         println "no more rows, exiting"
         break
       }
@@ -68,14 +59,67 @@ class Archiver
 
       println "${batches}: ${rows.size()} rows read... moving..."
       println "first row is " + rows[0].rowData
-      moveBatch(sourceCon,insert,targetCon,delete,rows)
+      moveBatch(sourceCon, insert, targetCon, delete, rows)
       batches++;
     } // while
   }
 
+  def checkSchema(String sourceTableName,String targetTableName) {
+    initEndpoint(source,sourceTableName)
+    if (source.table == null)
+      throw new ArchiverException("Table $sourceTableName not found in source ${source.info.url}")
+    initEndpoint(target,targetTableName)
+    if (target.table == null) {
+      if (createTargetTable) {
+        println "Creating $targetTableName in target..."
+        String createSql = createStatement(targetTableName,source.table.sortedColumns)
+        target.sql.execute(createSql)
+        initEndpoint(target,targetTableName) // Get the schema again.
+      }
+      else
+        throw new IllegalArgumentException("Table $targetTableName not found in target ${target.info.url}")
+    }
+
+    columns = source.table.sortedColumns
+    List<Column> targetColumns = target.table.sortedColumns
+    if (columns.size() != targetColumns.size())
+      throw new ArchiverException("Different number of columns!")
+    columns.eachWithIndex {
+      Column c, int i ->
+      Column other = targetColumns[i]
+      if (!other.equivalentTo(c))
+        throw new ArchiverException("Columns differ: " + c + " -> " + other);
+    }
+  }
+
+  private String createStatement(String name,List<Column> sortedColumns)
+  {
+    return "CREATE TABLE $name (\n  ${sortedColumns.collect {Column c -> c.columnDefinition() }.join(",\n  ")} )"
+  }
+
+  private initEndpoint(Endpoint endpoint, String aTableName) {
+    connect(endpoint)
+    endpoint.with {
+      tableName = aTableName
+      schema = new DbSchema(sql,tableName)
+      table = schema.tables[tableName]
+    }
+  }
+
+  private connect(Endpoint endpoint)  {
+    endpoint.with {
+      if (sql == null)
+      {
+        print "Connecting to ${endpoint.info.url} ..."
+        sql = info.connect()
+        println "OK"
+      }
+    }
+  }
+
   private List<ArchiveRow> retrieveRows(String select, sourceTable) {
     def List<ArchiveRow> rows = [];
-    source.eachRow(select) { row ->
+    source.sql.eachRow(select) {row ->
       List<Object> rowData = sourceTable.sortedColumns.collect {Column c -> row[c.name] }
       List<Object> keys = sourceTable.sortedPrimaryKeys.collect {Column c -> row[c.name] }
       rows << new ArchiveRow(rowData: rowData, keys: keys)
@@ -90,38 +134,35 @@ class Archiver
                         List<ArchiveRow> rows) {
     boolean sourceAuto = sourceCon.autoCommit
     boolean targetAuto = targetCon.autoCommit
-    PreparedStatement insertStmt,deleteStmt
-    try
-    {
+    PreparedStatement insertStmt = null, deleteStmt = null
+    try {
       sourceCon.setAutoCommit(false)
       targetCon.setAutoCommit(false)
       insertStmt = targetCon.prepareStatement(insert)
       deleteStmt = sourceCon.prepareStatement(delete)
       rows.each {
         ArchiveRow r ->
-          JdbcUtil.setParameters(insertStmt,r.rowData)
-          insertStmt.addBatch()
-          JdbcUtil.setParameters(deleteStmt,r.keys)
-          deleteStmt.addBatch()
+        JdbcUtil.setParameters(insertStmt, r.rowData)
+        insertStmt.addBatch()
+        JdbcUtil.setParameters(deleteStmt, r.keys)
+        deleteStmt.addBatch()
       }
       int[] results = insertStmt.executeBatch()
-      int inserts = results.toList().sum()
+      def inserts = results.toList().sum()
       // println "inserts = " + inserts
       rowsInserted += inserts;
       results = deleteStmt.executeBatch()
-      int deletes = results.toList().sum()
+      def deletes = results.toList().sum()
       // println "deletes = " + deletes;
       rowsDeleted += deletes;
       sourceCon.commit()
       targetCon.commit()
     }
-    catch (Exception e)
-    {
+    catch (Exception e) {
       sourceCon.rollback()
       targetCon.rollback()
     }
-    finally
-    {
+    finally {
       JdbcUtil.close(insertStmt)
       JdbcUtil.close(deleteStmt)
       sourceCon.setAutoCommit(sourceAuto)

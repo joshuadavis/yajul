@@ -22,6 +22,13 @@ class ColumnType
     return TYPES_THAT_NEED_SIZE.contains(jdbcType)
   }
 
+  boolean equivalentTo(ColumnType that) {
+    if (this.is(that)) return true;
+    if (jdbcType != that.jdbcType) return false;
+    if (name ? !name.equals(that.name) : that.name != null) return false;
+    return true;
+  }
+
   def String toString()
   {
     return "ColumnType{" +

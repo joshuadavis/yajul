@@ -7,8 +7,7 @@ package org.yajul.jdbc
  * Date: Feb 21, 2010
  * Time: 11:06:33 AM
  */
-class Column
-{
+class Column {
   static SORT_BY_ORD = {Column a, Column b -> a.ord - b.ord }
 
   String name
@@ -19,8 +18,7 @@ class Column
   boolean nullable = true
   boolean primaryKey = false
 
-  def String columnDefinition()
-  {
+  def String columnDefinition() {
     def s = "$name $type.name"
 
     if (type.needsSize())
@@ -29,15 +27,25 @@ class Column
     if (!nullable)
       s += ' NOT'
 
-    s  += ' NULL'
-    
+    s += ' NULL'
+
     if (primaryKey)
       s += ' PRIMARY KEY'
     return s;
   }
 
-  def String toString()
-  {
+  boolean equivalentTo(Column column) {
+    if (this.is(column)) return true;
+    if (nullable != column.nullable) return false;
+    if (ord != column.ord) return false;
+    if (primaryKey != column.primaryKey) return false;
+    if (size != column.size) return false;
+    if (name ? !name.equals(column.name) : column.name != null) return false;
+    if (type ? !type.equivalentTo(column.type) : column.type != null) return false;
+    return true;
+  }
+
+  def String toString() {
     return "Column{name='$name', ord=$ord, type=$type, size=$size, nullable=$nullable, primaryKey=$primaryKey}";
   }
 }

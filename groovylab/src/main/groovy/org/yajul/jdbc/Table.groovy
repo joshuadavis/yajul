@@ -33,8 +33,4 @@ class Table
     return sortedColumns.collect({ Column c -> c.name});
   }
 
-  def String createStatement()
-  {
-    return "CREATE TABLE $name (\n  ${sortedColumns.collect {Column c -> c.columnDefinition() }.join(",\n  ")} )"
-  }
 }
