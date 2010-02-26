@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/groovylab.iml" filepath="$PROJECT_DIR$/groovylab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/groovy-dbtools.iml" filepath="$PROJECT_DIR$/groovy-dbtools.iml" />
     </modules>
   </component>
 </project>
