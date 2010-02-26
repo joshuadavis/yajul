@@ -1,10 +1,9 @@
 package test
 
-import org.yajul.jdbc.ConnectionInfo
-import groovy.grape.Grape
-import org.yajul.dbarchiver.Archiver
 import groovy.sql.Sql
+import org.yajul.dbarchiver.Archiver
 import org.yajul.dbarchiver.ArchiverException
+import org.yajul.jdbc.ConnectionInfo
 
 /**
  * TODO: Add class level comments!
@@ -20,25 +19,42 @@ class ArcTest extends GroovyTestCase {
 
   void testArchiver() {
 
-    Grape.grab(group: 'org.hsqldb', module: 'hsqldb', version: '1.8.0.10', classLoader: this.class.classLoader.rootLoader)
+    // Grape.grab(group: 'org.hsqldb', module: 'hsqldb', version: '1.8.0.10', classLoader: this.class.classLoader.rootLoader)
 
     def username = "sa"
     def password = ""
-    def driverClassName = 'org.hsqldb.jdbcDriver'
 
+    def driverClassName = 'org.hsqldb.jdbcDriver'
+    def driverProtocol = 'jdbc:hsqldb:file:data/'
+    def driverOptions = ''
+
+/*
+    def driverClassName = 'org.apache.derby.jdbc.EmbeddedDriver'
+    def driverProtocol = 'jdbc:derby:data/'
+    def driverOptions = ';create=true'
+*/
+
+    def dbdir = new File("data")
+    if (dbdir.exists() && dbdir.isDirectory())
+    {
+        print "Deleting ${dbdir}..."
+        dbdir.deleteDir()
+        println "OK"
+    }
     def sourceInfo = new ConnectionInfo(
-            url: "jdbc:hsqldb:file:data/sourcedb",
+            url: "${driverProtocol}sourcedb${driverOptions}",
             username: username,
             password: password,
             driverClassName: driverClassName)
 
     def targetInfo = new ConnectionInfo(
-            url: "jdbc:hsqldb:file:data/targetdb",
+            url: "${driverProtocol}targetdb${driverOptions}",
             username: username,
             password: password,
             driverClassName: driverClassName)
 
     def archiver = new Archiver(sourceInfo, targetInfo)
+    archiver.jdbcBatchMode = false
 
 // HSQLDB capitalizes table names
     def tableName = 'LOG_EVENT'

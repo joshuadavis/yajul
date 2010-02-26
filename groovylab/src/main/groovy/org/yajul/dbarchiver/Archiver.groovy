@@ -16,9 +16,11 @@ import org.yajul.jdbc.DbSchema
  * Time: 9:06:47 PM
  */
 class Archiver {
+  GroovyLog log
   Endpoint source
   Endpoint target
   boolean createTargetTable
+  boolean jdbcBatchMode
 
   int rowsRetrieved;
   int rowsInserted;
@@ -28,6 +30,7 @@ class Archiver {
   List<Column> columns
 
   Archiver(ConnectionInfo sourceInfo, ConnectionInfo targetInfo) {
+    log = new GroovyLog(Archiver.class)
     source = new Endpoint(info: sourceInfo)
     target = new Endpoint(info: targetInfo)
     connect(source)
@@ -35,8 +38,8 @@ class Archiver {
   }
 
 
-  def archiveRows(String sourceTableName,String targetTableName, String conditions, String orderBy, int batchSize) {
-    checkSchema(sourceTableName,targetTableName)
+  def archiveRows(String sourceTableName, String targetTableName, String conditions, String orderBy, int batchSize) {
+    checkSchema(sourceTableName, targetTableName)
     def columnNames = columns.collect({Column c -> c.name }).join(", ")
     String columnValueParams = columns.collect({ "?" }).join(", ")
     def primaryKeys = source.table.sortedPrimaryKeys
@@ -52,7 +55,7 @@ class Archiver {
       List<ArchiveRow> rows = retrieveRows(select, source.table)
 
       if (rows.isEmpty()) {
-        println "no more rows, exiting"
+        log.println "no more rows, exiting"
         break
       }
 
@@ -64,17 +67,17 @@ class Archiver {
     } // while
   }
 
-  def checkSchema(String sourceTableName,String targetTableName) {
-    initEndpoint(source,sourceTableName)
+  def checkSchema(String sourceTableName, String targetTableName) {
+    initEndpoint(source, sourceTableName)
     if (source.table == null)
       throw new ArchiverException("Table $sourceTableName not found in source ${source.info.url}")
-    initEndpoint(target,targetTableName)
+    initEndpoint(target, targetTableName)
     if (target.table == null) {
       if (createTargetTable) {
         println "Creating $targetTableName in target..."
-        String createSql = createStatement(targetTableName,source.table.sortedColumns)
+        String createSql = createStatement(targetTableName, source.table.sortedColumns)
         target.sql.execute(createSql)
-        initEndpoint(target,targetTableName) // Get the schema again.
+        initEndpoint(target, targetTableName) // Get the schema again.
       }
       else
         throw new IllegalArgumentException("Table $targetTableName not found in target ${target.info.url}")
@@ -92,8 +95,7 @@ class Archiver {
     }
   }
 
-  private String createStatement(String name,List<Column> sortedColumns)
-  {
+  private String createStatement(String name, List<Column> sortedColumns) {
     return "CREATE TABLE $name (\n  ${sortedColumns.collect {Column c -> c.columnDefinition() }.join(",\n  ")} )"
   }
 
@@ -101,18 +103,17 @@ class Archiver {
     connect(endpoint)
     endpoint.with {
       tableName = aTableName
-      schema = new DbSchema(sql,tableName)
+      schema = new DbSchema(sql, tableName)
       table = schema.tables[tableName]
     }
   }
 
-  private connect(Endpoint endpoint)  {
+  private connect(Endpoint endpoint) {
     endpoint.with {
-      if (sql == null)
-      {
-        print "Connecting to ${endpoint.info.url} ..."
+      if (sql == null) {
+        log.print "Connecting to ${endpoint.info.url} ..."
         sql = info.connect()
-        println "OK"
+        log.println "OK"
       }
     }
   }
@@ -138,29 +139,41 @@ class Archiver {
     try {
       sourceCon.setAutoCommit(false)
       targetCon.setAutoCommit(false)
+
       insertStmt = targetCon.prepareStatement(insert)
       deleteStmt = sourceCon.prepareStatement(delete)
       rows.each {
         ArchiveRow r ->
         JdbcUtil.setParameters(insertStmt, r.rowData)
-        insertStmt.addBatch()
+        if (jdbcBatchMode) {
+          insertStmt.addBatch()
+        } else {
+          int inserts = insertStmt.executeUpdate()
+          rowsInserted += inserts;
+        }
         JdbcUtil.setParameters(deleteStmt, r.keys)
-        deleteStmt.addBatch()
+        if (jdbcBatchMode) {
+          deleteStmt.addBatch()
+        } else {
+          int deletes = deleteStmt.executeUpdate()
+          rowsDeleted += deletes;
+
+        }
       }
-      int[] results = insertStmt.executeBatch()
-      def inserts = results.toList().sum()
-      // println "inserts = " + inserts
-      rowsInserted += inserts;
-      results = deleteStmt.executeBatch()
-      def deletes = results.toList().sum()
-      // println "deletes = " + deletes;
-      rowsDeleted += deletes;
+      if (jdbcBatchMode) {
+        int inserts = executeBatch(insertStmt)
+        rowsInserted += inserts;
+        int deletes = executeBatch(deleteStmt)
+        rowsDeleted += deletes;
+      }
+      log.println ""
       sourceCon.commit()
       targetCon.commit()
     }
     catch (Exception e) {
       sourceCon.rollback()
       targetCon.rollback()
+      throw e;
     }
     finally {
       JdbcUtil.close(insertStmt)
@@ -168,5 +181,12 @@ class Archiver {
       sourceCon.setAutoCommit(sourceAuto)
       targetCon.setAutoCommit(targetAuto)
     }
+  }
+
+  int executeBatch(PreparedStatement statement) {
+    int[] results = statement.executeBatch()
+    int sum = 0
+    for (r in results) { sum += r }
+    return sum
   }
 }
