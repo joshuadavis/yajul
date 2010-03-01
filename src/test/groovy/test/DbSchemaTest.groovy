@@ -1,12 +1,8 @@
 package test
 
-import liquibase.database.DatabaseFactory
-import org.yajul.jdbc.ConnectionInfo
 import groovy.sql.Sql
-import liquibase.database.Database
-import liquibase.Liquibase
-import liquibase.FileOpener
-import liquibase.ClassLoaderFileOpener
+import org.yajul.jdbc.ConnectionInfo
+import org.yajul.jdbc.DbSchema
 
 /**
  * DbSchema test.
@@ -24,16 +20,18 @@ class DbSchemaTest extends GroovyTestCase {
     helper.cleardb()
   }
 
-  void testDbSchema() {
+  void testDbSchema()
+  {
     // Create the schema with Liquibase
     ConnectionInfo info = helper.getConnectionInfo("schematest")
     Sql sql = info.connect();
-    Database db = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(sql.connection)
-    FileOpener opener = new ClassLoaderFileOpener()
-    Liquibase lb = new Liquibase("test/DbSchemaTest.xml",opener,db)
-    println "Dropping all tables..."
-    lb.dropAll()
-    println "Validating change sets..."
-    lb.validate()
+    TestHelper.loadSchema(sql, "test/DbSchemaTest.xml", null)
+
+    DbSchema schema = new DbSchema(sql)
+
+    assertTrue(schema.tableExists("PERSON"))
+
+    def columns = schema.tables['PERSON'].sortedColumns
+    assertEquals(3, columns.size())
   }
 }

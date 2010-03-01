@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
+    <preConditions>
+            <dbms type="hsqldb"/>
+            <runningAs username="sa"/>
+    </preConditions>
+
+    <changeSet id="1" author="josh" context="source">
+        <createTable tableName="LOG_EVENT">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_timestamp" type="timestamp"/>
+            <column name="event_millis" type="bigint"/>
+            <column name="message" type="varchar(128)"/>
+        </createTable>
+        <createTable tableName="NOTSAME">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_timestamp" type="timestamp"/>
+            <column name="event_millis" type="bigint"/>
+            <column name="message" type="varchar(128)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="josh" context="target">
+        <createTable tableName="NOTSAME">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_timestamp" type="timestamp"/>
+            <column name="event_millis" type="bigint"/>
+            <column name="something" type="varchar(10)"/>
+            <column name="message" type="varchar(128)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

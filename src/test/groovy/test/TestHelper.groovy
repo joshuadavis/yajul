@@ -1,6 +1,12 @@
 package test
 
 import org.yajul.jdbc.ConnectionInfo
+import liquibase.Liquibase
+import liquibase.ClassLoaderFileOpener
+import liquibase.FileOpener
+import liquibase.database.DatabaseFactory
+import liquibase.database.Database
+import groovy.sql.Sql
 
 /**
  * Helper methods for tests
@@ -35,5 +41,20 @@ class TestHelper
             username: username,
             password: password,
             driverClassName: driverClassName)
+  }
+
+  static void loadSchema(Sql sql, String schemaFile,String contexts)
+  {
+    def factory = DatabaseFactory.getInstance()
+    Database db = factory.findCorrectDatabaseImplementation(sql.connection)
+    FileOpener opener = new ClassLoaderFileOpener()
+    Liquibase lb = new Liquibase(schemaFile, opener, db)
+    println "Dropping all tables..."
+    lb.dropAll()
+    println "Validating change sets..."
+    lb.validate()
+    println "Applying change sets..."
+    lb.update(contexts)
+    println "Finished."
   }
 }
