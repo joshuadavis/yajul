@@ -22,6 +22,7 @@ class Archiver {
   boolean createTargetTable
   boolean jdbcBatchMode
 
+  long startTime
   int rowsRetrieved;
   int rowsInserted;
   int rowsDeleted;
@@ -51,17 +52,15 @@ class Archiver {
     def sourceCon = source.sql.connection
     def targetCon = target.sql.connection
 
+    startTime = System.currentTimeMillis()
     while (true) {
+      log.print "${batches}: retrieving..."
       List<ArchiveRow> rows = retrieveRows(select, source.table)
 
       if (rows.isEmpty()) {
         log.println "no more rows, exiting"
         break
       }
-
-
-      println "${batches}: ${rows.size()} rows read... moving..."
-      println "first row is " + rows[0].rowData
       moveBatch(sourceCon, insert, targetCon, delete, rows)
       batches++;
     } // while
@@ -133,6 +132,7 @@ class Archiver {
                         Connection targetCon,
                         String delete,
                         List<ArchiveRow> rows) {
+    log.print "moving..."
     boolean sourceAuto = sourceCon.autoCommit
     boolean targetAuto = targetCon.autoCommit
     PreparedStatement insertStmt = null, deleteStmt = null
@@ -144,35 +144,26 @@ class Archiver {
       deleteStmt = sourceCon.prepareStatement(delete)
       rows.each {
         ArchiveRow r ->
-        JdbcUtil.setParameters(insertStmt, r.rowData)
-        if (jdbcBatchMode) {
-          insertStmt.addBatch()
-        } else {
-          int inserts = insertStmt.executeUpdate()
-          rowsInserted += inserts;
-        }
-        JdbcUtil.setParameters(deleteStmt, r.keys)
-        if (jdbcBatchMode) {
-          deleteStmt.addBatch()
-        } else {
-          int deletes = deleteStmt.executeUpdate()
-          rowsDeleted += deletes;
-
-        }
+        moveRow(r, insertStmt, deleteStmt)
       }
       if (jdbcBatchMode) {
+        log.print "execute batch..."
         int inserts = executeBatch(insertStmt)
         rowsInserted += inserts;
         int deletes = executeBatch(deleteStmt)
         rowsDeleted += deletes;
       }
-      log.println ""
+      log.print "committing..."
       sourceCon.commit()
       targetCon.commit()
+      def elapsed = (System.currentTimeMillis() - startTime) / 1000
+      log.println " OK (${rowsInserted}, ${String.format("%.2f",rowsInserted / elapsed)} rows/sec)"
     }
     catch (Exception e) {
+      log.print " ERROR: ${e}, rolling back..."
       sourceCon.rollback()
       targetCon.rollback()
+      log.println "Changes rolled back."
       throw e;
     }
     finally {
@@ -180,6 +171,30 @@ class Archiver {
       JdbcUtil.close(deleteStmt)
       sourceCon.setAutoCommit(sourceAuto)
       targetCon.setAutoCommit(targetAuto)
+    }
+  }
+
+  private def moveRow(ArchiveRow r, PreparedStatement insertStmt, PreparedStatement deleteStmt)
+  {
+    JdbcUtil.setParameters(insertStmt, r.rowData)
+    if (jdbcBatchMode)
+    {
+      insertStmt.addBatch()
+    }
+    else
+    {
+      int inserts = insertStmt.executeUpdate()
+      rowsInserted += inserts;
+    }
+    JdbcUtil.setParameters(deleteStmt, r.keys)
+    if (jdbcBatchMode)
+    {
+      deleteStmt.addBatch()
+    }
+    else
+    {
+      int deletes = deleteStmt.executeUpdate()
+      rowsDeleted += deletes;
     }
   }
 
