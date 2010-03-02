@@ -3,7 +3,7 @@ package test
 import groovy.sql.Sql
 import org.yajul.dbarchiver.Archiver
 import org.yajul.dbarchiver.ArchiverException
-import org.yajul.jdbc.ConnectionInfo
+
 import java.sql.Timestamp
 
 /**
@@ -15,7 +15,7 @@ import java.sql.Timestamp
  */
 class ArcTest extends GroovyTestCase
 {
-  def helper = new TestHelper()
+  def helper = new UnitTestHelper()
 
   def ArcTest()
   {
@@ -54,8 +54,8 @@ class ArcTest extends GroovyTestCase
     Sql sourceSql = archiver.source.sql
     Sql targetSql = archiver.target.sql
 
-    TestHelper.loadSchema(sourceSql, "test/ArcTest.xml","source")
-    TestHelper.loadSchema(targetSql, "test/ArcTest.xml","target")
+    UnitTestHelper.loadSchema(sourceSql, "test/ArcTest.xml","source")
+    UnitTestHelper.loadSchema(targetSql, "test/ArcTest.xml","target")
 
     try
     {

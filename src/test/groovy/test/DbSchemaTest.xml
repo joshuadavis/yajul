@@ -4,11 +4,6 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
-    <preConditions>
-            <dbms type="hsqldb"/>
-            <runningAs username="sa"/>
-    </preConditions>
-
     <changeSet id="1" author="josh">
         <createTable tableName="person">
             <column name="id" type="int" autoIncrement="true">
@@ -20,5 +15,4 @@
             </column>
         </createTable>
     </changeSet>
-
 </databaseChangeLog>

@@ -15,7 +15,7 @@ import groovy.sql.Sql
  * Date: Feb 28, 2010
  * Time: 9:08:49 AM
  */
-class TestHelper
+class UnitTestHelper
 {
   def username = "sa"
   def password = ""

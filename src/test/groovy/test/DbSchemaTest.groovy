@@ -12,7 +12,7 @@ import org.yajul.jdbc.DbSchema
  * Time: 2:51:38 PM
  */
 class DbSchemaTest extends GroovyTestCase {
-  def helper = new TestHelper()
+  def helper = new UnitTestHelper()
 
   protected void setUp()
   {
@@ -25,7 +25,7 @@ class DbSchemaTest extends GroovyTestCase {
     // Create the schema with Liquibase
     ConnectionInfo info = helper.getConnectionInfo("schematest")
     Sql sql = info.connect();
-    TestHelper.loadSchema(sql, "test/DbSchemaTest.xml", null)
+    UnitTestHelper.loadSchema(sql, "test/DbSchemaTest.xml", null)
 
     DbSchema schema = new DbSchema(sql)
 
