@@ -20,11 +20,33 @@ class DbSchema {
     load(db, tableName)
   }
 
+  public String toString() {
+    return "*** TABLES ***\n${tables.entrySet().join('\n')}--- END OF TABLES --";
+  }
+
+  boolean tableExists(String tableName) {
+    return tables.containsKey(tableName)
+  }
+
+  public List<String> getTableNames() {
+    tables.keySet().sort()
+  }
+
+  private def loadTables(DatabaseMetaData md, String tableName) {
+    JdbcUtil.iterate(
+            md.getTables(null, null, tableName),
+            {
+              ResultSet rs ->
+              def name = rs.getString("TABLE_NAME")
+              tables[name] = new Table(name: name)
+            })
+  }
+
   private def load(Sql db, String tableName) {
     db.cacheConnection {
       Connection con ->
       def DatabaseMetaData md = con.metaData;
-      println "driverName=${md.driverName}"
+      //println "driverName=${md.driverName}"
       loadTypes(md)
       loadTables(md, tableName)
       loadColumns(md, tableName)
@@ -155,24 +177,5 @@ class DbSchema {
               )
               table.columns[column.name] = column
             })
-  }
-
-  private def loadTables(DatabaseMetaData md, String tableName) {
-    JdbcUtil.iterate(
-            md.getTables(null, null, tableName),
-            {
-              ResultSet rs ->
-              def name = rs.getString("TABLE_NAME")
-              tables[name] = new Table(name: name)
-            })
-  }
-
-
-  public String toString() {
-    return "*** TABLES ***\n${tables.entrySet().join('\n')}--- END OF TABLES --";
-  }
-
-  boolean tableExists(String tableName) {
-    return tables.containsKey(tableName)
   }
 }

@@ -21,7 +21,9 @@ class Archiver {
   Endpoint target
   boolean createTargetTable
   boolean jdbcBatchMode
-
+  int batchLimit = Integer.MAX_VALUE
+  boolean ignorePk = true
+  
   long startTime
   int rowsRetrieved;
   int rowsInserted;
@@ -38,7 +40,6 @@ class Archiver {
     connect(target)
   }
 
-
   def archiveRows(String sourceTableName, String targetTableName, String conditions, String orderBy, int batchSize) {
     checkSchema(sourceTableName, targetTableName)
     def columnNames = columns.collect({Column c -> c.name }).join(", ")
@@ -53,7 +54,7 @@ class Archiver {
     def targetCon = target.sql.connection
 
     startTime = System.currentTimeMillis()
-    while (true) {
+    while (batches < batchLimit) {
       log.print "${batches}: retrieving..."
       List<ArchiveRow> rows = retrieveRows(select, source.table)
 
@@ -83,15 +84,9 @@ class Archiver {
     }
 
     columns = source.table.sortedColumns
-    List<Column> targetColumns = target.table.sortedColumns
-    if (columns.size() != targetColumns.size())
-      throw new ArchiverException("Different number of columns!")
-    columns.eachWithIndex {
-      Column c, int i ->
-      Column other = targetColumns[i]
-      if (!other.equivalentTo(c))
-        throw new ArchiverException("Columns differ: " + c + " -> " + other);
-    }
+
+    if (!source.table.equivalentColumns(target.table.sortedColumns,ignorePk))
+      throw new ArchiverException("Columns differ:\n" + source.table + "\n" + target.table);
   }
 
   private String createStatement(String name, List<Column> sortedColumns) {

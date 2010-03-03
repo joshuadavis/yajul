@@ -35,13 +35,17 @@ class Column {
   }
 
   boolean equivalentTo(Column column) {
+    equivalentTo(column,false)
+  }
+
+  boolean equivalentTo(Column column,boolean ignorePk) {
     if (this.is(column)) return true;
     if (nullable != column.nullable) return false;
     if (ord != column.ord) return false;
-    if (primaryKey != column.primaryKey) return false;
-    if (size != column.size) return false;
     if (name ? !name.equals(column.name) : column.name != null) return false;
-    if (type ? !type.equivalentTo(column.type) : column.type != null) return false;
+    if (!ignorePk && primaryKey != column.primaryKey) return false;
+    if (!type.equivalentTo(column.type)) return false;
+    if (type.needsSize() && size != column.size) return false;
     return true;
   }
 

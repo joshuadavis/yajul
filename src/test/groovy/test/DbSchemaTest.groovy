@@ -30,8 +30,15 @@ class DbSchemaTest extends GroovyTestCase {
     DbSchema schema = new DbSchema(sql)
 
     assertTrue(schema.tableExists("PERSON"))
+    assertTrue(schema.tableExists("NOTSAME1"))
+    assertTrue(schema.tableExists("NOTSAME2"))
 
     def columns = schema.tables['PERSON'].sortedColumns
     assertEquals(3, columns.size())
+
+    def a = schema.tables['NOTSAME1']
+    def b = schema.tables['NOTSAME2']
+    assertTrue(a.equivalentColumns(b.sortedColumns,true))
+    assertFalse(a.equivalentColumns(b.sortedColumns,false))
   }
 }

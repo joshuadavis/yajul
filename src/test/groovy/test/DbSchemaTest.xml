@@ -15,4 +15,26 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="josh">
+        <createTable tableName="NOTSAME1">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_timestamp" type="timestamp"/>
+            <column name="event_millis" type="bigint"/>
+            <column name="something" type="varchar(10)"/>
+            <column name="message" type="varchar(128)"/>
+        </createTable>
+        <createTable tableName="NOTSAME2">
+            <column name="id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_timestamp" type="timestamp"/>
+            <column name="event_millis" type="bigint"/>
+            <column name="something" type="varchar(10)"/>
+            <column name="message" type="varchar(128)"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

@@ -33,4 +33,16 @@ class Table
     return sortedColumns.collect({ Column c -> c.name});
   }
 
+  boolean equivalentColumns(List<Column> other, boolean ignorePk)
+  {
+    List<Column> list = sortedColumns
+    if (list.size() != other.size())
+      return false;
+    for (int i in 0..list.size()-1)
+    {
+      if (!other[i].equivalentTo(list[i], ignorePk))
+        return false;
+    }
+    return true;
+  }
 }
