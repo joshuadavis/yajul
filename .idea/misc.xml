@@ -24,8 +24,15 @@
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
   </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectDetails">
-    <option name="projectName" value="groovylab" />
+    <option name="projectName" value="groovy-dbtools" />
   </component>
   <component name="ProjectKey">
     <option name="state" value="project://default" />
