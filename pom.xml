@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>groovy-dbtools</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <properties>
         <compileSource>1.5</compileSource>
         <version.junit>3.8.1</version.junit>
@@ -15,9 +13,9 @@
         <version.liquibase>1.9.5</version.liquibase>
     </properties>
     <scm>
-        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/groovy-dbtools/trunk</connection>
-        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/groovy-dbtools/trunk</developerConnection>
-        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/groovy-dbtools/trunk</url>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/groovy-dbtools/tags/groovy-dbtools-0.1.0</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/groovy-dbtools/tags/groovy-dbtools-0.1.0</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/groovy-dbtools/tags/groovy-dbtools-0.1.0</url>
     </scm>
     <distributionManagement>
         <site>
