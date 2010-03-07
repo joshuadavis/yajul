@@ -34,12 +34,11 @@ public class HeartbeatMonitorTest extends TestCase {
     public void testMonitor() throws InterruptedException {
         ExecutorService exec = Executors.newCachedThreadPool();
         int scanInterval = 100;
-        HeartbeatMonitor monitor = new HeartbeatMonitor(scanInterval, exec);
         MockObserver observer = new MockObserver();
+        HeartbeatMonitor monitor = new HeartbeatMonitor(scanInterval, exec, observer);
         int suspectTimeout = 20 * scanInterval;
         int failureTimeout = 30 * scanInterval;
         int fudgeFactor = 10;   // Slight delay to ensure a complete scan.
-        monitor.addObserver(observer);
         monitor.createMonitor("one", suspectTimeout, failureTimeout);
         assertEquals(CREATED, observer.getStatus("one"));
         Thread.sleep(suspectTimeout + scanInterval + fudgeFactor);
@@ -49,7 +48,6 @@ public class HeartbeatMonitorTest extends TestCase {
         monitor.heartbeat("one");
         assertEquals(RESTORED, observer.getStatus("one"));
         monitor.removeMonitor("one");
-
         monitor.createMonitor("two",0,10*scanInterval);
         assertEquals(CREATED, observer.getStatus("two"));
         for (int i = 0; i < 20 ; i++)

@@ -25,12 +25,12 @@ public class HeartbeatMonitor {
     /**
      * All the things being monitored, by id.
      */
-    private Map<String, Observable> observablesById = new HashMap<String, Observable>();
+    private Map<String, Monitor> monitorsById = new HashMap<String, Monitor>();
 
     /**
-     * The observers that will be notified when things happen.
+     * The observer that will be notified when things happen.
      */
-    private List<HeartbeatObserver> observers  = new ArrayList<HeartbeatObserver>();
+    private HeartbeatObserver observer;
 
     /**
      * The timer thread.
@@ -47,9 +47,14 @@ public class HeartbeatMonitor {
      */
     private ExecutorService executor;
 
-    public HeartbeatMonitor(long scanInterval, ExecutorService executor) {
+    public HeartbeatMonitor(long scanInterval,
+                            ExecutorService executor,
+                            HeartbeatObserver observer) {
         if (executor == null)
             throw new IllegalArgumentException("ExecutorService cannot be null!");
+        if (observer == null)
+            throw new IllegalArgumentException("HeartbeatObserver cannot be null!");
+        this.observer = observer;
         this.executor = executor;
         this.scanInterval = scanInterval;
     }
@@ -67,18 +72,22 @@ public class HeartbeatMonitor {
         if (suspectTimeout > failureTimeout)
             throw new IllegalArgumentException("Suspect timeout must be <= failure timeout!");
         synchronized (this) {
-            Observable observable = observablesById.get(id);
-            if (observable != null)
+            Monitor monitor = monitorsById.get(id);
+            if (monitor != null)
                 throw new IllegalArgumentException("Monitor for " + id + " already exists!");
-            // If there is no timer thread, make one.
-            if (timer == null) {
-                timer = new Timer("HBMon-" + serialNumber.incrementAndGet(), true);
-                ScannerTask task = new ScannerTask();
-                timer.schedule(task, scanInterval, scanInterval);
-            }
-            observable = new Observable(id, suspectTimeout, failureTimeout);
-            observablesById.put(id, observable);
+            doCreate(id, new Timeouts(suspectTimeout, failureTimeout));
         }
+    }
+
+    private void doCreate(String id, Timeouts timeouts) {
+        // If there is no timer thread, make one.
+        if (timer == null) {
+            timer = new Timer("HBMon-" + serialNumber.incrementAndGet(), true);
+            ScannerTask task = new ScannerTask();
+            timer.schedule(task, scanInterval, scanInterval);
+        }
+        Monitor monitor = new Monitor(id, timeouts);
+        monitorsById.put(id, monitor);
     }
 
     /**
@@ -87,17 +96,17 @@ public class HeartbeatMonitor {
      * @param id the id of the monitor
      */
     public void removeMonitor(String id) {
-        Observable observable;
+        Monitor monitor;
         synchronized (this) {
-            observable = observablesById.remove(id);
+            monitor = monitorsById.remove(id);
             // If there's nothing left to monitor, stop the timer thread.
-            if (observablesById.isEmpty()) {
+            if (monitorsById.isEmpty()) {
                 timer.cancel();
                 timer = null;
             }
         }
-        if (observable != null)
-            observable.cancel();
+        if (monitor != null)
+            monitor.cancel();
     }
 
     /**
@@ -105,71 +114,44 @@ public class HeartbeatMonitor {
      */
     public void clear() {
         synchronized (this) {
-            for (Observable observable : observablesById.values()) {
-                observable.cancel();
+            for (Monitor monitor : monitorsById.values()) {
+                monitor.cancel();
             }
-            observablesById.clear();
-            observers.clear();
+            monitorsById.clear();
         }
     }
 
     /**
      * A heartbeat from a particular service or object
      *
-     * @param id the unique id for that object
+     * @param id     the unique id for that object
+     * @param create If true, create a monitor if none exists.  Ask the observer for the defaults.
      */
-    public void heartbeat(String id) {
-        Observable observable = getObservable(id);
-        observable.heartbeat();
-    }
-
-    /**
-     * Add an observer, the observer will be notified of changes in any of the monitors.
-     *
-     * @param observer the observer
-     */
-    public void addObserver(HeartbeatObserver observer) {
-        synchronized (this) {
-            observers.add(observer);
-        }
-    }
-
-    /**
-     * Removes all observers.
-     */
-    public void deleteObservers() {
-        synchronized (this) {
-            observers.clear();
-        }
-    }
-
-    private void notifyObservers(String id, Status status, long lastHeartbeat) {
-        HeartbeatObserver[] array;
-        synchronized (this) {
-            array = observers.toArray(new HeartbeatObserver[observers.size()]);
-        }
-        for (HeartbeatObserver observer : array) {
-            notifyObserver(id, status, observer, lastHeartbeat);
-        }
+    public void heartbeat(String id, boolean create) {
+        Monitor monitor = getMonitor(id, create);
+        monitor.heartbeat();
     }
 
     private void notifyObserver(String id, Status status, HeartbeatObserver observer, long lastHeartbeat) {
         try {
             observer.onEvent(id, status, lastHeartbeat);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             log.error("Unexpected Exception: " + e.getMessage(), e);
         }
     }
 
-    private Observable getObservable(String id) {
-        Observable observable;
+    private Monitor getMonitor(String id, boolean create) {
+        Monitor monitor;
         synchronized (this) {
-            observable = observablesById.get(id);
+            monitor = monitorsById.get(id);
+            if (monitor == null && create)
+                doCreate(id, observer.getDefaultTimeouts(id));
         }
-        if (observable == null) {
+        if (monitor == null) {
             throw new IllegalArgumentException("Monitor for " + id + " does not exist!");
         }
-        return observable;
+        return monitor;
     }
 
     /**
@@ -204,6 +186,12 @@ public class HeartbeatMonitor {
      * The callback interface.
      */
     public static interface HeartbeatObserver {
+
+        /**
+         * Called when creating a monitor implicitly.
+         */
+        Timeouts getDefaultTimeouts(String id);
+
         /**
          * Called when something happens to a monitor
          *
@@ -214,22 +202,38 @@ public class HeartbeatMonitor {
         void onEvent(String id, Status status, long lastHeartbeat);
     }
 
-    private class Observable {
-        // Immutable values
-        private String id;
+    public class Timeouts {
         private long suspectTimeout;
         private long failureTimeout;
+
+        public Timeouts(long suspectTimeout, long failureTimeout) {
+            this.suspectTimeout = suspectTimeout;
+            this.failureTimeout = failureTimeout;
+        }
+
+        public long getSuspectTimeout() {
+            return suspectTimeout;
+        }
+
+        public long getFailureTimeout() {
+            return failureTimeout;
+        }
+    }
+
+    private class Monitor {
+        // Immutable values
+        private String id;
+        private final Timeouts timeouts;
         // Mutable values
         private Status status;
         private long lastHeartbeat;
 
-        private Observable(String id, long suspectTimeout, long failureTimeout) {
+        private Monitor(String id, Timeouts timeouts) {
             this.id = id;
+            this.timeouts = timeouts;
             this.lastHeartbeat = System.currentTimeMillis();
-            this.suspectTimeout = suspectTimeout;
-            this.failureTimeout = failureTimeout;
             this.status = Status.CREATED;
-            HeartbeatMonitor.this.notifyObservers(id, status, lastHeartbeat);
+            notifyObserver(id, status, observer, lastHeartbeat);
         }
 
         private void heartbeat() {
@@ -255,7 +259,7 @@ public class HeartbeatMonitor {
                 this.status = status;
                 last = lastHeartbeat;   // Mutable, so copy it in a sync block.
             }
-            HeartbeatMonitor.this.notifyObservers(id, status, last);
+            notifyObserver(id, status, observer, last);
         }
 
         public void scan() {
@@ -266,16 +270,17 @@ public class HeartbeatMonitor {
                 last = lastHeartbeat;
             }
             long elapsed = now - last;
-            if (elapsed > failureTimeout) {
+            if (elapsed > timeouts.getFailureTimeout()) {
                 setStatus(Status.FAILED);
             }
             // Hasn't failed yet, maybe it's suspect.
-            else if (suspectTimeout > 0 && elapsed > suspectTimeout && suspectTimeout < failureTimeout) {
+            else if (timeouts.getSuspectTimeout() > 0 && elapsed > timeouts.getSuspectTimeout() &&
+                    timeouts.getSuspectTimeout() < timeouts.getFailureTimeout()) {
                 setStatus(Status.SUSPECTED);
             }
             // Neither failed nor suspect.  No change.
         }
-    } // Observable
+    } // Monitor
 
     private class ScannerTask extends TimerTask {
         public void run() {
@@ -289,12 +294,12 @@ public class HeartbeatMonitor {
     }
 
     private void scan() {
-        Observable[] observables;
+        Monitor[] monitors;
         synchronized (this) {
-            observables = observablesById.values().toArray(new Observable[observablesById.size()]);
+            monitors = monitorsById.values().toArray(new Monitor[monitorsById.size()]);
         }
-        for (Observable observable : observables) {
-            observable.scan();
+        for (Monitor monitor : monitors) {
+            monitor.scan();
         }
     }
 }
