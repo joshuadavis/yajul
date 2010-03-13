@@ -132,6 +132,15 @@ public class HeartbeatMonitor {
         monitor.heartbeat();
     }
 
+    /**
+     * A heartbeat from a particular service or object
+     *
+     * @param id     the unique id for that object
+     */
+    public void heartbeat(String id) {
+        heartbeat(id,false);
+    }
+
     private void notifyObserver(String id, Status status, HeartbeatObserver observer, long lastHeartbeat) {
         try {
             observer.onEvent(id, status, lastHeartbeat);
@@ -189,6 +198,8 @@ public class HeartbeatMonitor {
 
         /**
          * Called when creating a monitor implicitly.
+         * @param id the monitor id
+         * @return the default timeout values
          */
         Timeouts getDefaultTimeouts(String id);
 
@@ -202,7 +213,7 @@ public class HeartbeatMonitor {
         void onEvent(String id, Status status, long lastHeartbeat);
     }
 
-    public class Timeouts {
+    public static class Timeouts {
         private long suspectTimeout;
         private long failureTimeout;
 

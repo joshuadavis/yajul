@@ -20,9 +20,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/trunk</connection>
-        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/trunk</developerConnection>
-        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/trunk</url>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/core/trunk</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/core/trunk</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/core/trunk</url>
     </scm>
     <distributionManagement>
         <site>
@@ -44,6 +44,8 @@
         <version.slf4j>1.4.3</version.slf4j>
         <version.javassist>3.8.1.GA</version.javassist>
         <version.jboss-embedded>beta3.SP12</version.jboss-embedded>
+        <version.hsqldb>1.8.0.10</version.hsqldb>
+        <version.liquibase>1.9.5</version.liquibase>        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <repositories>
@@ -112,7 +114,7 @@
             <dependency>
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
-                <version>1.0.1B</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>javassist</groupId>
@@ -129,6 +131,16 @@
                 <artifactId>aopalliance</artifactId>
                 <version>1.0</version>
             </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${version.hsqldb}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${version.liquibase}</version>
+            </dependency>            
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -213,6 +225,16 @@
             <groupId>org.jboss.embedded</groupId>
             <artifactId>hibernate-all</artifactId>
             <version>${version.jboss-embedded}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

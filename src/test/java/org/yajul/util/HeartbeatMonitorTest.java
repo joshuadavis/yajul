@@ -67,6 +67,10 @@ public class HeartbeatMonitorTest extends TestCase {
     private static class MockObserver implements HeartbeatMonitor.HeartbeatObserver {
         private Map<String, HeartbeatMonitor.Status> statusById = new HashMap<String, HeartbeatMonitor.Status>();
 
+        public HeartbeatMonitor.Timeouts getDefaultTimeouts(String id) {
+            return new HeartbeatMonitor.Timeouts(1000,3000);
+        }
+
         public void onEvent(String id, HeartbeatMonitor.Status status, long lastHeartbeat) {
             Date last = new Date(lastHeartbeat);
             DateFormat df = new SimpleDateFormat(DateFormatConstants.ISO8601_DATETIME_FORMAT);

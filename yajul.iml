@@ -36,6 +36,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.microcontainer:jboss-deployers-core-spi:2.0.0.Beta6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.embedded:hibernate-all:beta3.SP12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hsqldb:hsqldb:1.8.0.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.liquibase:liquibase-core:1.9.5" level="project" />
   </component>
 </module>
 
