@@ -19,9 +19,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/tags/yajul-0.3.7</connection>
-        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/tags/yajul-0.3.7</developerConnection>
-        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/tags/yajul-0.3.7</url>
+        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/core/tags/yajul-0.3.7</connection>
+        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/core/tags/yajul-0.3.7</developerConnection>
+        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/core/tags/yajul-0.3.7</url>
     </scm>
     <distributionManagement>
         <site>
@@ -368,9 +368,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <tagBase>https://yajul.svn.sourceforge.net/svnroot/yajul/tags</tagBase>
-                </configuration>
             </plugin>
         </plugins>
     </reporting>
