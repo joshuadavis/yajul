@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project name="Grammar Rebuild Script" default="rebuild">
+	<dirname property="project" file="${ant.file}" />
+	<dirname property="workspace" file="${ant.file}/../" />
+	<property name="src" value="${project}/src/main/java" />
+	<property name="javacc.home" value="${workspace}/org.wikimodel.javacc/lib" />
+
+	<target name="rebuild" depends="clean, build" />
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${src}" includes="**/javacc/*.java" />
+		</delete>
+	</target>
+
+	<target name="build">
+		<antcall target="doBuild">
+			<param name="input.file" value="${src}/org/wikimodel/wem/common/javacc/CommonWikiScanner.jj" />
+		</antcall>
+
+		<antcall target="doBuild">
+			<param name="input.file" value="${src}/org/wikimodel/wem/creole/javacc/CreoleWikiScanner.jj" />
+		</antcall>
+
+		<antcall target="doBuild">
+			<param name="input.file" value="${src}/org/wikimodel/wem/gwiki/javacc/GWikiScanner.jj" />
+		</antcall>
+
+		<antcall target="doBuild">
+			<param name="input.file" value="${src}/org/wikimodel/wem/jspwiki/javacc/JspWikiScanner.jj" />
+		</antcall>
+
+		<antcall target="doBuild">
+			<param name="input.file" value="${src}/org/wikimodel/wem/mediawiki/javacc/MediawikiScanner.jj" />
+		</antcall>
+
+		<antcall target="doBuild">
+			<param name="input.file" value="${src}/org/wikimodel/wem/xwiki/javacc/XWikiScanner.jj" />
+		</antcall>
+	</target>
+
+	<target name="doBuild">
+		<ant antfile="WikiGrammarReplacement.xml">
+			<property name="input.file" value="${input.file}" />
+		</ant>
+		<javacc target="${input.file}" javacchome="${javacc.home}" unicodeinput="true" />
+	</target>
+
+</project>
+

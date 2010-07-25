@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="all">
+    <dirname property="project.dir" file="${ant.file}" />
+
+    <property name="project.src" value="${project.dir}/src/main/java" />
+    <property name="out.dir" value="${project.dir}/dist" />
+    <property name="project.name" value="WikiModelV2" />
+    <property name="project.bin.jar" value="${project.name}-bin.jar" />
+    <property name="project.src.zip" value="${project.name}.zip" />
+
+    <target name="all" depends="source, build" />
+
+    <target name="clean">
+        <delete includeemptydirs="true">
+            <fileset dir="${out.dir}" />
+        </delete>
+    </target>
+
+    <target name="init" unless="initialized">
+        <mkdir dir="${out.dir}" />
+        <property name="initialized" value="true" />
+    </target>
+
+    <target name="source" depends="init">
+        <jar destfile="${out.dir}/${project.src.zip}">
+            <fileset dir="${project.dir}">
+                <exclude name="**/.svn" />
+                <exclude name="bin/**" />
+                <exclude name="tmp/**" />
+                <exclude name="dist/**" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="build" depends="init">
+        <property name="tmp.dir" value="${project.dir}/tmp" />
+        <mkdir dir="${tmp.dir}" />
+        <javac srcdir="${project.src}" destdir="${tmp.dir}">
+            <exclude name="**/test/*" />
+        </javac>
+        <jar destfile="${out.dir}/${project.bin.jar}" basedir="${tmp.dir}" />
+        <delete includeemptydirs="true">
+            <fileset dir="${tmp.dir}" />
+        </delete>
+    </target>
+</project>

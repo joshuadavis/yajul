@@ -1,0 +1,76 @@
+// <common-tokens>
+    // =========================================================================
+    // New lines, spaces, special symbols and characters definitions
+    // =========================================================================
+    | <#NEW_LINE : "\r\n" | "\r" | "\n" >
+    | <#SPACE : [" ", "\t"] >
+      // All special symbols from the range 0-127
+    | <#SPECIAL_SYMBOL : [
+        "!",     "\"",     "#",     "$",     "%",     "&",     "'",     "(",  
+        ")",     "*",      "+",     ",",     "-",     ".",     "/",     ":",  
+        ";",     "<",      "=",     ">",     "?",     "@",     "[",     "\\", 
+        "]",     "^",      "_",     "`",     "{",     "|",     "}",     "~" 
+     ] >
+      // Characters are defined as all possible symbols excluding special 
+      // symbols, spaces and new lines
+    | <#CHAR : ~[
+        "\t",    "\n",     "\r",    " ",
+        "!",     "\"",     "#",     "$",     "%",     "&",     "'",     "(",  
+        ")",     "*",      "+",     ",",     "-",     ".",     "/",     ":",  
+        ";",     "<",      "=",     ">",     "?",     "@",     "[",     "\\", 
+        "]",     "^",      "_",     "`",     "{",     "|",     "}",     "~" 
+    ] >
+    // =========================================================================
+    // URI syntax recognition.
+    // =========================================================================
+    // This grammar recognize the full URI syntax with following exceptions:
+    //  * It has a simplified hier-part definition: it does not contain an empty 
+    //    path (so the sequences like "here: " are not recognized as URIs).
+    //  * It has a simplified version of the host definition: it does not contain
+    //    explicit IP definitions. 
+    //  * It parses "extended" URI syntax where "opaque" URIs are treated as 
+    //    having multiple schema parts
+    //    Example: in an opaque URI like "download:http://www.foo.com/bar.zip"
+    //    the part "download:http" is treated as a "composite" scheme part.
+    //
+    // See also:
+    //  * http://tools.ietf.org/html/rfc3986#page-49 - the official URI grammar
+    //  * http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+    //  * http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+    //  * http://www.iana.org/assignments/uri-schemes.html
+    // =========================================================================
+    | <#URI: <URI_SCHEME_COMPOSITE> ":" <URI_HIER_PART> ("?" <URI_QUERY>)? ("#" <URI_FRAGMENT>)? >
+
+    | <#ALPHA: ( ["A"-"Z", "a"-"z"] )>
+    | <#DIGIT: ["0"-"9"]>
+    | <#HEXDIG: ( <DIGIT> | ["A"-"F"] | ["a"-"f"] ) >
+    | <#URI_GEN_DELIMS: [ ":", "/", "?", "#", "[", "]", "@" ]>
+
+    // Some default can not be accepted in the text - like "," symbols 
+    //<#URI_SUB_DELIMS: [ "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", "=" ]>
+    | <#URI_SUB_DELIMS: [ "!", "$", "&", "'", "(", ")", "*", "+", /*",",*/ ";", "=" ]>
+    | <#URI_UNRESERVED: ( <ALPHA> | <DIGIT> | "-" | "." | "_" | "~" )>
+    | <#URI_RESERVED: ( <URI_GEN_DELIMS> | <URI_SUB_DELIMS> ) >
+    | <#URI_SCHEME: <ALPHA> ( <ALPHA> | <DIGIT> | "+" | "-" | "." )* >
+    | <#URI_SCHEME_COMPOSITE: <URI_SCHEME> ( ":" <URI_SCHEME> )* >
+    | <#URI_PCT_ENCODED: "%" <HEXDIG> <HEXDIG> >
+    | <#URI_PCHAR_FIRST:  ( <URI_UNRESERVED> | <URI_PCT_ENCODED> | <URI_SUB_DELIMS> ) >
+    | <#URI_PCHAR:  ( <URI_PCHAR_FIRST> | ":" | "@" ) >
+    | <#URI_QUERY:    ( <URI_PCHAR> | "/" | "?" )* >
+    | <#URI_FRAGMENT: ( <URI_PCHAR> | "/" | "?" )* >
+      // A simplified hier-part definition: it does not contain an empty path.
+    | <#URI_HIER_PART: ( "//" <URI_AUTHORITY> <URI_PATH_ABEMPTY> | <URI_PATH_ABSOLUTE> | <URI_PATH_ROOTLESS> )>
+    | <#URI_AUTHORITY: ( <URI_USERINFO> "@" )? <URI_HOST> ( ":" <URI_PORT> )? >
+    | <#URI_USERINFO: ( <URI_UNRESERVED> | <URI_PCT_ENCODED> | <URI_SUB_DELIMS> | ":" )* >
+    | <#URI_PATH_ABEMPTY: ( "/" <URI_SEGMENT> )* >
+    | <#URI_PATH_ABSOLUTE: "/" ( <URI_SEGMENT_NZ> ( "/" <URI_SEGMENT> )* )? >
+    | <#URI_PATH_ROOTLESS: <URI_PCHAR_FIRST> <URI_SEGMENT_NZ_NC> ( "/" <URI_SEGMENT> )* >
+    | <#URI_SEGMENT: (<URI_PCHAR>)* >
+    | <#URI_SEGMENT_NZ: (<URI_PCHAR>)+ >
+    | <#URI_SEGMENT_NZ_NC: (<URI_UNRESERVED> | <URI_PCT_ENCODED> | <URI_SUB_DELIMS> | "@")+ >
+    | <#URI_PORT: (<DIGIT>)+ >
+      // A simplified version of the host: it does not contain explicit IP definitions
+    | <#URI_HOST: ( <URI_REG_NAME> ) >
+    | <#URI_REG_NAME: ( <URI_UNRESERVED> | <URI_PCT_ENCODED> | <URI_SUB_DELIMS> )* >
+    // =========================================================================
+// </common-tokens>

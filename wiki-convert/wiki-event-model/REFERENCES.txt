@@ -1,0 +1,81 @@
+ + Google Wiki: 
+   * http://support.googlecode.com/svn/wiki/WikiSyntax.wiki
+   * http://code.google.com/p/support/wiki/WikiSyntax
+ + JSPWiki: http://sandbox.jspwiki.org/Wiki.jsp?page=TextFormattingRules
+ + CreoleWiki: http://www.wikicreole.org/
+ + XWiki: http://www.xwiki.com/xwiki/bin/view/Doc/XWikiSyntax
+ + MediaWiki: 
+   * http://meta.wikimedia.org/wiki/Help:Editing
+   * http://meta.wikimedia.org/wiki/Help:Wikitext
+ * Confluence: http://confluence.atlassian.com/renderer/notationhelp.action?section=all
+ * MoinMoin: http://moinmoin.wikiwikiweb.de/SyntaxReference
+ * Tikiwiki: http://doc.tikiwiki.org/tiki-index.php
+ * TWiki: 
+ 
+ * JavaCC FAQ: http://www.engr.mun.ca/~theo/JavaCC-FAQ/javacc-screen-faq.pdf
+
+= TODO = 
+ * Close all style elements when a block is finished or a sub-document is started.
+ * Use styles for verbatim blocks (see mediawiki, jspwiki)
+   * Block elements:
+     - nowiki - not interpreted text
+     - pre (??? - bad name) - only some symbols parcially interpreted
+     - inclusion - an external document inclusion
+     - references - where a list of references should be included (see MediaWiki) 
+     - macro - macro code for block elements (see XWiki/Radeox)
+   * Inline elements:
+     - math - mathematical formulas
+     - image - image inclusion
+     - reference - the content of a reference (see MediaWiki); see also 
+       "references" in block elements
+     - macro - macro code for inline elements (see XWiki/Radeox)
+ * Split all references into "uri" and "label" parts. The "label" parts can 
+   be declared as String[].
+ * Add semantic elements (not only "properties" as for GWiki)
+
+=== Creole Wiki Syntax ==
+ * All "=" symbols in headers will be skipped 
+ * Headers can contain formatting (** and //). 
+   In the spec: the formatting in headers should be ignored (formatting symbols
+   are not interpreted) 
+ * Lists and table cells can contain multiple lines
+
+=== Google Wiki: Differences ===
+
+ * All "=" symbols in headers will be skipped 
+
+=== JspWiki: Differences ===
+
+ * In definition lists the terms has to have at least one space after the ":" 
+   symbol. Otherwise the term will be parsed as an URI.
+ * Each table cell and list item can have multiple lines
+ * The "~" symbol can be used to escape any other symbols (except spaces and
+   new lines)
+ * Quotation block is used for all block of lines starting from whitespaces.
+
+ * TODO: Styled blocks can be embedded and they can contain all other elements
+   (headers, lists, tables, other styled blocks...)
+   
+=== XWiki Differences ===
+ * All list items can have multiple lines
+ * Definition lists are the same as in JSPWiki - like ";term: definition". 
+   (They just was not removed from the grammar.)
+ * The "\" symbol is used as an escape symbol. (But the "\\" sequence is still 
+   a break line. There is a problem here: there is no way to insert the "\" 
+   in the text.)
+
+=== Mediawiki Differences ===
+ 
+ * <nowiki> and <pre> elements are not distinguished -- both of them reported as 
+   verbatim blocks. 
+ * Lines starting with whitespaces are interpretted as preformatted blocks -- 
+   their content are parsed and all individual elements are reported to the
+   listener.
+ * <math> tags are reported as inline verbatim elements.
+ * <ref> tag is reported as a special style element
+ * <blockquote> support should be added
+ * Embedded tables are not implemented
+ * Multi-column lists are not implemented (yet)
+ * List ordering is not implemented
+
+ 

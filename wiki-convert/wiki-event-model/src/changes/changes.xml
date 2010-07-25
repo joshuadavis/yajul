@@ -1,0 +1,78 @@
+<document>
+	<properties>
+		<title>Wiki Event Model (WEM)</title>
+		<author email="dev@xam.de">
+			Max Voelkel (author of POM file and changes.xml)
+		</author>
+	</properties>
+	<body>
+
+		<release version="2.0.6" date="2008-05-26"
+			description="Bug fixes">
+			<action dev="mikhail.kotelnikov" type="update">
+				XHTML serializers was moved to the
+				org.wikimodel.wem.xhtml package
+			</action>
+
+			<action dev="mikhail.kotelnikov" type="add">
+				Inter-wiki transformation example
+			</action>
+
+			<action dev="mikhail.kotelnikov" type="fix"
+				issue="Issue#10">
+				links like: {{{ [[link]] [[link|linkText}} }}} aren't
+				working properly
+
+				The "," symbol was excluded from the in-line URI
+				patterns. Details:
+				http://code.google.com/p/wikimodel/issues/detail?id=10
+			</action>
+
+			<action dev="mikhail.kotelnikov" type="fix"
+				issue="Issue#11">
+				In WIkiCreole parser: The nowiki markup strings of "{{{"
+				and "}}}" should not show up in the rendered HTML.
+				Details
+				http://code.google.com/p/wikimodel/issues/detail?id=11
+			</action>
+
+			<action dev="mikhail.kotelnikov" type="fix"
+				issue="Issue#9">
+				## for a nested ordered list item is incorrectly
+				interpreted as monospace which currently isn't even in
+				the Creole 1.0 spec. Details:
+				http://code.google.com/p/wikimodel/issues/detail?id=9
+			</action>
+
+			<action dev="mikhail.kotelnikov" type="add">
+				A new Eclipse launch configuration was added - it is
+				used to re-build individual grammar file.
+			</action>
+
+			<action dev="mikhail.kotelnikov" type="fix"
+				issue="Issue#8">
+				Issue#8:
+				http://code.google.com/p/wikimodel/issues/detail?id=8
+				Jan 08, 2008 mikhail.kotelnikov
+			</action>
+
+		</release>
+
+
+		<release version="2.0.1" date="2007-12-19"
+			description="Initial release as Maven project">
+			<action dev="xamde" type="add">
+				Started this changelog
+			</action>
+		</release>
+
+
+		<!--
+			<action dev="aramirez" type="fix" issue="MPJIRA-11">
+			Enable retrieving component-specific issues.
+			</action>
+		-->
+
+
+	</body>
+</document>

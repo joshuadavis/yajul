@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project name="Grammar replacements" default="replace">
+    <dirname property="project" file="${ant.file}" />
+    <property name="input.file" value="grammar.jj" />
+
+    <target name="replace"
+            depends="replace-common-tokens, replace-default-context, replace-getters" />
+
+    <target name="replace-common-tokens">
+        <property name="tmp" value="${input.file}.tmp" />
+        <copy tofile="${tmp}"
+              file="${project}/resources/common-tokens.tmpl"
+              overwrite="true" />
+        <replace file="${tmp}" token="\" value="\\\\" />
+        <loadfile property="common-tokens" srcfile="${tmp}" />
+        <replaceregexp byline="false"
+                       file="${input.file}"
+                       flags="-g -s"
+                       match="//(\s)*&lt;common-tokens&gt;.*&lt;/common-tokens&gt;"
+                       replace="${common-tokens}" />
+        <delete file="${tmp}" />
+    </target>
+
+    <target name="replace-default-context">
+        <property name="tmp" value="${input.file}.tmp" />
+        <copy tofile="${tmp}" file="${input.file}" overwrite="true" />
+        <replaceregexp byline="false"
+                       file="${tmp}"
+                       flags="-g -s"
+                       match=".*&lt;initial-context&gt;(.*)&lt;/initial-context&gt;.*"
+                       replace="// &lt;default-context&gt;\$1&lt;/default-context&gt;" />
+        <replaceregexp byline="true"
+                       file="${tmp}"
+                       flags="-g -s"
+                       match="&lt;I_"
+                       replace="&lt;D_" />
+        <replaceregexp byline="true"
+                       file="${tmp}"
+                       flags="-g -s"
+                       match="\(&lt;NEW_LINE&gt;\)\?"
+                       replace="&lt;NEW_LINE&gt;" />
+        <loadfile property="default-context" srcfile="${tmp}" />
+        <replaceregexp byline="false"
+                       file="${input.file}"
+                       flags="-g -s"
+                       match="//(\s)*&lt;default-context&gt;.*&lt;/default-context&gt;"
+                       replace="${default-context}" />
+        <delete file="${tmp}" />
+    </target>
+
+    <target name="replace-getters">
+        <property name="g" value="${input.file}.tmp" />
+        <copy tofile="${tmp}" file="${input.file}" overwrite="true" />
+        <replaceregexp byline="false"
+                       file="${tmp}"
+                       flags="-g -s"
+                       match=".*&lt;initial-context&gt;(.*)&lt;/initial-context&gt;.*"
+                       replace="// &lt;getters&gt;\$1&lt;/getters&gt;" />
+        <replaceregexp byline="true"
+                       file="${tmp}"
+                       flags="-g -s"
+                       match="[\t ]*[|]?[\t ]*&lt;[DIT]_([\w_]*)[\t ]*\:.*"
+                       replace="    Token get\$1(): {Token t=null;} {(t=&lt;I_\$1&gt;|t=&lt;D_\$1&gt;){return t;}}" />
+
+        <loadfile property="getters" srcfile="${tmp}" />
+        <replaceregexp byline="false"
+                       file="${input.file}"
+                       flags="-g -s"
+                       match="//(\s)*&lt;getters&gt;.*&lt;/getters&gt;"
+                       replace="${getters}" />
+        <delete file="${tmp}" />
+    </target>
+
+</project>
+

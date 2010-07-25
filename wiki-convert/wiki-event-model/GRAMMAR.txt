@@ -1,0 +1,78 @@
+doc :=  ( #docElement )*
+#docElement := 
+    (
+        // Block elements and containers of embedded documents  
+          table 
+        | list 
+    
+        // Classical XHTML block elements
+        | horline
+        | header
+        | quot
+        | paragraph
+        | emptyParagraph
+        | verbatimBlock // pre
+    
+        // A special type of block elements. 
+        // It can contain embedded documents
+        | info 
+        characters
+        // Elements used to add additional (semantic) structure to documents
+        | embeddedDocument
+        | simpleProperty
+        | documentProperty
+    
+        // For hakers
+        | macroBlock
+        | extensionBlock
+    )
+
+table := (tableRow)+
+tableRow := (tableCell)+
+tableCell := ( #block )*
+
+list := (listItem)+
+listItem := ( #block )* ( list )*
+
+#block := 
+    ( 
+          embeddedDocument 
+        | verbatimBlock
+        | macroBlock
+        | extensionBlock
+        | lines
+    )
+
+horline := #empty
+
+header := ( line )?
+
+quot := (quotLine)+
+quotLine := line
+
+paragraph := lines
+
+emptyParagraph := ( newLine )+
+
+verbatimBlock := #characters
+
+info := ( #block )*
+
+embeddedDocument := ( #docElement )*
+
+simpleProperty := ( line )
+documentProperty := #embeddedDocument
+
+macroBlock := #characters
+
+extensionBlock := #characters
+
+/*----------------------------------------------------------------------------*/
+lines := (multilineStyle)+
+line := (simpleStyle)+
+
+multilineStyle := ( line (newLine line)* )*
+simpleStyle := line 
+
+line := ( <CHAR> | <SPACE> )+
+newLine := ( <EOL> )
