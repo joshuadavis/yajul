@@ -13,8 +13,8 @@
     <orderEntry type="module" module-name="jboss-embedded-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.7" level="project" />
   </component>
 </module>
 

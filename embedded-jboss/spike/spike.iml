@@ -16,7 +16,7 @@
     <orderEntry type="module" module-name="jboss-embedded-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-as:2.0.0-alpha-4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-mc:2.0.0-alpha-3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty:6.1.16" level="project" />
@@ -52,8 +52,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.cl:jboss-classloading:2.0.8.GA" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.cl:jboss-classloader:2.0.8.GA" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: stax:stax-api:1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.0.0-alpha-3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.jbossas:jboss-as-aspects:6.0.0.M1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.aspects:jboss-remoting-aspects:1.0.1.GA" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: jboss:jboss-serialization:1.0.3.GA" level="project" />

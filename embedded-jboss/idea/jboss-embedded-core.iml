@@ -15,7 +15,7 @@
     <orderEntry type="module" module-name="jboss-embedded-api" exported="" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-3" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-as:2.0.0-alpha-4" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-mc:2.0.0-alpha-3" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.mortbay.jetty:jetty:6.1.16" level="project" />
@@ -51,9 +51,9 @@
     <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-client-spi:2.0.9.GA" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.deployers:jboss-deployers-core-spi:2.0.9.GA" level="project" />
     <orderEntry type="library" exported="" name="Maven: stax:stax-api:1.0" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-2" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.0.0-alpha-2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.6" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-3" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.0.0-alpha-3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.7" level="project" />
   </component>
 </module>
 

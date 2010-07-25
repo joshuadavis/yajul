@@ -11,7 +11,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2" level="project" />
-    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-3" level="project" />
   </component>
 </module>
 

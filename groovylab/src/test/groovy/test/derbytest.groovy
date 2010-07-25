@@ -1,8 +1,6 @@
 package test
 
-import groovy.grape.Grape
 import groovy.sql.Sql
-import org.yajul.jdbc.DbSchema
 
 /**
  * TODO: Add class level comments!
@@ -22,5 +20,3 @@ System.properties.keySet().asList().sort().each {
 }
 */
 Sql sql = Sql.newInstance("jdbc:derby:data/derbytest;create=true",null,null,"org.apache.derby.jdbc.EmbeddedDriver")
-DbSchema schema = new DbSchema(sql)
-println "${schema}"
