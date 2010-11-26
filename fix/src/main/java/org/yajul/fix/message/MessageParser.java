@@ -5,11 +5,6 @@ import org.yajul.fix.dictionary.Dictionary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * General message parser loop.  Parses single FIX messages (doesn't handle fragmentation).
  * <br>
@@ -22,9 +17,10 @@ public class MessageParser {
 
     private final byte separator;
     private final byte tagsep;
-    private final TagList tagList;
+    private final TagList tagList;  // Where the tags go when they are parsed.
     private final Dictionary dictionary;
-    private State state;
+    private Section section;
+    private Dictionary.ElementList elementList;
     private static final int MESG_TYPE = 35;
     private Dictionary.MessageType messageType;
 
@@ -33,7 +29,8 @@ public class MessageParser {
         this.tagsep = tagsep;
         this.tagList = tagList;
         this.dictionary = dictionary;
-        this.state = State.HEADER;
+        this.section = Section.HEADER;
+        this.elementList = (dictionary == null) ? null : dictionary.getHeader();
     }
 
     public void parse(byte[] bytes) {
@@ -73,7 +70,7 @@ public class MessageParser {
         byte[] tagBytes = Bytes.copy(bytes, tagStart, tagEnd);
         byte[] valueBytes = Bytes.copy(bytes, valueStart, valueEnd);
         int tag = Bytes.parseDigits(bytes, tagStart, tagEnd);
-        switch (state) {
+        switch (section) {
             case HEADER:
                 // MessageType is special, it determines the body TagList.
                 if (tag == MESG_TYPE && dictionary != null) {
@@ -82,6 +79,10 @@ public class MessageParser {
                     }
                     String msgType = new String(valueBytes);
                     messageType = dictionary.findMessageType(msgType);
+                }
+                if (elementList != null) {
+                    // Look up the tag in the current element list.
+                    //elementList.findElement(tag);                    
                 }
                 break;
             case BODY:
@@ -93,7 +94,7 @@ public class MessageParser {
 
                 break;
         }
-        // Each tag changes the state.
+        // Each tag changes the section.
         tagList.add(tag, tagBytes, valueBytes, null);
     }
 
@@ -103,7 +104,7 @@ public class MessageParser {
         void add(int tag, byte[] tagBytes, byte[] valueBytes, Dictionary.Field f);
     }
 
-    enum State {
+    enum Section {
         HEADER,
         BODY,
         FOOTER

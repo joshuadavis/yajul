@@ -57,12 +57,12 @@ public class DictionaryLoader {
         readVersion();
         readFields();
         Dictionary.ElementList header = readElementList(HEADER);
-        if (log.isDebugEnabled())
-            log.debug("header : " + header);
+//        if (log.isDebugEnabled())
+//            log.debug("header : " + header);
         dictionary.setHeader(header);
         Dictionary.ElementList trailer = readElementList(TRAILER);
-        if (log.isDebugEnabled())
-            log.debug("trailer : " + trailer);
+//        if (log.isDebugEnabled())
+//            log.debug("trailer : " + trailer);
         dictionary.setTrailer(trailer);
         readComponents();
         readMessageTypes();
@@ -91,8 +91,8 @@ public class DictionaryLoader {
                 String name = requireAttribute(node, NAME);
                 Dictionary.ComponentDefinition c = dictionary.findComponentDefinition(name);
                 readElements(c, node);
-                if (log.isDebugEnabled())
-                    log.debug("\n" + c);
+//                if (log.isDebugEnabled())
+//                    log.debug("\n" + c);
             }
         }
     }
@@ -121,7 +121,7 @@ public class DictionaryLoader {
                 Dictionary.Group g = dictionary.new Group(fd,elementList, name, groupNodes.getLength());
                 // Fill in the group and add it.
                 readElements(g, node);
-                elementList.addElement(g, required);
+                elementList.addElement(g);
             }
         }
     }
@@ -139,8 +139,8 @@ public class DictionaryLoader {
                         key,
                         node.getChildNodes().getLength());
                 readElements(msgType,node);
-                if (log.isDebugEnabled())
-                    log.debug(msgType.toString());
+//                if (log.isDebugEnabled())
+//                    log.debug(msgType.toString());
             }
         }
 

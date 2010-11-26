@@ -93,6 +93,10 @@ public class Dictionary {
         return msgTypes.get(msgType);
     }
 
+    public FieldDefinition findFieldDefinition(int tag) {
+        return fieldDefByTag.get(tag);
+    }
+
     /**
      * The definition of a field used in the 'flat' list of all possible fields in the dictionary.
      */
@@ -137,12 +141,22 @@ public class Dictionary {
         }
     }
 
+
+    public static enum ElementType  {
+        FIELD, COMPONENT, GROUP,
+    }
     public interface Element {
+        Dictionary getDictionary();
+
         Serializable getKey();
 
         void append(int level, StringBuilder sb);
 
         boolean isRequired();
+
+        boolean matchesTag(int tag);
+
+        ElementType getElementType();
     }
 
     /**
@@ -171,6 +185,20 @@ public class Dictionary {
 
         public boolean isRequired() {
             return required;
+        }
+
+        public boolean matchesTag(int tag) {
+            return tag == definition.getNum();
+
+        }
+
+        public Dictionary getDictionary() {
+            return Dictionary.this;
+        }
+
+        public ElementType getElementType() {
+            return ElementType.FIELD;
+
         }
 
         public void append(int level, StringBuilder sb) {
@@ -214,43 +242,52 @@ public class Dictionary {
         public Serializable getKey() {
             return componentDefinition.getKey();
         }
+
+        public boolean matchesTag(int tag) {
+            return componentDefinition.containsTag(tag);
+        }
+
+        public Dictionary getDictionary() {
+            return Dictionary.this;
+        }public ElementType getElementType() {
+            return ElementType.COMPONENT;
+        }
     }
 
     public class ElementList {
         private String name;
         private LinkedHashMap<Serializable, Element> elements;
-        private Set<Serializable> required;
 
         protected ElementList(String name, int initialSize) {
             this.name = name;
             elements = new LinkedHashMap<Serializable, Element>(initialSize);
-            required = new HashSet<Serializable>(initialSize);
         }
 
+        public Dictionary getDictionary() {
+            return Dictionary.this;
+        }
+        
         public Serializable getKey() {
             return getName();
         }
 
         void addField(String name, boolean required) {
             FieldDefinition definition = requireFieldDefinition(name);
-            addElement(new Field(definition, required), required);
+            addElement(new Field(definition, required));
         }
 
         void addComponent(String name, boolean required) {
             ComponentDefinition cd = findComponentDefinition(name);
             if (cd == null)
                 throw new ConfigError("No component '" + name + "'");
-            addElement(new Component(this, cd, required), required);
+            addElement(new Component(this, cd, required));
         }
 
-        void addElement(Element e, boolean required) {
+        void addElement(Element e) {
             Serializable key = e.getKey();
             if (elements.containsKey(key))
                 throw new ConfigError("Already contains tag " + key);
             elements.put(key, e);
-            if (required) {
-                this.required.add(key);
-            }
         }
 
         public Element get(Serializable key) {
@@ -286,6 +323,8 @@ public class Dictionary {
             append(0, sb);
             return sb.toString();
         }
+
+
     }
 
     ComponentDefinition findComponentDefinition(String name) {
@@ -295,6 +334,10 @@ public class Dictionary {
     public class Group extends ElementList implements Element {
         private FieldDefinition fieldDefinition;
         private ElementList parent;
+
+        public boolean matchesTag(int tag) {
+            return tag == fieldDefinition.getNum();
+        }
 
         protected Group(FieldDefinition field,ElementList parent,String name, int initialSize) {
             super(name, initialSize);
@@ -306,15 +349,25 @@ public class Dictionary {
             return false;
         }
 
+        public ElementType getElementType() {
+            return ElementType.GROUP;
+        }
+
         @Override
         protected void appendHeader(StringBuilder sb) {
             sb.append("Group: ").append(fieldDefinition.getFieldName());
         }
+
+
     }
 
     public class ComponentDefinition extends ElementList {
         protected ComponentDefinition(String name, int initialSize) {
             super(name, initialSize);
+        }
+
+        public boolean containsTag(int tag) {
+            return false;  // TODO: Implement this!
         }
     }
 
