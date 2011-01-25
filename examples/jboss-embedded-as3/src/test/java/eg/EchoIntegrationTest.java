@@ -1,66 +1,41 @@
 package eg;
 
+import org.jboss.embedded.api.server.JBossASEmbeddedServer;
+import org.jboss.embedded.api.server.JBossASEmbeddedServerFactory;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-public class EchoTest
+public class EchoIntegrationTest
 {
-/*
    //-------------------------------------------------------------------------------------||
    // Class Members ----------------------------------------------------------------------||
    //-------------------------------------------------------------------------------------||
 
-   */
-/**
-    * Logger
-    *//*
-
-   private static final Logger log = Logger.getLogger(EchoBeanIntegrationTest.class);
-
-   */
-/**
-    * AS instance
-    *//*
+   private static final Logger log = LoggerFactory.getLogger(EchoIntegrationTest.class);
 
    private static JBossASEmbeddedServer server;
 
-   */
-/**
-    * JNDI Context
-    *//*
-
    private static Context jndiContext;
-
-   */
-/**
-    * Creates the deployment; much like Arquillian will eventually use
-    * @return
-    *//*
 
    private static JavaArchive createDeployment()
    {
-      return ShrinkWrap.create("slsb.jar", JavaArchive.class).addClasses(EchoBean.class, EchoLocalBusiness.class);
+      return ShrinkWrap.create("slsb.jar", JavaArchive.class).addClasses(EchoBean.class, Echo.class);
    }
 
    //-------------------------------------------------------------------------------------||
    // Instance Members -------------------------------------------------------------------||
    //-------------------------------------------------------------------------------------||
 
-   */
-/**
-    * Our test JAR
-    *//*
-
    private JavaArchive deployment;
 
    //-------------------------------------------------------------------------------------||
    // Lifecycle --------------------------------------------------------------------------||
    //-------------------------------------------------------------------------------------||
-
-   */
-/**
-    * Creates and starts the server, setting the JNDI Context
-    *//*
 
    @BeforeClass
    public static void createAndStartServer() throws Exception
@@ -75,11 +50,6 @@ public class EchoTest
       jndiContext = new InitialContext();
    }
 
-   */
-/**
-    * Creates and deploys the EJB JAR
-    *//*
-
    @Before
    public void deploy() throws Exception
    {
@@ -93,11 +63,6 @@ public class EchoTest
       server.deploy(deployment);
    }
 
-   */
-/**
-    * Undeploys the EJB
-    * @throws Exception
-    *//*
 
    @After
    public void undeploy() throws Exception
@@ -108,13 +73,6 @@ public class EchoTest
          server.undeploy(deployment);
       }
    }
-
-   */
-/**
-    * Brings down the server
-    * @throws Exception
-    *//*
-
    @AfterClass
    public static void stopServer() throws Exception
    {
@@ -127,11 +85,6 @@ public class EchoTest
    //-------------------------------------------------------------------------------------||
    // Tests ------------------------------------------------------------------------------||
    //-------------------------------------------------------------------------------------||
-
-   */
-/**
-    * Ensures the EJB is working as expected
-    *//*
 
    @Test
    public void testSlsb() throws Exception
@@ -147,6 +100,4 @@ public class EchoTest
       Assert.assertEquals("Expected result was not as received", expected, received);
       Assert.assertTrue("Expected result was not the same reference as received", expected == received);
    }
-
-*/
 }
