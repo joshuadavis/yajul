@@ -1,0 +1,2664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AntConfiguration">
+    <defaultAnt bundledAnt="true" />
+  </component>
+  <component name="BuildJarProjectSettings">
+    <option name="BUILD_JARS_ON_MAKE" value="false" />
+  </component>
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <resourceExtensions>
+      <entry name=".+\.(properties|xml|html|dtd|tld)" />
+      <entry name=".+\.(gif|png|jpeg|jpg)" />
+    </resourceExtensions>
+    <wildcardResourcePatterns>
+      <entry name="?*.properties" />
+      <entry name="?*.xml" />
+      <entry name="?*.gif" />
+      <entry name="?*.png" />
+      <entry name="?*.jpeg" />
+      <entry name="?*.jpg" />
+      <entry name="?*.html" />
+      <entry name="?*.dtd" />
+      <entry name="?*.tld" />
+      <entry name="?*.ftl" />
+    </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
+  </component>
+  <component name="CopyrightManager" default="">
+    <module2copyright />
+  </component>
+  <component name="DependencyValidationManager">
+    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
+  <component name="EclipseCompilerSettings">
+    <option name="GENERATE_NO_WARNINGS" value="true" />
+    <option name="DEPRECATION" value="false" />
+  </component>
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="IdProvider" IDEtalkID="C42FC41B0749D55BB47F3CE494A9687E" />
+  <component name="InspectionProjectProfileManager">
+    <profiles>
+      <profile version="1.0" is_locked="false">
+        <option name="myName" value="Project Default" />
+        <option name="myLocal" value="false" />
+        <inspection_tool class="JpaDataSourceORMInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+        <inspection_tool class="JpaModelErrorInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="UnterminatedStatementJS" enabled="false" level="WARNING" enabled_by_default="false">
+          <option name="ignoreSemicolonAtEndOfBlock" value="true" />
+        </inspection_tool>
+        <inspection_tool class="groupsTestNG" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="groups">
+            <value>
+              <list size="2">
+                <item index="0" class="java.lang.String" itemvalue="commit" />
+                <item index="1" class="java.lang.String" itemvalue="integration" />
+              </list>
+            </value>
+          </option>
+        </inspection_tool>
+      </profile>
+    </profiles>
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+      <item index="1" class="java.lang.String" itemvalue="INFO" />
+      <item index="2" class="java.lang.String" itemvalue="TYPO" />
+      <item index="3" class="java.lang.String" itemvalue="WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="ERROR" />
+    </list>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" />
+    <option name="OPTION_SCOPE" value="protected" />
+    <option name="OPTION_HIERARCHY" value="true" />
+    <option name="OPTION_NAVIGATOR" value="true" />
+    <option name="OPTION_INDEX" value="true" />
+    <option name="OPTION_SEPARATE_INDEX" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
+    <option name="OPTION_DEPRECATED_LIST" value="true" />
+    <option name="OTHER_OPTIONS" value="" />
+    <option name="HEAP_SIZE" />
+    <option name="LOCALE" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="Palette2">
+    <group name="Swing">
+      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
+      </item>
+      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
+      </item>
+      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
+      </item>
+      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.png" removable="false" auto-create-binding="false" can-attach-label="true">
+        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
+      </item>
+      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
+        <initial-values>
+          <property name="text" value="Button" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+        <initial-values>
+          <property name="text" value="RadioButton" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+        <initial-values>
+          <property name="text" value="CheckBox" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
+        <initial-values>
+          <property name="text" value="Label" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+          <preferred-size width="150" height="-1" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+          <preferred-size width="150" height="-1" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+          <preferred-size width="150" height="-1" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
+      </item>
+      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+          <preferred-size width="200" height="200" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+          <preferred-size width="200" height="200" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+      </item>
+      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+      </item>
+      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
+      </item>
+      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
+      </item>
+      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
+          <preferred-size width="-1" height="20" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
+      </item>
+      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
+      </item>
+    </group>
+  </component>
+  <component name="ProjectDetails">
+    <option name="projectName" value="embedded-jboss-examples" />
+  </component>
+  <component name="ProjectKey">
+    <option name="state" value="project://default" />
+  </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/embedded-jboss-examples.iml" filepath="$PROJECT_DIR$/embedded-jboss-examples.iml" />
+    </modules>
+  </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="Regex">
+    <option name="pos1" value="218" />
+    <option name="pos2" value="218" />
+    <option name="pos3" value="162" />
+    <option name="pos4" value="444" />
+    <option name="pos5" value="162" />
+    <option name="autoUpdate" value="true" />
+    <option name="referenceOn" value="false" />
+    <option name="referencePos" value="0" />
+    <option name="showLabels" value="true" />
+  </component>
+  <component name="ResourceManagerContainer">
+    <option name="myResourceBundles">
+      <value>
+        <list size="0" />
+      </value>
+    </option>
+  </component>
+  <component name="SQLPlugin.ProjectConfiguration">
+    <queries />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://yajul.svn.sourceforge.net/svnroot/yajul/sandbox/examples/jboss-embedded-as1" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="svn" />
+  </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
+  <component name="XPathView.XPathProjectComponent">
+    <history />
+    <find-history />
+  </component>
+  <component name="libraryTable">
+    <library name="Maven: antlr:antlr:2.7.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: apache-velocity:velocity:1.4jboss">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/apache-velocity/velocity/1.4jboss/velocity-1.4jboss.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/apache-velocity/velocity/1.4jboss/velocity-1.4jboss-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/apache-velocity/velocity/1.4jboss/velocity-1.4jboss-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: apache-xerces:xml-apis:2.9.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/apache-xerces/xml-apis/2.9.1/xml-apis-2.9.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/apache-xerces/xml-apis/2.9.1/xml-apis-2.9.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/apache-xerces/xml-apis/2.9.1/xml-apis-2.9.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: bcel:bcel:5.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/bcel/bcel/5.1/bcel-5.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/bcel/bcel/5.1/bcel-5.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/bcel/bcel/5.1/bcel-5.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: bsf:bsf:2.4.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/bsf/bsf/2.4.0/bsf-2.4.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/bsf/bsf/2.4.0/bsf-2.4.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/bsf/bsf/2.4.0/bsf-2.4.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: cglib:cglib:2.1.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/cglib/cglib/2.1.3/cglib-2.1.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/cglib/cglib/2.1.3/cglib-2.1.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/cglib/cglib/2.1.3/cglib-2.1.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.sun.org.apache.xml.internal:resolver:20050927">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/org/apache/xml/internal/resolver/20050927/resolver-20050927.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/org/apache/xml/internal/resolver/20050927/resolver-20050927-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/org/apache/xml/internal/resolver/20050927/resolver-20050927-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.sun.xml.bind:jaxb-xjc:2.1.12">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/bind/jaxb-xjc/2.1.12/jaxb-xjc-2.1.12.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/bind/jaxb-xjc/2.1.12/jaxb-xjc-2.1.12-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/bind/jaxb-xjc/2.1.12/jaxb-xjc-2.1.12-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.sun.xml.stream.buffer:streambuffer:0.9">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/stream/buffer/streambuffer/0.9/streambuffer-0.9.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/stream/buffer/streambuffer/0.9/streambuffer-0.9-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/stream/buffer/streambuffer/0.9/streambuffer-0.9-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.sun.xml.ws:jaxws-rt:2.1.7">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/jaxws-rt/2.1.7/jaxws-rt-2.1.7.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/jaxws-rt/2.1.7/jaxws-rt-2.1.7-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/jaxws-rt/2.1.7/jaxws-rt-2.1.7-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.sun.xml.ws:jaxws-tools:2.1.7">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/jaxws-tools/2.1.7/jaxws-tools-2.1.7.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/jaxws-tools/2.1.7/jaxws-tools-2.1.7-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/ws/jaxws-tools/2.1.7/jaxws-tools-2.1.7-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-collections:commons-collections:3.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.1/commons-collections-3.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.1/commons-collections-3.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-logging:commons-logging:1.1.0.jboss">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.0.jboss/commons-logging-1.1.0.jboss.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.0.jboss/commons-logging-1.1.0.jboss-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.0.jboss/commons-logging-1.1.0.jboss-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: dom4j:dom4j:1.6.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: gnu-getopt:getopt:1.0.12-brew">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/gnu-getopt/getopt/1.0.12-brew/getopt-1.0.12-brew.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/gnu-getopt/getopt/1.0.12-brew/getopt-1.0.12-brew-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/gnu-getopt/getopt/1.0.12-brew/getopt-1.0.12-brew-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: hsqldb:hsqldb:1.8.0.8-brew">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/hsqldb/hsqldb/1.8.0.8-brew/hsqldb-1.8.0.8-brew.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/hsqldb/hsqldb/1.8.0.8-brew/hsqldb-1.8.0.8-brew-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/hsqldb/hsqldb/1.8.0.8-brew/hsqldb-1.8.0.8-brew-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jacorb:jacorb:2.3.1jboss.patch01-brew">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jacorb/jacorb/2.3.1jboss.patch01-brew/jacorb-2.3.1jboss.patch01-brew.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jacorb/jacorb/2.3.1jboss.patch01-brew/jacorb-2.3.1jboss.patch01-brew-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jacorb/jacorb/2.3.1jboss.patch01-brew/jacorb-2.3.1jboss.patch01-brew-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javassist:javassist:3.11.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.11.0.GA/javassist-3.11.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.11.0.GA/javassist-3.11.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.11.0.GA/javassist-3.11.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.activation:activation:1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.faces:jsf-api:2.0.1-FCS">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-api/2.0.1-FCS/jsf-api-2.0.1-FCS.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-api/2.0.1-FCS/jsf-api-2.0.1-FCS-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-api/2.0.1-FCS/jsf-api-2.0.1-FCS-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.faces:jsf-impl:2.0.1-FCS">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-impl/2.0.1-FCS/jsf-impl-2.0.1-FCS.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-impl/2.0.1-FCS/jsf-impl-2.0.1-FCS-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-impl/2.0.1-FCS/jsf-impl-2.0.1-FCS-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.jws:jsr181-api:1.0-MR1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/jws/jsr181-api/1.0-MR1/jsr181-api-1.0-MR1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/jws/jsr181-api/1.0-MR1/jsr181-api-1.0-MR1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/jws/jsr181-api/1.0-MR1/jsr181-api-1.0-MR1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.mail:mail:1.4.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4.2/mail-1.4.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4.2/mail-1.4.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4.2/mail-1.4.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.transaction:jta:1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.1/jta-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.1/jta-1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/transaction/jta/1.1/jta-1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.validation:validation-api:1.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.xml.ws:jaxws-api:2.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/xml/ws/jaxws-api/2.1/jaxws-api-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/xml/ws/jaxws-api/2.1/jaxws-api-2.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/xml/ws/jaxws-api/2.1/jaxws-api-2.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.jaxbintros:jboss-jaxb-intros:1.0.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jaxbintros/jboss-jaxb-intros/1.0.1.GA/jboss-jaxb-intros-1.0.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jaxbintros/jboss-jaxb-intros/1.0.1.GA/jboss-jaxb-intros-1.0.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jaxbintros/jboss-jaxb-intros/1.0.1.GA/jboss-jaxb-intros-1.0.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.jbossts:jbossjts-jacorb:4.6.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jbossts/jbossjts-jacorb/4.6.1.GA/jbossjts-jacorb-4.6.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jbossts/jbossjts-jacorb/4.6.1.GA/jbossjts-jacorb-4.6.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jbossts/jbossjts-jacorb/4.6.1.GA/jbossjts-jacorb-4.6.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.jbossws:jboss-jaxws:3.0.1-native-2.0.4.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jbossws/jboss-jaxws/3.0.1-native-2.0.4.GA/jboss-jaxws-3.0.1-native-2.0.4.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jbossws/jboss-jaxws/3.0.1-native-2.0.4.GA/jboss-jaxws-3.0.1-native-2.0.4.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jbossws/jboss-jaxws/3.0.1-native-2.0.4.GA/jboss-jaxws-3.0.1-native-2.0.4.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.messaging:jboss-messaging:1.4.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/messaging/jboss-messaging/1.4.3.GA/jboss-messaging-1.4.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/messaging/jboss-messaging/1.4.3.GA/jboss-messaging-1.4.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/messaging/jboss-messaging/1.4.3.GA/jboss-messaging-1.4.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.profiler.jvmti:jboss-profiler-jvmti:1.0.0.CR5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/profiler/jvmti/jboss-profiler-jvmti/1.0.0.CR5/jboss-profiler-jvmti-1.0.0.CR5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/profiler/jvmti/jboss-profiler-jvmti/1.0.0.CR5/jboss-profiler-jvmti-1.0.0.CR5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/profiler/jvmti/jboss-profiler-jvmti/1.0.0.CR5/jboss-profiler-jvmti-1.0.0.CR5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.web:el-api:2.1.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/el-api/2.1.3.GA/el-api-2.1.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/el-api/2.1.3.GA/el-api-2.1.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/el-api/2.1.3.GA/el-api-2.1.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.web:jasper-jdt:2.1.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jasper-jdt/2.1.3.GA/jasper-jdt-2.1.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jasper-jdt/2.1.3.GA/jasper-jdt-2.1.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jasper-jdt/2.1.3.GA/jasper-jdt-2.1.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.web:jbossweb:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jbossweb/2.1.6.GA/jbossweb-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jbossweb/2.1.6.GA/jbossweb-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jbossweb/2.1.6.GA/jbossweb-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.web:jsp-api:2.1.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jsp-api/2.1.3.GA/jsp-api-2.1.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jsp-api/2.1.3.GA/jsp-api-2.1.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/jsp-api/2.1.3.GA/jsp-api-2.1.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss.web:servlet-api:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/servlet-api/2.1.6.GA/servlet-api-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/servlet-api/2.1.6.GA/servlet-api-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/web/servlet-api/2.1.6.GA/servlet-api-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jboss:jboss-serialization:1.0.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jboss-serialization/1.0.3.GA/jboss-serialization-1.0.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jboss-serialization/1.0.3.GA/jboss-serialization-1.0.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jboss/jboss-serialization/1.0.3.GA/jboss-serialization-1.0.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jgroups:jgroups:2.6.13.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jgroups/jgroups/2.6.13.GA/jgroups-2.6.13.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jgroups/jgroups/2.6.13.GA/jgroups-2.6.13.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jgroups/jgroups/2.6.13.GA/jgroups-2.6.13.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: joesnmp:joesnmp:0.3.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/joesnmp/joesnmp/0.3.4/joesnmp-0.3.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/joesnmp/joesnmp/0.3.4/joesnmp-0.3.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/joesnmp/joesnmp/0.3.4/joesnmp-0.3.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: junit:junit:3.8.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: log4j:log4j:1.2.14">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.14/log4j-1.2.14.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.14/log4j-1.2.14-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.14/log4j-1.2.14-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.jcip:jcip-annotations:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: opensaml:opensaml:1.1b">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/opensaml/opensaml/1.1b/opensaml-1.1b.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/opensaml/opensaml/1.1b/opensaml-1.1b-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/opensaml/opensaml/1.1b/opensaml-1.1b-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.ant:ant-junit:1.7.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-junit/1.7.0/ant-junit-1.7.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-junit/1.7.0/ant-junit-1.7.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-junit/1.7.0/ant-junit-1.7.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.ant:ant-launcher:1.7.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.7.1/ant-launcher-1.7.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.7.1/ant-launcher-1.7.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.7.1/ant-launcher-1.7.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.ant:ant:1.7.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.7.1/ant-1.7.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.7.1/ant-1.7.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.7.1/ant-1.7.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache:xmlsec:1.4.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/xmlsec/1.4.3/xmlsec-1.4.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/xmlsec/1.4.3/xmlsec-1.4.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/xmlsec/1.4.3/xmlsec-1.4.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.beanshell:bsh:1.3.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/beanshell/bsh/1.3.0/bsh-1.3.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/beanshell/bsh/1.3.0/bsh-1.3.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/beanshell/bsh/1.3.0/bsh-1.3.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.codehaus.jettison:jettison:1.0-RC2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/jettison/jettison/1.0-RC2/jettison-1.0-RC2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/jettison/jettison/1.0-RC2/jettison-1.0-RC2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/jettison/jettison/1.0-RC2/jettison-1.0-RC2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.codehaus.woodstox:wstx-asl:3.2.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/wstx-asl/3.2.3/wstx-asl-3.2.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/wstx-asl/3.2.3/wstx-asl-3.2.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/wstx-asl/3.2.3/wstx-asl-3.2.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.codehaus.woodstox:wstx-lgpl:3.2.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/wstx-lgpl/3.2.6/wstx-lgpl-3.2.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/wstx-lgpl/3.2.6/wstx-lgpl-3.2.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/woodstox/wstx-lgpl/3.2.6/wstx-lgpl-3.2.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate.java-persistence:jpa-api:2.0-cr-1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/java-persistence/jpa-api/2.0-cr-1/jpa-api-2.0-cr-1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/java-persistence/jpa-api/2.0-cr-1/jpa-api-2.0-cr-1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/java-persistence/jpa-api/2.0-cr-1/jpa-api-2.0-cr-1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate:ejb3-persistence:1.0.2.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/ejb3-persistence/1.0.2.GA/ejb3-persistence-1.0.2.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/ejb3-persistence/1.0.2.GA/ejb3-persistence-1.0.2.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/ejb3-persistence/1.0.2.GA/ejb3-persistence-1.0.2.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate:hibernate-annotations:3.5.0-Beta-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-annotations/3.5.0-Beta-2/hibernate-annotations-3.5.0-Beta-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-annotations/3.5.0-Beta-2/hibernate-annotations-3.5.0-Beta-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-annotations/3.5.0-Beta-2/hibernate-annotations-3.5.0-Beta-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Beta1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-commons-annotations/3.2.0.Beta1/hibernate-commons-annotations-3.2.0.Beta1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-commons-annotations/3.2.0.Beta1/hibernate-commons-annotations-3.2.0.Beta1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-commons-annotations/3.2.0.Beta1/hibernate-commons-annotations-3.2.0.Beta1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate:hibernate-core:3.5.0-Beta-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/3.5.0-Beta-2/hibernate-core-3.5.0-Beta-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/3.5.0-Beta-2/hibernate-core-3.5.0-Beta-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/3.5.0-Beta-2/hibernate-core-3.5.0-Beta-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate:hibernate-entitymanager:3.5.0-Beta-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-entitymanager/3.5.0-Beta-2/hibernate-entitymanager-3.5.0-Beta-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-entitymanager/3.5.0-Beta-2/hibernate-entitymanager-3.5.0-Beta-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-entitymanager/3.5.0-Beta-2/hibernate-entitymanager-3.5.0-Beta-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aop:jboss-aop-asintegration-core:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-asintegration-core/2.1.6.GA/jboss-aop-asintegration-core-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-asintegration-core/2.1.6.GA/jboss-aop-asintegration-core-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-asintegration-core/2.1.6.GA/jboss-aop-asintegration-core-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aop:jboss-aop-asintegration-mc:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-asintegration-mc/2.1.6.GA/jboss-aop-asintegration-mc-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-asintegration-mc/2.1.6.GA/jboss-aop-asintegration-mc-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-asintegration-mc/2.1.6.GA/jboss-aop-asintegration-mc-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aop:jboss-aop-aspects:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-aspects/2.1.6.GA/jboss-aop-aspects-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-aspects/2.1.6.GA/jboss-aop-aspects-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop-aspects/2.1.6.GA/jboss-aop-aspects-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aop:jboss-aop:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop/2.1.6.GA/jboss-aop-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop/2.1.6.GA/jboss-aop-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/jboss-aop/2.1.6.GA/jboss-aop-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aop:pluggable-instrumentor:2.1.6.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/pluggable-instrumentor/2.1.6.GA/pluggable-instrumentor-2.1.6.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/pluggable-instrumentor/2.1.6.GA/pluggable-instrumentor-2.1.6.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aop/pluggable-instrumentor/2.1.6.GA/pluggable-instrumentor-2.1.6.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aspects:jboss-current-invocation-aspects:1.0.0.CR1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-current-invocation-aspects/1.0.0.CR1/jboss-current-invocation-aspects-1.0.0.CR1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-current-invocation-aspects/1.0.0.CR1/jboss-current-invocation-aspects-1.0.0.CR1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-current-invocation-aspects/1.0.0.CR1/jboss-current-invocation-aspects-1.0.0.CR1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aspects:jboss-remoting-aspects:1.0.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-remoting-aspects/1.0.1.GA/jboss-remoting-aspects-1.0.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-remoting-aspects/1.0.1.GA/jboss-remoting-aspects-1.0.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-remoting-aspects/1.0.1.GA/jboss-remoting-aspects-1.0.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aspects:jboss-security-aspects:1.0.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-security-aspects/1.0.1/jboss-security-aspects-1.0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-security-aspects/1.0.1/jboss-security-aspects-1.0.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-security-aspects/1.0.1/jboss-security-aspects-1.0.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.aspects:jboss-transaction-aspects:1.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-transaction-aspects/1.0.0.GA/jboss-transaction-aspects-1.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-transaction-aspects/1.0.0.GA/jboss-transaction-aspects-1.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/aspects/jboss-transaction-aspects/1.0.0.GA/jboss-transaction-aspects-1.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-as:2.0.0-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api-as/2.0.0-alpha-2/jboss-bootstrap-api-as-2.0.0-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api-as/2.0.0-alpha-2/jboss-bootstrap-api-as-2.0.0-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api-as/2.0.0-alpha-2/jboss-bootstrap-api-as-2.0.0-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-api-mc:2.0.0-alpha-1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api-mc/2.0.0-alpha-1/jboss-bootstrap-api-mc-2.0.0-alpha-1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api-mc/2.0.0-alpha-1/jboss-bootstrap-api-mc-2.0.0-alpha-1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api-mc/2.0.0-alpha-1/jboss-bootstrap-api-mc-2.0.0-alpha-1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-api:2.0.0-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api/2.0.0-alpha-2/jboss-bootstrap-api-2.0.0-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api/2.0.0-alpha-2/jboss-bootstrap-api-2.0.0-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-api/2.0.0-alpha-2/jboss-bootstrap-api-2.0.0-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-as:2.0.0-alpha-4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-as/2.0.0-alpha-4/jboss-bootstrap-impl-as-2.0.0-alpha-4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-as/2.0.0-alpha-4/jboss-bootstrap-impl-as-2.0.0-alpha-4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-as/2.0.0-alpha-4/jboss-bootstrap-impl-as-2.0.0-alpha-4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-base:2.0.0-alpha-4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-base/2.0.0-alpha-4/jboss-bootstrap-impl-base-2.0.0-alpha-4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-base/2.0.0-alpha-4/jboss-bootstrap-impl-base-2.0.0-alpha-4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-base/2.0.0-alpha-4/jboss-bootstrap-impl-base-2.0.0-alpha-4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-impl-mc:2.0.0-alpha-3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-mc/2.0.0-alpha-3/jboss-bootstrap-impl-mc-2.0.0-alpha-3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-mc/2.0.0-alpha-3/jboss-bootstrap-impl-mc-2.0.0-alpha-3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-impl-mc/2.0.0-alpha-3/jboss-bootstrap-impl-mc-2.0.0-alpha-3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-spi-as:2.0.0-alpha-4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi-as/2.0.0-alpha-4/jboss-bootstrap-spi-as-2.0.0-alpha-4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi-as/2.0.0-alpha-4/jboss-bootstrap-spi-as-2.0.0-alpha-4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi-as/2.0.0-alpha-4/jboss-bootstrap-spi-as-2.0.0-alpha-4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-spi-mc:2.0.0-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi-mc/2.0.0-alpha-2/jboss-bootstrap-spi-mc-2.0.0-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi-mc/2.0.0-alpha-2/jboss-bootstrap-spi-mc-2.0.0-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi-mc/2.0.0-alpha-2/jboss-bootstrap-spi-mc-2.0.0-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.bootstrap:jboss-bootstrap-spi:2.0.0-alpha-3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi/2.0.0-alpha-3/jboss-bootstrap-spi-2.0.0-alpha-3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi/2.0.0-alpha-3/jboss-bootstrap-spi-2.0.0-alpha-3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/bootstrap/jboss-bootstrap-spi/2.0.0-alpha-3/jboss-bootstrap-spi-2.0.0-alpha-3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cache:jbosscache-core:3.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-core/3.0.0.GA/jbosscache-core-3.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-core/3.0.0.GA/jbosscache-core-3.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-core/3.0.0.GA/jbosscache-core-3.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cache:jbosscache-pojo:3.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-pojo/3.0.0.GA/jbosscache-pojo-3.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-pojo/3.0.0.GA/jbosscache-pojo-3.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cache/jbosscache-pojo/3.0.0.GA/jbosscache-pojo-3.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cl:jboss-classloader:2.0.8.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloader/2.0.8.GA/jboss-classloader-2.0.8.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloader/2.0.8.GA/jboss-classloader-2.0.8.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloader/2.0.8.GA/jboss-classloader-2.0.8.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cl:jboss-classloading-vfs:2.0.8.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloading-vfs/2.0.8.GA/jboss-classloading-vfs-2.0.8.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloading-vfs/2.0.8.GA/jboss-classloading-vfs-2.0.8.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloading-vfs/2.0.8.GA/jboss-classloading-vfs-2.0.8.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cl:jboss-classloading:2.0.8.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloading/2.0.8.GA/jboss-classloading-2.0.8.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloading/2.0.8.GA/jboss-classloading-2.0.8.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cl/jboss-classloading/2.0.8.GA/jboss-classloading-2.0.8.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cluster:jboss-ha-client:1.1.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-client/1.1.1.GA/jboss-ha-client-1.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-client/1.1.1.GA/jboss-ha-client-1.1.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-client/1.1.1.GA/jboss-ha-client-1.1.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cluster:jboss-ha-server-api:1.1.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-api/1.1.1.GA/jboss-ha-server-api-1.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-api/1.1.1.GA/jboss-ha-server-api-1.1.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-api/1.1.1.GA/jboss-ha-server-api-1.1.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cluster:jboss-ha-server-cache-jbc:2.1.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-cache-jbc/2.1.0.GA/jboss-ha-server-cache-jbc-2.1.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-cache-jbc/2.1.0.GA/jboss-ha-server-cache-jbc-2.1.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-cache-jbc/2.1.0.GA/jboss-ha-server-cache-jbc-2.1.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.cluster:jboss-ha-server-cache-spi:2.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-cache-spi/2.0.0.GA/jboss-ha-server-cache-spi-2.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-cache-spi/2.0.0.GA/jboss-ha-server-cache-spi-2.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/cluster/jboss-ha-server-cache-spi/2.0.0.GA/jboss-ha-server-cache-spi-2.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-client-spi:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-client-spi/2.0.9.GA/jboss-deployers-client-spi-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-client-spi/2.0.9.GA/jboss-deployers-client-spi-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-client-spi/2.0.9.GA/jboss-deployers-client-spi-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-client:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-client/2.0.9.GA/jboss-deployers-client-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-client/2.0.9.GA/jboss-deployers-client-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-client/2.0.9.GA/jboss-deployers-client-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-core-spi:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-core-spi/2.0.9.GA/jboss-deployers-core-spi-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-core-spi/2.0.9.GA/jboss-deployers-core-spi-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-core-spi/2.0.9.GA/jboss-deployers-core-spi-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-core:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-core/2.0.9.GA/jboss-deployers-core-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-core/2.0.9.GA/jboss-deployers-core-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-core/2.0.9.GA/jboss-deployers-core-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-impl:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-impl/2.0.9.GA/jboss-deployers-impl-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-impl/2.0.9.GA/jboss-deployers-impl-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-impl/2.0.9.GA/jboss-deployers-impl-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-spi:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-spi/2.0.9.GA/jboss-deployers-spi-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-spi/2.0.9.GA/jboss-deployers-spi-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-spi/2.0.9.GA/jboss-deployers-spi-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-structure-spi:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-structure-spi/2.0.9.GA/jboss-deployers-structure-spi-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-structure-spi/2.0.9.GA/jboss-deployers-structure-spi-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-structure-spi/2.0.9.GA/jboss-deployers-structure-spi-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-vfs-spi:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-vfs-spi/2.0.9.GA/jboss-deployers-vfs-spi-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-vfs-spi/2.0.9.GA/jboss-deployers-vfs-spi-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-vfs-spi/2.0.9.GA/jboss-deployers-vfs-spi-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.deployers:jboss-deployers-vfs:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-vfs/2.0.9.GA/jboss-deployers-vfs-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-vfs/2.0.9.GA/jboss-deployers-vfs-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/deployers/jboss-deployers-vfs/2.0.9.GA/jboss-deployers-vfs-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-as-int:1.1.21">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-as-int/1.1.21/jboss-ejb3-as-int-1.1.21.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-as-int/1.1.21/jboss-ejb3-as-int-1.1.21-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-as-int/1.1.21/jboss-ejb3-as-int-1.1.21-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-cache:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-cache/1.0.0/jboss-ejb3-cache-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-cache/1.0.0/jboss-ejb3-cache-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-cache/1.0.0/jboss-ejb3-cache-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-common:1.0.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-common/1.0.1/jboss-ejb3-common-1.0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-common/1.0.1/jboss-ejb3-common-1.0.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-common/1.0.1/jboss-ejb3-common-1.0.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-core:1.1.21">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-core/1.1.21/jboss-ejb3-core-1.1.21.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-core/1.1.21/jboss-ejb3-core-1.1.21-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-core/1.1.21/jboss-ejb3-core-1.1.21-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-core:client:1.1.21">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-core/1.1.21/jboss-ejb3-core-1.1.21-client.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-core/1.1.21/jboss-ejb3-core-1.1.21-client-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-core/1.1.21/jboss-ejb3-core-1.1.21-client-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-deployers:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-deployers/1.0.0/jboss-ejb3-deployers-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-deployers/1.0.0/jboss-ejb3-deployers-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-deployers/1.0.0/jboss-ejb3-deployers-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-endpoint:0.1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-endpoint/0.1.0/jboss-ejb3-endpoint-0.1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-endpoint/0.1.0/jboss-ejb3-endpoint-0.1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-endpoint/0.1.0/jboss-ejb3-endpoint-0.1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-ext-api-impl:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-ext-api-impl/1.0.0/jboss-ejb3-ext-api-impl-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-ext-api-impl/1.0.0/jboss-ejb3-ext-api-impl-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-ext-api-impl/1.0.0/jboss-ejb3-ext-api-impl-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-ext-api:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-ext-api/1.0.0/jboss-ejb3-ext-api-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-ext-api/1.0.0/jboss-ejb3-ext-api-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-ext-api/1.0.0/jboss-ejb3-ext-api-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-interceptors:1.0.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-interceptors/1.0.5/jboss-ejb3-interceptors-1.0.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-interceptors/1.0.5/jboss-ejb3-interceptors-1.0.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-interceptors/1.0.5/jboss-ejb3-interceptors-1.0.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-jpa-int:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-jpa-int/1.0.0/jboss-ejb3-jpa-int-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-jpa-int/1.0.0/jboss-ejb3-jpa-int-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-jpa-int/1.0.0/jboss-ejb3-jpa-int-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-mc-int:1.0.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-mc-int/1.0.1/jboss-ejb3-mc-int-1.0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-mc-int/1.0.1/jboss-ejb3-mc-int-1.0.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-mc-int/1.0.1/jboss-ejb3-mc-int-1.0.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-metadata:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-metadata/1.0.0/jboss-ejb3-metadata-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-metadata/1.0.0/jboss-ejb3-metadata-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-metadata/1.0.0/jboss-ejb3-metadata-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-metrics-deployer:1.0.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-metrics-deployer/1.0.1/jboss-ejb3-metrics-deployer-1.0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-metrics-deployer/1.0.1/jboss-ejb3-metrics-deployer-1.0.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-metrics-deployer/1.0.1/jboss-ejb3-metrics-deployer-1.0.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-proxy-clustered:1.0.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-clustered/1.0.2/jboss-ejb3-proxy-clustered-1.0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-clustered/1.0.2/jboss-ejb3-proxy-clustered-1.0.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-clustered/1.0.2/jboss-ejb3-proxy-clustered-1.0.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-proxy-impl:1.0.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-impl/1.0.6/jboss-ejb3-proxy-impl-1.0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-impl/1.0.6/jboss-ejb3-proxy-impl-1.0.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-impl/1.0.6/jboss-ejb3-proxy-impl-1.0.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-proxy-spi:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-spi/1.0.0/jboss-ejb3-proxy-spi-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-spi/1.0.0/jboss-ejb3-proxy-spi-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-proxy-spi/1.0.0/jboss-ejb3-proxy-spi-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-security:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-security/1.0.0/jboss-ejb3-security-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-security/1.0.0/jboss-ejb3-security-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-security/1.0.0/jboss-ejb3-security-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-timerservice-spi:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-timerservice-spi/1.0.0/jboss-ejb3-timerservice-spi-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-timerservice-spi/1.0.0/jboss-ejb3-timerservice-spi-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-timerservice-spi/1.0.0/jboss-ejb3-timerservice-spi-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ejb3:jboss-ejb3-transactions:1.0.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-transactions/1.0.2/jboss-ejb3-transactions-1.0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-transactions/1.0.2/jboss-ejb3-transactions-1.0.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/jboss-ejb3-transactions/1.0.2/jboss-ejb3-transactions-1.0.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:jboss-embedded-api:1.0.0-alpha-1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-api/1.0.0-alpha-1/jboss-embedded-api-1.0.0-alpha-1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-api/1.0.0-alpha-1/jboss-embedded-api-1.0.0-alpha-1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-api/1.0.0-alpha-1/jboss-embedded-api-1.0.0-alpha-1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.embedded:jboss-embedded-core:1.0.0-alpha-1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-core/1.0.0-alpha-1/jboss-embedded-core-1.0.0-alpha-1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-core/1.0.0-alpha-1/jboss-embedded-core-1.0.0-alpha-1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/jboss-embedded-core/1.0.0-alpha-1/jboss-embedded-core-1.0.0-alpha-1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-classloading-spi:5.1.0.SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-classloading-spi/5.1.0.SP1/jboss-classloading-spi-5.1.0.SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-classloading-spi/5.1.0.SP1/jboss-classloading-spi-5.1.0.SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-classloading-spi/5.1.0.SP1/jboss-classloading-spi-5.1.0.SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-corba-ots-spi:5.1.0.SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-corba-ots-spi/5.1.0.SP1/jboss-corba-ots-spi-5.1.0.SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-corba-ots-spi/5.1.0.SP1/jboss-corba-ots-spi-5.1.0.SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-corba-ots-spi/5.1.0.SP1/jboss-corba-ots-spi-5.1.0.SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-deployment-spi:5.1.0.SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-deployment-spi/5.1.0.SP1/jboss-deployment-spi-5.1.0.SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-deployment-spi/5.1.0.SP1/jboss-deployment-spi-5.1.0.SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-deployment-spi/5.1.0.SP1/jboss-deployment-spi-5.1.0.SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-integration:5.1.0.SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-integration/5.1.0.SP1/jboss-integration-5.1.0.SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-integration/5.1.0.SP1/jboss-integration-5.1.0.SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-integration/5.1.0.SP1/jboss-integration-5.1.0.SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-jca-spi:5.0.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-jca-spi/5.0.3.GA/jboss-jca-spi-5.0.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-jca-spi/5.0.3.GA/jboss-jca-spi-5.0.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-jca-spi/5.0.3.GA/jboss-jca-spi-5.0.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-profileservice-spi:5.1.0.SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-profileservice-spi/5.1.0.SP1/jboss-profileservice-spi-5.1.0.SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-profileservice-spi/5.1.0.SP1/jboss-profileservice-spi-5.1.0.SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-profileservice-spi/5.1.0.SP1/jboss-profileservice-spi-5.1.0.SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.integration:jboss-transaction-spi:5.1.0.SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-transaction-spi/5.1.0.SP1/jboss-transaction-spi-5.1.0.SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-transaction-spi/5.1.0.SP1/jboss-transaction-spi-5.1.0.SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/integration/jboss-transaction-spi/5.1.0.SP1/jboss-transaction-spi-5.1.0.SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.interceptor:jboss-interceptor-api:3.1.0-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/interceptor/jboss-interceptor-api/3.1.0-SNAPSHOT/jboss-interceptor-api-3.1.0-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/interceptor/jboss-interceptor-api/3.1.0-SNAPSHOT/jboss-interceptor-api-3.1.0-SNAPSHOT-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/interceptor/jboss-interceptor-api/3.1.0-SNAPSHOT/jboss-interceptor-api-3.1.0-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-ejb-api:3.0.0.GA_SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-ejb-api/3.0.0.GA_SP1/jboss-ejb-api-3.0.0.GA_SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-ejb-api/3.0.0.GA_SP1/jboss-ejb-api-3.0.0.GA_SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-ejb-api/3.0.0.GA_SP1/jboss-ejb-api-3.0.0.GA_SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-jacc-api:1.1.0.GA_SP1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jacc-api/1.1.0.GA_SP1/jboss-jacc-api-1.1.0.GA_SP1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jacc-api/1.1.0.GA_SP1/jboss-jacc-api-1.1.0.GA_SP1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jacc-api/1.1.0.GA_SP1/jboss-jacc-api-1.1.0.GA_SP1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-jad-api:1.2.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jad-api/1.2.0.GA/jboss-jad-api-1.2.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jad-api/1.2.0.GA/jboss-jad-api-1.2.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jad-api/1.2.0.GA/jboss-jad-api-1.2.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-jaspi-api:1.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jaspi-api/1.0.0.GA/jboss-jaspi-api-1.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jaspi-api/1.0.0.GA/jboss-jaspi-api-1.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jaspi-api/1.0.0.GA/jboss-jaspi-api-1.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-jca-api:1.5.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jca-api/1.5.0.GA/jboss-jca-api-1.5.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jca-api/1.5.0.GA/jboss-jca-api-1.5.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jca-api/1.5.0.GA/jboss-jca-api-1.5.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-jms-api:1.1.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jms-api/1.1.0.GA/jboss-jms-api-1.1.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jms-api/1.1.0.GA/jboss-jms-api-1.1.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jms-api/1.1.0.GA/jboss-jms-api-1.1.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.javaee:jboss-transaction-api:1.0.1.CR1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-transaction-api/1.0.1.CR1/jboss-transaction-api-1.0.1.CR1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-transaction-api/1.0.1.CR1/jboss-transaction-api-1.0.1.CR1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-transaction-api/1.0.1.CR1/jboss-transaction-api-1.0.1.CR1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-aspects:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-aspects/6.0.0.M1/jboss-as-aspects-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-aspects/6.0.0.M1/jboss-as-aspects-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-aspects/6.0.0.M1/jboss-as-aspects-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-cluster:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-cluster/6.0.0.M1/jboss-as-cluster-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-cluster/6.0.0.M1/jboss-as-cluster-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-cluster/6.0.0.M1/jboss-as-cluster-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-connector:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-connector/6.0.0.M1/jboss-as-connector-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-connector/6.0.0.M1/jboss-as-connector-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-connector/6.0.0.M1/jboss-as-connector-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-deployment:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-deployment/6.0.0.M1/jboss-as-deployment-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-deployment/6.0.0.M1/jboss-as-deployment-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-deployment/6.0.0.M1/jboss-as-deployment-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-ejb3:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-ejb3/6.0.0.M1/jboss-as-ejb3-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-ejb3/6.0.0.M1/jboss-as-ejb3-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-ejb3/6.0.0.M1/jboss-as-ejb3-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-iiop:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-iiop/6.0.0.M1/jboss-as-iiop-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-iiop/6.0.0.M1/jboss-as-iiop-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-iiop/6.0.0.M1/jboss-as-iiop-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-j2se:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-j2se/6.0.0.M1/jboss-as-j2se-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-j2se/6.0.0.M1/jboss-as-j2se-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-j2se/6.0.0.M1/jboss-as-j2se-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-jmx:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-jmx/6.0.0.M1/jboss-as-jmx-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-jmx/6.0.0.M1/jboss-as-jmx-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-jmx/6.0.0.M1/jboss-as-jmx-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-main:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-main/6.0.0.M1/jboss-as-main-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-main/6.0.0.M1/jboss-as-main-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-main/6.0.0.M1/jboss-as-main-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-management:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-management/6.0.0.M1/jboss-as-management-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-management/6.0.0.M1/jboss-as-management-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-management/6.0.0.M1/jboss-as-management-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-management:jsr77:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-management/6.0.0.M1/jboss-as-management-6.0.0.M1-jsr77.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-management/6.0.0.M1/jboss-as-management-6.0.0.M1-jsr77-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-management/6.0.0.M1/jboss-as-management-6.0.0.M1-jsr77-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-mbeans:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-mbeans/6.0.0.M1/jboss-as-mbeans-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-mbeans/6.0.0.M1/jboss-as-mbeans-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-mbeans/6.0.0.M1/jboss-as-mbeans-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-profileservice:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-profileservice/6.0.0.M1/jboss-as-profileservice-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-profileservice/6.0.0.M1/jboss-as-profileservice-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-profileservice/6.0.0.M1/jboss-as-profileservice-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-security:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-security/6.0.0.M1/jboss-as-security-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-security/6.0.0.M1/jboss-as-security-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-security/6.0.0.M1/jboss-as-security-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-server:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-server/6.0.0.M1/jboss-as-server-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-server/6.0.0.M1/jboss-as-server-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-server/6.0.0.M1/jboss-as-server-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-system-jmx:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-system-jmx/6.0.0.M1/jboss-as-system-jmx-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-system-jmx/6.0.0.M1/jboss-as-system-jmx-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-system-jmx/6.0.0.M1/jboss-as-system-jmx-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-system:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-system/6.0.0.M1/jboss-as-system-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-system/6.0.0.M1/jboss-as-system-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-system/6.0.0.M1/jboss-as-system-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-tomcat:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-tomcat/6.0.0.M1/jboss-as-tomcat-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-tomcat/6.0.0.M1/jboss-as-tomcat-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-tomcat/6.0.0.M1/jboss-as-tomcat-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-as-varia:6.0.0.M1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-varia/6.0.0.M1/jboss-as-varia-6.0.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-varia/6.0.0.M1/jboss-as-varia-6.0.0.M1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-as-varia/6.0.0.M1/jboss-as-varia-6.0.0.M1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jbossas:jboss-server-manager:1.0.3-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-server-manager/1.0.3-alpha-2/jboss-server-manager-1.0.3-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-server-manager/1.0.3-alpha-2/jboss-server-manager-1.0.3-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossas/jboss-server-manager/1.0.3-alpha-2/jboss-server-manager-1.0.3-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jpa:jboss-jpa-deployers:1.0.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-deployers/1.0.1/jboss-jpa-deployers-1.0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-deployers/1.0.1/jboss-jpa-deployers-1.0.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-deployers/1.0.1/jboss-jpa-deployers-1.0.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jpa:jboss-jpa-impl:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-impl/1.0.0/jboss-jpa-impl-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-impl/1.0.0/jboss-jpa-impl-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-impl/1.0.0/jboss-jpa-impl-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.jpa:jboss-jpa-spi:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-spi/1.0.0/jboss-jpa-spi-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-spi/1.0.0/jboss-jpa-spi-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jpa/jboss-jpa-spi/1.0.0/jboss-jpa-spi-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.logbridge:jboss-logbridge:1.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logbridge/jboss-logbridge/1.0.0.GA/jboss-logbridge-1.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logbridge/jboss-logbridge/1.0.0.GA/jboss-logbridge-1.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logbridge/jboss-logbridge/1.0.0.GA/jboss-logbridge-1.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.logging:jboss-logging-log4j:2.1.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-log4j/2.1.1.GA/jboss-logging-log4j-2.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-log4j/2.1.1.GA/jboss-logging-log4j-2.1.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-log4j/2.1.1.GA/jboss-logging-log4j-2.1.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.logging:jboss-logging-spi:2.1.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-spi/2.1.1.GA/jboss-logging-spi-2.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-spi/2.1.1.GA/jboss-logging-spi-2.1.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging-spi/2.1.1.GA/jboss-logging-spi-2.1.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.logmanager:jboss-logmanager:1.0.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.0.0.GA/jboss-logmanager-1.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.0.0.GA/jboss-logmanager-1.0.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.0.0.GA/jboss-logmanager-1.0.0.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.man:jboss-managed:2.1.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/man/jboss-managed/2.1.1.GA/jboss-managed-2.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/man/jboss-managed/2.1.1.GA/jboss-managed-2.1.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/man/jboss-managed/2.1.1.GA/jboss-managed-2.1.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.man:jboss-metatype:2.1.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/man/jboss-metatype/2.1.1.GA/jboss-metatype-2.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/man/jboss-metatype/2.1.1.GA/jboss-metatype-2.1.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/man/jboss-metatype/2.1.1.GA/jboss-metatype-2.1.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.mc-int:jboss-mc-int-common:2.2.0.Alpha2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mc-int/jboss-mc-int-common/2.2.0.Alpha2/jboss-mc-int-common-2.2.0.Alpha2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mc-int/jboss-mc-int-common/2.2.0.Alpha2/jboss-mc-int-common-2.2.0.Alpha2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mc-int/jboss-mc-int-common/2.2.0.Alpha2/jboss-mc-int-common-2.2.0.Alpha2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.mc-int:jboss-mc-int-servlet:2.2.0.Alpha2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mc-int/jboss-mc-int-servlet/2.2.0.Alpha2/jboss-mc-int-servlet-2.2.0.Alpha2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mc-int/jboss-mc-int-servlet/2.2.0.Alpha2/jboss-mc-int-servlet-2.2.0.Alpha2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mc-int/jboss-mc-int-servlet/2.2.0.Alpha2/jboss-mc-int-servlet-2.2.0.Alpha2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.metadata:jboss-metadata:1.0.2.Beta2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata/1.0.2.Beta2/jboss-metadata-1.0.2.Beta2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata/1.0.2.Beta2/jboss-metadata-1.0.2.Beta2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata/1.0.2.Beta2/jboss-metadata-1.0.2.Beta2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-aop-mc-int:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-aop-mc-int/2.0.9.GA/jboss-aop-mc-int-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-aop-mc-int/2.0.9.GA/jboss-aop-mc-int-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-aop-mc-int/2.0.9.GA/jboss-aop-mc-int-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-dependency:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-dependency/2.0.9.GA/jboss-dependency-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-dependency/2.0.9.GA/jboss-dependency-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-dependency/2.0.9.GA/jboss-dependency-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-jmx-mc-int:2.2.0.M2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-jmx-mc-int/2.2.0.M2/jboss-jmx-mc-int-2.2.0.M2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-jmx-mc-int/2.2.0.M2/jboss-jmx-mc-int-2.2.0.M2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-jmx-mc-int/2.2.0.M2/jboss-jmx-mc-int-2.2.0.M2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.microcontainer:jboss-kernel:2.0.9.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-kernel/2.0.9.GA/jboss-kernel-2.0.9.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-kernel/2.0.9.GA/jboss-kernel-2.0.9.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-kernel/2.0.9.GA/jboss-kernel-2.0.9.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.mx:jboss-j2se:6.0.0.Beta2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-j2se/6.0.0.Beta2/jboss-j2se-6.0.0.Beta2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-j2se/6.0.0.Beta2/jboss-j2se-6.0.0.Beta2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-j2se/6.0.0.Beta2/jboss-j2se-6.0.0.Beta2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.mx:jboss-jmx:6.0.0.Beta2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-jmx/6.0.0.Beta2/jboss-jmx-6.0.0.Beta2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-jmx/6.0.0.Beta2/jboss-jmx-6.0.0.Beta2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-jmx/6.0.0.Beta2/jboss-jmx-6.0.0.Beta2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.mx:jboss-mbeans:6.0.0.Beta2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-mbeans/6.0.0.Beta2/jboss-mbeans-6.0.0.Beta2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-mbeans/6.0.0.Beta2/jboss-mbeans-6.0.0.Beta2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-mbeans/6.0.0.Beta2/jboss-mbeans-6.0.0.Beta2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.mx:jboss-mbeanserver:6.0.0.Beta2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-mbeanserver/6.0.0.Beta2/jboss-mbeanserver-6.0.0.Beta2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-mbeanserver/6.0.0.Beta2/jboss-mbeanserver-6.0.0.Beta2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/mx/jboss-mbeanserver/6.0.0.Beta2/jboss-mbeanserver-6.0.0.Beta2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.naming:jnp-client:5.0.4.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/naming/jnp-client/5.0.4.GA/jnp-client-5.0.4.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/naming/jnp-client/5.0.4.GA/jnp-client-5.0.4.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/naming/jnp-client/5.0.4.GA/jnp-client-5.0.4.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.naming:jnpserver:5.0.4.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/naming/jnpserver/5.0.4.GA/jnpserver-5.0.4.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/naming/jnpserver/5.0.4.GA/jnpserver-5.0.4.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/naming/jnpserver/5.0.4.GA/jnpserver-5.0.4.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.netty:netty:3.1.5.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/netty/netty/3.1.5.GA/netty-3.1.5.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/netty/netty/3.1.5.GA/netty-3.1.5.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/netty/netty/3.1.5.GA/netty-3.1.5.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.remoting:jboss-remoting:2.5.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/remoting/jboss-remoting/2.5.2/jboss-remoting-2.5.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/remoting/jboss-remoting/2.5.2/jboss-remoting-2.5.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/remoting/jboss-remoting/2.5.2/jboss-remoting-2.5.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.security:jboss-security-spi:2.0.4.SP2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jboss-security-spi/2.0.4.SP2/jboss-security-spi-2.0.4.SP2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jboss-security-spi/2.0.4.SP2/jboss-security-spi-2.0.4.SP2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jboss-security-spi/2.0.4.SP2/jboss-security-spi-2.0.4.SP2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.security:jbosssx-client:2.0.4.SP2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbosssx-client/2.0.4.SP2/jbosssx-client-2.0.4.SP2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbosssx-client/2.0.4.SP2/jbosssx-client-2.0.4.SP2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbosssx-client/2.0.4.SP2/jbosssx-client-2.0.4.SP2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.security:jbosssx:2.0.4.SP2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbosssx/2.0.4.SP2/jbosssx-2.0.4.SP2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbosssx/2.0.4.SP2/jbosssx-2.0.4.SP2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbosssx/2.0.4.SP2/jbosssx-2.0.4.SP2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.security:jbossxacml:2.0.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbossxacml/2.0.4/jbossxacml-2.0.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbossxacml/2.0.4/jbossxacml-2.0.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/security/jbossxacml/2.0.4/jbossxacml-2.0.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-api/1.0.0-alpha-2/shrinkwrap-api-1.0.0-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-api/1.0.0-alpha-2/shrinkwrap-api-1.0.0-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-api/1.0.0-alpha-2/shrinkwrap-api-1.0.0-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-impl-base/1.0.0-alpha-2/shrinkwrap-impl-base-1.0.0-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-impl-base/1.0.0-alpha-2/shrinkwrap-impl-base-1.0.0-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-impl-base/1.0.0-alpha-2/shrinkwrap-impl-base-1.0.0-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.shrinkwrap:shrinkwrap-spi:1.0.0-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-spi/1.0.0-alpha-2/shrinkwrap-spi-1.0.0-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-spi/1.0.0-alpha-2/shrinkwrap-spi-1.0.0-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/shrinkwrap/shrinkwrap-spi/1.0.0-alpha-2/shrinkwrap-spi-1.0.0-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.slf4j:slf4j-jboss-logging:1.0.2.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/slf4j/slf4j-jboss-logging/1.0.2.GA/slf4j-jboss-logging-1.0.2.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/slf4j/slf4j-jboss-logging/1.0.2.GA/slf4j-jboss-logging-1.0.2.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/slf4j/slf4j-jboss-logging/1.0.2.GA/slf4j-jboss-logging-1.0.2.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.test:jboss-test:1.1.5-alpha-2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/test/jboss-test/1.1.5-alpha-2/jboss-test-1.1.5-alpha-2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/test/jboss-test/1.1.5-alpha-2/jboss-test-1.1.5-alpha-2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/test/jboss-test/1.1.5-alpha-2/jboss-test-1.1.5-alpha-2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws.native:jbossws-native-core:3.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-core/3.2.1.GA/jbossws-native-core-3.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-core/3.2.1.GA/jbossws-native-core-3.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-core/3.2.1.GA/jbossws-native-core-3.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws.native:jbossws-native-jaxrpc:3.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxrpc/3.2.1.GA/jbossws-native-jaxrpc-3.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxrpc/3.2.1.GA/jbossws-native-jaxrpc-3.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxrpc/3.2.1.GA/jbossws-native-jaxrpc-3.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws.native:jbossws-native-jaxws-ext:3.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxws-ext/3.2.1.GA/jbossws-native-jaxws-ext-3.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxws-ext/3.2.1.GA/jbossws-native-jaxws-ext-3.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxws-ext/3.2.1.GA/jbossws-native-jaxws-ext-3.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws.native:jbossws-native-jaxws:3.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxws/3.2.1.GA/jbossws-native-jaxws-3.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxws/3.2.1.GA/jbossws-native-jaxws-3.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-jaxws/3.2.1.GA/jbossws-native-jaxws-3.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws.native:jbossws-native-saaj:3.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-saaj/3.2.1.GA/jbossws-native-saaj-3.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-saaj/3.2.1.GA/jbossws-native-saaj-3.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/native/jbossws-native-saaj/3.2.1.GA/jbossws-native-saaj-3.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws:jbossws-common:1.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-common/1.2.1.GA/jbossws-common-1.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-common/1.2.1.GA/jbossws-common-1.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-common/1.2.1.GA/jbossws-common-1.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws:jbossws-framework:3.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-framework/3.2.1.GA/jbossws-framework-3.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-framework/3.2.1.GA/jbossws-framework-3.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-framework/3.2.1.GA/jbossws-framework-3.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.ws:jbossws-spi:1.2.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-spi/1.2.1.GA/jbossws-spi-1.2.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-spi/1.2.1.GA/jbossws-spi-1.2.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ws/jbossws-spi/1.2.1.GA/jbossws-spi-1.2.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss:jboss-common-core:2.2.16.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-common-core/2.2.16.GA/jboss-common-core-2.2.16.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-common-core/2.2.16.GA/jboss-common-core-2.2.16.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-common-core/2.2.16.GA/jboss-common-core-2.2.16.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss:jboss-mdr:2.0.2.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-mdr/2.0.2.GA/jboss-mdr-2.0.2.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-mdr/2.0.2.GA/jboss-mdr-2.0.2.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-mdr/2.0.2.GA/jboss-mdr-2.0.2.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss:jboss-reflect:2.0.2.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-reflect/2.0.2.GA/jboss-reflect-2.0.2.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-reflect/2.0.2.GA/jboss-reflect-2.0.2.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-reflect/2.0.2.GA/jboss-reflect-2.0.2.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss:jboss-vfs:2.2.0.Alpha1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-vfs/2.2.0.Alpha1/jboss-vfs-2.2.0.Alpha1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-vfs/2.2.0.Alpha1/jboss-vfs-2.2.0.Alpha1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-vfs/2.2.0.Alpha1/jboss-vfs-2.2.0.Alpha1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss:jbossxb:2.0.2.Beta3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossxb/2.0.2.Beta3/jbossxb-2.0.2.Beta3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossxb/2.0.2.Beta3/jbossxb-2.0.2.Beta3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jbossxb/2.0.2.Beta3/jbossxb-2.0.2.Beta3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jvnet.staxex:stax-ex:1.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.2/stax-ex-1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.2/stax-ex-1.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.2/stax-ex-1.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jvnet:mimepull:1.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/1.3/mimepull-1.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/1.3/mimepull-1.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/1.3/mimepull-1.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mortbay.jetty:jetty-util:6.1.16">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty-util/6.1.16/jetty-util-6.1.16.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty-util/6.1.16/jetty-util-6.1.16-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty-util/6.1.16/jetty-util-6.1.16-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mortbay.jetty:jetty:6.1.16">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty/6.1.16/jetty-6.1.16.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty/6.1.16/jetty-6.1.16-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty/6.1.16/jetty-6.1.16-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mortbay.jetty:servlet-api:2.5-20081211">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:slf4j-api:1.5.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.5.3/slf4j-api-1.5.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.5.3/slf4j-api-1.5.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.5.3/slf4j-api-1.5.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.testng:testng:jdk15:5.10">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.10/testng-5.10-jdk15.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.10/testng-5.10-jdk15-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.10/testng-5.10-jdk15-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: oswego-concurrent:concurrent:1.3.4-jboss-update1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/oswego-concurrent/concurrent/1.3.4-jboss-update1/concurrent-1.3.4-jboss-update1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/oswego-concurrent/concurrent/1.3.4-jboss-update1/concurrent-1.3.4-jboss-update1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/oswego-concurrent/concurrent/1.3.4-jboss-update1/concurrent-1.3.4-jboss-update1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: qdox:qdox:1.6.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/qdox/qdox/1.6.1/qdox-1.6.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/qdox/qdox/1.6.1/qdox-1.6.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/qdox/qdox/1.6.1/qdox-1.6.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: quartz:quartz:1.5.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/quartz/quartz/1.5.2/quartz-1.5.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/quartz/quartz/1.5.2/quartz-1.5.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/quartz/quartz/1.5.2/quartz-1.5.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: stax:stax-api:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/stax/stax-api/1.0/stax-api-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/stax/stax-api/1.0/stax-api-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/stax/stax-api/1.0/stax-api-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: sun-jaxb:jaxb-api:2.1.9-brew">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxb/jaxb-api/2.1.9-brew/jaxb-api-2.1.9-brew.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxb/jaxb-api/2.1.9-brew/jaxb-api-2.1.9-brew-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxb/jaxb-api/2.1.9-brew/jaxb-api-2.1.9-brew-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: sun-jaxb:jaxb-impl:2.1.9-brew">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxb/jaxb-impl/2.1.9-brew/jaxb-impl-2.1.9-brew.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxb/jaxb-impl/2.1.9-brew/jaxb-impl-2.1.9-brew-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxb/jaxb-impl/2.1.9-brew/jaxb-impl-2.1.9-brew-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: sun-jaxws:jaxws-api:2.1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxws/jaxws-api/2.1.1/jaxws-api-2.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxws/jaxws-api/2.1.1/jaxws-api-2.1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxws/jaxws-api/2.1.1/jaxws-api-2.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: sun-jaxws:jsr181-api:2.1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxws/jsr181-api/2.1.1/jsr181-api-2.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxws/jsr181-api/2.1.1/jsr181-api-2.1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/sun-jaxws/jsr181-api/2.1.1/jsr181-api-2.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: trove:trove:2.1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/trove/trove/2.1.1/trove-2.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/trove/trove/2.1.1/trove-2.1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/trove/trove/2.1.1/trove-2.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: wscommons-policy:policy:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/wscommons-policy/policy/1.0/policy-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/wscommons-policy/policy/1.0/policy-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/wscommons-policy/policy/1.0/policy-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: wsdl4j:wsdl4j:1.6.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: wutka-dtdparser:dtdparser121:1.2.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/wutka-dtdparser/dtdparser121/1.2.1/dtdparser121-1.2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/wutka-dtdparser/dtdparser121/1.2.1/dtdparser121-1.2.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/wutka-dtdparser/dtdparser121/1.2.1/dtdparser121-1.2.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: xerces:xercesImpl:2.9.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </component>
+</project>
+
