@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+  vi:ts=2:sw=2:expandtab:
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- Parent -->
+  <parent>
+    <groupId>org.jboss</groupId>
+    <artifactId>jboss-parent</artifactId>
+    <version>5</version>
+  </parent>
+
+  <!-- Model Version -->
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Artifact Configuration -->
+  <groupId>org.jboss.jbossas.embedded.examples</groupId>
+  <artifactId>jbossas-embedded-examples-slsb</artifactId>
+  <version>6.0.0-SNAPSHOT</version> <!-- To match target version of AS -->
+  <name>JBoss Embedded AS Examples - SLSB</name>
+  <description>Example for EmbeddedAS for testing EJB 3.x Stateless Session Beans</description>
+
+  <!-- Properties -->
+  <properties>
+
+    <version.org.jboss.jbossas>6.0.0.20100721-M4</version.org.jboss.jbossas>
+    <JBOSS_HOME>${project.build.directory}/jboss-${version.org.jboss.jbossas}</JBOSS_HOME>
+    <version.junit>4.7</version.junit>
+
+  </properties>
+
+  <build>
+    <plugins>
+      <!-- Compiler -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <inherited>true</inherited>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <showDeprecation>false</showDeprecation>
+          <showWarnings>true</showWarnings>
+          <optimize>true</optimize>
+          <compilerVersion>1.6</compilerVersion>
+          <fork>true</fork>
+          <argLine>-Xmx512M</argLine>
+          <executable>${JAVA_HOME}/bin/javac</executable>
+        </configuration>
+      </plugin>
+
+      <!-- Surefire -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <trimStackTrace>false</trimStackTrace>
+          <printSummary>true</printSummary>
+          <includes>
+            <include>**/*UnitTest.java</include>
+          </includes>
+          <forkMode>always</forkMode>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <!-- Dependencies -->
+  <dependencies>
+
+    <!-- org.jboss.jbossas -->
+    <dependency>
+      <groupId>org.jboss.jbossas</groupId>
+      <artifactId>jboss-as-depchain</artifactId>
+      <version>${version.org.jboss.jbossas}</version>
+      <type>pom</type>
+    </dependency>
+
+    <!-- JUnit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${version.junit}</version>
+    </dependency>
+
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- org.jboss.jbossas -->
+      <dependency>
+        <groupId>org.jboss.jbossas</groupId>
+        <artifactId>jboss-as-depchain</artifactId>
+        <version>${version.org.jboss.jbossas}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
+
+  <profiles>
+    <profile>
+      <id>embedded</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+
+                <configuration>
+                  <additionalClasspathElements>
+                    <additionalClasspathElement>${JBOSS_HOME}/client/jbossws-native-client.jar</additionalClasspathElement>
+                    <!--
+                      Because jbossweb.sar contains shared web.xml,
+                      which must be visible from same CL as
+                      TomcatDeployer.class.getClassLoader
+                    -->
+                    <additionalClasspathElement>${JBOSS_HOME}/server/default/deploy/jbossweb.sar</additionalClasspathElement>
+                  </additionalClasspathElements>
+
+                  <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                  <trimStackTrace>false</trimStackTrace>
+                  <printSummary>true</printSummary>
+                  <includes>
+                    <include>**/*IntegrationTest.java</include>
+                  </includes>
+                  <forkMode>always</forkMode>
+
+                  <!--
+                    MaxPermSize Required to bump the space for relective
+                    data like classes, methods, etc. EMB-41. Endorsed
+                    required for things like WS support (EMB-61)
+                  -->
+                  <argLine>-Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Djava.endorsed.dirs=${JBOSS_HOME}/lib/endorsed -Djboss.home=${JBOSS_HOME} -Djboss.boot.server.log.dir=${JBOSS_HOME}</argLine>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Get AS and put into "target" -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>pre-integration-test</phase> <!-- So run before testing -->
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jboss.jbossas</groupId>
+                      <artifactId>jboss-as-distribution</artifactId>
+                      <version>${version.org.jboss.jbossas}</version>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
