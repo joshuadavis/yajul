@@ -49,6 +49,7 @@ import org.junit.Test;
  * to match those in the Surefire runtime configuration.
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
+ * @author <a href="mailto:pgmjsd@gmail.com">Josh Davis</a> - Updated for JBoss AS 6.0.0.Final
  * @version $Revision: $
  */
 public class EchoBeanIntegrationTest
@@ -78,7 +79,7 @@ public class EchoBeanIntegrationTest
     */
    private static JavaArchive createDeployment()
    {
-      return ShrinkWrap.create("slsb.jar", JavaArchive.class).addClasses(EchoBean.class, EchoLocalBusiness.class);
+      return ShrinkWrap.create(JavaArchive.class,"slsb.jar").addClasses(EchoBean.class, EchoLocalBusiness.class);
    }
 
    //-------------------------------------------------------------------------------------||

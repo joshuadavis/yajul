@@ -20,7 +20,7 @@
   <!-- Artifact Configuration -->
   <groupId>org.jboss.jbossas.embedded.examples</groupId>
   <artifactId>jbossas-embedded-examples-slsb</artifactId>
-  <version>6.0.0-SNAPSHOT</version> <!-- To match target version of AS -->
+  <version>6.0.0.Final</version> <!-- To match target version of AS -->
   <name>JBoss Embedded AS Examples - SLSB</name>
   <description>Example for EmbeddedAS for testing EJB 3.x Stateless Session Beans</description>
 
