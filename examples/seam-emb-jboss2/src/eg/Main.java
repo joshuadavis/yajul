@@ -1,30 +1,38 @@
 package eg;
 
 import org.jboss.embedded.Bootstrap;
+import org.apache.log4j.Logger;
 
 import javax.naming.InitialContext;
 
 /**
- * TODO: Add class level javadoc.
+ * Example main program.  Very simple deployment.
  * <br>User: Josh
  * Date: Sep 16, 2008
  * Time: 5:47:03 AM
  */
 public class Main {
+    private static Logger log = Logger.getLogger(Main.class);
+
     public static void main(String[] args) {
         try {
             Bootstrap bootstrap = Bootstrap.getInstance();
-            System.out.println("***** bootstrap *****");
+            log.info("***** bootstrap *****");
             bootstrap.bootstrap();
-            System.out.println("***** deploy *****");
+            log.info("***** deploy *****");
             bootstrap.deployResourceBases("seam.properties");
             InitialContext ic = new InitialContext();
             HelloWorld hello = (HelloWorld) ic.lookup("HelloWorldEJB/local");
             String response = hello.sayHello("embedded jboss user");
-            System.out.println("EJB says: " + response);
+            log.info("EJB says: " + response);
+
+            log.info("***** shutdown *****");
+            bootstrap.shutdown();
+
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.error(e,e);
         }
-        System.exit(0);
+        log.info("done.");
+        //System.exit(0);
     }
 }
