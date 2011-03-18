@@ -1,0 +1,4 @@
+<modules>
+    <module>org.yajul.micro.TestConfig</module>
+    <module>org.yajul.micro.MyModule</module>
+</modules>

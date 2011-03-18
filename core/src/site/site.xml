@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="YAJUL">
+  <bannerLeft>
+    <name>Yajul</name>
+    <src>http://yajul.sourceforge.net/images/project-logo.gif</src>
+    <href>http://yajul.sourceforge.net</href>
+  </bannerLeft>
+<!--
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>
+-->
+  <body>
+    <links>
+      <item name="Yajul" href="http://yajul.sourceforge.net" />
+      <item name="Maven" href="http://maven.apache.org"/>
+    </links>
+
+      <menu name="Documentation">
+          <item name="Using YAJUL" href="using.html"/>
+          <item name="Developing YAJUL" href="developing.html"/>
+      </menu>
+
+      <menu ref="reports"/>
+
+  </body>
+</project>
