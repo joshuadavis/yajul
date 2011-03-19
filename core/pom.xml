@@ -20,10 +20,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/core/tags/yajul-0.4</connection>
-        <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/core/tags/yajul-0.4
-        </developerConnection>
-        <url>http://yajul.svn.sourceforge.net/viewvc/yajul/core/tags/yajul-0.4</url>
+        <connection>git@github.com:joshuadavis/yajul.git</connection>
+        <developerConnection>git@github.com:joshuadavis/yajul.git</developerConnection>
+        <url>https://github.com/joshuadavis/yajul</url>
     </scm>
     <distributionManagement>
         <site>
