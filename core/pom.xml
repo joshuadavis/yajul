@@ -20,8 +20,8 @@
         </developer>
     </developers>
     <scm>
-        <connection>git@github.com:joshuadavis/yajul.git</connection>
-        <developerConnection>git@github.com:joshuadavis/yajul.git</developerConnection>
+        <connection>scm:git:git@github.com:joshuadavis/yajul.git</connection>
+        <developerConnection>scm:git:git@github.com:joshuadavis/yajul.git</developerConnection>
         <url>https://github.com/joshuadavis/yajul</url>
     </scm>
     <properties>
