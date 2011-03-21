@@ -22,6 +22,40 @@ public class PropertiesHelper {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
+    public static enum BooleanParse {
+        /**
+         * Causes getBoolean() to behave like the JDK Boolean.parseBoolean(String) function:
+         * <p>
+         * The <code>boolean</code>
+         * returned represents the value <code>true</code> if the string argument
+         * is not <code>null</code> and is equal, ignoring case, to the string
+         * {@code "true"}.
+         * </p>
+         * <b>ANY VALUE BUT "true" (ignoring case) WILL RETURN false!</b>
+         * <ul>Examples:
+         * <li>{@code "true"} => {@code true}</li>
+         * <li>{@code "True"} => {@code true}</li>
+         * <li>{@code "false"} => {@code false}</li>
+         * <li>{@code "yes"} => {@code false} (ouch!)</li>
+         * <li>{@code " true"} (space before "true") => {@code false} (ouch!)</li>
+         * </ul>
+         * @see java.lang.Boolean#parseBoolean(String)
+         */
+        JDK,
+        /**
+         * Only "true" and "false" are accepted, <i>ignoring case</i>.
+         * <ul>Examples:
+         * <li>{@code "true"} => {@code true}</li>
+         * <li>{@code "True"} => {@code true}</li>
+         * <li>{@code "false"} => {@code false}</li>
+         * <li>{@code "yes"} => {@code IllegalArgumentException}</li>
+         * <li>{@code " true"} (space before "true") => {@code IllegalArgumentException}</li>
+         * </ul>
+         * Everything else throws an IllegalArgumentException.
+         */
+        STRICT,
+    }
+
     private static final Logger log = LoggerFactory.getLogger(PropertiesHelper.class);
 
     public static Properties loadFromFile(File file, Properties defaults) {
@@ -58,15 +92,49 @@ public class PropertiesHelper {
         return names;
     }
 
-    public static boolean getBoolean(Properties properties, String key) {
-        return TRUE.equals(properties.getProperty(key, FALSE));
+    /**
+     * @param properties   The properties object.
+     * @param key          The property to get
+     * @param mode         Parsing mode.
+     * @param defaultValue The value to return if the key doesn't exist
+     * @return the boolean value of the property.
+     */
+    public static boolean getBoolean(Properties properties, String key, boolean defaultValue, BooleanParse mode) {
+        if (!properties.containsKey(key))
+            return defaultValue;
+        String v = properties.getProperty(key);
+        switch (mode) {
+            case JDK:
+                return ((v != null) && v.equalsIgnoreCase(TRUE));
+            case STRICT:
+                if (TRUE.equalsIgnoreCase(v))
+                    return true;
+                else if (FALSE.equalsIgnoreCase(v))
+                    return false;
+                else
+                    throw new IllegalArgumentException("Illegal boolean value '" + v + "'!");
+            default:
+                throw new IllegalArgumentException("Unexpected mode: " + mode);
+        }
     }
 
+    /**
+     * @param properties The properties object.
+     * @param key        The property to get
+     * @return the boolean value of the property.
+     */
+    public static boolean getBoolean(Properties properties, String key) {
+        return getBoolean(properties, key, false, BooleanParse.JDK);
+    }
+
+    /**
+     * @param properties   The properties object.
+     * @param key          The property to get
+     * @param defaultValue The value to return if the key doesn't exist
+     * @return the boolean value of the property.
+     */
     public static boolean getBoolean(Properties properties, String key, boolean defaultValue) {
-        if (properties.containsKey(key))
-            return TRUE.equals(properties.getProperty(key));
-        else
-            return defaultValue;
+        return getBoolean(properties, key, defaultValue, BooleanParse.JDK);
     }
 
     public static Integer getInteger(Properties properties, String key) {

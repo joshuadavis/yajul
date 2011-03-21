@@ -1,3 +1,6 @@
 /*.iws
 /target/
 /*/target/
+temp.txt
+/data/*
+/etc/bootstrap/data/*
