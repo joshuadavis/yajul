@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.embedded:hibernate-all:beta3.SP12">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP12/hibernate-all-beta3.SP12.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP12/hibernate-all-beta3.SP12-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP12/hibernate-all-beta3.SP12-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

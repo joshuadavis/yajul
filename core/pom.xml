@@ -4,7 +4,7 @@
     <artifactId>yajul</artifactId>
     <version>0.4.3-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Yet Another Java Utility Library</name>
+    <name>yajul-core</name>
     <url>http://yajul.sourceforge.net</url>
     <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
     <developers>
@@ -291,6 +291,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>${compileSource}</source>
                     <target>${compileSource}</target>
@@ -299,6 +300,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
                 <configuration>
                     <finalName>${project.build.finalName}</finalName>
                     <!-- Deploy source jars as well as binaries. -->
@@ -319,7 +321,7 @@
                 <version>2.7.1</version>
                 <configuration>
                     <additionalClasspathElements>
-                        <additionalClasspathElement>etc/bootstrap</additionalClasspathElement>
+                        <additionalClasspathElement>${basedir}/etc/bootstrap</additionalClasspathElement>
                     </additionalClasspathElements>
                     <!--
                     Required when using jboss-embedded with JDK 6
@@ -328,14 +330,6 @@
                     <argLine>-Dsun.lang.ClassLoader.allowArraySyntax=true</argLine>
                 </configuration>
             </plugin>
-            <!--
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <configuration>
-                    <locales>en</locales>
-                </configuration>
-            </plugin>
--->
         </plugins>
     </build>
     <reporting>

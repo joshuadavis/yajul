@@ -17,20 +17,6 @@
         <developerConnection>scm:svn:https://yajul.svn.sourceforge.net/svnroot/yajul/groovy-dbtools/trunk</developerConnection>
         <url>http://yajul.svn.sourceforge.net/viewvc/yajul/groovy-dbtools/trunk</url>
     </scm>
-    <distributionManagement>
-        <site>
-            <id>website</id>
-            <url>scp://shell.sourceforge.net/home/groups/y/ya/yajul/htdocs</url>
-        </site>
-        <repository>
-            <id>internal.artifactory</id>
-            <url>http://artifactory/artifactory/libs-releases-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>internal.artifactory</id>
-            <url>http://artifactory/artifactory/libs-snapshots-local</url>
-        </snapshotRepository>
-    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
