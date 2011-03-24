@@ -36,12 +36,9 @@ public class PropertiesHelperTest extends TestCase {
         Properties properties = new Properties();
         properties.put("bad.integer", "12bad34");
         Exception e = null;
-        try
-        {
-             PropertiesHelper.getInt(properties, "bad.integer", -1);
-        }
-        catch (NumberFormatException nfe)
-        {
+        try {
+            PropertiesHelper.getInt(properties, "bad.integer", -1);
+        } catch (NumberFormatException nfe) {
             e = nfe;
         }
         assertNotNull("Expected number format exception!", e);
@@ -51,15 +48,12 @@ public class PropertiesHelperTest extends TestCase {
         Properties properties = new Properties();
         properties.put("bad.bool", " true");
         Exception e = null;
-        try
-        {
+        try {
             PropertiesHelper.getBoolean(properties, "bad.bool", false, PropertiesHelper.BooleanParse.STRICT);
-        }
-        catch (IllegalArgumentException iae)
-        {
+        } catch (IllegalArgumentException iae) {
             e = iae;
         }
-        assertNotNull("Expected illegal argument exception!",e);
+        assertNotNull("Expected illegal argument exception!", e);
     }
 
     public void testLoaders() {
@@ -78,5 +72,28 @@ public class PropertiesHelperTest extends TestCase {
         assertTrue(names.contains("one"));
         assertTrue(names.contains("two"));
         assertTrue(names.contains("a.three"));
+    }
+
+    public void testInterpolator() {
+        Properties p = new Properties();
+        p.put("domain", "one.foo.com");
+        p.put("url", "http://${domain}:${portnumber}${path}");
+
+        String url = PropertiesHelper.interpolate(p.getProperty("url"), p);
+        assertEquals(url, "http://one.foo.com:${portnumber}${path}");
+
+        p.put("path", "/bar/baz");
+        String url2 = PropertiesHelper.interpolate(p.getProperty("url"), p);
+        assertEquals(url2, "http://one.foo.com:${portnumber}/bar/baz");
+    }
+
+    public void testInterpolateAll() {
+        Properties p = new Properties();
+        p.setProperty("path", "/bar/baz");
+        p.setProperty("domain", "one.foo.com");
+        p.setProperty("url", "http://${domain}:${portnumber}${path}");
+        p.setProperty("portnumber", "8080");
+        Properties interpolated = PropertiesHelper.interpolateAll(p);
+        assertEquals(interpolated.getProperty("url"), "http://one.foo.com:8080/bar/baz");
     }
 }

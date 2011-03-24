@@ -3,13 +3,12 @@ package org.yajul.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Helper methods for loading and parsing properties files.
@@ -39,6 +38,7 @@ public class PropertiesHelper {
          * <li>{@code "yes"} => {@code false} (ouch!)</li>
          * <li>{@code " true"} (space before "true") => {@code false} (ouch!)</li>
          * </ul>
+         *
          * @see java.lang.Boolean#parseBoolean(String)
          */
         JDK,
@@ -65,8 +65,7 @@ public class PropertiesHelper {
                 properties.load(new FileInputStream(file));
             else
                 log.trace("File not found: " + file.getCanonicalPath());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
         return properties;
@@ -77,8 +76,7 @@ public class PropertiesHelper {
             defaults = ResourceUtil.loadProperties(resource, defaults, clazz);
             if (defaults == null)
                 log.trace("Resource not found: " + resource);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
@@ -176,4 +174,51 @@ public class PropertiesHelper {
         return names;
     }
 
+    private static final Pattern PROPERTY_REF_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");
+
+    /**
+     * ANT style property interpolation.   Looks for the pattern <i>${key}</i> and replaces it
+     * with the value of 'key' if it is found in the properties object.
+     * @param toInterpolate the string to interpolate
+     * @param props properties to interpolate
+     * @return the string, with all property references interpolated
+     */
+    public static String interpolate(String toInterpolate, Properties props) {
+        Pattern re = PROPERTY_REF_PATTERN;
+        Matcher m = re.matcher(toInterpolate);
+        StringBuffer result = new StringBuffer();
+        while (m.find()) {
+            String variable = m.group(1);
+            final String value = props.getProperty(variable);
+            if (value != null) {
+                String resolved = interpolate(value, props);
+                if (log.isTraceEnabled())
+                    log.trace("interpolate() : " + variable + " => " + resolved);
+                try {
+                    m.appendReplacement(result, resolved);
+                } catch (IllegalArgumentException e) {
+                    // Ignore... it just means that the result had an unresolved variable in it.
+                }
+            }
+        }
+        m.appendTail(result);
+        return result.toString();
+    }
+
+    /**
+     * Interpolates all property references and returns a new Properties object with all the values
+     * interpolated.
+     * @param properties the properties to interpolate
+     * @return a new Properties object with all the properties interpolated.
+     */
+    public static Properties interpolateAll(Properties properties) {
+        Properties interpolatedProperties = new Properties();
+        final Set<String> keys = properties.stringPropertyNames();
+        for (String key : keys) {
+            String value = properties.getProperty(key);
+            String interpolated = PropertiesHelper.interpolate(value, properties);
+            interpolatedProperties.setProperty(key, interpolated);
+        }
+        return interpolatedProperties;
+    }
 }
