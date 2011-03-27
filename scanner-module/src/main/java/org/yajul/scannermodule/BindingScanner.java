@@ -1,8 +1,6 @@
 package org.yajul.scannermodule;
 
 import com.google.inject.*;
-import com.google.inject.util.Types;
-import com.sun.activation.registries.LogSupport;
 import javassist.bytecode.ClassFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +78,11 @@ class BindingScanner extends AbstractAnnotationScanner {
                 binder.addError("Unable to find provided class for " + implClass.getCanonicalName());
                 return;
             }
-            binder.bind(providedClass).toProvider((Class<? extends Provider<?>>) implClass).in(scope);
         }
         if (providedClass == null)
             throw new RuntimeException("Unable to find provided class for " + implClass.getCanonicalName());
+
+        binder.bind(providedClass).toProvider((Class<? extends Provider<?>>) implClass).in(scope);
     }
 
     private Scope getScope(Class<?> implClass) {
