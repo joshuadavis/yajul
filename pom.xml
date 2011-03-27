@@ -30,5 +30,6 @@
         <module>groovy-dbtools</module>
         <module>dep-mgmt</module>
         <module>pojo-parent</module>
+        <module>scanner-module</module>
     </modules>
 </project>

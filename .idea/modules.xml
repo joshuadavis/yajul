@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/dep-mgmt/dep-mgmt.iml" filepath="$PROJECT_DIR$/dep-mgmt/dep-mgmt.iml" />
       <module fileurl="file://$PROJECT_DIR$/groovy-dbtools/groovy-dbtools.iml" filepath="$PROJECT_DIR$/groovy-dbtools/groovy-dbtools.iml" />
       <module fileurl="file://$PROJECT_DIR$/pojo-parent/pojo-parent.iml" filepath="$PROJECT_DIR$/pojo-parent/pojo-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scanner-module/scanner-module.iml" filepath="$PROJECT_DIR$/scanner-module/scanner-module.iml" />
       <module fileurl="file://$PROJECT_DIR$/yajul-aggregator.iml" filepath="$PROJECT_DIR$/yajul-aggregator.iml" />
     </modules>
   </component>

@@ -21,8 +21,6 @@
 
     <dependencyManagement>
         <dependencies>
-
-            <!-- SLF4J has much simpler dependencies than commons-logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
