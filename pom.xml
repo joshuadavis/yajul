@@ -6,11 +6,29 @@
 
     <groupId>org.yajul</groupId>
     <artifactId>yajul-aggregator</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.3-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <url>http://yajul.sourceforge.net</url>
+    <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
+    <developers>
+        <developer>
+            <id>pgmjsd</id>
+            <name>Joshua Davis</name>
+            <email>pgmjsd _at_ sourceforge _dot_ net</email>
+            <roles>
+                <role>Project Lead</role>
+            </roles>
+        </developer>
+    </developers>
 
     <modules>
         <module>core</module>
         <module>groovy-dbtools</module>
+        <module>dep-mgmt</module>
+        <module>pojo-parent</module>
     </modules>
 </project>
