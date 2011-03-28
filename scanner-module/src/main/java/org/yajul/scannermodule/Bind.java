@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Annotate implementations with this to automatically bind them.
+ * Annotate implementations or providers with this to automatically bind them.
  * <br>
  * User: Josh
  * Date: 3/27/11

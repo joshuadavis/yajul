@@ -26,12 +26,12 @@ import java.util.zip.ZipFile;
  * Date: Mar 6, 2008
  * Time: 6:09:45 PM
  *
- * @author Josh Davis - Adapted to Yajul.
+ * @author Josh Davis - Adapted for Guice.
  * @author Thomas Heute
  * @author Gavin King
  * @author Norman Richards
  */
-public abstract class AbstractScanner {
+abstract class AbstractScanner {
     private static final Logger log = LoggerFactory.getLogger(AbstractScanner.class);
 
     protected String resourceName;
@@ -42,32 +42,29 @@ public abstract class AbstractScanner {
 
     /**
      * Scans everything in the classpath where the specified resource is located.
+     *
      * @param resourceName resource name used to find a directory or archive to scan
      */
-    public AbstractScanner(String resourceName) {
-        this(resourceName, Thread.currentThread().getContextClassLoader());
-    }
-
     public AbstractScanner(String resourceName, ClassLoader classLoader) {
         this.resourceName = resourceName;
         this.classLoader = classLoader;
     }
 
     public static String getPath(URL url) throws UnsupportedEncodingException {
-       String urlPath = url.getFile();
-       urlPath = URLDecoder.decode(urlPath, "UTF-8");
-       return urlPath;
+        String urlPath = url.getFile();
+        urlPath = URLDecoder.decode(urlPath, "UTF-8");
+        return urlPath;
     }
 
     public static boolean isFileURL(String urlPath) {
-       return urlPath.startsWith("file:");
+        return urlPath.startsWith("file:");
     }
 
     public static String getFilePathFromURL(String urlPath) {
-       // On windows urlpath looks like file:/C: on Linux file:/home
-       // substring(5) works for both
-       urlPath = urlPath.substring(5);
-       return urlPath;
+        // On windows urlpath looks like file:/C: on Linux file:/home
+        // substring(5) works for both
+        urlPath = urlPath.substring(5);
+        return urlPath;
     }
 
     protected void scan() {
@@ -86,9 +83,9 @@ public abstract class AbstractScanner {
                 Enumeration<URL> urlEnum = classLoader.getResources(resourceName);
                 while (urlEnum.hasMoreElements()) {
                     URL url = urlEnum.nextElement();
-                   String urlPath = getPath(url);
+                    String urlPath = getPath(url);
                     if (isFileURL(urlPath)) {
-                       urlPath = getFilePathFromURL(urlPath);
+                        urlPath = getFilePathFromURL(urlPath);
                     }
                     if (urlPath.indexOf('!') > 0) {
                         urlPath = urlPath.substring(0, urlPath.indexOf('!'));
@@ -106,8 +103,7 @@ public abstract class AbstractScanner {
                     }
                     addPath(urlPath);
                 }
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 log.warn("could not read: " + resourceName, ioe);
                 return;
             }
@@ -116,22 +112,21 @@ public abstract class AbstractScanner {
         for (String urlPath : paths) {
             try {
                 if (log.isDebugEnabled())
-                   log.debug("scanning: " + urlPath);
+                    log.debug("scanning: " + urlPath);
                 File file = new File(urlPath);
                 if (file.isDirectory()) {
                     handleDirectory(file, null);
                 } else {
                     handleArchive(file);
                 }
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 log.warn("could not read entries", ioe);
             }
         }
         scanned = true;
     }
 
-   private void addPath(String urlPath) {
+    private void addPath(String urlPath) {
         if (log.isTraceEnabled())
             log.trace("addPath('" + urlPath + "')");
         paths.add(urlPath);
@@ -143,7 +138,7 @@ public abstract class AbstractScanner {
 
     private void handleArchive(File file) throws IOException {
         if (log.isTraceEnabled())
-           log.trace("archive: " + file);
+            log.trace("archive: " + file);
         ZipFile zip = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zip.entries();
         while (entries.hasMoreElements()) {
@@ -156,7 +151,7 @@ public abstract class AbstractScanner {
 
     private void handleDirectory(File file, String path) {
         if (log.isTraceEnabled())
-           log.trace("directory: " + file);
+            log.trace("directory: " + file);
         for (File child : file.listFiles()) {
             String newPath = path == null ?
                     child.getName() : path + '/' + child.getName();
@@ -174,6 +169,6 @@ public abstract class AbstractScanner {
             log.warn("Resource '" + name + "' not found.");
         return stream;
     }
-    
+
     protected abstract void handleItem(String name);
 }

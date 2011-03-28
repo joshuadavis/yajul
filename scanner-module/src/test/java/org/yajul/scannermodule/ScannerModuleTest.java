@@ -1,12 +1,14 @@
 package org.yajul.scannermodule;
 
-import com.google.inject.*;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import junit.framework.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TODO: Class level comments!
+ * Test ScannerModule.
  * <br>
  * User: Josh
  * Date: 3/27/11
@@ -19,7 +21,11 @@ public class ScannerModuleTest extends TestCase {
     public void testAnnotationScanner() {
         Module module = new ScannerModule(this.getClass().getClassLoader());
         Injector injector = Guice.createInjector(module);
-        ExampleImplOne one = injector.getInstance(ExampleImplOne.class);
+        ExampleInterface one = injector.getInstance(ExampleInterface.class);
+        assertNotNull(one);
+        log.info("one=" + one);
         Foo foo = injector.getInstance(Foo.class);
+        log.info("foo=" + foo);
+        assertNotNull(foo);
     }
 }

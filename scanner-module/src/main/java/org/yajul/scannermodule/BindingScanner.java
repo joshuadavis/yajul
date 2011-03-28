@@ -5,9 +5,14 @@ import javassist.bytecode.ClassFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Externalizable;
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Actually does the work of scanning and binding.
@@ -19,12 +24,20 @@ import java.lang.reflect.Type;
 class BindingScanner extends AbstractAnnotationScanner {
     private static final Logger log = LoggerFactory.getLogger(BindingScanner.class);
 
+    /**
+     * Interfaces that are ignored by default.
+     */
+    private static Set<Class> IGNORED = new HashSet<Class>(
+            Arrays.asList(
+                    Serializable.class,
+                    Externalizable.class)
+    );
+
     private Binder binder;
 
     public BindingScanner(Binder binder, ClassLoader classLoader) {
-        super(ScannerModule.RESOURCE_NAME, classLoader);
+        super(ScannerModule.RESOURCE_NAME, classLoader, Bind.class);
         this.binder = binder;
-        addAnnotation(Bind.class);
     }
 
     @Override
@@ -38,28 +51,59 @@ class BindingScanner extends AbstractAnnotationScanner {
             Scope scope = getScope(implClass);
             // See if it's a Provider...
             if (Provider.class.isAssignableFrom(implClass)) {
-                bindProvider(implClass,scope);
+                bindProvider(implClass, scope);
             } else {
-                binder.bind(implClass).in(scope);
+                bindImplementation(implClass, scope);
             }
         } catch (ClassNotFoundException e) {
             binder.addError(e);
         }
     }
 
-    private void bindProvider(Class<?> implClass, Scope scope) {
-        Class<?> providedClass = null;
+    private void bindImplementation(Class<?> implClass, Scope scope) {
+        Class[] interfaces = implClass.getInterfaces();
+        Set<Class> interfacesToBind = new HashSet<Class>();
+
+        //noinspection ManualArrayToCollectionCopy
+        for (Class anInterface : interfaces) {
+            if (!IGNORED.contains(anInterface))
+                interfacesToBind.add(anInterface);
+            else
+                log.info("Ignoring " + anInterface.getSimpleName());
+        }
+
+        if (interfacesToBind.size() == 1) {
+            final Class toBind = interfacesToBind.iterator().next();
+            log.info("Binding single interface " + toBind.getSimpleName() + " to " + implClass.getSimpleName() + " ...");
+            //noinspection unchecked
+            binder.bind(toBind).to(implClass).in(scope);
+            return;
+        }
+
+
+        for (Class toBind : interfacesToBind) {
+            //noinspection unchecked
+            binder.bind(toBind).to(implClass);
+        }
+    }
+
+    private void bindProvider(Class implClass, Scope scope) {
+        Class providedClass = null;
         // Find the provided type...
         Type[] types = implClass.getGenericInterfaces();
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
+                // Make sure it's a provider.
                 if (parameterizedType.getRawType().equals(Provider.class)) {
+                    // Paranoid check - Make sure it doesn't implement more than one Provider
+                    // (should be impossible)
                     if (providedClass != null) {
                         binder.addError("Implementation class " + implClass.getCanonicalName()
-                                + " already implements Provider<" + providedClass.getSimpleName()+">!");
+                                + " already implements Provider<" + providedClass.getSimpleName() + ">!");
                         return;
                     }
+                    // Provider should have only one type argument.
                     final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                     if (actualTypeArguments == null || actualTypeArguments.length != 1) {
                         binder.addError("Provider should have one and only one type parameter!");
@@ -68,6 +112,7 @@ class BindingScanner extends AbstractAnnotationScanner {
                     if (actualTypeArguments[0] instanceof Class<?>) {
                         providedClass = (Class<?>) actualTypeArguments[0];
                     }
+                    // The Provider type should be a class.
                     else {
                         binder.addError("Type parameter '" + actualTypeArguments[0] + " is not a class!");
                         return;
@@ -82,7 +127,8 @@ class BindingScanner extends AbstractAnnotationScanner {
         if (providedClass == null)
             throw new RuntimeException("Unable to find provided class for " + implClass.getCanonicalName());
 
-        binder.bind(providedClass).toProvider((Class<? extends Provider<?>>) implClass).in(scope);
+        //noinspection unchecked
+        binder.bind(providedClass).toProvider(implClass).in(scope);
     }
 
     private Scope getScope(Class<?> implClass) {
