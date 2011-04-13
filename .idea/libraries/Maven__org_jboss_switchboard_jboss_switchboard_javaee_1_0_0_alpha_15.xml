@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.switchboard:jboss-switchboard-javaee:1.0.0-alpha-15">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/switchboard/jboss-switchboard-javaee/1.0.0-alpha-15/jboss-switchboard-javaee-1.0.0-alpha-15.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/switchboard/jboss-switchboard-javaee/1.0.0-alpha-15/jboss-switchboard-javaee-1.0.0-alpha-15-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/switchboard/jboss-switchboard-javaee/1.0.0-alpha-15/jboss-switchboard-javaee-1.0.0-alpha-15-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

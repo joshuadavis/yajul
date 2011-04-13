@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.javaee:jboss-jca-api:1.5.0.20070913080910">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jca-api/1.5.0.20070913080910/jboss-jca-api-1.5.0.20070913080910.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jca-api/1.5.0.20070913080910/jboss-jca-api-1.5.0.20070913080910-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/javaee/jboss-jca-api/1.5.0.20070913080910/jboss-jca-api-1.5.0.20070913080910-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

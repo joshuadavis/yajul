@@ -15,7 +15,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ivy:ivy:2.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hsqldb:hsqldb:1.8.0.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.liquibase:liquibase-core:1.9.5" level="project" />
   </component>
 </module>

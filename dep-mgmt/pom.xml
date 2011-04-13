@@ -11,7 +11,7 @@
     <description>Dependency management definitions for importing into other POMs.</description>
 
     <properties>
-        <version.junit>3.8.1</version.junit>
+        <version.junit>4.8.1</version.junit>
         <version.javassist>3.8.1.GA</version.javassist>
         <version.jboss-embedded>beta3.SP12</version.jboss-embedded>
         <version.slf4j>1.5.3</version.slf4j>

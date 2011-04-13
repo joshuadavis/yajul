@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss:jboss-reflect:2.2.0.Alpha5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-reflect/2.2.0.Alpha5/jboss-reflect-2.2.0.Alpha5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-reflect/2.2.0.Alpha5/jboss-reflect-2.2.0.Alpha5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/jboss-reflect/2.2.0.Alpha5/jboss-reflect-2.2.0.Alpha5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

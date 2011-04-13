@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.ejb3.timerservice:ejb31-calendar-expr-parser:1.0.0-alpha-13">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/timerservice/ejb31-calendar-expr-parser/1.0.0-alpha-13/ejb31-calendar-expr-parser-1.0.0-alpha-13.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/timerservice/ejb31-calendar-expr-parser/1.0.0-alpha-13/ejb31-calendar-expr-parser-1.0.0-alpha-13-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/timerservice/ejb31-calendar-expr-parser/1.0.0-alpha-13/ejb31-calendar-expr-parser-1.0.0-alpha-13-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

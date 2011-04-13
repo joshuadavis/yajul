@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.microcontainer:jboss-dependency:2.0.0.CR5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-dependency/2.0.0.CR5/jboss-dependency-2.0.0.CR5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-dependency/2.0.0.CR5/jboss-dependency-2.0.0.CR5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/microcontainer/jboss-dependency/2.0.0.CR5/jboss-dependency-2.0.0.CR5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

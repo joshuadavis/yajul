@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.metadata:jboss-metadata-rar:2.0.0.Alpha">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata-rar/2.0.0.Alpha/jboss-metadata-rar-2.0.0.Alpha.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata-rar/2.0.0.Alpha/jboss-metadata-rar-2.0.0.Alpha-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/metadata/jboss-metadata-rar/2.0.0.Alpha/jboss-metadata-rar-2.0.0.Alpha-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

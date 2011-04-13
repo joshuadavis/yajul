@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.logmanager:jboss-logmanager:1.2.0.CR8">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.2.0.CR8/jboss-logmanager-1.2.0.CR8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.2.0.CR8/jboss-logmanager-1.2.0.CR8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logmanager/jboss-logmanager/1.2.0.CR8/jboss-logmanager-1.2.0.CR8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

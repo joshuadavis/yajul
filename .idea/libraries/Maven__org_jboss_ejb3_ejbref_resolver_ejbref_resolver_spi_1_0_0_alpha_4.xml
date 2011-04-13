@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.ejb3.ejbref.resolver:ejbref-resolver-spi:1.0.0-alpha-4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/ejbref/resolver/ejbref-resolver-spi/1.0.0-alpha-4/ejbref-resolver-spi-1.0.0-alpha-4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/ejbref/resolver/ejbref-resolver-spi/1.0.0-alpha-4/ejbref-resolver-spi-1.0.0-alpha-4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/ejb3/ejbref/resolver/ejbref-resolver-spi/1.0.0-alpha-4/ejbref-resolver-spi-1.0.0-alpha-4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

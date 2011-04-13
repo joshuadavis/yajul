@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: emma:emma_ant:2.0.5312">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/emma/emma_ant/2.0.5312/emma_ant-2.0.5312.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/emma/emma_ant/2.0.5312/emma_ant-2.0.5312-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/emma/emma_ant/2.0.5312/emma_ant-2.0.5312-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
