@@ -35,6 +35,8 @@ public class SimpleCdiBeanTest {
 
     @Test
     public void testSimpleBean() {
+        System.out.println("okay, about to call the bean...");
         bean.doSomething();
+        System.out.println("done");
     }
 }
