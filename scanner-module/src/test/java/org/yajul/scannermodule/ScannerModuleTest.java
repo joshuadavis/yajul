@@ -2,7 +2,9 @@ package org.yajul.scannermodule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.name.Names;
 import junit.framework.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ public class ScannerModuleTest extends TestCase {
         ExampleInterface one = injector.getInstance(ExampleInterface.class);
         assertNotNull(one);
         log.info("one=" + one);
+        ExampleInterface two = injector.getInstance(Key.get(ExampleInterface.class, Two.class));
         Foo foo = injector.getInstance(Foo.class);
         log.info("foo=" + foo);
         assertNotNull(foo);

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -61,29 +62,35 @@ class BindingScanner extends AbstractAnnotationScanner {
     }
 
     private void bindImplementation(Class<?> implClass, Scope scope) {
-        Class[] interfaces = implClass.getInterfaces();
-        Set<Class> interfacesToBind = new HashSet<Class>();
-
-        //noinspection ManualArrayToCollectionCopy
-        for (Class anInterface : interfaces) {
-            if (!IGNORED.contains(anInterface))
-                interfacesToBind.add(anInterface);
+        Set<Key> keys = new HashSet<Key>();
+        org.yajul.scannermodule.Type type = implClass.getAnnotation(org.yajul.scannermodule.Type.class);
+        if (type != null) {
+            if (type.annotatedWith() != null)
+                keys.add(Key.get(type.type(),type.annotatedWith()));
             else
-                log.info("Ignoring " + anInterface.getSimpleName());
+                keys.add(Key.get(type.type()));
+        } else {
+            Class[] interfaces = implClass.getInterfaces();
+            for (Class anInterface : interfaces) {
+                if (!IGNORED.contains(anInterface))
+                    keys.add(Key.get(anInterface));
+                else
+                    log.info("Ignoring " + anInterface.getSimpleName());
+            }
         }
 
-        if (interfacesToBind.size() == 1) {
-            final Class toBind = interfacesToBind.iterator().next();
-            log.info("Binding single interface " + toBind.getSimpleName() + " to " + implClass.getSimpleName() + " ...");
+        if (keys.size() == 1) {
+            final Key toBind = keys.iterator().next();
+            log.info("Binding single key " + toBind + " to " + implClass.getSimpleName() + " ...");
             //noinspection unchecked
             binder.bind(toBind).to(implClass).in(scope);
-            return;
-        }
-
-
-        for (Class toBind : interfacesToBind) {
-            //noinspection unchecked
-            binder.bind(toBind).to(implClass);
+        } else {
+            log.info("Binding impl " + implClass.getSimpleName() + " ...");
+            binder.bind(implClass).in(scope);
+            for (Key key : keys) {
+                log.info("Binding " + key + " to impl " + implClass.getSimpleName() + "...");
+                binder.bind(key).to(implClass);
+            }
         }
     }
 
