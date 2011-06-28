@@ -35,7 +35,7 @@ public class SocketServerTest extends TestCase {
                         OutputStream out = getOutputStream();
                         PrintWriter outbuf = new PrintWriter(new OutputStreamWriter(out));
                         //noinspection InfiniteLoopStatement
-                        for (;;) {
+                        for (; ; ) {
                             log.info("Reading...");
                             String line = inbuf.readLine();
                             if (line == null) {
@@ -47,7 +47,7 @@ public class SocketServerTest extends TestCase {
                             outbuf.flush();
                         }
                     } catch (IOException e) {
-                        log.error("Unexpected: " + e,e);
+                        log.error("Unexpected: " + e, e);
                     }
                 }
             });
@@ -68,17 +68,17 @@ public class SocketServerTest extends TestCase {
 
         @Override
         protected void unexpected(Throwable t) {
-            log.error("Unexpected: " + t,t);
+            log.error("Unexpected: " + t, t);
         }
     }
 
     public void testServerSocket() throws IOException {
         int port = 17777;
         ExecutorService executor = Executors.newCachedThreadPool();
-        AbstractSocketListener echoServer = new EchoServer(port,executor);
+        AbstractSocketListener echoServer = new EchoServer(port, executor);
         echoServer.start();
 
-        Socket client = new Socket("localhost",port);
+        Socket client = new Socket("localhost", port);
         InputStream in = client.getInputStream();
         BufferedReader inbuf = new BufferedReader(new InputStreamReader(in));
         OutputStream out = client.getOutputStream();

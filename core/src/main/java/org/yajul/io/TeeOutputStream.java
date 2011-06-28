@@ -48,22 +48,9 @@ public class TeeOutputStream extends FilterOutputStream {
      * Creates a new output stream that echoes output to both
      * of the specified streams.
      *
-     * @param out  The main underlying output stream.
-     * @param out2 The 'tee' output stream.
+     * @param streams streams to write to.
      */
-    public TeeOutputStream(OutputStream out, OutputStream out2) {
-        super(out);
-        teeOut = new OutputStream[1];
-        teeOut[0] = out2;
-    }
-
-    /**
-     * Creates a new output stream that writes output to all
-     * of the streams in the array.
-     *
-     * @param streams An array of streams to write to.
-     */
-    public TeeOutputStream(OutputStream[] streams) {
+    public TeeOutputStream(OutputStream ... streams) {
         super(streams[0]);
         teeOut = new OutputStream[streams.length - 1];
         System.arraycopy(streams, 1, teeOut, 0, teeOut.length);
@@ -88,11 +75,10 @@ public class TeeOutputStream extends FilterOutputStream {
 
         super.close();  // Close the main underlying output stream.
 
-        for (int i = 0; i < teeOut.length; i++) {
+        for (OutputStream aTeeOut : teeOut) {
             try {
-                teeOut[i].close();
-            }
-            catch (IOException ioe) {
+                aTeeOut.close();
+            } catch (IOException ioe) {
                 log.error("Unexpected I/O exception: " + ioe.getMessage(), ioe);
                 e = ioe;
             }
@@ -116,11 +102,10 @@ public class TeeOutputStream extends FilterOutputStream {
         IOException e = null;
 
         super.flush();
-        for (int i = 0; i < teeOut.length; i++) {
+        for (OutputStream aTeeOut : teeOut) {
             try {
-                teeOut[i].flush();
-            }
-            catch (IOException ioe) {
+                aTeeOut.flush();
+            } catch (IOException ioe) {
                 log.error("Unexpected I/O exception: " + ioe.getMessage(), ioe);
                 e = ioe;
             }
@@ -155,11 +140,10 @@ public class TeeOutputStream extends FilterOutputStream {
         // invoked directly here.
         super.out.write(b);
 
-        for (int i = 0; i < teeOut.length; i++) {
+        for (OutputStream aTeeOut : teeOut) {
             try {
-                teeOut[i].write(b);
-            }
-            catch (IOException ioe) {
+                aTeeOut.write(b);
+            } catch (IOException ioe) {
                 log.error("Unexpected I/O exception: " + ioe.getMessage(), ioe);
                 e = ioe;
             }
@@ -199,11 +183,10 @@ public class TeeOutputStream extends FilterOutputStream {
 
         super.out.write(b, off, len);
 
-        for (int i = 0; i < teeOut.length; i++) {
+        for (OutputStream aTeeOut : teeOut) {
             try {
-                teeOut[i].write(b, off, len);
-            }
-            catch (IOException ioe) {
+                aTeeOut.write(b, off, len);
+            } catch (IOException ioe) {
                 log.error("Unexpected I/O exception: " + ioe.getMessage(), ioe);
                 e = ioe;
             }
@@ -230,11 +213,10 @@ public class TeeOutputStream extends FilterOutputStream {
         IOException e = null;
 
         super.write(b);
-        for (int i = 0; i < teeOut.length; i++) {
+        for (OutputStream aTeeOut : teeOut) {
             try {
-                teeOut[i].write(b);
-            }
-            catch (IOException ioe) {
+                aTeeOut.write(b);
+            } catch (IOException ioe) {
                 log.error("Unexpected I/O exception: " + ioe.getMessage(), ioe);
                 e = ioe;
             }

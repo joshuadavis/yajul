@@ -33,6 +33,12 @@ import org.yajul.util.Copier;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static org.yajul.util.Copier.UNLIMITED;
 
 /**
  * Provides stream copying capability in a Runnable class.  This can be used to
@@ -50,6 +56,7 @@ public class StreamCopier implements Runnable {
      * The default buffer size.
      */
     public static final int DEFAULT_BUFFER_SIZE = 256;
+
     /**
      * The input stream.
      */
@@ -58,20 +65,37 @@ public class StreamCopier implements Runnable {
      * The output stream.
      */
     private OutputStream out;
+
     /**
      * The buffer size to use while copying.
      */
-    private int bufsz = DEFAULT_BUFFER_SIZE;
+    private final int bufsz;
+    /**
+     * The number of bytes to copy.
+     */
+    private final int limit;
+
+    /**
+     * Progress callback functions.
+     */
+    private final Copier.Callback callback;
+
     /**
      * If an exception was thrown in the run() method, this will be set.
      */
     private IOException exception;
+
     /**
-     * True, if the copying is complete.
+     * Lock that guards the conditions.
      */
-    private boolean complete = false;
+    private final Lock lock = new ReentrantLock();
+
+    /**
+     * Signaled when the copying loop is complete.
+     */
+    private final Condition complete = lock.newCondition();
+
     private static final int DEFAULT_BYTE_ARRAY_BUFSZ = 128;
-    private static final int UNLIMITED = -1;
 
     /**
      * Copies the input stream into the output stream in a thread safe and
@@ -84,6 +108,7 @@ public class StreamCopier implements Runnable {
      * @return int The number of bytes copied.
      * @throws IOException When the stream could not be copied.
      */
+    @SuppressWarnings({"SynchronizationOnLocalVariableOrMethodParameter"})
     public static int copy(InputStream in, OutputStream out, int bufsz)
             throws IOException {
         // From Java I/O, page 43
@@ -333,8 +358,27 @@ public class StreamCopier implements Runnable {
      *            discarded, similar to piping to /dev/null on UN*X.
      */
     public StreamCopier(InputStream in, OutputStream out) {
+        this(in,out,DEFAULT_BUFFER_SIZE,UNLIMITED, Copier.NO_CALLBACK);
+    }
+
+    /**
+     * Creates a new stream copier, that will copy the input stream into the
+     * output stream when the run() method is caled.
+     *
+     * @param in  The input stream to read from.
+     * @param out The output stream.  If this is null, the input will be
+     *            discarded, similar to piping to /dev/null on UN*X.
+     * @param bufsz the buffer size to use
+     * @param limit limit the copy to this number of bytes (-1 for unlimited)
+     * @param callback optional progress callback
+     */
+    public StreamCopier(InputStream in,OutputStream out,int bufsz,int limit,Copier.Callback callback)
+    {
         this.in = in;
         this.out = out;
+        this.bufsz = bufsz;
+        this.limit = limit;
+        this.callback = callback;
     }
 
     /**
@@ -356,22 +400,55 @@ public class StreamCopier implements Runnable {
     public void run() {
         try {
             // Copy, using the a buffer.
-            unsyncCopy(in, out, bufsz);
+            Copier.copy(in, out, bufsz, limit, callback);
             // Flush the output.
             if (out != null)
                 out.flush();
-            // Completed state.
-            synchronized (this) {
-                complete = true;
-            }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             // Log the exception!
             log.error("Unexpected: " + e.getMessage(), e);
-            // Remember the exception, just in case anyone cares.
-            synchronized (this) {
-                exception = e;
-            }
+            setException(e);
+        } finally {
+            signalComplete();
+        }
+    }
+
+    private void setException(IOException e) {
+        // Remember the exception, just in case anyone cares.
+        synchronized (this) {
+            exception = e;
+        }
+    }
+
+    private void signalComplete() {
+        lock.lock();
+        try {
+            complete.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     * Waits for the copy operation to complete.
+     *
+     * @param millis milliseconds to wait, < 0 to wait forever
+     * @return {@code false} if the waiting time detectably elapsed
+     *         before return from the method, else {@code true}.
+     *         If millis is < 0, this always returns true after waiting forever.
+     * @throws InterruptedException if the thread was interrupted.
+     */
+    public boolean waitForComplete(long millis) throws InterruptedException {
+        boolean rv = true;
+        lock.lock();
+        try {
+            if (millis >= 0) {
+                rv = complete.await(millis, TimeUnit.MILLISECONDS);
+            } else
+                complete.await();
+            return rv;
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -384,18 +461,6 @@ public class StreamCopier implements Runnable {
     public IOException getException() {
         synchronized (this) {
             return exception;
-        }
-    }
-
-    /**
-     * Returns true if the copying is complete.
-     *
-     * @return boolean - true if the copying is complete.  Returns false if
-     *         the copying is in progress, not started, or encountered an error.
-     */
-    public boolean isComplete() {
-        synchronized (this) {
-            return complete;
         }
     }
 }
