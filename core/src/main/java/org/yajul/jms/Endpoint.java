@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.lang.IllegalStateException;
 
 /**
@@ -18,8 +17,8 @@ import java.lang.IllegalStateException;
 public class Endpoint {
     private static Logger log = LoggerFactory.getLogger(Endpoint.class);
 
-    private ConnectionFactoryReference connectionFactoryReference;
-    private DestinationReference destinationReference;
+    private ConnectionFactoryProvider cfProvider;
+    private DestinationProvider destinationReference;
     private Session session;
     private Connection connection;
 
@@ -32,21 +31,21 @@ public class Endpoint {
     private String messageSelector;
 
     public Endpoint(InitialContext ic, String factoryJndiName, String destinationName, String messageSelector) {
-        this(new ConnectionFactoryReference(ic, factoryJndiName),
-                new DestinationReference(ic, destinationName), messageSelector);
+        this(new ConnectionFactoryProvider(ic, factoryJndiName),
+                new DestinationProvider(ic, destinationName), messageSelector);
     }
 
 
-    public Endpoint(ConnectionFactoryReference factoryReference, DestinationReference destinationReference,
+    public Endpoint(ConnectionFactoryProvider factoryReference, DestinationProvider destinationReference,
                     String messageSelector) {
-        this.connectionFactoryReference = factoryReference;
+        this.cfProvider = factoryReference;
         this.destinationReference = destinationReference;
         this.messageSelector = messageSelector;
     }
 
     public Endpoint(InitialContext ic, String factoryJndiName, Destination destination, String messageSelector) {
-        this(new ConnectionFactoryReference(ic, factoryJndiName),
-                new DestinationReference(destination), messageSelector);
+        this(new ConnectionFactoryProvider(ic, factoryJndiName),
+                new DestinationProvider(destination), messageSelector);
     }
 
     public boolean isQueueEndpoint() {
@@ -129,9 +128,9 @@ public class Endpoint {
     public Connection getConnection() throws JMSException {
         if (connection == null) {
             if (queueEndpoint)
-                connection = connectionFactoryReference.getQueueConnectionFactory().createQueueConnection();
+                connection = cfProvider.getQueueConnectionFactory().createQueueConnection();
             else
-                connection = connectionFactoryReference.getTopicConnectionFactory().createTopicConnection();
+                connection = cfProvider.getTopicConnectionFactory().createTopicConnection();
             onConnectionCreated(connection);
         }
         return connection;

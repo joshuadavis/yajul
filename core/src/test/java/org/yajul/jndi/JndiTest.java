@@ -1,7 +1,7 @@
 package org.yajul.jndi;
 
 import org.yajul.embedded.EmbeddedJBossTestCase;
-import org.yajul.embedded.UnitTestJndiConstants;
+
 import static org.yajul.embedded.UnitTestJndiConstants.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class JndiTest extends EmbeddedJBossTestCase {
     }
 
     public void testJndiHelper() throws Exception {
-        InitialContext ic = getInitialContextProvider().get();
+        InitialContext ic = getInitialContextProvider().getObject();
         String listing = JndiHelper.listBindings(ic,"java:/");
         log.info("*** LISTING OF java:/ *****\n" + listing);
         listing = JndiHelper.listBindings(ic,"/");
@@ -40,11 +40,11 @@ public class JndiTest extends EmbeddedJBossTestCase {
     public void testJndiReference() throws Exception {
         final JndiLookup lookup = getJndiLookup();
         JndiNames names = new JBossJndiNames();
-        JndiReference<TransactionManager> tmr = new JndiReference<TransactionManager>(lookup,TransactionManager.class,names.getTransactionManagerName());
-        TransactionManager tm = tmr.get();
+        JndiObjectProvider<TransactionManager> tmr = new JndiObjectProvider<TransactionManager>(lookup,TransactionManager.class,names.getTransactionManagerName());
+        TransactionManager tm = tmr.getObject();
         assertNotNull(tm);
-        JndiProvider<ConnectionFactory> cfp = new JndiProvider<ConnectionFactory>(lookup,ConnectionFactory.class,names.getConnectionFactoryName());
-        ConnectionFactory cf = cfp.get();
+        JndiObjectProvider<ConnectionFactory> cfp = new JndiObjectProvider<ConnectionFactory>(lookup,ConnectionFactory.class,names.getConnectionFactoryName());
+        ConnectionFactory cf = cfp.getObject();
         assertNotNull(cf);
     }
 }

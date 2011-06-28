@@ -75,39 +75,5 @@
     <history />
     <find-history />
   </component>
-  <component name="atlassian-ide-plugin-workspace">
-    <option name="bambooConfiguration">
-      <BambooWorkspaceConfiguration>
-        <option name="view">
-          <BambooViewConfigurationBean />
-        </option>
-      </BambooWorkspaceConfiguration>
-    </option>
-    <option name="crucibleConfiguration">
-      <CrucibleWorkspaceConfiguration>
-        <option name="crucibleFilters">
-          <CrucibleFiltersBean>
-            <option name="manualFilter">
-              <CustomFilterBean />
-            </option>
-            <option name="recenltyOpenFilter">
-              <RecentlyOpenReviewsFilter />
-            </option>
-          </CrucibleFiltersBean>
-        </option>
-        <option name="view">
-          <CrucibleViewConfigurationBean />
-        </option>
-      </CrucibleWorkspaceConfiguration>
-    </option>
-    <option name="defaultCredentials">
-      <UserCfgBean />
-    </option>
-  </component>
-  <component name="atlassian-ide-plugin-workspace-issues">
-    <option name="view">
-      <JiraViewConfigurationBean />
-    </option>
-  </component>
 </project>
 
