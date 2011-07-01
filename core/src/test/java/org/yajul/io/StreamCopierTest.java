@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yajul.util.Copier;
-import org.yajul.util.StringUtil;
 
 import java.io.*;
 import java.util.Arrays;
@@ -162,21 +161,13 @@ public class StreamCopierTest extends TestCase {
 
 
     public void testStreamCopierAsync() throws Exception {
-        PipedInputStream slowInput = new PipedInputStream();
-        final PipedOutputStream pipe = new PipedOutputStream(slowInput);
-        final PrintStream ps = new PrintStream(pipe);
         final int limit = 100;
 
-        Thread slowWriter = new Thread(new Runnable() {
-            public void run() {
-                log.info("Writer started.");
-                writeStuff(limit, ps, 50);
-                log.info("Writer exiting.");
-            }
-        });
+        SlowOutput slow = new SlowOutput(limit,50);
+        Thread slowWriter = new Thread(slow);
 
         ByteArrayOutputStream copy = new ByteArrayOutputStream();
-        StreamCopier copier = new StreamCopier(slowInput, copy);
+        StreamCopier copier = new StreamCopier(slow.getSlowInput(), copy);
         Thread t = new Thread(copier);
 
         log.info("Starting copier...");
@@ -194,25 +185,11 @@ public class StreamCopierTest extends TestCase {
         log.info("Copying complete.");
 
         ByteArrayOutputStream expected = new ByteArrayOutputStream();
-        writeStuff(limit,new PrintStream(expected),0);
+        SlowOutput.writeStuff(limit, new PrintStream(expected), 0);
         byte[] expectedBytes = expected.toByteArray();
         byte[] copyBytes = copy.toByteArray();
 
         assertTrue(Arrays.equals(expectedBytes, copyBytes));
-    }
-
-    private void writeStuff(int limit, PrintStream ps, long sleepMillis) {
-        for (int i = 0; i < limit; i++) {
-            ps.println("i=" + i);
-            ps.flush();
-            if (sleepMillis > 0) {
-                try {
-                    Thread.sleep(sleepMillis);
-                } catch (Exception ignore) {
-                }
-            }
-        }
-        ps.close();
     }
 
 }
