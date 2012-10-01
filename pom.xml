@@ -31,5 +31,6 @@
         <module>dep-mgmt</module>
         <module>pojo-parent</module>
         <module>micro</module>
+        <module>core-se</module>
     </modules>
 </project>

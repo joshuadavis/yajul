@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import org.yajul.util.ResourceUtil;
-
 /**
  * Tests ResourceUtil
  */

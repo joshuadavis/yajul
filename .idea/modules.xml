@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-se/core-se.iml" filepath="$PROJECT_DIR$/core-se/core-se.iml" />
       <module fileurl="file://$PROJECT_DIR$/dep-mgmt/dep-mgmt.iml" filepath="$PROJECT_DIR$/dep-mgmt/dep-mgmt.iml" />
       <module fileurl="file://$PROJECT_DIR$/groovy-dbtools/groovy-dbtools.iml" filepath="$PROJECT_DIR$/groovy-dbtools/groovy-dbtools.iml" />
       <module fileurl="file://$PROJECT_DIR$/micro/micro.iml" filepath="$PROJECT_DIR$/micro/micro.iml" />
