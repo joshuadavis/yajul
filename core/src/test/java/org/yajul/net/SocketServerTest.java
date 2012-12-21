@@ -89,12 +89,15 @@ public class SocketServerTest extends TestCase {
 
         private OutputTask(ClientConnection connection,OutputStream outputStream) {
             super(connection);
+            this.outputStream = outputStream;
         }
 
         public void runClient() throws Exception {
             // Copy the stream from the client to the output stream.
             InputStream fromClient = getConnection().getInputStream();
-            Copier.copy(fromClient,outputStream,1024,Copier.UNLIMITED,this);
+            int bytes = Copier.copy(fromClient,outputStream,1024,Copier.UNLIMITED,this);
+            log.info("Copied " + bytes + " bytes.   Disconnecting...");
+            outputStream.flush();
             getConnection().close();
         }
 
@@ -158,7 +161,7 @@ public class SocketServerTest extends TestCase {
         OutputStream clientOut = socket.getOutputStream();
         PrintStream ps = new PrintStream(clientOut);
 
-        ps.println("hello there!");
+        ps.print("hello there!");
         ps.flush();
 
         ps.close();
@@ -170,6 +173,8 @@ public class SocketServerTest extends TestCase {
 
 
         String received = out.toString();
+
+        log.info("Received " + received);
 
         assertEquals("hello there!",received);
 

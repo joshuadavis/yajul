@@ -98,7 +98,7 @@
                     <rules>
                         <requireMavenVersion>
                             <!-- Must be Maven 2.0.9 >= x >= 3.0.2  -->
-                            <version>[2.0.9,3.0.2]</version>
+                            <version>[2.0.9,3.0.4]</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
                             <!-- Must be JDK6 -->

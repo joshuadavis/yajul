@@ -10,11 +10,7 @@
     <version>0.4.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>yajul-core</name>
-    <scm>
-        <connection>scm:git:git@github.com:joshuadavis/yajul.git</connection>
-        <developerConnection>scm:git:git@github.com:joshuadavis/yajul.git</developerConnection>
-        <url>https://github.com/joshuadavis/yajul</url>
-    </scm>
+
     <properties>
     </properties>
 
