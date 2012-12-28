@@ -9,6 +9,8 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.yajul.util.Copier;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Test the Copier class
@@ -18,16 +20,13 @@ import org.yajul.util.Copier;
  * Time: 3:18:28 PM<br>
  * @author jdavis
  */
-public class CopierTest extends TestCase
+public class CopierTest
 {
     private static final byte[] BYTES = "12345678901234567890".getBytes();
     private static final char[] CHARS = "12345678901234567890".toCharArray();
 
-    public CopierTest(String name)
-    {
-        super(name);
-    }
 
+    @Test
     public void testToByteArray() throws Exception
     {
         byte[] bytes = BYTES;
@@ -36,6 +35,7 @@ public class CopierTest extends TestCase
         assertTrue(Arrays.equals(bytes,result));
     }
 
+    @Test
     public void testReaderCopy() throws Exception
     {
         char[] chars = CHARS;
@@ -45,6 +45,7 @@ public class CopierTest extends TestCase
         assertTrue(Arrays.equals(chars,writer.toCharArray()));
     }
 
+    @Test
     public void testLimitCopy() throws Exception
     {
         byte[] bytes = BYTES;
@@ -67,6 +68,7 @@ public class CopierTest extends TestCase
         assertTrue(Arrays.equals(resultchars,writer.toCharArray()));
     }
 
+    @Test
     public void testNullOutputCopy() throws Exception
     {
         byte[] bytes = BYTES;
@@ -80,6 +82,7 @@ public class CopierTest extends TestCase
         Copier.copy(reader,writer,8,0);
     }
 
+    @Test
     public void testExceptions() throws Exception
     {
         byte[] bytes = BYTES;

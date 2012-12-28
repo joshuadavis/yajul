@@ -26,29 +26,23 @@
  ******************************************************************************/
 package org.yajul.util;
 
+import junit.framework.TestCase;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-
-import org.yajul.util.StringUtil;
+import static org.junit.Assert.*;
 
 /**
  * Tests StringUtil methods.
  */
-public class StringUtilTest extends TestCase
+public class StringUtilTest
 {
-    /**
-     * Standard JUnit test case constructor.
-     * @param name The name of the test case.
-     */
-    public StringUtilTest(String name)
-    {
-        super(name);
-    }
-
     /**
      * Test StringUtil.hexString()
      */
+    @Test
     public void testHexString()
     {
         byte[] bytes = new byte[] { 0, 10, 16, 63, 127,
@@ -72,6 +66,7 @@ public class StringUtilTest extends TestCase
         TestCase.assertEquals("00,0A,10,3F,7F,80,81,FE,FF,00", hex);
     }
 
+    @Test
     public void testDefaultToString()
     {
         Object o = new Object();
@@ -81,6 +76,7 @@ public class StringUtilTest extends TestCase
         TestCase.assertEquals("null", s);
     }
 
+    @Test
     public void testEmpty()
     {
         assertTrue(StringUtil.isEmpty(null));
@@ -94,6 +90,7 @@ public class StringUtilTest extends TestCase
         TestCase.assertEquals("abcdef", buf.toString());
     }
 
+    @Test
     public void testGetBytes()
     {
         byte[] bytes = StringUtil.getBytes("hello",null);
@@ -103,6 +100,7 @@ public class StringUtilTest extends TestCase
         TestCase.assertEquals("hello", new String(bytes));
     }
 
+    @Test
     public void testSubstringBeforeAfter()
     {
         String s = StringUtil.substringBefore("aa/bb","/");
@@ -112,5 +110,23 @@ public class StringUtilTest extends TestCase
         assertEquals("aa/bb",StringUtil.substringBefore("aa/bb","c"));
         assertNull(StringUtil.substringBefore("/aabb","/"));
         assertNull(StringUtil.substringAfter("aa/bb","c"));
+    }
+
+    @Test
+    public void testChomp() {
+        assertEquals("abcd",StringUtil.chomp("abcd\r"));
+        assertEquals("abcd",StringUtil.chomp("abcd\r\n"));
+        assertEquals("abcd",StringUtil.chomp("abcd\n"));
+        assertEquals("",StringUtil.chomp("\n"));
+        assertEquals("",StringUtil.chomp("\r"));
+        assertEquals("",StringUtil.chomp("\r\n"));
+    }
+
+    @Test
+    public void compareToCommonsLang() {
+        // Spot check various things versus commons lang.
+        assertEquals(StringUtils.chomp("abcd\r"),StringUtil.chomp("abcd\r"));
+        assertEquals(StringUtils.chomp("abcd\n"),StringUtil.chomp("abcd\n"));
+        assertEquals(StringUtils.substringBefore("aa/bb", "c"), StringUtil.substringBefore("aa/bb", "c"));
     }
 }

@@ -38,6 +38,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.yajul.juli.LogHelper.unexpected;
 import static org.yajul.util.Copier.UNLIMITED;
 
 /**
@@ -406,7 +407,7 @@ public class StreamCopier implements Runnable {
                 out.flush();
         } catch (IOException e) {
             // Log the exception!
-            log.log(Level.SEVERE,"Unexpected: " + e.getMessage(), e);
+            unexpected(log, e);
             setException(e);
         } finally {
             signalComplete();

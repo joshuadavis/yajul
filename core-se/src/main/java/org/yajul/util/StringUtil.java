@@ -31,6 +31,7 @@ package org.yajul.util;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * Provides commonly used string functions.
@@ -43,6 +44,8 @@ import java.util.logging.Logger;
 public class StringUtil {
 
     public static final String EMPTY = "";
+
+    public static final String LF = System.getProperty(SysProps.LINE_SEPARATOR);
 
     /**
      * A logger for this class.
@@ -260,5 +263,32 @@ public class StringUtil {
             return string.substring(pos + delim.length());
         else
             return null;
+    }
+
+    /**
+     * Returns the input string, minus any linefeed at the end.
+     *
+     */
+    public static String chomp(String s) {
+        if (isEmpty(s))
+            return s;
+        int len = s.length();
+        int index = len - 1;
+        char last = s.charAt(index);
+        if (last == '\n') {
+            index--;
+        }
+
+        if (index >= 0) {
+            last = s.charAt(index);
+            if (last == '\r') {
+                index--;
+            }
+        }
+
+        if (index < 0)
+            return EMPTY;
+
+        return s.substring(0, index+1);
     }
 }

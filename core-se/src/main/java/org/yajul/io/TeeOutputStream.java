@@ -33,6 +33,8 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.yajul.juli.LogHelper.unexpected;
+
 /**
  * An output stream filter that writes to multiple underlying output streams.
  *
@@ -78,7 +80,7 @@ public class TeeOutputStream extends FilterOutputStream {
             try {
                 aTeeOut.close();
             } catch (IOException ioe) {
-                log.log(Level.SEVERE,"Unexpected I/O exception: " + ioe.getMessage(), ioe);
+                unexpected(log, e);
                 e = ioe;
             }
         }
@@ -105,7 +107,7 @@ public class TeeOutputStream extends FilterOutputStream {
             try {
                 aTeeOut.flush();
             } catch (IOException ioe) {
-                log.log(Level.SEVERE,"Unexpected I/O exception: " + ioe.getMessage(), ioe);
+                unexpected(log, e);
                 e = ioe;
             }
         }
@@ -143,7 +145,7 @@ public class TeeOutputStream extends FilterOutputStream {
             try {
                 aTeeOut.write(b);
             } catch (IOException ioe) {
-                log.log(Level.SEVERE,"Unexpected I/O exception: " + ioe.getMessage(), ioe);
+                unexpected(log, e);
                 e = ioe;
             }
         }
@@ -186,7 +188,7 @@ public class TeeOutputStream extends FilterOutputStream {
             try {
                 aTeeOut.write(b, off, len);
             } catch (IOException ioe) {
-                log.log(Level.SEVERE,"Unexpected I/O exception: " + ioe.getMessage(), ioe);
+                unexpected(log, e);
                 e = ioe;
             }
         }
@@ -216,7 +218,7 @@ public class TeeOutputStream extends FilterOutputStream {
             try {
                 aTeeOut.write(b);
             } catch (IOException ioe) {
-                log.log(Level.SEVERE,"Unexpected I/O exception: " + ioe.getMessage(), ioe);
+                unexpected(log, e);
                 e = ioe;
             }
         }

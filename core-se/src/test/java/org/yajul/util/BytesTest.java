@@ -1,10 +1,10 @@
 package org.yajul.util;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-
-import org.yajul.util.Bytes;
+import static org.junit.Assert.*;
 
 /**
  * Test the Bytes class.
@@ -14,16 +14,12 @@ import org.yajul.util.Bytes;
  * Time: 2:51:57 PM<br>
  * @author jdavis
  */
-public class BytesTest extends TestCase
+public class BytesTest
 {
-    public BytesTest(String name)
-    {
-        super(name);
-    }
-
     /**
      * Test conversion to byte arrays.
      */
+    @Test
     public void testByteArrays() throws Exception
     {
         byte[] value = new byte[] { (byte)0x49, (byte)0x96, (byte)0x02, (byte)0xd2 };
@@ -47,6 +43,7 @@ public class BytesTest extends TestCase
         assertEquals(0,bytes.length);
     }
 
+    @Test
     public void testException()
     {
         IllegalArgumentException iae = null;

@@ -1,8 +1,5 @@
 package org.yajul.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +8,8 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -30,7 +29,7 @@ import java.util.zip.ZipFile;
  * @author Norman Richards
  */
 public abstract class AbstractScanner {
-    private static final Logger log = LoggerFactory.getLogger(AbstractScanner.class);
+    private static final Logger log = Logger.getLogger(AbstractScanner.class.getName());
 
     protected String resourceName;
     protected ClassLoader classLoader;
@@ -89,15 +88,15 @@ public abstract class AbstractScanner {
                 }
             }
             catch (IOException ioe) {
-                log.warn("could not read: " + resourceName, ioe);
+                log.log(Level.WARNING,"could not read: " + resourceName, ioe);
                 return;
             }
         }
 
         for (String urlPath : paths) {
             try {
-                if (log.isDebugEnabled())
-                   log.debug("scanning: " + urlPath);
+                if (log.isLoggable(Level.FINE))
+                   log.log(Level.FINE,"scanning: " + urlPath);
                 File file = new File(urlPath);
                 if (file.isDirectory()) {
                     handleDirectory(file, null);
@@ -106,15 +105,15 @@ public abstract class AbstractScanner {
                 }
             }
             catch (IOException ioe) {
-                log.warn("could not read entries", ioe);
+                log.log(Level.WARNING,"could not read entries", ioe);
             }
         }
         scanned = true;
     }
 
    private void addPath(String urlPath) {
-        if (log.isTraceEnabled())
-            log.trace("addPath('" + urlPath + "')");
+        if (log.isLoggable(Level.FINER))
+            log.log(Level.FINER,"addPath('" + urlPath + "')");
         paths.add(urlPath);
     }
 
@@ -123,21 +122,22 @@ public abstract class AbstractScanner {
     }
 
     private void handleArchive(File file) throws IOException {
-        if (log.isTraceEnabled())
-           log.trace("archive: " + file);
+        if (log.isLoggable(Level.FINER))
+            log.log(Level.FINER,"archive: " + file);
         ZipFile zip = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zip.entries();
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             String name = entry.getName();
-            log.debug("found: " + name);
+            if (log.isLoggable(Level.FINER))
+                log.log(Level.FINER,"found: " + name);
             handleItem(name);
         }
     }
 
     private void handleDirectory(File file, String path) {
-        if (log.isTraceEnabled())
-           log.trace("directory: " + file);
+        if (log.isLoggable(Level.FINER))
+            log.log(Level.FINER,"directory: " + file);
         for (File child : file.listFiles()) {
             String newPath = path == null ?
                     child.getName() : path + '/' + child.getName();
@@ -152,7 +152,7 @@ public abstract class AbstractScanner {
     protected InputStream getResourceAsStream(String name) {
         InputStream stream = classLoader.getResourceAsStream(name);
         if (stream == null)
-            log.warn("Resource '" + name + "' not found.");
+            log.log(Level.WARNING,"Resource '" + name + "' not found.");
         return stream;
     }
     

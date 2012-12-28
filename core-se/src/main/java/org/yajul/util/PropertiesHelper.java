@@ -1,14 +1,15 @@
 package org.yajul.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.yajul.juli.LogHelper.unexpected;
 
 /**
  * Helper methods for loading and parsing properties files.
@@ -56,17 +57,19 @@ public class PropertiesHelper {
         STRICT,
     }
 
-    private static final Logger log = LoggerFactory.getLogger(PropertiesHelper.class);
+    private static final Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 
     public static Properties loadFromFile(File file, Properties defaults) {
         Properties properties = (defaults != null) ? new Properties(defaults) : new Properties();
         try {
             if (file.exists())
                 properties.load(new FileInputStream(file));
-            else
-                log.trace("File not found: " + file.getCanonicalPath());
+            else {
+                if (log.isLoggable(Level.FINER))
+                    log.log(Level.FINER, "File not found: " + file.getCanonicalPath());
+            }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            unexpected(log, e);
         }
         return properties;
     }
@@ -74,10 +77,12 @@ public class PropertiesHelper {
     public static Properties loadFromResource(String resource, Properties defaults, Class<?> clazz) {
         try {
             defaults = ResourceUtil.loadProperties(resource, defaults, clazz);
-            if (defaults == null)
-                log.trace("Resource not found: " + resource);
+            if (defaults == null) {
+                if (log.isLoggable(Level.FINER))
+                    log.log(Level.FINER, "Resource not found: " + resource);
+            }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            unexpected(log, e);
             throw new RuntimeException(e);
         }
         return defaults;
@@ -179,8 +184,9 @@ public class PropertiesHelper {
     /**
      * ANT style property interpolation.   Looks for the pattern <i>${key}</i> and replaces it
      * with the value of 'key' if it is found in the properties object.
+     *
      * @param toInterpolate the string to interpolate
-     * @param props properties to interpolate
+     * @param props         properties to interpolate
      * @return the string, with all property references interpolated
      */
     public static String interpolate(String toInterpolate, Properties props) {
@@ -192,8 +198,8 @@ public class PropertiesHelper {
             final String value = props.getProperty(variable);
             if (value != null) {
                 String resolved = interpolate(value, props);
-                if (log.isTraceEnabled())
-                    log.trace("interpolate() : " + variable + " => " + resolved);
+                if (log.isLoggable(Level.FINER))
+                    log.log(Level.FINER, "interpolate() : " + variable + " => " + resolved);
                 try {
                     m.appendReplacement(result, resolved);
                 } catch (IllegalArgumentException e) {
@@ -208,6 +214,7 @@ public class PropertiesHelper {
     /**
      * Interpolates all property references and returns a new Properties object with all the values
      * interpolated.
+     *
      * @param properties the properties to interpolate
      * @return a new Properties object with all the properties interpolated.
      */

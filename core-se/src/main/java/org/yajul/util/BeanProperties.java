@@ -1,12 +1,15 @@
 // $Id$
 package org.yajul.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.yajul.juli.LogHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.yajul.juli.LogHelper.unexpected;
 
 /**
  * Represents the property accessor methods for a given class, and provides methods
@@ -15,8 +18,8 @@ import java.util.*;
  * @author josh Apr 4, 2004 9:11:19 AM
  */
 public class BeanProperties {
-    private static Logger log = LoggerFactory.getLogger(BeanProperties.class);
-    private Map<String,PropertyAccessors> accessorsByName = new HashMap<String,PropertyAccessors>();
+    private static Logger log = Logger.getLogger(BeanProperties.class.getName());
+    private Map<String, PropertyAccessors> accessorsByName = new HashMap<String, PropertyAccessors>();
     private Class clazz;
 
     /**
@@ -27,8 +30,8 @@ public class BeanProperties {
     public BeanProperties(Class c) {
         clazz = c;
         Method[] methods = c.getMethods();
-        Map<String,Method> getters = new HashMap<String,Method>();
-        Map<String,Method> setters = new HashMap<String,Method>();
+        Map<String, Method> getters = new HashMap<String, Method>();
+        Map<String, Method> setters = new HashMap<String, Method>();
         for (Method method : methods) {
             String propertyName = ReflectionUtil.getterPropertyName(method);
             if (propertyName != null)
@@ -45,7 +48,7 @@ public class BeanProperties {
             Method getter = getters.get(propertyName);
             Method setter = setters.get(propertyName);
             accessorsByName.put(propertyName,
-                    new PropertyAccessors(clazz,propertyName,getter,setter));
+                    new PropertyAccessors(clazz, propertyName, getter, setter));
         }
     }
 
@@ -78,17 +81,14 @@ public class BeanProperties {
         try {
             PropertyAccessors accessorMethods = getAccessorMethods(bean, propertyName);
             return accessorMethods.invokeGetter(bean);
-        }
-        catch (NoSuchMethodException e) {
-            log.error(e.toString(), e);
+        } catch (NoSuchMethodException e) {
+            unexpected(log, e);
             return null;
-        }
-        catch (IllegalAccessException e) {
-            log.error(e.toString(), e);
+        } catch (IllegalAccessException e) {
+            unexpected(log, e);
             return null;
-        }
-        catch (InvocationTargetException e) {
-            log.error(e.toString(), e);
+        } catch (InvocationTargetException e) {
+            unexpected(log, e);
             return null;
         }
     }
@@ -105,9 +105,8 @@ public class BeanProperties {
         try {
             PropertyAccessors accessorMethods = getAccessorMethods(bean, propertyName);
             return accessorMethods.invokeSetter(bean, value);
-        }
-        catch (Exception e) {
-            log.error(e.toString(), e);
+        } catch (Exception e) {
+            unexpected(log, e);
             return null;
         }
     }
@@ -186,8 +185,7 @@ public class BeanProperties {
             PropertyAccessors accessorMethods = (PropertyAccessors) iter.next();
             try {
                 values.add(accessorMethods.invokeGetter(bean));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 exceptions.add(e);
             }
         }
@@ -211,8 +209,7 @@ public class BeanProperties {
             try {
                 Object value = accessorMethods.invokeGetter(bean);
                 accessorMethods.invokeSetter(copy, value);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 exceptions.add(e);
             }
         }

@@ -7,6 +7,8 @@ import java.io.Externalizable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.yajul.juli.LogHelper.unexpected;
+
 /**
  * Helper methods for Externalizable.
  * <ul>
@@ -112,10 +114,10 @@ public class ExternalizableHelper {
             try {
                 ex = exClass.newInstance();
             } catch (InstantiationException e) {
-                log.log(Level.SEVERE,e.getMessage(),e);
+                unexpected(log, e);
                 throw new IOException("Unable to instantiate " + exClass.getName() + " due to : " + e.getMessage());
             } catch (IllegalAccessException e) {
-                log.log(Level.SEVERE,e.getMessage(),e);
+                unexpected(log, e);
                 throw new IOException("Unable to instantiate " + exClass.getName() + " due to : " + e.getMessage());
             }
             ex.readExternal(in);

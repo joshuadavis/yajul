@@ -1,15 +1,14 @@
 package org.yajul.util;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Prints the fields of an object into a string buffer.
@@ -24,7 +23,7 @@ public class FieldPrinter {
     /**
      * The logger for this class.
      */
-    private static Logger log = LoggerFactory.getLogger(FieldPrinter.class);
+    private static Logger log = Logger.getLogger(FieldPrinter.class.getName());
 
     private static Class[] NO_PARAMETERS = new Class[0];
     private static Object[] NO_ARGUMENTS = new Object[0];
@@ -122,13 +121,11 @@ public class FieldPrinter {
                 if (validAttribute) {
                     appendField(attributeValue, attributeType);
                 } // if validAttribute
-            }
-            catch (IllegalAccessException e) {
-                log.warn("Unexpected: " + e.getMessage(), e);
+            } catch (IllegalAccessException e) {
+                log.log(Level.WARNING, "Unexpected: " + e.getMessage(), e);
                 sb.append("<error!>");
-            }
-            catch (InvocationTargetException e) {
-                log.warn("Unexpected: " + e.getMessage(), e);
+            } catch (InvocationTargetException e) {
+                log.log(Level.WARNING, "Unexpected: " + e.getMessage(), e);
                 sb.append("<error!>");
             }
         } // for i = 0 to length
@@ -173,15 +170,13 @@ public class FieldPrinter {
         //noinspection EmptyCatchBlock
         try {
             m = attributeType.getDeclaredMethod("toString", NO_PARAMETERS);
-        }
-        catch (NoSuchMethodException ignore) {
+        } catch (NoSuchMethodException ignore) {
         }
         if (m != null) {
             try {
                 stringValue = (String) m.invoke(attributeValue, NO_ARGUMENTS);
-            }
-            catch (InvocationTargetException ite) {
-                log.warn("Unexpected: " + ite.getMessage(), ite);
+            } catch (InvocationTargetException ite) {
+                log.log(Level.WARNING, "Unexpected: " + ite.getMessage(), ite);
                 stringValue = null;
             }
         }
