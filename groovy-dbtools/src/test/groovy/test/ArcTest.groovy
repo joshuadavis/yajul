@@ -73,7 +73,7 @@ class ArcTest extends GroovyTestCase
     {
       sourceSql.executeUpdate('INSERT INTO ' + sourceTableName +
               ' (event_timestamp,event_millis,message) values (?,?,?)',
-                              (List<Object>) [new Timestamp(date.time), date.time, "MSG ${i}"])
+                             [new Timestamp(date.time), date.time, new String("MSG ${i}")])
       date = new Date(date.time + 1000 * 60)
     }
 

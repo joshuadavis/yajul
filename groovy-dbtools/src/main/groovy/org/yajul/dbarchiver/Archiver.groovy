@@ -1,5 +1,7 @@
 package org.yajul.dbarchiver
 
+import groovy.util.logging.Log
+
 import java.sql.Connection
 import java.sql.PreparedStatement
 import org.yajul.jdbc.Column
@@ -15,8 +17,8 @@ import org.yajul.jdbc.DbSchema
  * Date: Feb 21, 2010
  * Time: 9:06:47 PM
  */
+@Log
 class Archiver {
-  GroovyLog log
   Endpoint source
   Endpoint target
   boolean createTargetTable
@@ -33,7 +35,6 @@ class Archiver {
   List<Column> columns
 
   Archiver(ConnectionInfo sourceInfo, ConnectionInfo targetInfo) {
-    log = new GroovyLog(Archiver.class)
     source = new Endpoint(info: sourceInfo)
     target = new Endpoint(info: targetInfo)
     connect(source)
