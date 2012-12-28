@@ -18,7 +18,7 @@ public class ScannerTest extends TestCase {
     }
 
     public void testBasicScanner() {
-        BasicScanner myScanner = new BasicScanner("org/yajul/util/test-properties.properties");
+        BasicScanner myScanner = new BasicScanner("src/test/resources/org/yajul/util/test-properties.properties");
         myScanner.scan();
         Set<String> items = new HashSet<String>(myScanner.getItems());
         assertTrue(items.contains("test-properties.properties"));

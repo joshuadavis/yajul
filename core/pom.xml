@@ -6,8 +6,8 @@
         <version>0.4.3-SNAPSHOT</version>
         <relativePath>../pojo-parent/pom.xml</relativePath>
     </parent>
+
     <artifactId>yajul</artifactId>
-    <version>0.4.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>yajul-core</name>
 
@@ -17,9 +17,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${project.parent.groupId}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>dep-mgmt</artifactId>
-                <version>0.4.3-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -27,6 +27,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>yajul-core-se</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
