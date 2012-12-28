@@ -11,12 +11,12 @@
     <description>Dependency management definitions for importing into other POMs.</description>
 
     <properties>
-        <version.junit>3.8.1</version.junit>
-        <version.javassist>3.8.1.GA</version.javassist>
-        <version.jboss-embedded>beta3.SP12</version.jboss-embedded>
+        <version.junit>4.11</version.junit>
+        <version.javassist>3.12.1.GA</version.javassist>
+        <version.jboss-embedded>beta3.SP15</version.jboss-embedded>
         <version.slf4j>1.5.10</version.slf4j>
-        <version.hsqldb>1.8.0.10</version.hsqldb>
-        <version.liquibase>1.9.5</version.liquibase>
+        <version.hsqldb>2.2.9</version.hsqldb>
+        <version.liquibase>2.0.5</version.liquibase>
     </properties>
 
     <dependencyManagement>

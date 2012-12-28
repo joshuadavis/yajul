@@ -1,10 +1,11 @@
 package org.yajul.sql;
 
-import liquibase.ClassLoaderFileOpener;
-import liquibase.FileOpener;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.resource.ClassLoaderResourceAccessor;
+import liquibase.resource.ResourceAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +23,9 @@ public class DbTestHelper {
 
     public static void dbSetUp(Connection connection,String schemaFile,String contexts) throws Exception {
         DatabaseFactory factory = DatabaseFactory.getInstance();
-        Database db = factory.findCorrectDatabaseImplementation(connection);
-        FileOpener opener = new ClassLoaderFileOpener();
-        Liquibase lb = new Liquibase(schemaFile, opener, db);
+        Database db = factory.findCorrectDatabaseImplementation(new JdbcConnection(connection));
+        ResourceAccessor resourceAccessor = new ClassLoaderResourceAccessor();
+        Liquibase lb = new Liquibase(schemaFile, resourceAccessor, db);
         log.info("Dropping all tables...");
         lb.dropAll();
         log.info("Validating change sets...");
