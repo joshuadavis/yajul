@@ -15,10 +15,28 @@
     <description>Integration tests using Arquillian</description>
 
     <properties>
-        <arquillian.version>1.0.0.Alpha5</arquillian.version>
-        <version.junit>4.8.1</version.junit>
+        <arquillian.version>1.0.3.Final</arquillian.version>
         <version.cdi>1.0-SP1</version.cdi>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>dep-mgmt</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${arquillian.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
@@ -31,35 +49,35 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.arquillian</groupId>
-            <artifactId>arquillian-junit</artifactId>
-            <version>${arquillian.version}</version>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
 
-                <dependency>
-                    <groupId>org.jboss.arquillian.container</groupId>
-                    <artifactId>arquillian-jbossas-remote-6</artifactId>
-                    <version>${arquillian.version}</version>
-                    <scope>test</scope>
-                </dependency>
 
-                <dependency>
-                    <groupId>org.jboss.jbossas</groupId>
-                    <artifactId>jboss-as-client</artifactId>
-                    <version>6.0.0.Final</version>
-                    <type>pom</type>
-                </dependency>
+        <!--
+                        <dependency>
+                            <groupId>org.jboss.arquillian.container</groupId>
+                            <artifactId>arquillian-jbossas-remote-6</artifactId>
+                            <version>${arquillian.version}</version>
+                            <scope>test</scope>
+                        </dependency>
 
-
+                        <dependency>
+                            <groupId>org.jboss.jbossas</groupId>
+                            <artifactId>jboss-as-client</artifactId>
+                            <version>6.0.0.Final</version>
+                            <type>pom</type>
+                        </dependency>
+        -->
     </dependencies>
 
     <profiles>
+<!--
         <profile>
             <id>jbossas-remote-6</id>
             <dependencies>
@@ -78,6 +96,7 @@
                 </dependency>
             </dependencies>
         </profile>
+-->
     </profiles>
 
 </project>

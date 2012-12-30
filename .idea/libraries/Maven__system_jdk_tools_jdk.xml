@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Maven: system:jdk-tools:jdk">
-    <CLASSES>
-      <root url="jar:///opt/jdk1.6.0_24/jre/../lib/tools.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
