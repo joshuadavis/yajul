@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.embedded:hibernate-all:beta3.SP15">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP15/hibernate-all-beta3.SP15.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP15/hibernate-all-beta3.SP15-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/embedded/hibernate-all/beta3.SP15/hibernate-all-beta3.SP15-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

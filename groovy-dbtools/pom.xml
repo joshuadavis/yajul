@@ -10,8 +10,8 @@
     <artifactId>groovy-dbtools</artifactId>
     <version>0.1.1-SNAPSHOT</version>
     <properties>
-        <version.groovy>1.7.6</version.groovy>
-        <version.gmaven>1.3</version.gmaven>
+        <version.groovy>2.0.4</version.groovy>
+        <version.gmaven>1.4</version.gmaven>
         <gmaven.provider>1.7</gmaven.provider>
         <version.ivy>2.1.0</version.ivy>
     </properties>
@@ -61,6 +61,7 @@
                 <artifactId>gmaven-plugin</artifactId>
                 <version>${version.gmaven}</version>
                 <configuration>
+                    <source></source>
                     <providerSelection>${gmaven.provider}</providerSelection>
                 </configuration>
                 <executions>

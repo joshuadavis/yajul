@@ -5,9 +5,8 @@
 
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <!-- The default pattern: Date Priority [Category] Message\n -->
-            <param name="ConversionPattern" value="%-5p [%c{6}] %m%n"/>
+        <layout class="org.apache.log4j.TTCCLayout">
+            <param name="DateFormat" value="ABSOLUTE"/>
         </layout>
     </appender>
 

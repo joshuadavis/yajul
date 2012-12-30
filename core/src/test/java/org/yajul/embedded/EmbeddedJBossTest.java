@@ -4,20 +4,16 @@ import junit.framework.TestCase;
 import org.jboss.embedded.Bootstrap;
 import org.jboss.virtual.plugins.context.vfs.AssembledDirectory;
 import org.jboss.virtual.plugins.context.vfs.AssembledContextFactory;
-import org.jboss.virtual.VirtualFile;
-import org.jboss.virtual.VirtualFileVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yajul.jmx.JmxUtil;
-import org.yajul.jndi.JndiHelper;
 import org.yajul.jndi.EarJndiLookup;
-import org.yajul.jndi.JndiProvider;
+import org.yajul.jndi.JndiHelper;
+import org.yajul.jndi.JndiObjectProvider;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import javax.management.QueryExp;
 import javax.naming.InitialContext;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,8 +51,8 @@ public class EmbeddedJBossTest extends TestCase {
             InitialContext ic = new InitialContext();
             String listing = JndiHelper.listBindings(ic,"/");
             System.out.println(listing);
-            JndiProvider<Echo> p = new JndiProvider<Echo>(new EarJndiLookup(ic,"hello"),Echo.class,"EchoBean/local");
-            Echo echo = p.get();
+            JndiObjectProvider<Echo> p = new JndiObjectProvider<Echo>(new EarJndiLookup(ic,"hello"),Echo.class,"EchoBean/local");
+            Echo echo = p.getObject();
             String rv  = echo.echo("Hello world!");
             assertEquals("msg=Hello world!",rv);
             // Test JMX

@@ -1,10 +1,10 @@
 package org.yajul.embedded;
 
-import com.google.inject.Provider;
 import junit.framework.TestCase;
 import org.yajul.jndi.DefaultInitialContextProvider;
 import org.yajul.jndi.DefaultJndiLookup;
 import org.yajul.jndi.JndiLookup;
+import org.yajul.util.ObjectProvider;
 
 import javax.naming.InitialContext;
 
@@ -26,7 +26,7 @@ public abstract class EmbeddedJBossTestCase extends TestCase {
         return new DefaultJndiLookup(getInitialContextProvider());
     }
 
-    protected Provider<InitialContext> getInitialContextProvider() {
+    protected ObjectProvider<InitialContext> getInitialContextProvider() {
         return new DefaultInitialContextProvider();
     }
 }

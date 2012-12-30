@@ -36,7 +36,8 @@ public class MessageReceiver extends Endpoint {
         this.reconnectDelay = reconnectDelay;
     }
 
-    public MessageReceiver(ConnectionFactoryReference factoryReference, DestinationReference destinationReference,
+    public MessageReceiver(ConnectionFactoryProvider factoryReference,
+                           DestinationProvider destinationReference,
                            MessageListener listener, String messageSelector, int reconnectDelay) {
         super(factoryReference, destinationReference, messageSelector);
         this.listener = listener;

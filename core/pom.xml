@@ -6,24 +6,20 @@
         <version>0.4.3-SNAPSHOT</version>
         <relativePath>../pojo-parent/pom.xml</relativePath>
     </parent>
+
     <artifactId>yajul</artifactId>
-    <version>0.4.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>yajul-core</name>
-    <scm>
-        <connection>scm:git:git@github.com:joshuadavis/yajul.git</connection>
-        <developerConnection>scm:git:git@github.com:joshuadavis/yajul.git</developerConnection>
-        <url>https://github.com/joshuadavis/yajul</url>
-    </scm>
+
     <properties>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${project.parent.groupId}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>dep-mgmt</artifactId>
-                <version>0.4.3-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -32,17 +28,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>yajul-core-se</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.guice</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
         </dependency>
         <!-- SLF4J has much simpler dependencies than commons-logging -->
         <dependency>
@@ -68,11 +61,6 @@
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

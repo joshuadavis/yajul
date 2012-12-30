@@ -23,8 +23,8 @@ public class JmsTest extends EmbeddedJBossTestCase {
     public void testJmsAttributes() throws NamingException, JMSException {
         InitialContext ic = new InitialContext();
 
-        ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationReference testTopic = new DestinationReference(ic, "topic/testTopic");
+        ConnectionFactoryProvider factoryReference = new ConnectionFactoryProvider(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
+        final DestinationProvider testTopic = new DestinationProvider(ic, "topic/testTopic");
 
         JmsTemplate runner = new JmsTemplate(factoryReference);
         runner.doAction(new JmsTemplate.JmsAction<Boolean>() {
@@ -49,8 +49,8 @@ public class JmsTest extends EmbeddedJBossTestCase {
     public void testJmsObject() throws NamingException, JMSException {
         InitialContext ic = new InitialContext();
 
-        ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationReference testTopic = new DestinationReference(ic, "topic/testTopic");
+        ConnectionFactoryProvider factoryReference = new ConnectionFactoryProvider(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
+        final DestinationProvider testTopic = new DestinationProvider(ic, "topic/testTopic");
 
 
         final Thing thing = createThing();
@@ -90,9 +90,9 @@ public class JmsTest extends EmbeddedJBossTestCase {
 
     public void testResponder() throws Exception {
         InitialContext ic = new InitialContext();
-        final ConnectionFactoryReference factoryReference = new ConnectionFactoryReference(ic,
+        final ConnectionFactoryProvider factoryReference = new ConnectionFactoryProvider(ic,
                 UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationReference destinationReference = new DestinationReference(ic, "topic/testTopic");
+        final DestinationProvider destinationReference = new DestinationProvider(ic, "topic/testTopic");
         MessageReceiver receiver = new MessageReceiver(factoryReference, destinationReference, new MessageListener() {
             public void onMessage(Message message) {
                 MessageSender.sendReply(null,UnitTestJndiConstants.JMS_CONNECTION_FACTORY,message, "poot!");

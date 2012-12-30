@@ -1,6 +1,8 @@
 package org.yajul.jndi;
 
-import com.google.inject.Provider;
+
+import org.yajul.util.InstanceProvider;
+import org.yajul.util.ObjectProvider;
 
 import javax.naming.InitialContext;
 
@@ -13,20 +15,20 @@ import javax.naming.InitialContext;
  */
 public class DefaultJndiLookup implements JndiLookup
 {
-    private Provider<InitialContext> icp;
+    private ObjectProvider<InitialContext> icp;
 
-    public DefaultJndiLookup(Provider<InitialContext> icp)
+    public DefaultJndiLookup(ObjectProvider<InitialContext> icp)
     {
         this.icp = icp;
     }
 
     public DefaultJndiLookup(InitialContext ic)
     {
-        this(new SimpleInitialContextProvider(ic));
+        this(new InstanceProvider<InitialContext>(ic));
     }
 
     public <T> T lookup(Class<T> clazz, String name)
     {
-        return JndiHelper.lookup(icp.get(),clazz,name);
+        return JndiHelper.lookup(icp.getObject(),clazz,name);
     }
 }
