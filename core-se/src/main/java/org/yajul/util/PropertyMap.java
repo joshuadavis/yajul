@@ -47,9 +47,9 @@ public class PropertyMap extends AbstractMap implements Map {
         return properties.setProperty(bean, propertyName, value);
     }
 
-    public Set entrySet() {
+    public Set<Entry> entrySet() {
         // Create a hash set of entries.
-        Set set = new HashSet();
+        Set<Entry> set = CollectionUtil.newHashSet();
         Iterator iter = properties.accessorMethods();
         while (iter.hasNext()) {
             PropertyAccessors accessorMethods = (PropertyAccessors) iter.next();

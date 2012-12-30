@@ -31,6 +31,7 @@ import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.yajul.util.CollectionUtil;
 import org.yajul.util.StringUtil;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -44,10 +45,10 @@ import javax.xml.transform.sax.TransformerHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.yajul.util.CollectionUtil.newArrayList;
 
 /**
  * Provides commonly used DOM operations in convenient methods.
@@ -151,7 +152,7 @@ public class DOMUtil {
      */
     public static List<Element> toElementList(NodeList nodeList) {
         int size = nodeList.getLength();
-        ArrayList<Element> list = new ArrayList<Element>(size);
+        List<Element> list = newArrayList(size);
         Node n;
         for (int i = 0; i < size; i++) {
             n = nodeList.item(i);
@@ -239,7 +240,7 @@ public class DOMUtil {
      */
     public static List<String> getAttributeNames(Element elem) {
         NamedNodeMap map = elem.getAttributes();
-        ArrayList<String> names = new ArrayList<String>(map.getLength());
+        List<String> names = newArrayList(map.getLength());
         for (int i = 0; i < map.getLength(); i++)
             names.add(((Attr) map.item(i)).getName());
         return names;
@@ -255,7 +256,7 @@ public class DOMUtil {
      */
     public static Map<String, String> getAttributeMap(Element elem) {
         NamedNodeMap nodeMap = elem.getAttributes();
-        Map<String, String> map = new HashMap<String, String>(nodeMap.getLength());
+        Map<String, String> map = CollectionUtil.newHashMap(nodeMap.getLength());
         for (int i = 0; i < nodeMap.getLength(); i++) {
             Attr attr = ((Attr) nodeMap.item(i));
             map.put(attr.getName(), attr.getValue());

@@ -1,12 +1,9 @@
 // $Id$
 package org.yajul.util;
 
-import org.yajul.juli.LogHelper;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.yajul.juli.LogHelper.unexpected;
@@ -19,7 +16,7 @@ import static org.yajul.juli.LogHelper.unexpected;
  */
 public class BeanProperties {
     private static Logger log = Logger.getLogger(BeanProperties.class.getName());
-    private Map<String, PropertyAccessors> accessorsByName = new HashMap<String, PropertyAccessors>();
+    private Map<String, PropertyAccessors> accessorsByName = CollectionUtil.newHashMap();
     private Class clazz;
 
     /**
@@ -30,8 +27,8 @@ public class BeanProperties {
     public BeanProperties(Class c) {
         clazz = c;
         Method[] methods = c.getMethods();
-        Map<String, Method> getters = new HashMap<String, Method>();
-        Map<String, Method> setters = new HashMap<String, Method>();
+        Map<String, Method> getters = CollectionUtil.newHashMap();
+        Map<String, Method> setters = CollectionUtil.newHashMap();
         for (Method method : methods) {
             String propertyName = ReflectionUtil.getterPropertyName(method);
             if (propertyName != null)
@@ -42,7 +39,7 @@ public class BeanProperties {
                     setters.put(propertyName, method);
             }
         }
-        Set<String> propertyNames = new HashSet<String>(getters.keySet());
+        Set<String> propertyNames = CollectionUtil.newHashSet(getters.keySet());
         propertyNames.addAll(setters.keySet());
         for (String propertyName : propertyNames) {
             Method getter = getters.get(propertyName);
@@ -116,7 +113,7 @@ public class BeanProperties {
      *
      * @return an iterator that returns the String names of all properties in the class.
      */
-    public Iterator propertyNames() {
+    public Iterator<String> propertyNames() {
         return accessorsByName.keySet().iterator();
     }
 
@@ -125,7 +122,7 @@ public class BeanProperties {
      *
      * @return the set of all the property name Strings in the class.
      */
-    public Set getPropertyNames() {
+    public Set<String> getPropertyNames() {
         return accessorsByName.keySet();
     }
 
@@ -144,7 +141,7 @@ public class BeanProperties {
      *
      * @return an iterator that returns all AccessorMethods for all properties in the class.
      */
-    public Iterator accessorMethods() {
+    public Iterator<PropertyAccessors> accessorMethods() {
         return accessorsByName.values().iterator();
     }
 
@@ -178,7 +175,7 @@ public class BeanProperties {
      * @throws Exception if a property cannot be accessed.
      */
     public Collection<Object> values(Object bean) throws Exception {
-        ArrayList<Object> values = new ArrayList<Object>(size());
+        ArrayList<Object> values = CollectionUtil.newArrayList(size());
         Iterator iter = accessorMethods();
         ExceptionList exceptions = new ExceptionList();
         while (iter.hasNext()) {

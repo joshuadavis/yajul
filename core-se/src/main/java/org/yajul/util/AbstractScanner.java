@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,14 +30,15 @@ import java.util.zip.ZipFile;
 public abstract class AbstractScanner {
     private static final Logger log = Logger.getLogger(AbstractScanner.class.getName());
 
-    protected String resourceName;
-    protected ClassLoader classLoader;
+    private final String resourceName;
+    private final ClassLoader classLoader;
+    private final Set<String> paths = CollectionUtil.newHashSet();
+    private final boolean useParentDirectory;
     private boolean scanned = false;
-    private Set<String> paths = new HashSet<String>();
-    private boolean useParentDirectory = false;
 
     /**
      * Scans everything in the classpath where the specified resource is located.
+     *
      * @param resourceName resource name used to find a directory or archive to scan
      */
     public AbstractScanner(String resourceName) {
@@ -46,11 +46,20 @@ public abstract class AbstractScanner {
     }
 
     public AbstractScanner(String resourceName, ClassLoader classLoader) {
-        this.resourceName = resourceName;
-        this.classLoader = classLoader;
+        this(resourceName, classLoader, false);
     }
 
-   protected void scan() {
+    public AbstractScanner(String resourceName, ClassLoader classLoader, boolean useParentDirectory) {
+        this.resourceName = resourceName;
+        this.classLoader = classLoader;
+        this.useParentDirectory = useParentDirectory;
+    }
+
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    protected void scan() {
         if (scanned)
             return;
         if (resourceName == null) {
@@ -66,9 +75,9 @@ public abstract class AbstractScanner {
                 Enumeration<URL> urlEnum = classLoader.getResources(resourceName);
                 while (urlEnum.hasMoreElements()) {
                     URL url = urlEnum.nextElement();
-                   String urlPath = ResourceUtil.getPath(url);
+                    String urlPath = ResourceUtil.getPath(url);
                     if (ResourceUtil.isFileURL(urlPath)) {
-                       urlPath = ResourceUtil.getFilePathFromURL(urlPath);
+                        urlPath = ResourceUtil.getFilePathFromURL(urlPath);
                     }
                     if (urlPath.indexOf('!') > 0) {
                         urlPath = urlPath.substring(0, urlPath.indexOf('!'));
@@ -77,7 +86,6 @@ public abstract class AbstractScanner {
                         // When the tag resource is in the META-INF directory
                         // we will want to search the parent directory.
                         if (useParentDirectory &&
-                                resourceName != null &&
                                 resourceName.lastIndexOf('/') > 0) {
                             //for META-INF/someresource.xyz
                             dirOrArchive = dirOrArchive.getParentFile();
@@ -86,9 +94,8 @@ public abstract class AbstractScanner {
                     }
                     addPath(urlPath);
                 }
-            }
-            catch (IOException ioe) {
-                log.log(Level.WARNING,"could not read: " + resourceName, ioe);
+            } catch (IOException ioe) {
+                log.log(Level.WARNING, "could not read: " + resourceName, ioe);
                 return;
             }
         }
@@ -96,24 +103,23 @@ public abstract class AbstractScanner {
         for (String urlPath : paths) {
             try {
                 if (log.isLoggable(Level.FINE))
-                   log.log(Level.FINE,"scanning: " + urlPath);
+                    log.log(Level.FINE, "scanning: " + urlPath);
                 File file = new File(urlPath);
                 if (file.isDirectory()) {
                     handleDirectory(file, null);
                 } else {
                     handleArchive(file);
                 }
-            }
-            catch (IOException ioe) {
-                log.log(Level.WARNING,"could not read entries", ioe);
+            } catch (IOException ioe) {
+                log.log(Level.WARNING, "could not read entries", ioe);
             }
         }
         scanned = true;
     }
 
-   private void addPath(String urlPath) {
+    private void addPath(String urlPath) {
         if (log.isLoggable(Level.FINER))
-            log.log(Level.FINER,"addPath('" + urlPath + "')");
+            log.log(Level.FINER, "addPath('" + urlPath + "')");
         paths.add(urlPath);
     }
 
@@ -123,22 +129,27 @@ public abstract class AbstractScanner {
 
     private void handleArchive(File file) throws IOException {
         if (log.isLoggable(Level.FINER))
-            log.log(Level.FINER,"archive: " + file);
+            log.log(Level.FINER, "archive: " + file);
         ZipFile zip = new ZipFile(file);
         Enumeration<? extends ZipEntry> entries = zip.entries();
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             String name = entry.getName();
             if (log.isLoggable(Level.FINER))
-                log.log(Level.FINER,"found: " + name);
+                log.log(Level.FINER, "found: " + name);
             handleItem(name);
         }
     }
 
     private void handleDirectory(File file, String path) {
         if (log.isLoggable(Level.FINER))
-            log.log(Level.FINER,"directory: " + file);
-        for (File child : file.listFiles()) {
+            log.log(Level.FINER, "directory: " + file);
+        if (file == null)
+            throw new IllegalArgumentException("Argument 'file' cannot be null!");
+        final File[] files = file.listFiles();
+        if (files == null)
+            return;
+        for (File child : files) {
             String newPath = path == null ?
                     child.getName() : path + '/' + child.getName();
             if (child.isDirectory()) {
@@ -152,9 +163,9 @@ public abstract class AbstractScanner {
     protected InputStream getResourceAsStream(String name) {
         InputStream stream = classLoader.getResourceAsStream(name);
         if (stream == null)
-            log.log(Level.WARNING,"Resource '" + name + "' not found.");
+            log.log(Level.WARNING, "Resource '" + name + "' not found.");
         return stream;
     }
-    
+
     protected abstract void handleItem(String name);
 }

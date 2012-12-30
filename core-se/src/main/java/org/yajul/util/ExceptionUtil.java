@@ -2,7 +2,6 @@ package org.yajul.util;
 
 import java.io.StringWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -45,7 +44,7 @@ public class ExceptionUtil {
             return;
 
         List<StackTraceElement> simpleTrace =
-                new ArrayList<StackTraceElement>(trace.length);
+                CollectionUtil.newArrayList(trace.length);
 
         simpleTrace.add(trace[0]);
 

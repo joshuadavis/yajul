@@ -53,17 +53,17 @@ public class ComponentScanner extends AbstractAnnotationScanner {
             if (log.isTraceEnabled())
                 log.trace("handleAnnotation() : name=" + name + " key=" + key);
             if (key == null) {
-                Object implObject = MicroContainer.processName(name, classLoader);
+                Object implObject = MicroContainer.processName(name, getClassLoader());
                 if (implObject instanceof Class<?>) {
                     Class<?> c = (Class<?>) implObject;
                     implementations.add(c);
                 }
             } else {
                 String[] interfaceNames = classFile.getInterfaces();
-                Object implObject = MicroContainer.processName(name, classLoader);
+                Object implObject = MicroContainer.processName(name,  getClassLoader());
                 if (implObject instanceof Class<?>) {
                     Class<?> implClass = (Class<?>) implObject;
-                    Object keyObject = MicroContainer.processName(key, classLoader);
+                    Object keyObject = MicroContainer.processName(key,  getClassLoader());
                     if (keyObject instanceof Class<?>) {
                         Class<?> keyClass = (Class<?>) keyObject;
                         keyToImpl.put(keyClass, implClass);
@@ -74,7 +74,7 @@ public class ComponentScanner extends AbstractAnnotationScanner {
                                log.trace("handleAnnotation() : key=" + key + " interfaceName=" + interfaceName);
                             if (interfaceName.endsWith(key)) {
                                 try {
-                                    keyClass = classLoader.loadClass(interfaceName);
+                                    keyClass =  getClassLoader().loadClass(interfaceName);
                                     break;
                                 } catch (ClassNotFoundException e) {
                                     throw new RuntimeException(e);

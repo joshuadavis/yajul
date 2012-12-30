@@ -125,7 +125,7 @@ public class Bytes {
             j = (i * 2);
             out[1 + j] = hexBytes[MASK & inByte];   // Get the lower nybble and set the second char.
             inByte >>= 4;                           // Shift off the lower nybble.
-            out[0 + j] = hexBytes[MASK & inByte];   // Get the upper nybble and set the first char.
+            out[j] = hexBytes[MASK & inByte];       // Get the upper nybble and set the first char.
         }
     }
 

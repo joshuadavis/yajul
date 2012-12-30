@@ -68,7 +68,6 @@ public class MathUtil
      */
     public static double rint(double v, int decimals)
     {
-
         if (decimals == 0)
         {
             return Math.rint(v);

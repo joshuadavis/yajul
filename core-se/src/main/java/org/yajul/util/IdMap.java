@@ -18,7 +18,7 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      * Makes an empty IdMap with the default map implementation.
      */
     public IdMap() {
-        this(new LinkedHashMap<K, V>(), null);
+        this(CollectionUtil.<K,V>newLinkedHashMap(), null);
     }
 
     /**
@@ -39,6 +39,7 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      *
      * @param map the map implementation
      */
+    @SuppressWarnings("UnusedDeclaration")
     public IdMap(Map<K, V> map) {
         this(map, null);
     }
@@ -49,8 +50,9 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      *
      * @param items the entities to add
      */
+    @SuppressWarnings("UnusedDeclaration")
     public IdMap(Collection<V> items) {
-        this(new LinkedHashMap<K, V>(items.size()), items);
+        this(CollectionUtil.<K,V>newLinkedHashMap(items.size()), items);
     }
 
     /**
@@ -72,7 +74,7 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
     public void addSubset(IdMap<K, V> reference, Collection<K> ids) {
         final int size = ids.size();
         if (size > 0) {
-            this.map = new LinkedHashMap<K, V>(size);
+            this.map = CollectionUtil.newLinkedHashMap(size);
             for (K id : ids)
                 put(reference.get(id));
         }
@@ -232,7 +234,7 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      * @return a set of unique ids
      */
     public static <K, E extends EntityWithId<K>> Set<K> idSet(Iterable<E> things) {
-        LinkedHashSet<K> set = new LinkedHashSet<K>();
+        LinkedHashSet<K> set = CollectionUtil.newLinkedHashSet();
         for (E thing : things)
             set.add(thing.getId());
         return set;

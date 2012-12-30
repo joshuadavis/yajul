@@ -28,8 +28,8 @@ package org.yajul.util;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A checked exception that contains a list of other exceptions.
@@ -42,7 +42,7 @@ public class ExceptionList extends Exception {
     /**
      * The list of throwables. *
      */
-    private ArrayList<Throwable> list = new ArrayList<Throwable>();
+    private final List<Throwable> list = CollectionUtil.newArrayList();
     /**
      * True if a message was explicitly specified. *
      */
@@ -189,8 +189,7 @@ public class ExceptionList extends Exception {
      */
     public void printStackTrace() {
         super.printStackTrace();
-        for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-            Throwable throwable = (Throwable) iterator.next();
+        for (Throwable throwable : list) {
             throwable.printStackTrace();
         }
     }
@@ -203,8 +202,9 @@ public class ExceptionList extends Exception {
     public void printStackTrace(PrintStream s) {
         super.printStackTrace(s);
         int i = 0;
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); i++) {
-            Throwable throwable = (Throwable) iterator.next();
+        for (Iterator<Throwable> iterator = list.iterator(); iterator.hasNext(); i++) {
+            @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+            Throwable throwable = iterator.next();
             s.println("Detail [" + i + "] :");
             throwable.printStackTrace(s);
         }
@@ -218,8 +218,9 @@ public class ExceptionList extends Exception {
     public void printStackTrace(PrintWriter w) {
         super.printStackTrace(w);
         int i = 0;
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); i++) {
-            Throwable throwable = (Throwable) iterator.next();
+        for (Iterator<Throwable> iterator = list.iterator(); iterator.hasNext(); i++) {
+            @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+            Throwable throwable = iterator.next();
             w.println("Detail [" + i + "] :");
             throwable.printStackTrace(w);
         }
@@ -248,7 +249,7 @@ public class ExceptionList extends Exception {
      *
      * @return Iterator - An iterator of all the Throwables.
      */
-    public Iterator iterator() {
+    public Iterator<Throwable> iterator() {
         return list.iterator();
     }
 

@@ -169,6 +169,7 @@ public class FieldPrinter {
         Method m = null;
         //noinspection EmptyCatchBlock
         try {
+            //noinspection unchecked
             m = attributeType.getDeclaredMethod("toString", NO_PARAMETERS);
         } catch (NoSuchMethodException ignore) {
         }

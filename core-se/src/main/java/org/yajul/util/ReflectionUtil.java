@@ -68,7 +68,7 @@ public class ReflectionUtil {
      */
     public static <T> Map<T, String> getConstantNameMap(Class<?> c, Class<T> valueType) {
         Field[] fields = c.getFields();
-        Map<T, String> map = new HashMap<T, String>();
+        Map<T, String> map = CollectionUtil.newHashMap();
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 Object value;

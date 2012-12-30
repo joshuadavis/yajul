@@ -2,12 +2,14 @@ package org.yajul.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yajul.util.CollectionUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public class ClientConnection {
                             Socket socket) throws IOException {
         this.listener = listener;
         this.socket = socket;
-        this.taskWrappers = new ArrayList<TaskWrapper>();
+        this.taskWrappers = CollectionUtil.newArrayList();
         socket.setSoTimeout(listener.getConnectionTimeout());
     }
 

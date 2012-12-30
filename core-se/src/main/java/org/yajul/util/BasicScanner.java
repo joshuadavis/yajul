@@ -21,6 +21,7 @@ public class BasicScanner extends AbstractScanner {
         super(resourceName);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public BasicScanner(String resourceName, ClassLoader classLoader) {
         super(resourceName, classLoader);
     }

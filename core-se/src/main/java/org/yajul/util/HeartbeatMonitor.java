@@ -26,7 +26,7 @@ public class HeartbeatMonitor {
     /**
      * All the things being monitored, by id.
      */
-    private Map<String, Monitor> monitorsById = new HashMap<String, Monitor>();
+    private Map<String, Monitor> monitorsById = CollectionUtil.newHashMap();
 
     /**
      * The observer that will be notified when things happen.

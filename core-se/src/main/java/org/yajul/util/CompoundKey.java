@@ -1,4 +1,3 @@
-// $Id: CompoundKey.java 367 2006-05-01 19:40:28Z ajaygautam $
 package org.yajul.util;
 
 import java.io.Serializable;
