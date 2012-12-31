@@ -1,6 +1,9 @@
 package org.yajul.jndi;
 
+import org.yajul.juli.LogHelper;
+
 import javax.naming.*;
+import java.util.logging.Logger;
 
 /**
  * Helper functions for JNDI.
@@ -9,6 +12,8 @@ import javax.naming.*;
  * Time: 10:17:15 AM
  */
 public class JndiHelper {
+    private static final Logger log = Logger.getLogger(JndiHelper.class.getName());
+
     /**
      * Encapsulates the standard JNDI lookup calls for EJBs, etc. in a method that
      * throws an uncheckeced exception.  The typical use case would be inside an EAR where
@@ -44,25 +49,29 @@ public class JndiHelper {
         }
     }
 
-    public static String listBindings(Context context, String name) throws NamingException {
+    public static String listBindings(Context context, String name) {
         StringBuilder sb = new StringBuilder();
         sb.append("Listing for ").append(name).append("\n");
         listContext("  ", context, name, sb);
         return sb.toString();
     }
 
-    private static void listContext(String prefix, Context context, String name, StringBuilder sb)
-            throws NamingException {
-        NamingEnumeration<Binding> bindings = context.listBindings(name);
-        while (bindings.hasMore()) {
-            Binding binding = bindings.next();
-            sb.append(prefix).append(name).append(binding.getName()).append(" -> ")
-                    .append(binding.getClassName()).append("\n");
-            Object obj = binding.getObject();
-            if (obj instanceof Context) {
-                Context nestedContext = (Context) obj;
-                listContext(prefix + binding.getName() + "/",nestedContext,"",sb);
+    private static void listContext(String prefix, Context context, String name, StringBuilder sb) {
+        try {
+            NamingEnumeration<Binding> bindings = context.listBindings(name);
+            while (bindings.hasMore()) {
+                Binding binding = bindings.next();
+                sb.append(prefix).append(name).append(binding.getName()).append(" -> ")
+                        .append(binding.getClassName()).append("\n");
+                Object obj = binding.getObject();
+                if (obj instanceof Context) {
+                    Context nestedContext = (Context) obj;
+                    listContext(prefix + binding.getName() + "/",nestedContext,"",sb);
+                }
             }
+        } catch (NamingException e) {
+            LogHelper.unexpected(log,e);
+            throw new LookupException("Unable to list context due to: " + e.getMessage(),e);
         }
     }
 
