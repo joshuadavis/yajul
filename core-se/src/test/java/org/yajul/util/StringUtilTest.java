@@ -37,20 +37,18 @@ import static org.junit.Assert.*;
 /**
  * Tests StringUtil methods.
  */
-public class StringUtilTest
-{
+public class StringUtilTest {
     /**
      * Test StringUtil.hexString()
      */
     @Test
-    public void testHexString()
-    {
-        byte[] bytes = new byte[] { 0, 10, 16, 63, 127,
-                                    (byte)128, (byte)129,
-                                    (byte)254, (byte)255,
-                                    (byte)256 };
+    public void testHexString() {
+        byte[] bytes = new byte[]{0, 10, 16, 63, 127,
+                (byte) 128, (byte) 129,
+                (byte) 254, (byte) 255,
+                (byte) 256};
 
-        String hex = StringUtil.hexString(bytes,",");
+        String hex = StringUtil.hexString(bytes, ",");
         TestCase.assertEquals("00,0a,10,3f,7f,80,81,fe,ff,00", hex);
         hex = StringUtil.hexString(bytes);
         TestCase.assertEquals("000a103f7f8081feff00", hex);
@@ -61,14 +59,13 @@ public class StringUtilTest
         hex = "00A103F7F8081FEFF00";
         TestCase.assertTrue(Arrays.equals(bytes, StringUtil.parseHexString(hex)));
         StringBuffer buf = new StringBuffer();
-        StringUtil.hexString(buf,bytes,",",false);
+        StringUtil.hexString(buf, bytes, ",", false);
         hex = buf.toString();
         TestCase.assertEquals("00,0A,10,3F,7F,80,81,FE,FF,00", hex);
     }
 
     @Test
-    public void testDefaultToString()
-    {
+    public void testDefaultToString() {
         Object o = new Object();
         String s = StringUtil.defaultToString(o);
         TestCase.assertEquals(o.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(o)), s);
@@ -77,56 +74,67 @@ public class StringUtilTest
     }
 
     @Test
-    public void testEmpty()
-    {
+    public void testEmpty() {
         assertTrue(StringUtil.isEmpty(null));
         assertTrue(StringUtil.isEmpty(""));
         assertFalse(StringUtil.isEmpty("abc"));
         StringBuffer buf = new StringBuffer();
-        StringUtil.appendIfNotEmpty("abc",buf);
-        StringUtil.appendIfNotEmpty("",buf);
-        StringUtil.appendIfNotEmpty(null,buf);
-        StringUtil.appendIfNotEmpty("def",buf);
+        StringUtil.appendIfNotEmpty("abc", buf);
+        StringUtil.appendIfNotEmpty("", buf);
+        StringUtil.appendIfNotEmpty(null, buf);
+        StringUtil.appendIfNotEmpty("def", buf);
         TestCase.assertEquals("abcdef", buf.toString());
     }
 
     @Test
-    public void testGetBytes()
-    {
-        byte[] bytes = StringUtil.getBytes("hello",null);
+    public void testGetBytes() {
+        byte[] bytes = StringUtil.getBytes("hello", null);
         String s = new String(bytes);
         TestCase.assertEquals("hello", s);
-        bytes = StringUtil.getBytes("hello","fubar");
+        bytes = StringUtil.getBytes("hello", "fubar");
         TestCase.assertEquals("hello", new String(bytes));
     }
 
     @Test
-    public void testSubstringBeforeAfter()
-    {
-        String s = StringUtil.substringBefore("aa/bb","/");
+    public void testSubstringBeforeAfter() {
+        String s = StringUtil.substringBefore("aa/bb", "/");
         TestCase.assertEquals("aa", s);
-        s = StringUtil.substringAfter("aa/bb","/");
+        s = StringUtil.substringAfter("aa/bb", "/");
         TestCase.assertEquals("bb", s);
-        assertEquals("aa/bb",StringUtil.substringBefore("aa/bb","c"));
-        assertNull(StringUtil.substringBefore("/aabb","/"));
-        assertNull(StringUtil.substringAfter("aa/bb","c"));
+        assertEquals("aa/bb", StringUtil.substringBefore("aa/bb", "c"));
+        assertNull(StringUtil.substringBefore("/aabb", "/"));
+        assertNull(StringUtil.substringAfter("aa/bb", "c"));
     }
 
     @Test
     public void testChomp() {
-        assertEquals("abcd",StringUtil.chomp("abcd\r"));
-        assertEquals("abcd",StringUtil.chomp("abcd\r\n"));
-        assertEquals("abcd",StringUtil.chomp("abcd\n"));
-        assertEquals("",StringUtil.chomp("\n"));
-        assertEquals("",StringUtil.chomp("\r"));
-        assertEquals("",StringUtil.chomp("\r\n"));
+        assertEquals("abcd", StringUtil.chomp("abcd\r"));
+        assertEquals("abcd", StringUtil.chomp("abcd\r\n"));
+        assertEquals("abcd", StringUtil.chomp("abcd\n"));
+        assertEquals("", StringUtil.chomp("\n"));
+        assertEquals("", StringUtil.chomp("\r"));
+        assertEquals("", StringUtil.chomp("\r\n"));
     }
 
     @Test
     public void compareToCommonsLang() {
         // Spot check various things versus commons lang.
-        assertEquals(StringUtils.chomp("abcd\r"),StringUtil.chomp("abcd\r"));
-        assertEquals(StringUtils.chomp("abcd\n"),StringUtil.chomp("abcd\n"));
+        assertEquals(StringUtils.chomp("abcd\r"), StringUtil.chomp("abcd\r"));
+        assertEquals(StringUtils.chomp("abcd\n"), StringUtil.chomp("abcd\n"));
         assertEquals(StringUtils.substringBefore("aa/bb", "c"), StringUtil.substringBefore("aa/bb", "c"));
+    }
+
+    @Test
+    public void repeatChar() {
+        assertEquals("  ", StringUtil.repeatChar(' ', 2));
+        assertEquals("", StringUtil.repeatChar('a', 0));
+        Exception expected = null;
+        try {
+            StringUtil.repeatChar('a', -1);
+        } catch (IllegalArgumentException iae) {
+            expected = iae;
+        }
+        assertNotNull(expected);
+        assertEquals("aaa",StringUtil.repeatChar('a',3));
     }
 }

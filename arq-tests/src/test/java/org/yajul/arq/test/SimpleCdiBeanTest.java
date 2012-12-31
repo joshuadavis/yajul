@@ -1,6 +1,6 @@
 package org.yajul.arq.test;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.transaction.UserTransaction;
 
 /**
  * Simple CDI bean test
@@ -22,6 +23,9 @@ import javax.inject.Inject;
 public class SimpleCdiBeanTest {
     @Inject
     private SimpleCdiBean bean;
+
+    @Inject
+    private UserTransaction userTransaction;
 
     @Deployment
     public static JavaArchive createTestArchive() {
@@ -38,5 +42,6 @@ public class SimpleCdiBeanTest {
         System.out.println("okay, about to call the bean...");
         bean.doSomething();
         System.out.println("done");
+        System.out.println("UserTransaction=" + userTransaction);
     }
 }

@@ -3,16 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yajul-aggregator</artifactId>
+        <artifactId>pojo-parent</artifactId>
         <groupId>org.yajul</groupId>
         <version>0.4.3-SNAPSHOT</version>
+        <relativePath>../pojo-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>arq-tests</artifactId>
-    <version>0.4.3-SNAPSHOT</version>
-    <name>arq-tests</name>
-    <description>Integration tests using Arquillian</description>
+    <artifactId>yajul-core-ee</artifactId>
 
     <properties>
         <arquillian.version>1.0.3.Final</arquillian.version>
@@ -39,26 +37,28 @@
     </dependencyManagement>
 
     <dependencies>
-
         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${version.cdi}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>yajul-core-se</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
+
 
     <profiles>
 
@@ -108,25 +108,5 @@
                 </plugins>
             </build>
         </profile>
-
-        <profile>
-            <id>jbossas-remote-6</id>
-            <dependencies>
-
-                <dependency>
-                    <groupId>org.jboss.arquillian.container</groupId>
-                    <artifactId>arquillian-jbossas-remote-6</artifactId>
-                    <version>${arquillian.version}</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.jbossas</groupId>
-                    <artifactId>jboss-as-client</artifactId>
-                    <version>6.0.0.Final</version>
-                    <type>pom</type>
-                </dependency>
-            </dependencies>
-        </profile>
     </profiles>
-
 </project>

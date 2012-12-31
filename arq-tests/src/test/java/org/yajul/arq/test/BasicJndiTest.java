@@ -1,31 +1,29 @@
 package org.yajul.arq.test;
 
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import javax.naming.*;
 
 /**
- * A very simple CDI bean for testing.
+ * Test basic JNDI operation for the Java EE container (managed by Arquillian).
  * <br>
- * User: Josh
- * Date: 4/13/11
- * Time: 6:07 AM
+ * User: josh
+ * Date: 12/31/12
+ * Time: 1:36 PM
  */
-public class SimpleCdiBean {
-    public void doSomething() {
-        System.out.println("hello there");
-        StringBuilder sb = null;
-        try {
-            InitialContext context = new InitialContext();
-            String name = "";
-            sb = new StringBuilder();
-            sb.append("Listing for ").append(name).append("\n");
-            listContext(" ",  context, name, sb);
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
+@RunWith(Arquillian.class)
+public class BasicJndiTest {
+    @Test
+    public void showJNDI() throws Exception {
+        String name = "";
+        InitialContext context = new InitialContext();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Listing for ").append(name).append("\n");
+        listContext(" ",  context, name, sb);
         System.out.println(sb.toString());
     }
-
-
 
     private void listContext(String prefix, Context context, String name, StringBuilder sb)
             throws NamingException {
