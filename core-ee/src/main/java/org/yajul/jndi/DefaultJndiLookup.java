@@ -17,6 +17,10 @@ public class DefaultJndiLookup implements JndiLookup
 {
     private ObjectProvider<InitialContext> icp;
 
+    public DefaultJndiLookup() {
+        this(new DefaultInitialContextProvider());
+    }
+
     public DefaultJndiLookup(ObjectProvider<InitialContext> icp)
     {
         this.icp = icp;

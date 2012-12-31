@@ -1,9 +1,13 @@
 package org.yajul.jms;
 
-import org.yajul.embedded.EmbeddedJBossTestCase;
-import org.yajul.embedded.UnitTestJndiConstants;
+import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.yajul.jndi.UnitTestJndiConstants;
 import org.yajul.io.ByteArrayWrapper;
 import org.yajul.io.SerializableWrapper;
+
+import static org.junit.Assert.*;
 
 import javax.jms.*;
 import javax.naming.InitialContext;
@@ -18,13 +22,23 @@ import java.util.List;
  * Date: Mar 3, 2009
  * Time: 6:54:38 AM
  */
-public class JmsTest extends EmbeddedJBossTestCase {
+@RunWith(Arquillian.class)
+public class JmsTest {
 
+    @Test
+    public void testBasicJmsJndiObjects() throws Exception {
+        InitialContext ic = new InitialContext();
+        ConnectionFactoryProvider factoryProvider = new ConnectionFactoryProvider(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
+        ConnectionFactory factory = factoryProvider.getTopicConnectionFactory();
+        assertNotNull(factory);
+    }
+
+    @Test
     public void testJmsAttributes() throws NamingException, JMSException {
         InitialContext ic = new InitialContext();
 
         ConnectionFactoryProvider factoryReference = new ConnectionFactoryProvider(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationProvider testTopic = new DestinationProvider(ic, "topic/testTopic");
+        final DestinationProvider testTopic = new DestinationProvider(ic, "jms/testTopic");
 
         JmsTemplate runner = new JmsTemplate(factoryReference);
         runner.doAction(new JmsTemplate.JmsAction<Boolean>() {
@@ -50,7 +64,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
         InitialContext ic = new InitialContext();
 
         ConnectionFactoryProvider factoryReference = new ConnectionFactoryProvider(ic, UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationProvider testTopic = new DestinationProvider(ic, "topic/testTopic");
+        final DestinationProvider testTopic = new DestinationProvider(ic, "jms/testTopic");
 
 
         final Thing thing = createThing();
@@ -66,7 +80,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
                 ObjectMessage msg = ses.createObjectMessage(thing);
                 pub.send(msg);
                 Message received = sub.receive();
-                return JmsHelper.getObject(received,Thing.class,true);
+                return JmsHelper.getObject(received, Thing.class, true);
             }
         });
 
@@ -81,21 +95,21 @@ public class JmsTest extends EmbeddedJBossTestCase {
                 ObjectMessage msg = ses.createObjectMessage(wrapper);
                 pub.send(msg);
                 Message received = sub.receive();
-                return JmsHelper.getObject(received,Thing.class,true);
+                return JmsHelper.getObject(received, Thing.class, true);
             }
         });
 
-        assertEquals(thing,t2);
+        assertEquals(thing, t2);
     }
 
     public void testResponder() throws Exception {
         InitialContext ic = new InitialContext();
         final ConnectionFactoryProvider factoryReference = new ConnectionFactoryProvider(ic,
                 UnitTestJndiConstants.JMS_CONNECTION_FACTORY);
-        final DestinationProvider destinationReference = new DestinationProvider(ic, "topic/testTopic");
+        final DestinationProvider destinationReference = new DestinationProvider(ic, "jms/testTopic");
         MessageReceiver receiver = new MessageReceiver(factoryReference, destinationReference, new MessageListener() {
             public void onMessage(Message message) {
-                MessageSender.sendReply(null,UnitTestJndiConstants.JMS_CONNECTION_FACTORY,message, "poot!");
+                MessageSender.sendReply(null, UnitTestJndiConstants.JMS_CONNECTION_FACTORY, message, "poot!");
             }
         }, null, 2000);
         receiver.start(null, null);
@@ -153,8 +167,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
         }
 
         @Override
-        public boolean equals(Object o)
-        {
+        public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof Bar)) return false;
 
@@ -166,8 +179,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
         }
 
         @Override
-        public int hashCode()
-        {
+        public int hashCode() {
             int result;
             long temp;
             temp = factor != +0.0d ? Double.doubleToLongBits(factor) : 0L;
@@ -194,8 +206,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
         }
 
         @Override
-        public boolean equals(Object o)
-        {
+        public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof Thing)) return false;
 
@@ -208,8 +219,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
         }
 
         @Override
-        public int hashCode()
-        {
+        public int hashCode() {
             int result = foos != null ? foos.hashCode() : 0;
             result = 31 * result + (bar != null ? bar.hashCode() : 0);
             return result;
@@ -217,8 +227,7 @@ public class JmsTest extends EmbeddedJBossTestCase {
     }
 
 
-    public static class Foo implements Serializable
-    {
+    public static class Foo implements Serializable {
         protected String name;
         protected int number;
 
