@@ -56,8 +56,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="arq-tests" target="1.5" />
       <module name="core" target="1.5" />
       <module name="core-ee" target="1.5" />
+      <module name="core-se" target="1.5" />
       <module name="groovy-dbtools" target="1.5" />
       <module name="micro" target="1.5" />
       <module name="pojo-parent" target="1.5" />

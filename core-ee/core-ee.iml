@@ -55,7 +55,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.testenricher:arquillian-testenricher-ejb:1.0.3.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.testenricher:arquillian-testenricher-resource:1.0.3.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jboss.arquillian.testenricher:arquillian-testenricher-initialcontext:1.0.3.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.main.extras:glassfish-embedded-all:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish.main.extras:glassfish-embedded-all:3.1.2.2" level="project" />
   </component>
 </module>
 
