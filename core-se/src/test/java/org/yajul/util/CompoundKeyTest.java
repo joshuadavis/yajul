@@ -22,7 +22,26 @@ public class CompoundKeyTest {
     public void testEquality() {
         CompoundKey a = new CompoundKey("foo", 33, new Date(0));
         CompoundKey b = new CompoundKey("foo", 33, new Date(0));
+        checkEquality(a, b);
+    }
 
+    @Test
+    public void testArrayConstructor() {
+        Object[] array = new Object[] {"foo", 33, new Date(0) };
+        CompoundKey a = new CompoundKey(array);
+        CompoundKey b = new CompoundKey(array);
+        checkEquality(a,b);
+    }
+
+    @Test
+    public void testSerialization() throws Exception {
+        CompoundKey a = new CompoundKey("foo", new Integer(33), new Date(0));
+        CompoundKey b = SerializationHelper.serialClone(a);
+        checkEquality(a,b);
+    }
+
+    private void checkEquality(CompoundKey a, CompoundKey b) {
+        assertNotSame(a,b);
         assertEquals("foo", a.getComponent(0));
         assertEquals(33, a.getComponent(1));
         assertEquals(new Date(0), a.getComponent(2));
@@ -38,13 +57,6 @@ public class CompoundKeyTest {
         assertNotNull(s);
         assertTrue(s.length() > 0);
 
-        assertCompoundKeyEquals(a, b);
-        assertEquals(a.hashCode(), b.hashCode());
-
-        a.setComponents(new Object[]{"bar", 55, new Date(1)});
-        b.setComponents(new Object[]{"bar", 55, new Date(1)});
-        assertEquals(a.hashCode(), b.hashCode());
-        assertEquals(a.hashCode(), b.hashCode());
         assertCompoundKeyEquals(a, b);
     }
 
@@ -133,5 +145,30 @@ public class CompoundKeyTest {
             iae = e;
         }
         assertNotNull(iae);
+
+        iae = null;
+        try {
+            new CompoundKey(null);
+        } catch (IllegalArgumentException e) {
+            iae = e;
+        }
+        assertNotNull(iae);
+
+        iae = null;
+        try {
+            new CompoundKey();
+        } catch (IllegalArgumentException e) {
+            iae = e;
+        }
+        assertNotNull(iae);
+
+        iae = null;
+        try {
+            new CompoundKey(new Object[0]);
+        } catch (IllegalArgumentException e) {
+            iae = e;
+        }
+        assertNotNull(iae);
+
     }
 }

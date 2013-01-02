@@ -25,7 +25,14 @@ public class ComparatorUtil {
     public static final Comparator<Comparable> NULL_LOW_COMPARATOR =
             new NullComparator<Comparable>(COMPARABLE_COMPARATOR);
 
+    public static <T> Comparator<T> nullLowComparableComparator() {
+        //noinspection unchecked
+        return (Comparator<T>)NULL_LOW_COMPARATOR;
+    }
+
     public static final Comparator<String> STRING_COMPARATOR = comparableComparator();
+
+    public static final Comparator<String> NULL_LOW_STRING_COMPARATOR = nullLowComparableComparator();
 
     public static final Comparator<String> NULL_EQUALS_EMPTY_STRING_COMPARATOR = new Comparator<String>() {
         public int compare(String a, String b) {
@@ -43,5 +50,4 @@ public class ComparatorUtil {
     {
         return (a == null && b == null) ||
                (a != null && b != null && a.equals(b));
-    }
-}
+    }}
