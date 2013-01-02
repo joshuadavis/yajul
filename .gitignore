@@ -2,4 +2,6 @@
 /target/
 /*/target/
 /.idea/workspace.xml
+/.idea/libraries/*
 /temp/*
+temp.txt

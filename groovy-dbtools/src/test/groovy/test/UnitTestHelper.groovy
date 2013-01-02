@@ -1,9 +1,10 @@
 package test
 
+import liquibase.database.jvm.JdbcConnection
+import liquibase.resource.ClassLoaderResourceAccessor
+import liquibase.resource.ResourceAccessor
 import org.yajul.jdbc.ConnectionInfo
 import liquibase.Liquibase
-import liquibase.ClassLoaderFileOpener
-import liquibase.FileOpener
 import liquibase.database.DatabaseFactory
 import liquibase.database.Database
 import groovy.sql.Sql
@@ -46,9 +47,9 @@ class UnitTestHelper
   static void loadSchema(Sql sql, String schemaFile,String contexts)
   {
     def factory = DatabaseFactory.getInstance()
-    Database db = factory.findCorrectDatabaseImplementation(sql.connection)
-    FileOpener opener = new ClassLoaderFileOpener()
-    Liquibase lb = new Liquibase(schemaFile, opener, db)
+    Database db = factory.findCorrectDatabaseImplementation(new JdbcConnection(sql.connection))
+      ResourceAccessor resourceAccessor = new ClassLoaderResourceAccessor();
+    Liquibase lb = new Liquibase(schemaFile, resourceAccessor, db)
     println "Dropping all tables..."
     lb.dropAll()
     println "Validating change sets..."

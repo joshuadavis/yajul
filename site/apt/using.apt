@@ -1,0 +1,30 @@
+    ---
+    Using YAJUL
+    ---
+
+Downloading YAJUL binaries
+
+  Currently there are no release builds available.   It's best to build Yajul from source.
+
+Building YAJUL from sources
+
+  See {{{./developing.html#build-from-source}this section of the 'Developing YAJUL' guide}}.
+
+YAJUL Features
+
+  Here are some shortcuts to the Javadoc for the various YAJUL features:
+
+  * {{{./apidocs/index.html?org/yajul/util/ComparatorChain.html}A simple way to chain together Comparators.  Supports generics.}}
+
+  * {{{./apidocs/index.html?org/yajul/util/ReverseComparator.html}Reverses the order of a comparator.}}
+
+  * {{{./apidocs/index.html?org/yajul/util/CompoundKey.html}A way to make keys for maps or caches out of a list of objects.}}
+
+  * {{{./apidocs/index.html?org/yajul/util/IdMap.html}A Map that automatically adds objects by their IDs.}}
+  
+  * {{{./apidocs/index.html?org/yajul/log/package-summary.html}java.util.logging -> Log4j adapter}}
+
+  * {{{./apidocs/index.html?org/yajul/jmx/package-summary.html}JMX -> EJB bridge, other JMX helpers}}
+
+  * {{{./apidocs/index.html?org/yajul/io/package-summary.html}IO helper classes, streams.}}
+

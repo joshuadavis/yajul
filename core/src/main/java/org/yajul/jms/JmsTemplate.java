@@ -1,8 +1,8 @@
 package org.yajul.jms;
 
 import javax.jms.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * IoC template for working with multiple JMS destinations.
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Time: 3:30:07 PM
  */
 public class JmsTemplate implements JmsContext {
-    private ConnectionFactoryReference connectionFactoryReference;
+    private ConnectionFactoryProvider connectionFactoryReference;
     private List<Connection> connections = new ArrayList<Connection>();
     private boolean transacted;
     private int acknowledgeMode = javax.jms.Session.AUTO_ACKNOWLEDGE;
@@ -47,7 +47,7 @@ public class JmsTemplate implements JmsContext {
         this.noLocal = noLocal;
     }
 
-    public JmsTemplate(ConnectionFactoryReference connectionFactoryReference) {
+    public JmsTemplate(ConnectionFactoryProvider connectionFactoryReference) {
         this.connectionFactoryReference = connectionFactoryReference;
     }
 
