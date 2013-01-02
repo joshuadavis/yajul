@@ -3,6 +3,7 @@
 /*/target/
 /.idea/workspace.xml
 /.idea/libraries/*
+/.idea/artifacts/*
 /temp/*
 temp.txt
 /data/*
