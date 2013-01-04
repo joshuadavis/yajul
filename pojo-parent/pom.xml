@@ -43,6 +43,20 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>parity.releases</id>
+            <name>Parity Maven Release Repository</name>
+            <url>https://artifactory.parityenergy.com/artifactory/libs-releases-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>parity.snapshots</id>
+            <name>Parity Maven Snapshot Repository</name>
+            <url>https://artifactory.parityenergy.com/artifactory/libs-snapshots-local</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -170,23 +184,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>parity-artifactory</id>
-            <distributionManagement>
-                <repository>
-                    <id>parity.releases</id>
-                    <name>Parity Maven Release Repository</name>
-                    <url>https://artifactory.parityenergy.com/artifactory/libs-releases-local</url>
-                </repository>
-                <snapshotRepository>
-                    <id>parity.snapshots</id>
-                    <name>Parity Maven Snapshot Repository</name>
-                    <url>https://artifactory.parityenergy.com/artifactory/libs-snapshots-local</url>
-                    <uniqueVersion>false</uniqueVersion>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-    </profiles>
 </project>
