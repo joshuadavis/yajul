@@ -1,17 +1,15 @@
 package org.yajul.micro;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Assert;
-
 import java.io.IOException;
 import java.util.*;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.junit.Assert;
+import org.junit.Test;
 import org.yajul.micro.annotations.Component;
 import com.google.inject.*;
 import com.google.inject.name.Names;
+import static org.junit.Assert.*;
 
 /**
  * Test microcontainer behavior.
@@ -19,11 +17,9 @@ import com.google.inject.name.Names;
  * Date: Mar 6, 2008
  * Time: 6:34:05 AM
  */
-public class MicroContainerTest extends TestCase {
-    public MicroContainerTest(String n) {
-        super(n);
-    }
+public class MicroContainerTest {
 
+    @Test
     public void testSingleton()
     {
         ModuleList modules = new ModuleList();
@@ -37,9 +33,10 @@ public class MicroContainerTest extends TestCase {
         List one = mc.getComponent(List.class);
         List two = mc.getComponent(List.class);
 
-        Assert.assertSame(one,two);
+        assertSame(one, two);
     }
 
+    @Test
     public void testNamedConstant()
     {
         ModuleList modules = new ModuleList();
@@ -52,6 +49,7 @@ public class MicroContainerTest extends TestCase {
         assertEquals(mc.getComponent(Integer.class,"magicNumber").intValue(),42);
     }
 
+    @Test
     public void testModuleList() throws Exception {
         ModuleList modules = new ModuleList();
         modules.addClassName("org.yajul.micro.TestConfig");
@@ -62,7 +60,8 @@ public class MicroContainerTest extends TestCase {
         assertEquals(TreeSet.class,mc.getComponent(Set.class).getClass());
         assertSame(theThing,mc.getComponent(TestThing.class));
     }
-    
+
+    @Test
     public void testResourceModule() throws IOException {
         // MicroContainer can bootstrap itself from properties files.
         ModuleList modules = new ModuleList();
@@ -75,6 +74,7 @@ public class MicroContainerTest extends TestCase {
         assertEquals(1985,mc.getComponent(TimeMachine.class).getDestinationYear());
     }
 
+    @Test
     public void testXmlModule() throws IOException {
         // MicroContainer can bootstrap itself from properties files.
         ModuleList modules = new ModuleList();
@@ -87,6 +87,7 @@ public class MicroContainerTest extends TestCase {
         assertEquals(1985,mc.getComponent(TimeMachine.class).getDestinationYear());
     }
 
+    @Test
     public void testAnnotations() {
         AnnotationScanner scanner = new AnnotationScanner("test-bootstrap.properties");
         scanner.addAnnotation(Component.class);
@@ -95,6 +96,7 @@ public class MicroContainerTest extends TestCase {
         Assert.assertTrue(names.contains("org/yajul/micro/AnnotatedComponent.class"));
     }
 
+    @Test
     public void testComponentScanner() {
         ComponentScanner scanner = new ComponentScanner("test-bootstrap.properties");
         Injector injector = scanner.createInjector();
@@ -102,12 +104,14 @@ public class MicroContainerTest extends TestCase {
         assertNotNull(injector.getInstance(TestThing.class));
     }
 
+    @Test
     public void testSingletonManager() {
         SingletonManager sm = SingletonManager.getInstance();
         SingletonManager other = sm.getComponent(SingletonManager.class);
         assertSame(sm,other);
     }
 
+    @Test
     public void testAbstractCachingProvider() {
         Injector injector = Guice.createInjector(new AbstractModule() {
             protected void configure() {
@@ -143,6 +147,7 @@ public class MicroContainerTest extends TestCase {
         }
     }
 
+    @Test
     public void testBeforeAndAfterMethods() {
         Injector injector = Guice.createInjector(new AbstractModule() {
             protected void configure() {
@@ -160,9 +165,5 @@ public class MicroContainerTest extends TestCase {
         assertEquals(1,delorian.getBefore());
         assertEquals(1,delorian.getAfter());
         assertEquals(0,delorian.getExcep());
-    }
-    
-    public static Test suite() {
-        return new TestSuite(MicroContainerTest.class);
     }
 }

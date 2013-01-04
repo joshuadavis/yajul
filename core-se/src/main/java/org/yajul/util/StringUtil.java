@@ -291,4 +291,37 @@ public class StringUtil {
 
         return s.substring(0, index+1);
     }
+
+    /**
+     * Returns a string with the same character repeated.
+     * @param c the character to repeat
+     * @param count the number of times to repeat it.
+     * @return a string with the same character repeated
+     */
+    public static String repeatChar(char c, int count) {
+        if (count == 0)
+            return EMPTY;
+        StringBuilder sb = new StringBuilder();
+        repeatChar(c,count,sb);
+        return sb.toString();
+    }
+
+    /**
+     * Repeatedly appends the character the specified number of times in the string builder.
+     * @param c the character
+     * @param count the number of times to append it
+     * @param sb the string builder
+     * @return the string builder
+     */
+    public static StringBuilder repeatChar(char c, int count, StringBuilder sb)
+    {
+        if (count < 0)
+            throw new IllegalArgumentException("count must be > 0!");
+        if (count == 0)
+            return sb;
+        sb.ensureCapacity(sb.length() + count);
+        for (int i = 0; i < count ; i++)
+            sb.append(c);
+        return sb;
+    }
 }

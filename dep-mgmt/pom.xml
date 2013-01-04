@@ -14,10 +14,14 @@
         <version.junit>4.11</version.junit>
         <version.javassist>3.12.1.GA</version.javassist>
         <version.jboss-embedded>beta3.SP15</version.jboss-embedded>
-        <version.slf4j>1.5.10</version.slf4j>
+        <version.slf4j>1.7.2</version.slf4j>
         <version.hsqldb>2.2.9</version.hsqldb>
         <version.liquibase>2.0.5</version.liquibase>
     </properties>
+
+    <prerequisites>
+        <maven>3.0.0</maven>
+    </prerequisites>
 
     <dependencyManagement>
         <dependencies>
@@ -31,7 +35,7 @@
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>1.2.15</version>
+                <version>1.2.17</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.sun.jdmk</groupId>
