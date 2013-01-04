@@ -71,8 +71,6 @@
                 <configuration>
                     <!-- Git push can be done manually. -->
                     <pushChanges>false</pushChanges>
-                    <useReleaseProfile>true</useReleaseProfile>
-                    <releaseProfiles>parity-artifactory</releaseProfiles>
                 </configuration>
             </plugin>
         </plugins>
