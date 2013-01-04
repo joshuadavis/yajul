@@ -4,11 +4,11 @@
     <parent>
         <groupId>org.yajul</groupId>
         <artifactId>pojo-parent</artifactId>
-        <version>0.4.6</version>
+        <version>0.4.7-SNAPSHOT</version>
         <relativePath>../pojo-parent/pom.xml</relativePath>
     </parent>
     <artifactId>groovy-dbtools</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5-SNAPSHOT</version>
     <properties>
         <version.groovy>2.0.4</version.groovy>
         <version.gmaven>1.4</version.gmaven>
@@ -21,7 +21,7 @@
             <dependency>
                 <groupId>${project.parent.groupId}</groupId>
                 <artifactId>dep-mgmt</artifactId>
-                <version>0.4.6</version>
+                <version>0.4.7-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
