@@ -21,6 +21,20 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
+    <distributionManagement>
+        <repository>
+            <id>parity.releases</id>
+            <name>Parity Maven Release Repository</name>
+            <url>https://artifactory.parityenergy.com/artifactory/libs-releases-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>parity.snapshots</id>
+            <name>Parity Maven Snapshot Repository</name>
+            <url>https://artifactory.parityenergy.com/artifactory/libs-snapshots-local</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
 
