@@ -3,13 +3,13 @@
     <parent>
         <artifactId>pojo-parent</artifactId>
         <groupId>org.yajul</groupId>
-        <version>0.4.4</version>
+        <version>0.4.5-SNAPSHOT</version>
         <relativePath>../pojo-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>arq-tests</artifactId>
-    <version>0.4.4</version>
+    <version>0.4.5-SNAPSHOT</version>
     <name>arq-tests</name>
     <description>Integration tests using Arquillian</description>
 
