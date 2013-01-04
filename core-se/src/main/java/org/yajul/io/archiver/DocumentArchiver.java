@@ -1,7 +1,5 @@
-// $Id$
 package org.yajul.io.archiver;
 
-import org.apache.log4j.Logger;
 import org.yajul.util.StringUtil;
 
 import java.io.BufferedInputStream;
@@ -20,8 +18,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import static org.yajul.juli.LogHelper.unexpected;
 
 /**
  * Javabean that can store objects in the filesystem.  The objects are stored in a hierarchy of directories
@@ -57,9 +59,8 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author josh May 6, 2004 11:41:01 PM
  */
-public class DocumentArchiver
-{
-    private static Logger log = Logger.getLogger(DocumentArchiver.class.getName());
+public class DocumentArchiver {
+    private static final Logger log = Logger.getLogger(DocumentArchiver.class.getName());
 
     public static final String DEFAULT_EXTENSION = ".dat.gz";
 
@@ -77,16 +78,14 @@ public class DocumentArchiver
      *
      * @return the storage directory.
      */
-    public File getStoreageDirectory()
-    {
+    public File getStoreageDirectory() {
         return storeageDirectory;
     }
 
     /**
      * String version of @see {@link #setStoreageDirectory(File)}
      */
-    public void setStoreageDirectoryStr(String storeageDirectory)
-    {
+    public void setStoreageDirectoryStr(String storeageDirectory) {
         if (storeageDirectory == null)
             throw new IllegalArgumentException("Storeage directory cannot be null!");
         setStoreageDirectory(new File(storeageDirectory));
@@ -98,8 +97,7 @@ public class DocumentArchiver
      *
      * @param storeageDirectory The document storeage directory.
      */
-    public void setStoreageDirectory(File storeageDirectory)
-    {
+    public void setStoreageDirectory(File storeageDirectory) {
         if (storeageDirectory == null)
             throw new IllegalArgumentException("Storeage directory cannot be null!");
         if (storeageDirectory.exists() && !storeageDirectory.isDirectory())
@@ -109,10 +107,10 @@ public class DocumentArchiver
 
     /**
      * Set the id->filename encoder for the archiver.
+     *
      * @param idEncoder An object that will encode the document ids into filenames.
      */
-    public void setIdEncoder(IdEncoder idEncoder)
-    {
+    public void setIdEncoder(IdEncoder idEncoder) {
         this.idEncoder = idEncoder;
     }
 
@@ -121,8 +119,7 @@ public class DocumentArchiver
      *
      * @return the filename extension that will be used for the stored documents.
      */
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
@@ -131,8 +128,7 @@ public class DocumentArchiver
      *
      * @param extension The filename extension, defaults to '.dat.gz'.
      */
-    public void setExtension(String extension)
-    {
+    public void setExtension(String extension) {
         if (extension == null)
             throw new IllegalArgumentException("Extension cannot be null!");
         this.extension = extension;
@@ -144,8 +140,7 @@ public class DocumentArchiver
      *
      * @return the list of retrieval directories
      */
-    public List getRetrieveDirectories()
-    {
+    public List getRetrieveDirectories() {
         return retrieveDirectories;
     }
 
@@ -154,8 +149,7 @@ public class DocumentArchiver
      *
      * @return the number of retrieval directories.
      */
-    public int getRetrieveDirectoryCount()
-    {
+    public int getRetrieveDirectoryCount() {
         return (retrieveDirectories == null) ? 0 : retrieveDirectories.size();
     }
 
@@ -165,8 +159,7 @@ public class DocumentArchiver
      *
      * @param retrieveDirectories A list of directory names.
      */
-    public void setRetrieveDirectories(List retrieveDirectories)
-    {
+    public void setRetrieveDirectories(List retrieveDirectories) {
         this.retrieveDirectories = retrieveDirectories;
     }
 
@@ -175,8 +168,7 @@ public class DocumentArchiver
      *
      * @return true if documents are being GZIP compressed.
      */
-    public boolean isGzip()
-    {
+    public boolean isGzip() {
         return gzip;
     }
 
@@ -185,8 +177,7 @@ public class DocumentArchiver
      *
      * @param gzip True for gzip compression, false for uncompressed.
      */
-    public void setGzip(boolean gzip)
-    {
+    public void setGzip(boolean gzip) {
         this.gzip = gzip;
     }
 
@@ -195,8 +186,7 @@ public class DocumentArchiver
      *
      * @return true if the streams will be buffered.
      */
-    public boolean isBuffered()
-    {
+    public boolean isBuffered() {
         return buffered;
     }
 
@@ -207,8 +197,7 @@ public class DocumentArchiver
      *
      * @param buffered If true, streams will be buffered.
      */
-    public void setBuffered(boolean buffered)
-    {
+    public void setBuffered(boolean buffered) {
         this.buffered = buffered;
     }
 
@@ -217,33 +206,24 @@ public class DocumentArchiver
      *
      * @throws IOException if something goes wrong.
      */
-    public void init() throws IOException
-    {
+    public void init() throws IOException {
         if (initialized)
             return;
         log.info("init() : ENTER");
-        try
-        {
+        try {
             if (storeageDirectory == null)
                 throw new IllegalStateException("Storeage directory has not been set!");
-            if (storeageDirectory.exists())
-            {
+            if (storeageDirectory.exists()) {
                 if (!storeageDirectory.isDirectory())
                     throw new IOException("'" + storeageDirectory + "' is not a directory.");
-            }
-            else
-            {
+            } else {
                 storeageDirectory.mkdirs();
             }
             initialized = true;
-        }
-        catch (IOException e)
-        {
-            log.error(e, e);
+        } catch (IOException e) {
+            unexpected(log, e);
             throw e;
-        }
-        finally
-        {
+        } finally {
             log.info("init() : LEAVE");
         }
     }
@@ -258,30 +238,24 @@ public class DocumentArchiver
      * @return The name of the file that was used to store the object.
      * @throws IOException if something goes wrong.
      */
-    public String storeObject(String subDirectory, Object id, Date date, Object object) throws IOException
-    {
-        if (log.isDebugEnabled())
-            log.debug("storeObject() : ENTER");
-        try
-        {
+    public String storeObject(String subDirectory, Object id, Date date, Object object) throws IOException {
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE, "storeObject() : ENTER");
+        try {
             Sink docOut = getSink(subDirectory, id, date);
             ObjectOutputStream oos = new ObjectOutputStream(docOut.getStream());
             oos.writeObject(object);
             oos.flush();
             oos.close();
-            if (log.isDebugEnabled())
-                log.debug("storeObject() : Object sucessfully stored.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE, "storeObject() : Object sucessfully stored.");
             return docOut.getFilename();    // Return the relative file name.
-        }
-        catch (IOException e)
-        {
-            log.error(e, e);
+        } catch (IOException e) {
+            unexpected(log, e);
             throw e;
-        }
-        finally
-        {
-            if (log.isDebugEnabled())
-                log.debug("storeObject() : LEAVE");
+        } finally {
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE, "storeObject() : LEAVE");
         }
     }
 
@@ -294,8 +268,7 @@ public class DocumentArchiver
      * @return The object.
      * @throws IOException if something goes wrong.
      */
-    public Object retrieveObject(String subDirectory, Object id, Date date) throws IOException
-    {
+    public Object retrieveObject(String subDirectory, Object id, Date date) throws IOException {
         return retrieveObject(subDirectory, generateFileName(id, date));
     }
 
@@ -307,39 +280,30 @@ public class DocumentArchiver
      * @return The object.
      * @throws IOException if something goes wrong.
      */
-    public Object retrieveObject(String subDirectory, String fileName) throws IOException
-    {
-        if (log.isDebugEnabled())
-            log.debug("retrieveObject() : ENTER");
-        try
-        {
+    public Object retrieveObject(String subDirectory, String fileName) throws IOException {
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE, "retrieveObject() : ENTER");
+        try {
             Source source = getSource(subDirectory, fileName);
-            if (log.isDebugEnabled())
-                log.debug("retrieveObject() : " + source.getFilename());
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE, "retrieveObject() : " + source.getFilename());
             ObjectInputStream ois = new ObjectInputStream(source.getStream());
             Object o = ois.readObject();
-            if (log.isDebugEnabled())
-                log.debug("retrieveObject() : Object sucessfully retrieved.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE, "retrieveObject() : Object sucessfully retrieved.");
             return o;
         } // try
-        catch (FileNotFoundException e)
-        {
+        catch (FileNotFoundException e) {
             throw e;
-        }
-        catch (IOException e)
-        {
-            log.error(e, e);
+        } catch (IOException e) {
+            unexpected(log, e);
             throw e;
-        }
-        catch (ClassNotFoundException e)
-        {
-            log.error(e, e);
+        } catch (ClassNotFoundException e) {
+            unexpected(log, e);
             throw new IOException("Class not found! " + e.getMessage());
-        }
-        finally
-        {
-            if (log.isDebugEnabled())
-                log.debug("retrieveObject() : LEAVE");
+        } finally {
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE, "retrieveObject() : LEAVE");
         }
     }
 
@@ -353,8 +317,7 @@ public class DocumentArchiver
      * @throws IOException if something goes wrong.
      */
     public Sink getSink(String subDirectory, Object id, Date date)
-            throws IOException
-    {
+            throws IOException {
         if (storeageDirectory == null)
             throw new IOException("Storeage directory cannot be null!  (Did you forget to invoke setStoreageDirectory()?)");
         String fileName = generateFileName(id, date);
@@ -363,25 +326,20 @@ public class DocumentArchiver
         File path = new File(dir, fileName);
         String pathname = path.getAbsolutePath();
         File f = new File(pathname);
-        if (f.exists())
-        {
-            if (!overwrite)
-            {
+        if (f.exists()) {
+            if (!overwrite) {
                 // This might need to be optimized a bit.  We could enumerate the directory
                 // to find a good filename for the backup.
                 int i = 1;
                 File backup = new File(pathname + "." + i);
-                while (backup.exists())
-                {
+                while (backup.exists()) {
                     i++;
                     backup = new File(pathname + "." + i);
                 }
                 log.info("getSink() : Renaming existing file to " + backup.getAbsolutePath());
                 f.renameTo(backup);
                 f = new File(pathname);
-            }
-            else
-            {
+            } else {
                 log.info("getSink() : deleting " + f.getAbsolutePath());
                 f.delete();
                 f = new File(pathname);
@@ -400,8 +358,7 @@ public class DocumentArchiver
      * @param date The date, used to create the directory path.
      * @return The filename.
      */
-    public String generateFileName(Object id, Date date)
-    {
+    public String generateFileName(Object id, Date date) {
         // Generate the file name, use URL DEFAULT_CHARACTER_ENCODING to ensure that 'id' does not contain
         // characters that would be meaningful to the filesystem.
         String fileName = idEncoder.encode(id) + this.extension;
@@ -427,8 +384,7 @@ public class DocumentArchiver
      * @return The object.
      * @throws IOException if something goes wrong.
      */
-    public Source getSource(String subDirectory, Object id, Date date) throws IOException
-    {
+    public Source getSource(String subDirectory, Object id, Date date) throws IOException {
         return getSource(subDirectory, generateFileName(id, date));
     }
 
@@ -440,8 +396,7 @@ public class DocumentArchiver
      * @return The source : an input stream and a file name.
      * @throws IOException if something goes wrong.
      */
-    public Source getSource(String subDirectory, String fileName) throws IOException
-    {
+    public Source getSource(String subDirectory, String fileName) throws IOException {
         if (storeageDirectory == null)
             throw new IOException("Storeage directory cannot be null!  (Did you forget to invoke setStoreageDirectory()?)");
 
@@ -451,22 +406,19 @@ public class DocumentArchiver
 
         // If the file doesn't exist in the primary storeage directory, then
         // check the other directories.
-        if (!f.exists())
-        {
-            if (log.isDebugEnabled())
-                log.debug("getSource() : " + f.getAbsolutePath() + " doesn't exist.");
+        if (!f.exists()) {
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE, "getSource() : " + f.getAbsolutePath() + " doesn't exist.");
 
             if (retrieveDirectories == null || getRetrieveDirectoryCount() == 0)
                 throw new FileNotFoundException("Unable to find " + fileName + " in the storeage directory.");
 
-            for (Iterator iterator = retrieveDirectories.iterator(); iterator.hasNext();)
-            {
+            for (Iterator iterator = retrieveDirectories.iterator(); iterator.hasNext(); ) {
                 String baseString = (String) iterator.next();
                 File base = new File(baseString);
-                if (!base.exists())
-                {
-                    if (log.isDebugEnabled())
-                        log.debug("getSource() : directory " + base + " does not exist, skipping.");
+                if (!base.exists()) {
+                    if (log.isLoggable(Level.FINE))
+                        log.log(Level.FINE, "getSource() : directory " + base + " does not exist, skipping.");
                     continue;
                 }
                 dir = getSubDirectory(base, subDirectory);
@@ -488,8 +440,7 @@ public class DocumentArchiver
      * @return a source for the file
      * @throws IOException if something goes wrong
      */
-    private Source getSource(File f) throws IOException
-    {
+    private Source getSource(File f) throws IOException {
         return new Source(f.getAbsolutePath(), getInputStream(f));
     }
 
@@ -501,8 +452,7 @@ public class DocumentArchiver
      * @return a sub directory of the base directory, if a sub-directory
      *         was specified.
      */
-    private File getSubDirectory(File base, String subDirectory)
-    {
+    private File getSubDirectory(File base, String subDirectory) {
         return (StringUtil.isEmpty(subDirectory)) ? base : new File(base, subDirectory);
     }
 
@@ -514,8 +464,7 @@ public class DocumentArchiver
      * @throws IOException if something goes wrong
      */
     private OutputStream getOutputStream(File f)
-            throws IOException
-    {
+            throws IOException {
         f.getParentFile().mkdirs();
         OutputStream os = new FileOutputStream(f);
         if (buffered)
@@ -533,8 +482,7 @@ public class DocumentArchiver
      * @throws IOException if something goes wrong.
      */
     private InputStream getInputStream(File f)
-            throws IOException
-    {
+            throws IOException {
         InputStream is = new FileInputStream(f);
         if (buffered)
             is = new BufferedInputStream(is);

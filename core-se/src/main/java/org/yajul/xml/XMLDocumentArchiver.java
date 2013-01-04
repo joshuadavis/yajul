@@ -1,6 +1,5 @@
 package org.yajul.xml;
 
-import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.yajul.io.DocumentArchiver;
@@ -12,6 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.yajul.juli.LogHelper.unexpected;
 
 /**
  * Adds DOM document storeage methods to DocumentArchiver.
@@ -23,10 +26,7 @@ import java.util.Date;
  */
 public class XMLDocumentArchiver extends DocumentArchiver
 {
-    /**
-     * The logger for this class.
-     */
-    private static Logger log = Logger.getLogger(XMLDocumentArchiver.class.getName());
+    private static final Logger log = Logger.getLogger(XMLDocumentArchiver.class.getName());
 
     /** The default file extension for archived XML documents. **/
     public static final String DEFAULT_EXTENSION = ".xml.gz";
@@ -48,37 +48,37 @@ public class XMLDocumentArchiver extends DocumentArchiver
      */
     public String storeDocument(String subDirectory, Object id, Date date, Document document) throws IOException
     {
-        if (log.isDebugEnabled())
-            log.debug("storeDocument() : ENTER");
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE,"storeDocument() : ENTER");
         try
         {
             Sink docOut = getSink(subDirectory, id, date);
             OutputStream stream = docOut.getStream();
             DOMPrinter.printNode(document,stream);
             stream.close();
-            if (log.isDebugEnabled())
-                log.debug("storeDocument() : Document sucessfully stored.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"storeDocument() : Document sucessfully stored.");
             return docOut.getFilename();    // Return the relative file name.
         }
         catch (IOException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw e;
         }
         catch (TransformerConfigurationException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw new IOException(e.getMessage());
         }
         catch (TransformerException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw new IOException(e.getMessage());
         }
         finally
         {
-            if (log.isDebugEnabled())
-                log.debug("storeDocument() : LEAVE");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"storeDocument() : LEAVE");
         }
     }
 
@@ -104,15 +104,15 @@ public class XMLDocumentArchiver extends DocumentArchiver
      */
     public Document retrieveDocument(String subDirectory, String fileName) throws IOException
     {
-        if (log.isDebugEnabled())
-            log.debug("retrieveDocument() : ENTER");
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE,"retrieveDocument() : ENTER");
         try
         {
             Source source = getSource(subDirectory, fileName);
             log.info("retrieveDocument() : " + source.getFilename());
             Document document = DOMUtil.parse(source.getStream());
-            if (log.isDebugEnabled())
-                log.debug("retrieveDocument() : Document sucessfully retrieved.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"retrieveDocument() : Document sucessfully retrieved.");
             return document;
         } // try
         catch (FileNotFoundException e)
@@ -121,23 +121,23 @@ public class XMLDocumentArchiver extends DocumentArchiver
         }
         catch (IOException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw e;
         }
         catch (ParserConfigurationException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw new IOException(e.getMessage());
         }
         catch (SAXException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw new IOException(e.getMessage());
         }
         finally
         {
-            if (log.isDebugEnabled())
-                log.debug("retrieveDocument() : LEAVE");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"retrieveDocument() : LEAVE");
         }
     }
 

@@ -1,7 +1,6 @@
 // $Id$
 package org.yajul.io;
 
-import org.apache.log4j.Logger;
 import org.yajul.util.StringUtil;
 
 import java.io.BufferedInputStream;
@@ -20,8 +19,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import static org.yajul.juli.LogHelper.unexpected;
 
 /**
  * Javabean that can store objects in the filesystem.  The objects are stored in a hierarchy of directories
@@ -58,7 +61,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class DocumentArchiver
 {
-    private static Logger log = Logger.getLogger(DocumentArchiver.class.getName());
+    private static final Logger log = Logger.getLogger(DocumentArchiver.class.getName());
 
     public static final String DEFAULT_EXTENSION = ".dat.gz";
 
@@ -213,7 +216,7 @@ public class DocumentArchiver
         }
         catch (IOException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw e;
         }
         finally
@@ -234,8 +237,8 @@ public class DocumentArchiver
      */
     public String storeObject(String subDirectory, Object id, Date date, Object object) throws IOException
     {
-        if (log.isDebugEnabled())
-            log.debug("storeObject() : ENTER");
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE,"storeObject() : ENTER");
         try
         {
             Sink docOut = getSink(subDirectory, id, date);
@@ -243,19 +246,19 @@ public class DocumentArchiver
             oos.writeObject(object);
             oos.flush();
             oos.close();
-            if (log.isDebugEnabled())
-                log.debug("storeObject() : Object sucessfully stored.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"storeObject() : Object sucessfully stored.");
             return docOut.getFilename();    // Return the relative file name.
         }
         catch (IOException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw e;
         }
         finally
         {
-            if (log.isDebugEnabled())
-                log.debug("storeObject() : LEAVE");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"storeObject() : LEAVE");
         }
     }
 
@@ -282,17 +285,17 @@ public class DocumentArchiver
      */
     public Object retrieveObject(String subDirectory, String fileName) throws IOException
     {
-        if (log.isDebugEnabled())
-            log.debug("retrieveObject() : ENTER");
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE,"retrieveObject() : ENTER");
         try
         {
             Source source = getSource(subDirectory, fileName);
-            if (log.isDebugEnabled())
-                log.debug("retrieveObject() : " + source.getFilename());
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"retrieveObject() : " + source.getFilename());
             ObjectInputStream ois = new ObjectInputStream(source.getStream());
             Object o = ois.readObject();
-            if (log.isDebugEnabled())
-                log.debug("retrieveObject() : Object sucessfully retrieved.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"retrieveObject() : Object sucessfully retrieved.");
             return o;
         } // try
         catch (FileNotFoundException e)
@@ -301,18 +304,18 @@ public class DocumentArchiver
         }
         catch (IOException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw e;
         }
         catch (ClassNotFoundException e)
         {
-            log.error(e, e);
+            unexpected(log, e);
             throw new IOException("Class not found! " + e.getMessage());
         }
         finally
         {
-            if (log.isDebugEnabled())
-                log.debug("retrieveObject() : LEAVE");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"retrieveObject() : LEAVE");
         }
     }
 
@@ -427,8 +430,8 @@ public class DocumentArchiver
         // check the other directories.
         if (!f.exists())
         {
-            if (log.isDebugEnabled())
-                log.debug("getSource() : " + f.getAbsolutePath() + " doesn't exist.");
+            if (log.isLoggable(Level.FINE))
+                log.log(Level.FINE,"getSource() : " + f.getAbsolutePath() + " doesn't exist.");
 
             if (retrieveDirectories == null || getRetrieveDirectoryCount() == 0)
                 throw new FileNotFoundException("Unable to find " + fileName + " in the storeage directory.");
@@ -439,8 +442,8 @@ public class DocumentArchiver
                 File base = new File(baseString);
                 if (!base.exists())
                 {
-                    if (log.isDebugEnabled())
-                        log.debug("getSource() : directory " + base + " does not exist, skipping.");
+                    if (log.isLoggable(Level.FINE))
+                        log.log(Level.FINE,"getSource() : directory " + base + " does not exist, skipping.");
                     continue;
                 }
                 dir = getSubDirectory(base, subDirectory);
