@@ -4,8 +4,8 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.yajul.jndi.UnitTestJndiConstants;
-import org.yajul.io.ByteArrayWrapper;
-import org.yajul.io.SerializableWrapper;
+import org.yajul.serialization.ByteArrayWrapper;
+import org.yajul.serialization.SerializableWrapper;
 
 import static org.junit.Assert.*;
 

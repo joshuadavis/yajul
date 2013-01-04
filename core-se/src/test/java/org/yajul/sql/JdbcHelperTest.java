@@ -1,6 +1,7 @@
 package org.yajul.sql;
 
 import org.junit.*;
+import org.yajul.liquibase.DbTestHelper;
 
 import java.sql.Connection;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class JdbcHelperTest {
     public void setUp() throws Exception {
         String dbname = "test";
         con = JdbcHelper.getConnection(driverProtocol + dbname + driverOptions,username,password,driverClassName);
-        DbTestHelper.dbSetUp(con,"org/yajul/sql/JdbcHelperTest.xml",null);
+        DbTestHelper.dbSetUp(con, "org/yajul/sql/JdbcHelperTest.xml", null);
     }
 
     @After

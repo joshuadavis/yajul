@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static org.yajul.juli.LogHelper.unexpected;
-import static org.yajul.util.CollectionUtil.newArrayList;
-import static org.yajul.util.CollectionUtil.newHashMap;
+import static org.yajul.collections.CollectionUtil.newArrayList;
+import static org.yajul.collections.CollectionUtil.newHashMap;
 
 /**
  * Utility methods for JDBC.

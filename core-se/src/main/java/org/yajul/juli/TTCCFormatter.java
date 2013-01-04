@@ -1,8 +1,5 @@
 package org.yajul.juli;
 
-import org.yajul.util.DateFormatConstants;
-import org.yajul.util.StringUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
@@ -20,7 +17,10 @@ import java.util.logging.LogRecord;
  */
 public class TTCCFormatter extends Formatter {
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(DateFormatConstants.ISO8601_DATETIME_FORMAT);
+    public static final String LF = System.getProperty("line.separator");
+    public static final String ISO_8601_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.S";
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(ISO_8601_DATETIME_FORMAT);
 
     @Override
     public String format(LogRecord record) {
@@ -29,7 +29,7 @@ public class TTCCFormatter extends Formatter {
         String category = record.getLoggerName();
         String contextMessage = record.getMessage();
         String level = record.getLevel().getName();
-        return timestamp + " [" + thread + "] " + level + " " + category + " - " + contextMessage + StringUtil.LF;
+        return timestamp + " [" + thread + "] " + level + " " + category + " - " + contextMessage + LF;
     }
 
     private String formatTimestamp(long millis) {

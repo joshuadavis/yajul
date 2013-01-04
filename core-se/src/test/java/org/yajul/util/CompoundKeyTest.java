@@ -1,6 +1,7 @@
 package org.yajul.util;
 
 import org.junit.Test;
+import org.yajul.serialization.SerializationHelper;
 
 import static org.junit.Assert.*;
 

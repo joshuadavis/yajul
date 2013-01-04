@@ -1,6 +1,7 @@
 package org.yajul.depcheck;
 
 import org.junit.Test;
+import org.yajul.dependency.DependencyAnalyzer;
 
 /**
  * TODO: Add class level comments.
@@ -14,6 +15,6 @@ public class CoreSEDependencyTest {
     public void noCircularDependencies() throws Exception {
         DependencyAnalyzer dependencyAnalyzer = new DependencyAnalyzer("core-se");
         dependencyAnalyzer.init();
-//        dependencyAnalyzer.assertNoCircularDependencies();
+        dependencyAnalyzer.assertNoCircularDependencies();
     }
 }

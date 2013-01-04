@@ -1,6 +1,6 @@
 package org.yajul.jmx;
 
-import org.yajul.util.ComparatorChain;
+import org.yajul.comparators.ComparatorChain;
 
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;

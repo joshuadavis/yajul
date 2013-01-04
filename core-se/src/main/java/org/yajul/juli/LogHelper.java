@@ -1,7 +1,5 @@
 package org.yajul.juli;
 
-import org.yajul.util.ResourceUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Handler;
@@ -57,7 +55,9 @@ public class LogHelper {
      * @throws IOException if something goes wrong
      */
     public static void configureFromResource(String resourceName) throws IOException {
-        InputStream stream = ResourceUtil.getResourceAsStream(resourceName);
+        // Note: We don't use ResourceUtil here because that would cause a circular dependency.
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        InputStream stream = cl.getResourceAsStream(resourceName);
         LogManager.getLogManager().readConfiguration(stream);
     }
 }

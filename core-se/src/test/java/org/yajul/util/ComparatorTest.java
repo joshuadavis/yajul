@@ -1,6 +1,10 @@
 package org.yajul.util;
 
 import org.junit.Test;
+import org.yajul.comparators.ComparatorChain;
+import org.yajul.comparators.ComparatorUtil;
+import org.yajul.comparators.NullComparator;
+import org.yajul.comparators.ReverseComparator;
 
 import java.util.Arrays;
 import java.util.Comparator;

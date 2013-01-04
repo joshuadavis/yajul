@@ -1,5 +1,7 @@
 package org.yajul.util;
 
+import org.yajul.collections.EntityWithId;
+import org.yajul.collections.IdMap;
 import org.yajul.io.StreamCopier;
 
 import java.io.IOException;

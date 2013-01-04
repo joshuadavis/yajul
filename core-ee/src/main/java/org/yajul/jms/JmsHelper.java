@@ -2,7 +2,7 @@ package org.yajul.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yajul.io.SerializationUtil;
+import org.yajul.io.SerializationStats;
 
 import javax.jms.*;
 import java.io.IOException;
@@ -130,7 +130,7 @@ public class JmsHelper {
             try {
                 Serializable serializable = objectMessage.getObject();
                 if (autoUnwrap)
-                    return SerializationUtil.autoUnwrap(serializable);
+                    return SerializationStats.autoUnwrap(serializable);
                 else
                     return serializable;
             }

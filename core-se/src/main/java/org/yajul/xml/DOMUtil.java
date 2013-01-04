@@ -31,7 +31,7 @@ import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import org.yajul.util.CollectionUtil;
+import org.yajul.collections.CollectionUtil;
 import org.yajul.util.StringUtil;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -48,7 +48,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import static org.yajul.util.CollectionUtil.newArrayList;
+import static org.yajul.collections.CollectionUtil.newArrayList;
 
 /**
  * Provides commonly used DOM operations in convenient methods.

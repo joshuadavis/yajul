@@ -2,6 +2,8 @@
   <dictionary name="josh">
     <words>
       <w>accessors</w>
+      <w>externalizable</w>
+      <w>nullable</w>
     </words>
   </dictionary>
 </component>

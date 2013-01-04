@@ -4,7 +4,7 @@ import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yajul.util.AbstractScanner;
+import org.yajul.scanner.AbstractScanner;
 import org.yajul.util.ReflectionUtil;
 
 import java.io.DataInputStream;

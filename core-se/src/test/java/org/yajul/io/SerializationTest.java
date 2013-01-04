@@ -1,6 +1,8 @@
 package org.yajul.io;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+import org.yajul.serialization.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Deflater;
 
+import static org.junit.Assert.*;
+
 
 /**
  * Tests object serialization utilities.
@@ -18,48 +22,50 @@ import java.util.zip.Deflater;
  * Date: Aug 21, 2009
  * Time: 4:31:41 PM
  */
-public class SerializationTest extends TestCase {
+public class SerializationTest  {
 
     private final static Logger log = Logger.getLogger(SerializationTest.class.getName());
 
+    @Test
     public void testObjectSerialization() throws Exception {
         Foo f = new Foo("one", 1);
-        byte[] bytes = SerializationUtil.toByteArray(f);
-        TestCase.assertNotNull(bytes);
-        Foo f2 = (Foo) SerializationUtil.fromByteArray(bytes);
-        TestCase.assertNotNull(f2);
-        TestCase.assertEquals(f, f2);
-        TestCase.assertNotSame(f, f2);
-        int size = SerializationUtil.sizeOf(f);
+        byte[] bytes = SerializationHelper.toByteArray(f);
+        assertNotNull(bytes);
+        Foo f2 = (Foo) SerializationHelper.fromByteArray(bytes);
+        assertNotNull(f2);
+        assertEquals(f, f2);
+        assertNotSame(f, f2);
+        int size = SerializationStats.sizeOf(f);
         log.log(Level.FINE,"size = " + size);
-        TestCase.assertEquals(size, bytes.length);
+        assertEquals(size, bytes.length);
         ByteArrayWrapper<Foo> wrapper = new ByteArrayWrapper<Foo>(f);
-        TestCase.assertTrue(wrapper.isUnwrapped());
-        ByteArrayWrapper<Foo> clone = SerializationUtil.clone(wrapper);
+        assertTrue(wrapper.isUnwrapped());
+        ByteArrayWrapper<Foo> clone = SerializationHelper.clone(wrapper);
         byte[] bytes1 = wrapper.wrap();
-        TestCase.assertTrue(wrapper.isWrapped());
-        TestCase.assertTrue(Arrays.equals(bytes, bytes1));
-        TestCase.assertTrue(Arrays.equals(bytes, clone.wrap()));
-        f2 = (Foo) SerializationUtil.autoUnwrap(clone);
-        TestCase.assertNotSame(clone, f2);
-        TestCase.assertEquals(f, f2);
-        TestCase.assertNotSame(f, f2);
+        assertTrue(wrapper.isWrapped());
+        assertTrue(Arrays.equals(bytes, bytes1));
+        assertTrue(Arrays.equals(bytes, clone.wrap()));
+        f2 = (Foo) SerializationStats.autoUnwrap(clone);
+        assertNotSame(clone, f2);
+        assertEquals(f, f2);
+        assertNotSame(f, f2);
     }
 
+    @Test
     public void testCountingOutputStream() throws Exception {
         Thing t = createThing();
         NullOutputStream nos = new NullOutputStream();
         CountingObjectOutputStream oos = new CountingObjectOutputStream(nos);
         oos.writeObject(t);
         oos.flush();
-        TestCase.assertEquals(10, oos.getCounter(Foo.class.getName()).getCount());
-        TestCase.assertEquals(1, oos.getCounter(Bar.class.getName()).getCount());
-        TestCase.assertEquals(1, oos.getCounter(Thing.class.getName()).getCount());
+        assertEquals(10, oos.getCounter(Foo.class.getName()).getCount());
+        assertEquals(1, oos.getCounter(Bar.class.getName()).getCount());
+        assertEquals(1, oos.getCounter(Thing.class.getName()).getCount());
 
-        SerializationUtil.Stats stats = SerializationUtil.getStats(t);
-        TestCase.assertEquals(10, stats.getCounter(Foo.class.getName()).getCount());
-        TestCase.assertEquals(1, stats.getCounter(Bar.class.getName()).getCount());
-        TestCase.assertEquals(1, stats.getCounter(Thing.class.getName()).getCount());
+        SerializationStats.Stats stats = SerializationStats.getStats(t);
+        assertEquals(10, stats.getCounter(Foo.class.getName()).getCount());
+        assertEquals(1, stats.getCounter(Bar.class.getName()).getCount());
+        assertEquals(1, stats.getCounter(Thing.class.getName()).getCount());
     }
 
     private Thing createThing() {
@@ -76,6 +82,7 @@ public class SerializationTest extends TestCase {
         }
     }
 
+    @Test
     public void testReplacingAndResolving() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectReplacingOutputStream oros = new ObjectReplacingOutputStream(baos, new FooStubifier());
@@ -90,55 +97,61 @@ public class SerializationTest extends TestCase {
 
         ThingEx tex = new ThingEx();
         addFoos(tex.getFoos());
-        ThingEx tex2 = SerializationUtil.clone(tex);
+        ThingEx tex2 = SerializationHelper.clone(tex);
         checkFooList(tex2.getFoos(), tex.getFoos());
     }
 
     private void checkFooList(List<Foo> listA, List<Foo> listB) {
-        TestCase.assertEquals(listB.size(), listA.size());
+        assertEquals(listB.size(), listA.size());
         for (int i = 0; i < listA.size(); i++) {
             Foo f1 = listA.get(i);
             Foo f2 = listB.get(i);
-            TestCase.assertEquals(f1.getNumber(), f2.getNumber());
-            TestCase.assertFalse(f1.getName().equals(f2.getName()));
-            TestCase.assertTrue(f1.getName().startsWith("fromstub-"));
+            assertEquals(f1.getNumber(), f2.getNumber());
+            Assert.assertFalse(f1.getName().equals(f2.getName()));
+            assertTrue(f1.getName().startsWith("fromstub-"));
         }
     }
 
+    @Test
     public void testExternalizable() throws Exception {
         Baz b = new Baz();
         BazEx be = new BazEx();
 
-        log.info("b = " + SerializationUtil.sizeOf(b));
-        log.info("be = " + SerializationUtil.sizeOf(be));
+        assertEquals(b,be);
 
-        BazEx be2 = SerializationUtil.clone(be);
-        TestCase.assertEquals(be, be2);
+        log.info("b = " + SerializationStats.sizeOf(b));
+        log.info("be = " + SerializationStats.sizeOf(be));
+
+        BazEx be2 = SerializationHelper.clone(be);
+        assertEquals(be, be2);
     }
 
 
+    @Test
     public void testCompress() throws Exception {
         Baz b = new Baz();
-        byte[] bu = SerializationUtil.toByteArray(b);
-        byte[] bc = SerializationUtil.toCompressedByteArray(b,512,Deflater.BEST_SPEED,512);
+        byte[] bu = SerializationHelper.toByteArray(b);
+        byte[] bc = SerializationHelper.toCompressedByteArray(b, 512, Deflater.BEST_SPEED, 512);
         log.info(String.format("b (comp) = %d bytes %d/%d %.2f%%",bc.length,
                 bc.length,bu.length,
                 ((double)bc.length / (double)bu.length) * 100.0));
-        Baz clone = (Baz) SerializationUtil.fromCompressedByteArray(bc,512);
-        TestCase.assertEquals(b, clone);
+        Baz clone = (Baz) SerializationHelper.fromCompressedByteArray(bc, 512);
+        assertEquals(b, clone);
 
         long start = System.currentTimeMillis();
         int iterations = 2000;
         for (int i = 0; i < iterations; i++) {
-            byte[] bytes = SerializationUtil.toCompressedByteArray(b,512,Deflater.BEST_SPEED,512);
-            Baz another = (Baz) SerializationUtil.fromCompressedByteArray(bytes,512);
+            byte[] bytes = SerializationHelper.toCompressedByteArray(b, 512, Deflater.BEST_SPEED, 512);
+            Baz another = (Baz) SerializationHelper.fromCompressedByteArray(bytes, 512);
+            assertEquals(another, b);
         }
         long end = System.currentTimeMillis();
         log.info("with compression, elapsed = " + (end - start));
         start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            byte[] bytes = SerializationUtil.toByteArray(b);
-            Baz another = (Baz) SerializationUtil.fromByteArray(bytes);
+            byte[] bytes = SerializationHelper.toByteArray(b);
+            Baz another = (Baz) SerializationHelper.fromByteArray(bytes);
+            assertEquals(another, b);
         }
         end = System.currentTimeMillis();
         log.info("no compression, elapsed = " + (end - start));        
@@ -159,6 +172,11 @@ public class SerializationTest extends TestCase {
         protected MyEnum myEnum = MyEnum.VALUE1;
         protected FooEx nullEx;
         protected FooEx notNullEx = new FooEx("test",456);
+        protected List<FooEx> list = Arrays.asList(new FooEx[] {
+            new FooEx("one",1),
+            new FooEx("two",2),
+            new FooEx("three",3),
+        });
 
         public Baz() {
         }
@@ -170,10 +188,11 @@ public class SerializationTest extends TestCase {
 
             Baz baz = (Baz) o;
 
+            if (list != null ? !list.equals(baz.list) : baz.list != null) return false;
             if (myEnum != baz.myEnum) return false;
-            if (notNullEx != null ? !notNullEx.equals(baz.notNullEx) : baz.notNullEx != null) return false;
-            if (notNullInt != null ? !notNullInt.equals(baz.notNullInt) : baz.notNullInt != null) return false;
-            if (notNullLong != null ? !notNullLong.equals(baz.notNullLong) : baz.notNullLong != null) return false;
+            if (!notNullEx.equals(baz.notNullEx)) return false;
+            if (!notNullInt.equals(baz.notNullInt)) return false;
+            if (!notNullLong.equals(baz.notNullLong)) return false;
             if (nullEnum != baz.nullEnum) return false;
             if (nullEx != null ? !nullEx.equals(baz.nullEx) : baz.nullEx != null) return false;
             if (nullInt != null ? !nullInt.equals(baz.nullInt) : baz.nullInt != null) return false;
@@ -185,13 +204,14 @@ public class SerializationTest extends TestCase {
         @Override
         public int hashCode() {
             int result = nullLong != null ? nullLong.hashCode() : 0;
-            result = 31 * result + (notNullLong != null ? notNullLong.hashCode() : 0);
+            result = 31 * result + notNullLong.hashCode();
             result = 31 * result + (nullInt != null ? nullInt.hashCode() : 0);
-            result = 31 * result + (notNullInt != null ? notNullInt.hashCode() : 0);
+            result = 31 * result + notNullInt.hashCode();
             result = 31 * result + (nullEnum != null ? nullEnum.hashCode() : 0);
             result = 31 * result + (myEnum != null ? myEnum.hashCode() : 0);
             result = 31 * result + (nullEx != null ? nullEx.hashCode() : 0);
-            result = 31 * result + (notNullEx != null ? notNullEx.hashCode() : 0);
+            result = 31 * result + notNullEx.hashCode();
+            result = 31 * result + (list != null ? list.hashCode() : 0);
             return result;
         }
 
@@ -206,8 +226,10 @@ public class SerializationTest extends TestCase {
                     ", myEnum=" + myEnum +
                     ", nullEx=" + nullEx +
                     ", notNullEx=" + notNullEx +
+                    ", list=" + list +
                     '}';
         }
+
     }
 
     public static class BazEx extends Baz implements Externalizable {
@@ -224,6 +246,9 @@ public class SerializationTest extends TestCase {
 
             ExternalizableHelper.writeNullable(out,nullEx);
             ExternalizableHelper.writeNullable(out,notNullEx);
+
+            ExternalizableHelper.writeList(out,list);
+
         }
 
         public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
@@ -238,6 +263,8 @@ public class SerializationTest extends TestCase {
 
             nullEx = ExternalizableHelper.readNullable(in,FooEx.class);
             notNullEx = ExternalizableHelper.readNullable(in,FooEx.class);
+
+            list = ExternalizableHelper.readArrayList(in,FooEx.class);
         }
     }
 

@@ -44,6 +44,7 @@
         <module>core-se</module>
         <module>arq-tests</module>
         <module>core-ee</module>
+        <module>test-helpers</module>
     </modules>
 
 

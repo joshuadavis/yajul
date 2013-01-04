@@ -1,6 +1,7 @@
 package org.yajul.util;
 
 import junit.framework.TestCase;
+import org.yajul.scanner.BasicScanner;
 
 import java.util.Set;
 import java.util.HashSet;

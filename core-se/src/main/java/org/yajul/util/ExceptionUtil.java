@@ -1,5 +1,7 @@
 package org.yajul.util;
 
+import org.yajul.collections.CollectionUtil;
+
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.util.List;

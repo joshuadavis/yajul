@@ -1,5 +1,7 @@
 package org.yajul.util;
 
+import org.yajul.collections.CollectionUtil;
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;

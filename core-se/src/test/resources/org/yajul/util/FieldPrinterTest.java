@@ -4,7 +4,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.yajul.util.FieldPrinter;
+import org.yajul.reflection.FieldPrinter;
 
 /**
  * Test the field printer class.

@@ -21,6 +21,8 @@
       <directory url="file://$PROJECT_DIR$/arq-tests/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/core-ee/target/generated-sources/annotations" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/core-ee/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/test-helpers/target/generated-sources/annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/test-helpers/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
@@ -53,6 +55,7 @@
         <module name="core-se" />
         <module name="groovy-dbtools" />
         <module name="micro" />
+        <module name="test-helpers" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -63,6 +66,7 @@
       <module name="groovy-dbtools" target="1.5" />
       <module name="micro" target="1.5" />
       <module name="pojo-parent" target="1.5" />
+      <module name="test-helpers" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="EclipseCompilerSettings">

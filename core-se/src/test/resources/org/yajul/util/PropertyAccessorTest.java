@@ -2,6 +2,8 @@
 package org.yajul.util;
 
 import junit.framework.TestCase;
+import org.yajul.reflection.BeanProperties;
+import org.yajul.reflection.PropertyMap;
 
 import java.util.Map;
 
