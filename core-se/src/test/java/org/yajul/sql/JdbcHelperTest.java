@@ -1,12 +1,10 @@
 package org.yajul.sql;
 
-import junit.framework.TestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.*;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Tests for JdbcHelper
@@ -15,10 +13,11 @@ import java.util.Map;
  * Date: Mar 10, 2010
  * Time: 6:27:46 PM
  */
-public class JdbcHelperTest extends TestCase {
+public class JdbcHelperTest {
+    private static final Logger log = Logger.getLogger(JdbcHelperTest.class.getName());
+
     private Connection con;
 
-    private static final Logger log = LoggerFactory.getLogger(JdbcHelperTest.class);
 
     private static final String username = "sa";
     private static final String password = "";
@@ -26,24 +25,24 @@ public class JdbcHelperTest extends TestCase {
     private static final String driverProtocol = "jdbc:hsqldb:file:data/";
     private static final String driverOptions = "";
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+
+    @Before
+    public void setUp() throws Exception {
         String dbname = "test";
         con = JdbcHelper.getConnection(driverProtocol + dbname + driverOptions,username,password,driverClassName);
         DbTestHelper.dbSetUp(con,"org/yajul/sql/JdbcHelperTest.xml",null);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        JdbcHelper.close(con,null,null);
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
+        JdbcHelper.close(con, null, null);
     }
 
+    @Test
     public void testColumnTypes() throws Exception {
         Map<String,ColumnType> types = JdbcHelper.getColumnTypes(con);
         for (ColumnType type : types.values()) {
-            assertNotNull(type.getJdbcType());
+            Assert.assertNotNull(type.getJdbcType());
         }
     }
 

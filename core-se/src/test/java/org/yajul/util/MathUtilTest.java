@@ -1,8 +1,10 @@
 package org.yajul.util;
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.Random;
+import static org.junit.Assert.*;
 
 /**
  * Tests for MathUtil.
@@ -11,9 +13,10 @@ import java.util.Random;
  * Date: Jun 3, 2010
  * Time: 1:53:21 PM
  */
-public class MathUtilTest extends TestCase {
+public class MathUtilTest {
     private static final double EPSILON = 1e-9;
 
+    @Test
     public void testRounding() {
         assertEquals("rint 1.235", 1.24, MathUtil.rint(1.235, 2), EPSILON);
         assertEquals("rint 1.2349", 1.23, MathUtil.rint(1.2349, 2), EPSILON);
@@ -26,12 +29,14 @@ public class MathUtilTest extends TestCase {
         assertEquals("rint 1.576", 1.58, MathUtil.rint(1.576, 2), EPSILON);
     }
 
+    @Test
     public void testHashCode() {
         int h1 = MathUtil.doubleHashCode(3.14159);
         int h2 = MathUtil.doubleHashCode(3.142);
         assert h1 != h2;
     }
 
+    @Test
     public void testExponentialMovingAverage() {
         ExponentialMovingAverage a = new ExponentialMovingAverage(1.0, 0, 0);
         ExponentialMovingAverage b = new ExponentialMovingAverage(5.0, 0, 0);

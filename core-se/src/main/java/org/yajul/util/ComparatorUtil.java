@@ -19,7 +19,7 @@ public class ComparatorUtil {
 
     public static <T> Comparator<T> comparableComparator() {
         //noinspection unchecked
-        return (Comparator<T>)COMPARABLE_COMPARATOR;
+        return (Comparator<T>) COMPARABLE_COMPARATOR;
     }
 
     public static final Comparator<Comparable> NULL_LOW_COMPARATOR =
@@ -27,7 +27,7 @@ public class ComparatorUtil {
 
     public static <T> Comparator<T> nullLowComparableComparator() {
         //noinspection unchecked
-        return (Comparator<T>)NULL_LOW_COMPARATOR;
+        return (Comparator<T>) NULL_LOW_COMPARATOR;
     }
 
     public static final Comparator<String> STRING_COMPARATOR = comparableComparator();
@@ -46,8 +46,19 @@ public class ComparatorUtil {
         return (i1 < i2 ? -1 : (i1 == i2 ? 0 : 1));
     }
 
-    public static boolean nullSafeEquals(Object a, Object b)
-    {
+    public static boolean nullSafeEquals(Object a, Object b) {
         return (a == null && b == null) ||
-               (a != null && b != null && a.equals(b));
-    }}
+                (a != null && b != null && a.equals(b));
+    }
+
+    public static int nullSafeCompare(Double a, Double b) {
+        if (a == null && b == null)
+            return 0;
+        else if (a == null)
+            return -1;
+        else if (b == null)
+            return 1;
+        return Double.compare(a, b);
+    }
+
+}

@@ -6,10 +6,9 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.ResourceAccessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.util.logging.Logger;
 
 /**
  * Helper methods for database tests.
@@ -19,7 +18,7 @@ import java.sql.Connection;
  * Time: 6:29:40 PM
  */
 public class DbTestHelper {
-    private static final Logger log = LoggerFactory.getLogger(DbTestHelper.class);
+    private static final Logger log = Logger.getLogger(DbTestHelper.class.getName());
 
     public static void dbSetUp(Connection connection,String schemaFile,String contexts) throws Exception {
         DatabaseFactory factory = DatabaseFactory.getInstance();

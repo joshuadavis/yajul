@@ -1,13 +1,12 @@
 package org.yajul.sql;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.yajul.sql.MetaDataColumns.COLUMN_NAME_INDEX;
 import static org.yajul.sql.MetaDataColumns.COLUMN_TABLE_NAME_INDEX;
@@ -22,7 +21,7 @@ import static org.yajul.sql.MetaDataColumns.COLUMN_TABLE_NAME_INDEX;
  * @author jdavis
  */
 public class ColumnMetaData implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(ColumnMetaData.class);
+    private static final Logger log = Logger.getLogger(ColumnMetaData.class.getName());
 
     private String name;
     private String tableName;
@@ -122,8 +121,8 @@ public class ColumnMetaData implements Serializable {
      * @see java.sql.Types
      */
     public static boolean isIntType(int dataType) {
-        if (log.isDebugEnabled())
-            log.debug("isIntType() : dataType = " + dataType);
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE,"isIntType() : dataType = " + dataType);
         switch (dataType) {
             // --- Lossless conversion ---
 
@@ -167,8 +166,8 @@ public class ColumnMetaData implements Serializable {
      * @see java.sql.Types
      */
     public static boolean isStringType(int dataType) {
-        if (log.isDebugEnabled())
-            log.debug("isStringType() : dataType = " + dataType);
+        if (log.isLoggable(Level.FINE))
+            log.log(Level.FINE,"isStringType() : dataType = " + dataType);
         switch (dataType) {
             // --- Lossless conversion ---
 
