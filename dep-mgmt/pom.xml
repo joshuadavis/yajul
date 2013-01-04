@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.yajul</groupId>
     <artifactId>dep-mgmt</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.4-SNAPSHOT</version>
     <name>dep-mgmt</name>
     <packaging>pom</packaging>
     <description>Dependency management definitions for importing into other POMs.</description>
