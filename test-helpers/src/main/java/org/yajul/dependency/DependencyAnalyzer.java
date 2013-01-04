@@ -18,8 +18,7 @@ import java.util.logging.Logger;
  * Date: 5/25/12
  * Time: 11:50 AM
  */
-public class DependencyAnalyzer
-{
+public class DependencyAnalyzer {
     private static final Logger log = Logger.getLogger(DependencyAnalyzer.class.getName());
 
     private final String moduleName;
@@ -27,8 +26,7 @@ public class DependencyAnalyzer
     private JDepend jdepend;
     private Collection<JavaPackage> packages;
 
-    public DependencyAnalyzer(String moduleName)
-    {
+    public DependencyAnalyzer(String moduleName) {
         if (moduleName == null || moduleName.isEmpty())
             throw new IllegalArgumentException("moduleName cannot be null or empty!");
         this.moduleName = moduleName;
@@ -36,8 +34,7 @@ public class DependencyAnalyzer
         addFilter("javax.*");
     }
 
-    public void init() throws Exception
-    {
+    public void init() throws Exception {
         PackageFilter packageFilter = new PackageFilter(filters);
         this.jdepend = new JDepend(packageFilter);
 
@@ -45,12 +42,11 @@ public class DependencyAnalyzer
         List<File> path = new ArrayList<File>();
         final String targetClasses = "/target/classes";
         path.add(new File("./" + moduleName + targetClasses));
-        path.add(new File("./" + targetClasses ));
-        path.add(new File("../" + moduleName + targetClasses ));
+        path.add(new File("./" + targetClasses));
+        path.add(new File("../" + moduleName + targetClasses));
 
         File classDir = null;
-        for (File file : path)
-        {
+        for (File file : path) {
             classDir = file;
             if (file.exists() && file.isDirectory())
                 break;
@@ -63,19 +59,14 @@ public class DependencyAnalyzer
         jdepend.addDirectory(classDir.getAbsolutePath());
     }
 
-    public void assertNoCircularDependencies()
-    {
+    public void assertNoCircularDependencies() {
         Collection<JavaPackage> packages = getPackages();
         int cycles = 0;
-        for (JavaPackage javaPackage : packages)
-        {
-            if (javaPackage.containsCycle())
-            {
-                log.log(Level.SEVERE,"Cyclic dependency detected in: " + javaPackage.getName());
+        for (JavaPackage javaPackage : packages) {
+            if (javaPackage.containsCycle()) {
+                log.log(Level.SEVERE, "Cyclic dependency detected in: " + javaPackage.getName());
                 cycles++;
-            }
-            else
-            {
+            } else {
                 log.info(javaPackage.getName() + " OK");
             }
         }
@@ -84,18 +75,16 @@ public class DependencyAnalyzer
         log.info("No circular dependencies in " + moduleName + ", yay!");
     }
 
-    private Collection<JavaPackage> getPackages()
-    {
+    private Collection<JavaPackage> getPackages() {
         if (jdepend == null)
             throw new IllegalStateException("Dependency analyzer not initialized.  Did you forget to call init()?");
         if (packages == null)
-            packages = (Collection<JavaPackage>) jdepend.analyze();
+            packages = jdepend.analyze();
         return packages;
     }
 
 
-    public void addFilter(String packageFilter)
-    {
+    public void addFilter(String packageFilter) {
         filters.add(packageFilter);
     }
 }

@@ -1,8 +1,10 @@
-package org.yajul.io;
+package org.yajul.serialization;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.yajul.serialization.*;
+import org.yajul.io.CountingObjectOutputStream;
+import org.yajul.io.NullOutputStream;
+import org.yajul.io.SerializationStats;
 
 import java.io.*;
 import java.util.ArrayList;

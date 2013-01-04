@@ -171,4 +171,8 @@ public abstract class AbstractScanner {
     }
 
     protected abstract void handleItem(String name);
+
+    public Set<String> getPaths() {
+        return paths;
+    }
 }

@@ -1,4 +1,4 @@
-package org.yajul.util;
+package org.yajul.comparators;
 
 import org.junit.Test;
 import org.yajul.comparators.ComparatorChain;

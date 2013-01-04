@@ -3,6 +3,7 @@ package org.yajul.util;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.yajul.concurrent.HeartbeatMonitor;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.yajul.util.HeartbeatMonitor.Status.*;
+import static org.yajul.concurrent.HeartbeatMonitor.Status.*;
 
 
 /**

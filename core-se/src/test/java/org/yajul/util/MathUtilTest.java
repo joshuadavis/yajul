@@ -53,7 +53,7 @@ public class MathUtilTest {
             double va = a.next(t, v);
             double vb = b.next(t, v);
             double vc = c.next(t, v);
-            System.out.println("[" + i + "] t=" + t + " v=" + v + " alpha=" + alpha + " : " + va + ", " + vb + ", " + vc);
+            //System.out.println("[" + i + "] t=" + t + " v=" + v + " alpha=" + alpha + " : " + va + ", " + vb + ", " + vc);
         }
     }
 

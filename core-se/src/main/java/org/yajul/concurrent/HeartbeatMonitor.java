@@ -1,4 +1,4 @@
-package org.yajul.util;
+package org.yajul.concurrent;
 
 import org.yajul.collections.CollectionUtil;
 
