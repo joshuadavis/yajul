@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectInput;
 import java.io.Externalizable;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,6 +27,30 @@ public class ExternalizableHelper {
     private final static Logger log = Logger.getLogger(ExternalizableHelper.class.getName());
     private static final int NULL_VALUE = -1;
     private static final int NOT_NULL_VALUE = 1;
+
+    public static void writeNullableString(ObjectOutput out, String value) throws IOException {
+        if (value == null) {
+            out.writeInt(-1);
+        } else {
+            out.writeInt(value.length());
+            out.writeBytes(value);
+        }
+    }
+
+    public static String readNullableString(ObjectInput in) throws IOException {
+        int len = in.readInt();
+        if (len < 0)
+            return null;
+        else {
+            byte[] bytes = new byte[len];
+            if (len > 0) {
+                int r = in.read(bytes);
+                if (r != len)
+                    throw new IOException("Unexpected end of stream!  Expected " + len + " bytes, read " + r);
+            }
+            return new String(bytes);
+        }
+    }
 
     public static void writeNullableLong(ObjectOutput out, Long aLong) throws IOException {
         if (aLong == null)
@@ -73,6 +98,31 @@ public class ExternalizableHelper {
 
     public static <T> T readNullableEnum(ObjectInput in, T[] values) throws IOException {
         int ord = in.readInt();
+        if (ord == NULL_VALUE)
+            return null;
+        else
+            return values[ord];
+    }
+
+    public static void writeNullableEnumByte(ObjectOutput out, Enum<?> value) throws IOException {
+        if (value == null)
+            out.writeByte(NULL_VALUE);
+        else
+            writeEnumByte(out, value);
+    }
+
+    public static void writeEnumByte(ObjectOutput out, Enum<?> value) throws IOException {
+        assert value != null;
+        out.writeByte(value.ordinal());
+    }
+
+
+    public static <T> T readNullableEnumByte(ObjectInput in, T[] values) throws IOException {
+        return readEnumByte(in, values);
+    }
+
+    public static <T> T readEnumByte(ObjectInput in, T[] values) throws IOException {
+        int ord = in.readByte();
         if (ord == NULL_VALUE)
             return null;
         else
@@ -139,29 +189,69 @@ public class ExternalizableHelper {
         return in.readByte() == NULL_VALUE;
     }
 
-    public static void writeList(ObjectOutput out, List<? extends Externalizable> list) throws IOException {
-        if (list == null) {
+    public static <T> T readObject(ObjectInput in, Class<T> clazz) throws IOException, ClassNotFoundException {
+        Object o = in.readObject();
+        return o == null ? null : clazz.cast(o);
+    }
+
+    public static void writeList(ObjectOutput out, Collection<? extends Object> collection) throws IOException {
+        if (collection == null) {
             out.writeInt(NULL_VALUE);
             return;
         } else {
-            out.writeInt(list.size());
-            for (Externalizable obj : list) {
-                writeNullable(out, obj);
+            out.writeInt(collection.size());
+            for (Object obj : collection) {
+                out.writeObject(obj);
             }
         }
     }
 
-    public static <T extends Externalizable> List<T> readArrayList(ObjectInput in, Class<T> clazz) throws IOException, ClassNotFoundException {
+    public static <T> List<T> readArrayList(ObjectInput in, Class<T> clazz) throws IOException, ClassNotFoundException {
         int size = in.readInt();
         if (size == NULL_VALUE)
             return null;
         else {
             List<T> list = CollectionUtil.newArrayList(size);
             for (int i = 0; i < size; i++) {
-                T e = readNullable(in, clazz);
+                T e = readObject(in, clazz);
                 list.add(e);
             }
             return list;
         }
+    }
+
+
+    /**
+     * Returns an int representing the state of each object: 0 for null, 1 for not null.
+     *
+     * @param objects objects that may or may not be null
+     * @return an int contining 'null bits'
+     */
+    public static int getNullBits(Object... objects) {
+        if (objects == null || objects.length == 0)
+            return 0;
+        if (objects.length > 30)
+            throw new IllegalArgumentException("Too many nullable objects.");
+        int bits = 0;
+        int bitflag = 1;
+        for (Object object : objects) {
+            if (object != null)
+                bits |= bitflag;
+            bitflag <<= 1;
+        }
+        return bits;
+    }
+
+
+    /**
+     * Returns true if the object at the given position was NOT NULL, false if it IS NULL.
+     *
+     * @param bits the bit flags, returned from getNullBits()
+     * @param pos  the position (starting with zero)
+     * @return true if the object at the given position was NOT NULL, false if it IS NULL.
+     */
+    public static boolean isNotNullBit(int bits, int pos) {
+        int bitflag = 1 << pos;
+        return (bitflag & bits) != 0;
     }
 }

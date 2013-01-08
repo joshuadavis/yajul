@@ -1,10 +1,16 @@
 package org.yajul.io;
 
+import org.yajul.collections.CollectionUtil;
+import org.yajul.comparators.ComparatorChain;
+import org.yajul.comparators.ComparatorUtil;
 import org.yajul.serialization.SerializableWrapper;
 import org.yajul.serialization.SerializationHelper;
 
 import java.io.*;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,6 +40,7 @@ public class SerializationStats {
     /**
      * Counts the number of objects of each class inside the serializable object, and also
      * counts the number of bytes that the object would have in serialized form.
+     *
      * @param obj the object
      * @return the statistics.
      */
@@ -43,9 +50,8 @@ public class SerializationStats {
             CountingObjectOutputStream oos = new CountingObjectOutputStream(counter);
             oos.writeObject(obj);
             return new Stats(counter.getByteCount(), oos);
-        }
-        catch (IOException e) {
-            log.log(Level.WARNING,"Unable to compute size of " + obj.getClass().getSimpleName() + " due to : " + e);
+        } catch (IOException e) {
+            log.log(Level.WARNING, "Unable to compute size of " + obj.getClass().getSimpleName() + " due to : " + e);
             return null;
         }
     }
@@ -73,6 +79,25 @@ public class SerializationStats {
         public CountingObjectOutputStream.Counter getCounter(String name) {
             return oos.getCounter(name);
         }
+    }
+
+    public static final ComparatorChain COUNTER_COMPARATOR = new ComparatorChain(
+            new Comparator<CountingObjectOutputStream.Counter>() {
+                public int compare(CountingObjectOutputStream.Counter o1, CountingObjectOutputStream.Counter o2) {
+                    return ComparatorUtil.compareIntegers(o1.getCount(), o2.getCount());
+                }
+            },
+            new Comparator<CountingObjectOutputStream.Counter>() {
+                public int compare(CountingObjectOutputStream.Counter o1, CountingObjectOutputStream.Counter o2) {
+                    return ComparatorUtil.NULL_LOW_STRING_COMPARATOR.compare(o1.getName(), o2.getName());
+                }
+            }
+    );
+
+    public static List<CountingObjectOutputStream.Counter> sortCounters(SerializationStats.Stats stats) {
+        List<CountingObjectOutputStream.Counter> counters = CollectionUtil.newArrayList(stats.getCounters());
+        Collections.sort(counters, COUNTER_COMPARATOR);
+        return counters;
     }
 
     /**

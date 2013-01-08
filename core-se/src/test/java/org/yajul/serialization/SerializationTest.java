@@ -8,6 +8,7 @@ import org.yajul.io.SerializationStats;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -237,6 +238,7 @@ public class SerializationTest  {
     public static class BazEx extends Baz implements Externalizable {
 
         public void writeExternal(ObjectOutput out) throws IOException {
+
             ExternalizableHelper.writeNullableLong(out, nullLong);
             ExternalizableHelper.writeNullableLong(out, notNullLong);
 
@@ -436,5 +438,138 @@ public class SerializationTest  {
             } else
                 return obj;
         }
+    }
+
+    public static class FooBar implements Serializable {
+        private String one;
+        private MyEnum two;
+        private Date three;
+
+        public FooBar(String one, MyEnum two, Date three) {
+            this.one = one;
+            this.two = two;
+            this.three = three;
+        }
+
+        private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException
+        {
+            int bits = ois.readInt();
+            if (ExternalizableHelper.isNotNullBit(bits,0))
+                one = ExternalizableHelper.readNullableString(ois);
+            if (ExternalizableHelper.isNotNullBit(bits,1))
+                two = ExternalizableHelper.readNullableEnumByte(ois,MyEnum.values());
+            if (ExternalizableHelper.isNotNullBit(bits,2))
+                three = new Date(ois.readLong());
+        }
+
+        private void writeObject(ObjectOutputStream oos) throws IOException
+        {
+            int bits = ExternalizableHelper.getNullBits(one,two,three);
+            oos.writeInt(bits);
+            if (ExternalizableHelper.isNotNullBit(bits,0))
+                ExternalizableHelper.writeNullableString(oos,one);
+            if (ExternalizableHelper.isNotNullBit(bits,1))
+                ExternalizableHelper.writeEnumByte(oos,two);
+            if (ExternalizableHelper.isNotNullBit(bits,2))
+                oos.writeLong(three.getTime());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof FooBar)) return false;
+
+            FooBar fooBar = (FooBar) o;
+
+            if (one != null ? !one.equals(fooBar.one) : fooBar.one != null) return false;
+            if (three != null ? !three.equals(fooBar.three) : fooBar.three != null) return false;
+            if (two != fooBar.two) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = one != null ? one.hashCode() : 0;
+            result = 31 * result + (two != null ? two.hashCode() : 0);
+            result = 31 * result + (three != null ? three.hashCode() : 0);
+            return result;
+        }
+    }
+
+
+    public static class Three implements Serializable {
+        private String one;
+        private MyEnum two;
+        private Date three;
+
+        public Three(String one, MyEnum two, Date three) {
+            this.one = one;
+            this.two = two;
+            this.three = three;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Three)) return false;
+
+            Three other = (Three) o;
+
+            if (one != null ? !one.equals(other.one) : other.one != null) return false;
+            if (three != null ? !three.equals(other.three) : other.three != null) return false;
+            if (two != other.two) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = one != null ? one.hashCode() : 0;
+            result = 31 * result + (two != null ? two.hashCode() : 0);
+            result = 31 * result + (three != null ? three.hashCode() : 0);
+            return result;
+        }
+    }
+
+    @Test
+    public void testNullableBits() throws Exception {
+        FooBar fooBar1 = new FooBar("one",MyEnum.VALUE1,new Date());
+        FooBar fooBar2 = SerializationHelper.clone(fooBar1);
+        assertNotSame(fooBar1,fooBar2);
+        assertEquals(fooBar1,fooBar2);
+        int size = SerializationStats.sizeOf(fooBar1);
+        System.out.println("size (nothing null) = " + size);
+
+        Three three = new Three("one",MyEnum.VALUE1,new Date());
+        size = SerializationStats.sizeOf(three);
+        System.out.println("size (nothing null, default serialization) = " + size);
+
+        fooBar1 = new FooBar(null, null, null);
+        fooBar2 = SerializationHelper.clone(fooBar1);
+        assertNotSame(fooBar1,fooBar2);
+        assertEquals(fooBar1,fooBar2);
+        size = SerializationStats.sizeOf(fooBar1);
+        System.out.println("size (all null) = " + size);
+
+        three = new Three(null,null,null);
+        size = SerializationStats.sizeOf(three);
+        System.out.println("size (all null, default serialization) = " + size);
+    }
+
+    @Test
+    public void testNullSerialization() throws Exception {
+        Baz b = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(b);
+        oos.close();
+
+        byte[] bytes = baos.toByteArray();
+        System.out.println("null object size = " + bytes.length);
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Baz b2 = (Baz) ois.readObject();
     }
 }
