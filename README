@@ -1,3 +1,13 @@
 YAJUL - Yet Another Java Utility Library
 
-To build Yajul, you will need Maven 3.
+To build Yajul, you will need:
+
+* Maven 3
+* The JBoss Maven Repository https://repository.jboss.org/nexus/content/repositories/  (for Arquillian, etc.)
+
+To build all of the modules and add them to your local Maven repository, skipping the tests:
+* mvn clean install -DskipTests
+
+To do a 'full build', including all tests:
+* mvn clean verify
+
