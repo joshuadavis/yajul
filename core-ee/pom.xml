@@ -103,6 +103,11 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <!--
+                            This prevents 'WARNING: Incorrect @Resource annotation class definition - missing lookup attribute'
+                            See http://vineetreynolds.blogspot.com/2011/10/resolving-warning-incorrect-resource.html
+                            -->
+                            <argLine>-Djava.endorsed.dirs=${settings.localRepository}/org/glassfish/javax.annotation/3.1/</argLine>
                             <systemPropertyVariables>
                                 <java.util.logging.config.file>
                                     ${project.build.testOutputDirectory}/logging.properties
@@ -110,8 +115,19 @@
                                 <derby.stream.error.file>
                                     ${project.build.directory}/derby.log
                                 </derby.stream.error.file>
+                                <!-- This tells embedded gf to put it's temp directories in the target directory -->
+                                <glassfish.embedded.tmpdir>
+                                    ${project.build.directory}/glassfish_tmp
+                                </glassfish.embedded.tmpdir>
                             </systemPropertyVariables>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.glassfish</groupId>
+                                <artifactId>javax.annotation</artifactId>
+                                <version>3.1</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
