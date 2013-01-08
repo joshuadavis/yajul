@@ -1,6 +1,9 @@
 package org.yajul.collections;
 
-import java.io.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.*;
 
 /**
@@ -14,11 +17,24 @@ import java.util.*;
 public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<K, V> {
     private Map<K, V> map;
 
+    private static  <K, V extends EntityWithId<K>> LinkedHashMap<K, V> createMap() {
+        return CollectionUtil.newLinkedHashMap();
+    }
+    private static  <K, V extends EntityWithId<K>> LinkedHashMap<K, V> createMap(int size) {
+        return CollectionUtil.newLinkedHashMap(size);
+    }
+
+    private void newMapWithCapacity(int size) {
+        if (map != null)
+            map.clear();
+        map = createMap(size);
+    }
+
     /**
      * Makes an empty IdMap with the default map implementation.
      */
     public IdMap() {
-        this(CollectionUtil.<K,V>newLinkedHashMap(), null);
+        this(IdMap.<K,V>createMap(), null);
     }
 
     /**
@@ -39,7 +55,6 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      *
      * @param map the map implementation
      */
-    @SuppressWarnings("UnusedDeclaration")
     public IdMap(Map<K, V> map) {
         this(map, null);
     }
@@ -50,9 +65,8 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
      *
      * @param items the entities to add
      */
-    @SuppressWarnings("UnusedDeclaration")
     public IdMap(Collection<V> items) {
-        this(CollectionUtil.<K,V>newLinkedHashMap(items.size()), items);
+        this(IdMap.<K,V>createMap(items == null ? 0 : items.size()), items);
     }
 
     /**
@@ -74,7 +88,7 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
     public void addSubset(IdMap<K, V> reference, Collection<K> ids) {
         final int size = ids.size();
         if (size > 0) {
-            this.map = CollectionUtil.newLinkedHashMap(size);
+            newMapWithCapacity(size);
             for (K id : ids)
                 put(reference.get(id));
         }
@@ -137,6 +151,7 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         return map.remove(key);
     }
 
+    @SuppressWarnings("NullableProblems")
     public void putAll(Map<? extends K, ? extends V> t) {
         map.putAll(t);
     }
@@ -150,14 +165,17 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
         map.clear();
     }
 
+    @SuppressWarnings("NullableProblems")
     public Set<K> keySet() {
         return map.keySet();
     }
 
+    @SuppressWarnings("NullableProblems")
     public Collection<V> values() {
         return map.values();
     }
 
+    @SuppressWarnings("NullableProblems")
     public Set<Entry<K, V>> entrySet() {
         return map.entrySet();
     }
@@ -216,8 +234,8 @@ public class IdMap<K, V extends EntityWithId<K>> implements Externalizable, Map<
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        map.clear();
         int size = in.readInt();
+        newMapWithCapacity(size);
         for (int i = 0; i < size; i++) {
             @SuppressWarnings({"unchecked"})
             V v = (V) in.readObject();

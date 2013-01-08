@@ -1,5 +1,7 @@
 package org.yajul.util;
 
+import org.junit.Test;
+import org.yajul.collections.CollectionUtil;
 import org.yajul.collections.EntityWithId;
 import org.yajul.collections.IdMap;
 import org.yajul.io.StreamCopier;
@@ -8,8 +10,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
-import junit.framework.TestCase;
-import junit.framework.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests 'IdMap'.
@@ -18,11 +20,13 @@ import junit.framework.Assert;
  * Date: Aug 29, 2008
  * Time: 9:38:38 AM
  */
-public class IdMapTest extends TestCase
+public class IdMapTest
 {
+    @Test
     public void testIdMap() throws IOException, ClassNotFoundException
     {
         IdMap<Long,Thingie> idmap = new IdMap<Long,Thingie>();
+
         ensureEmpty(idmap);
 
         byte[] bytes = StreamCopier.serializeObject(idmap);
@@ -51,8 +55,14 @@ public class IdMapTest extends TestCase
         one[0] = thingies[0];
 
         IdMap<Long,Thingie> subsetOfOne = new IdMap<Long,Thingie>(idmap, Collections.singleton(one[0].getId()));
-        Assert.assertEquals(subsetOfOne.size(),1);
-        Assert.assertEquals(subsetOfOne.getOne(),one[0]);
+        assertEquals(subsetOfOne.size(), 1);
+        assertEquals(subsetOfOne.getOne(), one[0]);
+
+        IdMap<Long,Thingie> constructorCopy = new IdMap<Long, Thingie>(idmap);
+        checkMap(constructorCopy,thingies);
+
+        IdMap<Long,Thingie> constructorCopy2 = new IdMap<Long, Thingie>(idmap.values());
+        checkMap(constructorCopy2,thingies);
 
         IdMap<Long,Thingie> aggregate = new IdMap<Long,Thingie>();
         List<Thingie> list = new ArrayList<Thingie>();
@@ -72,36 +82,36 @@ public class IdMapTest extends TestCase
         // Aggregate null.
         aggregate.aggregate(null);
         
-        Assert.assertEquals(aggregate,idmap);
+        assertEquals(aggregate, idmap);
     }
 
     private void ensureEmpty(IdMap<Long,Thingie> idmap2)
     {
-        Assert.assertEquals(idmap2.size(),0);
-        Assert.assertTrue(idmap2.getCollection().isEmpty());
+        assertEquals(idmap2.size(), 0);
+        assertTrue(idmap2.getCollection().isEmpty());
     }
 
     private void checkMap(IdMap<Long,Thingie> idmap, Thingie[] thingies)
     {
-        Assert.assertEquals(idmap.size(), 100);
+        assertEquals(idmap.size(), 100);
 
         for(int i = 0; i < 100; i++)
         {
             long id = (long) i;
-            Assert.assertTrue(idmap.containsId(id));
-            Assert.assertTrue(idmap.getCollection().contains(thingies[i]));
-            Assert.assertEquals(idmap.get(id),thingies[i]);
+            assertTrue(idmap.containsId(id));
+            assertTrue(idmap.getCollection().contains(thingies[i]));
+            assertEquals(idmap.get(id), thingies[i]);
         }
 
         Collection<Long> ids = idmap.getIds();
         for(int i = 0; i < 100; i++)
         {
             long id = (long) i;
-            Assert.assertTrue(ids.contains(id));            
+            assertTrue(ids.contains(id));
         }
 
         Set<Long> idSet = IdMap.idSet(Arrays.asList(thingies));
-        Set<Long> idSet2 = new HashSet<Long>(ids);
+        Set<Long> idSet2 = CollectionUtil.newHashSet(ids);
         assertEquals(idSet,idSet2);
     }
 
