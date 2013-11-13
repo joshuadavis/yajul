@@ -49,7 +49,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="arq-tests" />
         <module name="core" />
         <module name="core-ee" />
         <module name="core-ee-test" />

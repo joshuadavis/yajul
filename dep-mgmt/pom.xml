@@ -11,8 +11,7 @@
     <properties>
         <version.junit>4.11</version.junit>
         <version.javassist>3.12.1.GA</version.javassist>
-        <version.jboss-embedded>beta3.SP15</version.jboss-embedded>
-        <version.slf4j>1.7.2</version.slf4j>
+        <version.slf4j>1.7.5</version.slf4j>
         <version.hsqldb>2.3.1</version.hsqldb>
         <version.liquibase>3.0.7</version.liquibase>
     </properties>
@@ -114,45 +113,6 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${version.junit}</version>
-                <scope>test</scope>
-            </dependency>
-            <!-- Embedded JBoss (the JBoss 5 version)  -->
-            <dependency>
-                <groupId>org.jboss.embedded</groupId>
-                <artifactId>jboss-embedded-all</artifactId>
-                <version>${version.jboss-embedded}</version>
-                <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.embedded</groupId>
-                        <artifactId>jboss-embedded</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.microcontainer</groupId>
-                        <artifactId>jboss-deployers-client-spi</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.microcontainer</groupId>
-                        <artifactId>jboss-deployers-core-spi</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.embedded</groupId>
-                <artifactId>jboss-embedded</artifactId>
-                <version>${version.jboss-embedded}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.embedded</groupId>
-                <artifactId>thirdparty-all</artifactId>
-                <version>${version.jboss-embedded}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.embedded</groupId>
-                <artifactId>hibernate-all</artifactId>
-                <version>${version.jboss-embedded}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

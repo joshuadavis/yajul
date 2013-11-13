@@ -16,19 +16,14 @@
     <orderEntry type="module" module-name="core-se" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.7.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: javax.jms:jms:1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hsqldb:hsqldb:2.2.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.liquibase:liquibase-core:2.0.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.embedded:jboss-embedded-all:beta3.SP15" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.embedded:jboss-embedded:beta3.SP15" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.microcontainer:jboss-deployers-client-spi:2.0.0.Beta6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.microcontainer:jboss-deployers-core-spi:2.0.0.Beta6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.embedded:thirdparty-all:beta3.SP15" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jboss.embedded:hibernate-all:beta3.SP15" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hsqldb:hsqldb:2.3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.liquibase:liquibase-core:3.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.yaml:snakeyaml:1.13" level="project" />
   </component>
 </module>
 

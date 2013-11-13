@@ -33,6 +33,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/arq-tests/pom.xml" />
         <option value="$PROJECT_DIR$/embedded-jboss/pom.xml" />
         <option value="$PROJECT_DIR$/yajul-jms/pom.xml" />
         <option value="$PROJECT_DIR$/yajul-jndi/pom.xml" />

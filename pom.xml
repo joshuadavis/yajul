@@ -55,7 +55,6 @@
         <module>pojo-parent</module>
         <module>micro</module>
         <module>core-se</module>
-        <module>arq-tests</module>
         <module>core-ee</module>
         <module>test-helpers</module>
         <module>core-ee-test</module>

@@ -73,44 +73,7 @@
             <artifactId>liquibase-core</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Embedded JBoss (the JBoss 5 version)  -->
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>jboss-embedded-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>jboss-embedded</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>thirdparty-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.embedded</groupId>
-            <artifactId>hibernate-all</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <additionalClasspathElements>
-                        <additionalClasspathElement>${basedir}/etc/bootstrap</additionalClasspathElement>
-                    </additionalClasspathElements>
-                    <!--
-                    Required when using jboss-embedded with JDK 6
-                    NOTE: argLine IS NOT COMPATIBLE WITH THE 'systemProperty' SETTING!
-                     -->
-                    <argLine>-Dsun.lang.ClassLoader.allowArraySyntax=true</argLine>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 </project>

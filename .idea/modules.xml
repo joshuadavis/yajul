@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/arq-tests/arq-tests.iml" filepath="$PROJECT_DIR$/arq-tests/arq-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-ee/core-ee.iml" filepath="$PROJECT_DIR$/core-ee/core-ee.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-ee-test/core-ee-test.iml" filepath="$PROJECT_DIR$/core-ee-test/core-ee-test.iml" />
