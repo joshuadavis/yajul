@@ -11,7 +11,7 @@
     <version>0.1.5-SNAPSHOT</version>
     <properties>
         <version.groovy>2.0.4</version.groovy>
-        <version.gmaven>1.4</version.gmaven>
+        <version.gmaven>1.5</version.gmaven>
         <gmaven.provider>1.7</gmaven.provider>
         <version.ivy>2.1.0</version.ivy>
     </properties>
