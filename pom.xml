@@ -58,8 +58,8 @@
         <module>arq-tests</module>
         <module>core-ee</module>
         <module>test-helpers</module>
+        <module>core-ee-test</module>
     </modules>
-
 
     <build>
         <plugins>

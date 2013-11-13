@@ -1,6 +1,7 @@
 /*.iws
 /target/
 /*/target/
+/*/*.iml
 /.idea/workspace.xml
 /.idea/libraries/*
 /.idea/artifacts/*
@@ -11,3 +12,4 @@ temp.txt
 /core-se/data/*
 *~
 **/*~
+atlassian-ide-plugin.xml

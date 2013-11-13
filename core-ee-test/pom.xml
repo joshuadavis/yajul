@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>pojo-parent</artifactId>
         <groupId>org.yajul</groupId>
@@ -8,10 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>arq-tests</artifactId>
-    <version>0.4.7-SNAPSHOT</version>
-    <name>arq-tests</name>
-    <description>Integration tests using Arquillian</description>
+    <artifactId>core-ee-test</artifactId>
+
+    <description>Test module for yajul-core-ee.</description>
 
     <properties>
         <arquillian.version>1.0.3.Final</arquillian.version>
@@ -38,26 +39,37 @@
     </dependencyManagement>
 
     <dependencies>
-
         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${version.cdi}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>yajul-core-ee</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
+
 
     <profiles>
 
@@ -77,6 +89,7 @@
                     <groupId>org.glassfish.main.extras</groupId>
                     <artifactId>glassfish-embedded-all</artifactId>
                     <version>3.1.2.2</version>
+                    <scope>test</scope>
                 </dependency>
             </dependencies>
             <build>
@@ -93,6 +106,11 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <!--
+                            This prevents 'WARNING: Incorrect @Resource annotation class definition - missing lookup attribute'
+                            See http://vineetreynolds.blogspot.com/2011/10/resolving-warning-incorrect-resource.html
+                            -->
+                            <argLine>-Djava.endorsed.dirs=${settings.localRepository}/org/glassfish/javax.annotation/3.1/</argLine>
                             <systemPropertyVariables>
                                 <java.util.logging.config.file>
                                     ${project.build.testOutputDirectory}/logging.properties
@@ -100,30 +118,22 @@
                                 <derby.stream.error.file>
                                     ${project.build.directory}/derby.log
                                 </derby.stream.error.file>
+                                <!-- This tells embedded gf to put it's temp directories in the target directory -->
+                                <glassfish.embedded.tmpdir>
+                                    ${project.build.directory}/glassfish_tmp
+                                </glassfish.embedded.tmpdir>
                             </systemPropertyVariables>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.glassfish</groupId>
+                                <artifactId>javax.annotation</artifactId>
+                                <version>3.1</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <profile>
-            <id>jboss-as7-managed</id>
-            <dependencies>
-
-                <dependency>
-                    <groupId>org.jboss.arquillian.container</groupId>
-                    <artifactId>arquillian-jbossas-remote-6</artifactId>
-                    <version>${arquillian.version}</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.jbossas</groupId>
-                    <artifactId>jboss-as-client</artifactId>
-                    <version>6.0.0.Final</version>
-                    <type>pom</type>
-                </dependency>
-            </dependencies>
         </profile>
     </profiles>
 

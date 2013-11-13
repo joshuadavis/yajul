@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/arq-tests/arq-tests.iml" filepath="$PROJECT_DIR$/arq-tests/arq-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-ee/core-ee.iml" filepath="$PROJECT_DIR$/core-ee/core-ee.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-ee-test/core-ee-test.iml" filepath="$PROJECT_DIR$/core-ee-test/core-ee-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-se/core-se.iml" filepath="$PROJECT_DIR$/core-se/core-se.iml" />
       <module fileurl="file://$PROJECT_DIR$/dep-mgmt/dep-mgmt.iml" filepath="$PROJECT_DIR$/dep-mgmt/dep-mgmt.iml" />
       <module fileurl="file://$PROJECT_DIR$/groovy-dbtools/groovy-dbtools.iml" filepath="$PROJECT_DIR$/groovy-dbtools/groovy-dbtools.iml" />

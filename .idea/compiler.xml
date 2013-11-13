@@ -52,6 +52,7 @@
         <module name="arq-tests" />
         <module name="core" />
         <module name="core-ee" />
+        <module name="core-ee-test" />
         <module name="core-se" />
         <module name="groovy-dbtools" />
         <module name="micro" />
@@ -62,6 +63,7 @@
       <module name="arq-tests" target="1.5" />
       <module name="core" target="1.5" />
       <module name="core-ee" target="1.5" />
+      <module name="core-ee-test" target="1.5" />
       <module name="core-se" target="1.5" />
       <module name="groovy-dbtools" target="1.5" />
       <module name="micro" target="1.5" />
