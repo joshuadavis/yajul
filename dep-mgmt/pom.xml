@@ -21,6 +21,10 @@
     </prerequisites>
 
     <distributionManagement>
+        <site>
+            <id>yajul.sourceforge.net</id>
+            <url>http://yajul.sourceforge.net</url>
+        </site>
         <repository>
             <id>parity.releases</id>
             <name>Parity Maven Release Repository</name>

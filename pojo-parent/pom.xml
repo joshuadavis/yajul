@@ -18,7 +18,7 @@
     </prerequisites>
 
     <url>http://yajul.sourceforge.net</url>
-    <description>Yet Another Java Utility Library for Java Enterprise 5.</description>
+    <description>Yet Another Java Utility Library for Java Enterprise.</description>
     <developers>
         <developer>
             <id>pgmjsd</id>
@@ -46,6 +46,10 @@
     </repositories>
 
     <distributionManagement>
+        <site>
+            <id>yajul.sourceforge.net</id>
+            <url>http://yajul.sourceforge.net</url>
+        </site>
         <repository>
             <id>parity.releases</id>
             <name>Parity Maven Release Repository</name>
