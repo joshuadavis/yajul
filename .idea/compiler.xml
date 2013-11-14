@@ -49,13 +49,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="core" />
-        <module name="core-ee" />
         <module name="core-ee-test" />
-        <module name="core-se" />
         <module name="groovy-dbtools" />
-        <module name="micro" />
         <module name="test-helpers" />
+        <module name="yajul" />
+        <module name="yajul-core-ee" />
+        <module name="yajul-core-se" />
+        <module name="yajul-micro" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -68,6 +68,10 @@
       <module name="micro" target="1.5" />
       <module name="pojo-parent" target="1.5" />
       <module name="test-helpers" target="1.5" />
+      <module name="yajul" target="1.5" />
+      <module name="yajul-core-ee" target="1.5" />
+      <module name="yajul-core-se" target="1.5" />
+      <module name="yajul-micro" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="EclipseCompilerSettings">

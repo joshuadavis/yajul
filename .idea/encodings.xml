@@ -11,6 +11,10 @@
     <file url="file://$PROJECT_DIR$/micro" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pojo-parent" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-helpers" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yajul" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yajul-core-ee" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yajul-core-se" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yajul-micro" charset="UTF-8" />
   </component>
 </project>
 

@@ -5,10 +5,12 @@
     <artifactId>pojo-parent</artifactId>
     <version>0.4.7-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>pojo-parent</name>
 
     <properties>
         <compileSource>1.5</compileSource>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.surefire>2.16</version.surefire>
     </properties>
 
     <prerequisites>
@@ -123,12 +125,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.16</version>
+                    <version>${version.surefire}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.9.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.7</version>
                 </plugin>
             </plugins>
         </pluginManagement>

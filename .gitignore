@@ -1,7 +1,7 @@
 /*.iws
 /target/
 /*/target/
-/*/*.iml
+*/*.iml
 /.idea/workspace.xml
 /.idea/libraries/*
 /.idea/artifacts/*

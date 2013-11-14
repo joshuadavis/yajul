@@ -8,6 +8,7 @@
         <relativePath>../pojo-parent/pom.xml</relativePath>
     </parent>
     <artifactId>groovy-dbtools</artifactId>
+    <name>groovy-dbtools</name>
     <version>0.1.5-SNAPSHOT</version>
     <properties>
         <version.groovy>2.0.4</version.groovy>

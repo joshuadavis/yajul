@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>core-ee-test</artifactId>
+    <name>core-ee-test</name>
 
     <description>Test module for yajul-core-ee.</description>
 
@@ -76,6 +77,16 @@
     </dependencies>
 
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.surefire}</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
 
         <profile>
@@ -110,6 +121,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${version.surefire}</version>
                         <configuration>
                             <!--
                             This prevents 'WARNING: Incorrect @Resource annotation class definition - missing lookup attribute'
